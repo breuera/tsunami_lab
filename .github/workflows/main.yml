@@ -23,7 +23,7 @@ on:
   pull_request:
     branches: [ main ]
   schedule:
-    0 0 * * *
+    - cron: 0 0 * * *
 
 jobs:
   build:
