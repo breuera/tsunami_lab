@@ -30,6 +30,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Dependencies
+        run: |
+          sudo apt-get install scons
+
       - name: Release
         run: |
           cd ${GITHUB_WORKSPACE}
