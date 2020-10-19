@@ -40,3 +40,5 @@ jobs:
         run: |
           cd ${GITHUB_WORKSPACE}
           scons
+          ./build/tests
+          ./build/tsunami_lab 500
