@@ -29,7 +29,7 @@ namespace tsunami_lab {
 class tsunami_lab::solvers::Roe {
   private:
     //! square root of gravity
-    static t_real constexpr m_gSqrt = 3.131557121f;
+    static t_real constexpr m_gSqrt = 3.131557121;
 
     /**
      * Computes the wave speeds.
