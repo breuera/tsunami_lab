@@ -26,7 +26,7 @@ on:
     - cron: 0 0 * * *
 
 jobs:
-  build:
+  CI:
     runs-on: ubuntu-latest
 
     steps:
@@ -36,8 +36,13 @@ jobs:
         run: |
           sudo apt-get install scons
           sudo apt-get install valgrind
+          sudo apt-get install cppcheck
           git submodule init
           git submodule update
+
+      - name: Static Code Analysis
+        run:
+          cppcheck src/ --template=gcc --force --error-exitcode=1
 
       - name: Sanitize
         run: |
