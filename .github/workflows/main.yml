@@ -38,9 +38,17 @@ jobs:
           git submodule init
           git submodule update
 
+      - name: Sanitize
+        run: |
+          scons mode=debug+san
+          ./build/tests
+          ./build/tsunami_lab 500
+          scons mode=release+san
+          ./build/tests
+          ./build/tsunami_lab 500
+
       - name: Release
         run: |
-          cd ${GITHUB_WORKSPACE}
           scons
           ./build/tests
           ./build/tsunami_lab 500
