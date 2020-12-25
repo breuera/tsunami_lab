@@ -34,6 +34,7 @@ jobs:
 
       - name: Dependencies
         run: |
+          sudo apt-get update
           sudo apt-get install scons
           sudo apt-get install valgrind
           sudo apt-get install cppcheck
