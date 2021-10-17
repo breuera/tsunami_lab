@@ -33,11 +33,11 @@ int main( int   i_argc,
   // set cell size
   tsunami_lab::t_real l_dxy = 1;
 
-  std::cout << "###################################" << std::endl;
-  std::cout << "### Tsunami Lab                 ###" << std::endl;
-  std::cout << "###                             ###" << std::endl;
-  std::cout << "### http://scalable.uni-jena.de ###" << std::endl;
-  std::cout << "###################################" << std::endl;
+  std::cout << "####################################" << std::endl;
+  std::cout << "### Tsunami Lab                  ###" << std::endl;
+  std::cout << "###                              ###" << std::endl;
+  std::cout << "### https://scalable.uni-jena.de ###" << std::endl;
+  std::cout << "####################################" << std::endl;
 
   if( i_argc != 2 ) {
     std::cerr << "invalid number of arguments, usage:" << std::endl;
