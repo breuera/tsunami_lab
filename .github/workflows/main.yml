@@ -74,3 +74,9 @@ jobs:
 
       - name: Dependencies
         run:  npm install html-proofer
+
+      - name: Download
+        run: wget --quiet --no-parent -r -l 2 https://scalable.uni-jena.de/opt/tsunami/
+
+      - name: Check
+        run: htmlproofer --url-ignore="#" scalable.uni-jena.de/opt/tsunami/ --file-ignore scalable.uni-jena.de/opt/tsunami/search.html
