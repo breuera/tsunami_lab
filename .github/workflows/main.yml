@@ -70,13 +70,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: uby/setup-ruby@v1
 
       - name: Dependencies
-        run:  npm install html-proofer
+        run:  gem install html-proofer
 
       - name: Download
         run: wget --quiet --no-parent -r -l 2 https://scalable.uni-jena.de/opt/tsunami/
 
       - name: Check
-        run: html-proofer --url-ignore="#" scalable.uni-jena.de/opt/tsunami/ --file-ignore scalable.uni-jena.de/opt/tsunami/search.html
+        run: htmlproofer --url-ignore="#" scalable.uni-jena.de/opt/tsunami/ --file-ignore scalable.uni-jena.de/opt/tsunami/search.html
