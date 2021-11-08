@@ -65,3 +65,12 @@ jobs:
           scons
           ./build/tests
           ./build/tsunami_lab 500
+  HP:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Dependencies
+        uses: actions/setup-node@v2
+        run:  npm install html-proofer
