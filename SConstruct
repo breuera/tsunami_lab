@@ -17,11 +17,11 @@
 ##
 import SCons
 
-print( '###################################' )
-print( '### Tsunami Lab                 ###' )
-print( '###                             ###' )
-print( '### http://scalable.uni-jena.de ###' )
-print( '###################################' )
+print( '####################################' )
+print( '### Tsunami Lab                  ###' )
+print( '###                              ###' )
+print( '### https://scalable.uni-jena.de ###' )
+print( '####################################' )
 print()
 print('runnning build script')
 
