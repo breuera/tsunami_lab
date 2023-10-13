@@ -2,7 +2,7 @@
 # @author Alexander Breuer (alex.breuer AT uni-jena.de)
 # 
 # @section LICENSE
-# Copyright 2020, Friedrich Schiller University Jena
+# Copyright 2020-2023, Friedrich Schiller University Jena
 #
 # Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 #
@@ -74,7 +74,7 @@ if 'san' in  env['mode']:
                             '-fsanitize=undefined' ] )
 
 # add Catch2
-env.Append( CXXFLAGS = [ '-Isubmodules/Catch2/single_include' ] )
+env.Append( CXXFLAGS = [ '-isystem', 'submodules/Catch2/single_include' ] )
 
 # get source files
 VariantDir( variant_dir = 'build/src',
