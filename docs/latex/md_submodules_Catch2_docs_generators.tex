@@ -1,0 +1,204 @@
+\label{_top}%
+ \hypertarget{md_submodules_Catch2_docs_generators_autotoc_md134}{}\doxysection{Data Generators}\label{md_submodules_Catch2_docs_generators_autotoc_md134}
+\begin{quote}
+Introduced in Catch 2.\+6.\+0. \end{quote}
+
+
+\mbox{\hyperlink{structData}{Data}} generators (also known as {\itshape data driven/parametrized test cases}) let you reuse the same set of assertions across different input values. In Catch2, this means that they respect the ordering and nesting of the {\ttfamily T\+E\+S\+T\+\_\+\+C\+A\+SE} and {\ttfamily S\+E\+C\+T\+I\+ON} macros, and their nested sections are run once per each value in a generator.
+
+This is best explained with an example\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{TEST\_CASE(\textcolor{stringliteral}{"Generators"}) \{}
+\DoxyCodeLine{    \textcolor{keyword}{auto} i = GENERATE(1, 3, 5);}
+\DoxyCodeLine{    REQUIRE(is\_odd(i));}
+\DoxyCodeLine{\}}
+\end{DoxyCode}
+
+
+The \char`\"{}\+Generators\char`\"{} {\ttfamily T\+E\+S\+T\+\_\+\+C\+A\+SE} will be entered 3 times, and the value of {\ttfamily i} will be 1, 3, and 5 in turn. {\ttfamily G\+E\+N\+E\+R\+A\+TE}s can also be used multiple times at the same scope, in which case the result will be a cartesian product of all elements in the generators. This means that in the snippet below, the test case will be run 6 (2$\ast$3) times.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{TEST\_CASE(\textcolor{stringliteral}{"Generators"}) \{}
+\DoxyCodeLine{    \textcolor{keyword}{auto} i = GENERATE(1, 2);}
+\DoxyCodeLine{    \textcolor{keyword}{auto} j = GENERATE(3, 4, 5);}
+\DoxyCodeLine{\}}
+\end{DoxyCode}
+
+
+There are 2 parts to generators in Catch2, the {\ttfamily G\+E\+N\+E\+R\+A\+TE} macro together with the already provided generators, and the {\ttfamily I\+Generator$<$T$>$} interface that allows users to implement their own generators.\hypertarget{md_submodules_Catch2_docs_generators_autotoc_md135}{}\doxysubsection{Combining $<$tt$>$\+G\+E\+N\+E\+R\+A\+T\+E$<$/tt$>$ and $<$tt$>$\+S\+E\+C\+T\+I\+O\+N$<$/tt$>$.}\label{md_submodules_Catch2_docs_generators_autotoc_md135}
+{\ttfamily G\+E\+N\+E\+R\+A\+TE} can be seen as an implicit {\ttfamily S\+E\+C\+T\+I\+ON}, that goes from the place {\ttfamily G\+E\+N\+E\+R\+A\+TE} is used, to the end of the scope. This can be used for various effects. The simplest usage is shown below, where the {\ttfamily S\+E\+C\+T\+I\+ON} \char`\"{}one\char`\"{} runs 4 (2$\ast$2) times, and {\ttfamily S\+E\+C\+T\+I\+ON} \char`\"{}two\char`\"{} is run 6 times (2$\ast$3).
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{TEST\_CASE(\textcolor{stringliteral}{"Generators"}) \{}
+\DoxyCodeLine{    \textcolor{keyword}{auto} i = GENERATE(1, 2);}
+\DoxyCodeLine{    SECTION(\textcolor{stringliteral}{"one"}) \{}
+\DoxyCodeLine{        \textcolor{keyword}{auto} j = GENERATE(-\/3, -\/2);}
+\DoxyCodeLine{        REQUIRE(j < i);}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    SECTION(\textcolor{stringliteral}{"two"}) \{}
+\DoxyCodeLine{        \textcolor{keyword}{auto} k = GENERATE(4, 5, 6);}
+\DoxyCodeLine{        REQUIRE(i != k);}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{\}}
+\end{DoxyCode}
+
+
+The specific order of the {\ttfamily S\+E\+C\+T\+I\+ON}s will be \char`\"{}one\char`\"{}, \char`\"{}one\char`\"{}, \char`\"{}two\char`\"{}, \char`\"{}two\char`\"{}, \char`\"{}two\char`\"{}, \char`\"{}one\char`\"{}...
+
+The fact that {\ttfamily G\+E\+N\+E\+R\+A\+TE} introduces a virtual {\ttfamily S\+E\+C\+T\+I\+ON} can also be used to make a generator replay only some {\ttfamily S\+E\+C\+T\+I\+ON}s, without having to explicitly add a {\ttfamily S\+E\+C\+T\+I\+ON}. As an example, the code below reports 3 assertions, because the \char`\"{}first\char`\"{} section is run once, but the \char`\"{}second\char`\"{} section is run twice.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{TEST\_CASE(\textcolor{stringliteral}{"GENERATE between SECTIONs"}) \{}
+\DoxyCodeLine{    SECTION(\textcolor{stringliteral}{"first"}) \{ REQUIRE(\textcolor{keyword}{true}); \}}
+\DoxyCodeLine{    \textcolor{keyword}{auto} \_ = GENERATE(1, 2);}
+\DoxyCodeLine{    SECTION(\textcolor{stringliteral}{"second"}) \{ REQUIRE(\textcolor{keyword}{true}); \}}
+\DoxyCodeLine{\}}
+\end{DoxyCode}
+
+
+This can lead to surprisingly complex test flows. As an example, the test below will report 14 assertions\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{TEST\_CASE(\textcolor{stringliteral}{"Complex mix of sections and generates"}) \{}
+\DoxyCodeLine{    \textcolor{keyword}{auto} i = GENERATE(1, 2);}
+\DoxyCodeLine{    SECTION(\textcolor{stringliteral}{"A"}) \{}
+\DoxyCodeLine{        SUCCEED(\textcolor{stringliteral}{"A"});}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    \textcolor{keyword}{auto} j = GENERATE(3, 4);}
+\DoxyCodeLine{    SECTION(\textcolor{stringliteral}{"B"}) \{}
+\DoxyCodeLine{        SUCCEED(\textcolor{stringliteral}{"B"});}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    \textcolor{keyword}{auto} k = GENERATE(5, 6);}
+\DoxyCodeLine{    SUCCEED();}
+\DoxyCodeLine{\}}
+\end{DoxyCode}
+
+
+\begin{quote}
+The ability to place {\ttfamily G\+E\+N\+E\+R\+A\+TE} between two {\ttfamily S\+E\+C\+T\+I\+ON}s was \href{https://github.com/catchorg/Catch2/issues/1938}{\texttt{ introduced}} in Catch 2.\+13.\+0. \end{quote}
+\hypertarget{md_submodules_Catch2_docs_generators_autotoc_md136}{}\doxysubsection{Provided generators}\label{md_submodules_Catch2_docs_generators_autotoc_md136}
+Catch2\textquotesingle{}s provided generator functionality consists of three parts,
+
+
+\begin{DoxyItemize}
+\item {\ttfamily G\+E\+N\+E\+R\+A\+TE} macro, that serves to integrate generator expression with a test case,
+\item 2 fundamental generators
+\begin{DoxyItemize}
+\item {\ttfamily Single\+Value\+Generator$<$T$>$} -- contains only single element
+\item {\ttfamily Fixed\+Values\+Generator$<$T$>$} -- contains multiple elements
+\end{DoxyItemize}
+\item 5 generic generators that modify other generators
+\begin{DoxyItemize}
+\item {\ttfamily Filter\+Generator$<$T, Predicate$>$} -- filters out elements from a generator for which the predicate returns \char`\"{}false\char`\"{}
+\item {\ttfamily Take\+Generator$<$T$>$} -- takes first {\ttfamily n} elements from a generator
+\item {\ttfamily Repeat\+Generator$<$T$>$} -- repeats output from a generator {\ttfamily n} times
+\item {\ttfamily Map\+Generator$<$T, U, Func$>$} -- returns the result of applying {\ttfamily Func} on elements from a different generator
+\item {\ttfamily Chunk\+Generator$<$T$>$} -- returns chunks (inside {\ttfamily std\+::vector}) of n elements from a generator
+\end{DoxyItemize}
+\item 4 specific purpose generators
+\begin{DoxyItemize}
+\item {\ttfamily Random\+Integer\+Generator$<$Integral$>$} -- generates random Integrals from range
+\item {\ttfamily Random\+Float\+Generator$<$Float$>$} -- generates random Floats from range
+\item {\ttfamily Range\+Generator$<$T$>$} -- generates all values inside an arithmetic range
+\item {\ttfamily Iterator\+Generator$<$T$>$} -- copies and returns values from an iterator range
+\end{DoxyItemize}
+\end{DoxyItemize}
+
+\begin{quote}
+{\ttfamily Chunk\+Generator$<$T$>$}, {\ttfamily Random\+Integer\+Generator$<$Integral$>$}, {\ttfamily Random\+Float\+Generator$<$Float$>$} and {\ttfamily Range\+Generator$<$T$>$} were introduced in Catch 2.\+7.\+0. \end{quote}
+
+
+\begin{quote}
+{\ttfamily Iterator\+Generator$<$T$>$} was introduced in Catch 2.\+10.\+0. \end{quote}
+
+
+The generators also have associated helper functions that infer their type, making their usage much nicer. These are
+
+
+\begin{DoxyItemize}
+\item {\ttfamily value(\+T\&\&)} for {\ttfamily Single\+Value\+Generator$<$T$>$}
+\item {\ttfamily values(std\+::initializer\+\_\+list$<$T$>$)} for {\ttfamily Fixed\+Values\+Generator$<$T$>$}
+\item {\ttfamily table$<$Ts...$>$(std\+::initializer\+\_\+list$<$std\+::tuple$<$Ts...$>$$>$)} for {\ttfamily Fixed\+Values\+Generator$<$std\+::tuple$<$Ts...$>$$>$}
+\item {\ttfamily filter(predicate, Generator\+Wrapper$<$T$>$\&\&)} for {\ttfamily Filter\+Generator$<$T, Predicate$>$}
+\item {\ttfamily take(count, Generator\+Wrapper$<$T$>$\&\&)} for {\ttfamily Take\+Generator$<$T$>$}
+\item {\ttfamily repeat(repeats, Generator\+Wrapper$<$T$>$\&\&)} for {\ttfamily Repeat\+Generator$<$T$>$}
+\item {\ttfamily map(func, Generator\+Wrapper$<$T$>$\&\&)} for {\ttfamily Map\+Generator$<$T, U, Func$>$} (map {\ttfamily U} to {\ttfamily T}, deduced from {\ttfamily Func})
+\item {\ttfamily map$<$T$>$(func, Generator\+Wrapper$<$U$>$\&\&)} for {\ttfamily Map\+Generator$<$T, U, Func$>$} (map {\ttfamily U} to {\ttfamily T})
+\item {\ttfamily chunk(chunk-\/size, Generator\+Wrapper$<$T$>$\&\&)} for {\ttfamily Chunk\+Generator$<$T$>$}
+\item {\ttfamily random(\+Integer\+Or\+Float a, Integer\+Or\+Float b)} for {\ttfamily Random\+Integer\+Generator} or {\ttfamily Random\+Float\+Generator}
+\item {\ttfamily range(\+Arithemtic start, Arithmetic end)} for {\ttfamily Range\+Generator$<$Arithmetic$>$} with a step size of {\ttfamily 1}
+\item {\ttfamily range(\+Arithmetic start, Arithmetic end, Arithmetic step)} for {\ttfamily Range\+Generator$<$Arithmetic$>$} with a custom step size
+\item {\ttfamily from\+\_\+range(\+Input\+Iterator from, Input\+Iterator to)} for {\ttfamily Iterator\+Generator$<$T$>$}
+\item {\ttfamily from\+\_\+range(\+Container const\&)} for {\ttfamily Iterator\+Generator$<$T$>$}
+\end{DoxyItemize}
+
+\begin{quote}
+{\ttfamily chunk()}, {\ttfamily random()} and both {\ttfamily range()} functions were introduced in Catch 2.\+7.\+0. \end{quote}
+
+
+\begin{quote}
+{\ttfamily from\+\_\+range} has been introduced in Catch 2.\+10.\+0 \end{quote}
+
+
+\begin{quote}
+{\ttfamily range()} for floating point numbers has been introduced in Catch 2.\+11.\+0 \end{quote}
+
+
+And can be used as shown in the example below to create a generator that returns 100 odd random number\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{TEST\_CASE(\textcolor{stringliteral}{"Generating random ints"}, \textcolor{stringliteral}{"[example][generator]"}) \{}
+\DoxyCodeLine{    SECTION(\textcolor{stringliteral}{"Deducing functions"}) \{}
+\DoxyCodeLine{        \textcolor{keyword}{auto} i = GENERATE(take(100, filter([](\textcolor{keywordtype}{int} i) \{ \textcolor{keywordflow}{return} i \% 2 == 1; \}, random(-\/100, 100))));}
+\DoxyCodeLine{        REQUIRE(i > -\/100);}
+\DoxyCodeLine{        REQUIRE(i < 100);}
+\DoxyCodeLine{        REQUIRE(i \% 2 == 1);}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{\}}
+\end{DoxyCode}
+
+
+Apart from registering generators with Catch2, the {\ttfamily G\+E\+N\+E\+R\+A\+TE} macro has one more purpose, and that is to provide simple way of generating trivial generators, as seen in the first example on this page, where we used it as {\ttfamily auto i = G\+E\+N\+E\+R\+A\+T\+E(1, 2, 3);}. This usage converted each of the three literals into a single {\ttfamily Single\+Value\+Generator$<$int$>$} and then placed them all in a special generator that concatenates other generators. It can also be used with other generators as arguments, such as {\ttfamily auto i = G\+E\+N\+E\+R\+A\+TE(0, 2, take(100, random(300, 3000)));}. This is useful e.\+g. if you know that specific inputs are problematic and want to test them separately/first.
+
+{\bfseries{For safety reasons, you cannot use variables inside the {\ttfamily G\+E\+N\+E\+R\+A\+TE} macro. This is done because the generator expression {\itshape will} outlive the outside scope and thus capturing references is dangerous. If you need to use variables inside the generator expression, make sure you thought through the lifetime implications and use {\ttfamily G\+E\+N\+E\+R\+A\+T\+E\+\_\+\+C\+O\+PY} or {\ttfamily G\+E\+N\+E\+R\+A\+T\+E\+\_\+\+R\+EF}.}}
+
+\begin{quote}
+{\ttfamily G\+E\+N\+E\+R\+A\+T\+E\+\_\+\+C\+O\+PY} and {\ttfamily G\+E\+N\+E\+R\+A\+T\+E\+\_\+\+R\+EF} were introduced in Catch 2.\+7.\+1. \end{quote}
+
+
+You can also override the inferred type by using {\ttfamily as$<$type$>$} as the first argument to the macro. This can be useful when dealing with string literals, if you want them to come out as {\ttfamily std\+::string}\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{TEST\_CASE(\textcolor{stringliteral}{"type conversion"}, \textcolor{stringliteral}{"[generators]"}) \{}
+\DoxyCodeLine{    \textcolor{keyword}{auto} str = GENERATE(as<std::string>\{\}, \textcolor{stringliteral}{"a"}, \textcolor{stringliteral}{"bb"}, \textcolor{stringliteral}{"ccc"});}
+\DoxyCodeLine{    REQUIRE(str.size() > 0);}
+\DoxyCodeLine{\}}
+\end{DoxyCode}
+\hypertarget{md_submodules_Catch2_docs_generators_autotoc_md137}{}\doxysubsection{Generator interface}\label{md_submodules_Catch2_docs_generators_autotoc_md137}
+You can also implement your own generators, by deriving from the {\ttfamily I\+Generator$<$T$>$} interface\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{\textcolor{keyword}{struct }IGenerator : GeneratorUntypedBase \{}
+\DoxyCodeLine{    \textcolor{comment}{// via GeneratorUntypedBase:}}
+\DoxyCodeLine{    \textcolor{comment}{// Attempts to move the generator to the next element.}}
+\DoxyCodeLine{    \textcolor{comment}{// Returns true if successful (and thus has another element that can be read)}}
+\DoxyCodeLine{    \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} next() = 0;}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{// Precondition:}}
+\DoxyCodeLine{    \textcolor{comment}{// The generator is either freshly constructed or the last call to next() returned true}}
+\DoxyCodeLine{    \textcolor{keyword}{virtual} T \textcolor{keyword}{const}\& get() \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{\};}
+\end{DoxyCode}
+
+
+However, to be able to use your custom generator inside {\ttfamily G\+E\+N\+E\+R\+A\+TE}, it will need to be wrapped inside a {\ttfamily Generator\+Wrapper$<$T$>$}. {\ttfamily Generator\+Wrapper$<$T$>$} is a value wrapper around a {\ttfamily std\+::unique\+\_\+ptr$<$I\+Generator$<$T$>$$>$}.
+
+For full example of implementing your own generator, look into Catch2\textquotesingle{}s examples, specifically \href{../examples/300-Gen-OwnGenerator.cpp}{\texttt{ Generators\+: Create your own generator}}. 

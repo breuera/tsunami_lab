@@ -1,0 +1,120 @@
+\label{_top}%
+ \hypertarget{md_submodules_Catch2_docs_tostring_autotoc_md479}{}\doxysection{String conversions}\label{md_submodules_Catch2_docs_tostring_autotoc_md479}
+{\bfseries{Contents}}~\newline
+ \href{\#operator--overload-for-stdostream}{\texttt{ operator $<$$<$ overload for std\+::ostream}}~\newline
+ \href{\#catchstringmaker-specialisation}{\texttt{ Catch\+::\+String\+Maker specialisation}}~\newline
+ \href{\#catchis_range-specialisation}{\texttt{ Catch\+::is\+\_\+range specialisation}}~\newline
+ \href{\#exceptions}{\texttt{ Exceptions}}~\newline
+ \href{\#enums}{\texttt{ Enums}}~\newline
+ \href{\#floating-point-precision}{\texttt{ Floating point precision}}~\newline
+
+
+Catch needs to be able to convert types you use in assertions and logging expressions into strings (for logging and reporting purposes). Most built-\/in or std types are supported out of the box but there are two ways that you can tell Catch how to convert your own types (or other, third-\/party types) into strings.\hypertarget{md_submodules_Catch2_docs_tostring_autotoc_md480}{}\doxysubsection{operator $<$$<$ overload for std\+::ostream}\label{md_submodules_Catch2_docs_tostring_autotoc_md480}
+This is the standard way of providing string conversions in C++ -\/ and the chances are you may already provide this for your own purposes. If you\textquotesingle{}re not familiar with this idiom it involves writing a free function of the form\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{std::ostream\& operator << ( std::ostream\& os, T \textcolor{keyword}{const}\& value ) \{}
+\DoxyCodeLine{    os << convertMyTypeToString( value );}
+\DoxyCodeLine{    \textcolor{keywordflow}{return} os;}
+\DoxyCodeLine{\}}
+\end{DoxyCode}
+
+
+(where {\ttfamily T} is your type and {\ttfamily convert\+My\+Type\+To\+String} is where you\textquotesingle{}ll write whatever code is necessary to make your type printable -\/ it doesn\textquotesingle{}t have to be in another function).
+
+You should put this function in the same namespace as your type, or the global namespace, and have it declared before including Catch\textquotesingle{}s header.\hypertarget{md_submodules_Catch2_docs_tostring_autotoc_md481}{}\doxysubsection{Catch\+::\+String\+Maker specialisation}\label{md_submodules_Catch2_docs_tostring_autotoc_md481}
+If you don\textquotesingle{}t want to provide an {\ttfamily operator $<$$<$} overload, or you want to convert your type differently for testing purposes, you can provide a specialization for {\ttfamily \mbox{\hyperlink{structCatch_1_1StringMaker}{Catch\+::\+String\+Maker}}$<$T$>$}\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keyword}{namespace }Catch \{}
+\DoxyCodeLine{    \textcolor{keyword}{template}<>}
+\DoxyCodeLine{    \textcolor{keyword}{struct }StringMaker<T> \{}
+\DoxyCodeLine{        \textcolor{keyword}{static} std::string convert( T \textcolor{keyword}{const}\& value ) \{}
+\DoxyCodeLine{            \textcolor{keywordflow}{return} convertMyTypeToString( value );}
+\DoxyCodeLine{        \}}
+\DoxyCodeLine{    \};}
+\DoxyCodeLine{\}}
+\end{DoxyCode}
+\hypertarget{md_submodules_Catch2_docs_tostring_autotoc_md482}{}\doxysubsection{Catch\+::is\+\_\+range specialisation}\label{md_submodules_Catch2_docs_tostring_autotoc_md482}
+As a fallback, Catch attempts to detect if the type can be iterated ({\ttfamily begin(\+T)} and {\ttfamily end(\+T)} are valid) and if it can be, it is stringified as a range. For certain types this can lead to infinite recursion, so it can be disabled by specializing {\ttfamily \mbox{\hyperlink{structCatch_1_1is__range}{Catch\+::is\+\_\+range}}} like so\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keyword}{namespace }Catch \{}
+\DoxyCodeLine{    \textcolor{keyword}{template}<>}
+\DoxyCodeLine{    \textcolor{keyword}{struct }is\_range<T> \{}
+\DoxyCodeLine{        \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{bool} value = \textcolor{keyword}{false};}
+\DoxyCodeLine{    \};}
+\DoxyCodeLine{\}}
+\end{DoxyCode}
+\hypertarget{md_submodules_Catch2_docs_tostring_autotoc_md483}{}\doxysubsection{Exceptions}\label{md_submodules_Catch2_docs_tostring_autotoc_md483}
+By default all exceptions deriving from {\ttfamily std\+::exception} will be translated to strings by calling the {\ttfamily what()} method. For exception types that do not derive from {\ttfamily std\+::exception} -\/ or if {\ttfamily what()} does not return a suitable string -\/ use {\ttfamily C\+A\+T\+C\+H\+\_\+\+T\+R\+A\+N\+S\+L\+A\+T\+E\+\_\+\+E\+X\+C\+E\+P\+T\+I\+ON}. This defines a function that takes your exception type, by reference, and returns a string. It can appear anywhere in the code -\/ it doesn\textquotesingle{}t have to be in the same translation unit. For example\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{CATCH\_TRANSLATE\_EXCEPTION( MyType\& ex ) \{}
+\DoxyCodeLine{    \textcolor{keywordflow}{return} ex.message();}
+\DoxyCodeLine{\}}
+\end{DoxyCode}
+\hypertarget{md_submodules_Catch2_docs_tostring_autotoc_md484}{}\doxysubsection{Enums}\label{md_submodules_Catch2_docs_tostring_autotoc_md484}
+\begin{quote}
+Introduced in Catch 2.\+8.\+0. \end{quote}
+
+
+Enums that already have a {\ttfamily $<$$<$} overload for {\ttfamily std\+::ostream} will convert to strings as expected. If you only need to convert enums to strings for test reporting purposes you can provide a {\ttfamily String\+Maker} specialisations as any other type. However, as a convenience, Catch provides the {\ttfamily R\+E\+G\+I\+S\+T\+E\+R\+\_\+\+E\+N\+UM} helper macro that will generate the {\ttfamily String\+Maker} specialiation for you with minimal code. Simply provide it the (qualified) enum name, followed by all the enum values, and you\textquotesingle{}re done!
+
+E.\+g.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keyword}{enum class} Fruits \{ Banana, Apple, Mango \};}
+\DoxyCodeLine{}
+\DoxyCodeLine{CATCH\_REGISTER\_ENUM( Fruits, Fruits::Banana, Fruits::Apple, Fruits::Mango )}
+\DoxyCodeLine{}
+\DoxyCodeLine{TEST\_CASE() \{}
+\DoxyCodeLine{    REQUIRE( Fruits::Mango == Fruits::Apple );}
+\DoxyCodeLine{\}}
+\end{DoxyCode}
+
+
+... or if the enum is in a namespace\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keyword}{namespace }Bikeshed \{}
+\DoxyCodeLine{    \textcolor{keyword}{enum class} Colours \{ Red, Green, Blue \};}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{// Important!: This macro must appear at top level scope -\/ not inside a namespace}}
+\DoxyCodeLine{\textcolor{comment}{// You can fully qualify the names, or use a using if you prefer}}
+\DoxyCodeLine{CATCH\_REGISTER\_ENUM( Bikeshed::Colours,}
+\DoxyCodeLine{    Bikeshed::Colours::Red,}
+\DoxyCodeLine{    Bikeshed::Colours::Green,}
+\DoxyCodeLine{    Bikeshed::Colours::Blue )}
+\DoxyCodeLine{}
+\DoxyCodeLine{TEST\_CASE() \{}
+\DoxyCodeLine{    REQUIRE( Bikeshed::Colours::Red == Bikeshed::Colours::Blue );}
+\DoxyCodeLine{\}}
+\end{DoxyCode}
+\hypertarget{md_submodules_Catch2_docs_tostring_autotoc_md485}{}\doxysubsection{Floating point precision}\label{md_submodules_Catch2_docs_tostring_autotoc_md485}
+\begin{quote}
+\href{https://github.com/catchorg/Catch2/issues/1614}{\texttt{ Introduced}} in Catch 2.\+8.\+0. \end{quote}
+
+
+Catch provides a built-\/in {\ttfamily String\+Maker} specialization for both {\ttfamily float} and {\ttfamily double}. By default, it uses what we think is a reasonable precision, but you can customize it by modifying the {\ttfamily precision} static variable inside the {\ttfamily String\+Maker} specialization, like so\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\mbox{\hyperlink{structCatch_1_1StringMaker}{Catch::StringMaker<float>::precision}} = 15;}
+\DoxyCodeLine{\textcolor{keyword}{const} \textcolor{keywordtype}{float} testFloat1 = 1.12345678901234567899f;}
+\DoxyCodeLine{\textcolor{keyword}{const} \textcolor{keywordtype}{float} testFloat2 = 1.12345678991234567899f;}
+\DoxyCodeLine{REQUIRE(testFloat1 == testFloat2);}
+\end{DoxyCode}
+
+
+This assertion will fail and print out the {\ttfamily test\+Float1} and {\ttfamily test\+Float2} to 15 decimal places.
+
+\DoxyHorRuler{0}
+
+
+\href{Readme.md\#top}{\texttt{ Home}} 

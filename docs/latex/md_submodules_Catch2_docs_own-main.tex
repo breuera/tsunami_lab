@@ -1,0 +1,126 @@
+\label{_top}%
+ \hypertarget{md_submodules_Catch2_docs_own-main_autotoc_md215}{}\doxysection{Supplying main() yourself}\label{md_submodules_Catch2_docs_own-main_autotoc_md215}
+{\bfseries{Contents}}~\newline
+ \href{\#let-catch-take-full-control-of-args-and-config}{\texttt{ Let Catch take full control of args and config}}~\newline
+ \href{\#amending-the-config}{\texttt{ Amending the config}}~\newline
+ \href{\#adding-your-own-command-line-options}{\texttt{ Adding your own command line options}}~\newline
+ \href{\#version-detection}{\texttt{ Version detection}}~\newline
+
+
+The easiest way to use Catch is to let it supply {\ttfamily main()} for you and handle configuring itself from the command line.
+
+This is achieved by writing {\ttfamily \#define C\+A\+T\+C\+H\+\_\+\+C\+O\+N\+F\+I\+G\+\_\+\+M\+A\+IN} before the {\ttfamily \#include \char`\"{}catch.\+hpp\char`\"{}} in {\itshape exactly one} source file.
+
+Sometimes, though, you need to write your own version of main(). You can do this by writing {\ttfamily \#define C\+A\+T\+C\+H\+\_\+\+C\+O\+N\+F\+I\+G\+\_\+\+R\+U\+N\+N\+ER} instead. Now you are free to write {\ttfamily main()} as normal and call into Catch yourself manually. You now have a lot of flexibility -\/ but here are three recipes to get your started\+:
+
+{\bfseries{Important note\+: you can only provide {\ttfamily main} in the same file you defined {\ttfamily C\+A\+T\+C\+H\+\_\+\+C\+O\+N\+F\+I\+G\+\_\+\+R\+U\+N\+N\+ER}.}}\hypertarget{md_submodules_Catch2_docs_own-main_autotoc_md216}{}\doxysubsection{Let Catch take full control of args and config}\label{md_submodules_Catch2_docs_own-main_autotoc_md216}
+If you just need to have code that executes before and/ or after Catch this is the simplest option.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{ \{c++\}}
+\DoxyCodeLine{\#define CATCH\_CONFIG\_RUNNER}
+\DoxyCodeLine{\#include "catch.hpp"}
+\DoxyCodeLine{}
+\DoxyCodeLine{int main( int argc, char* argv[] ) \{}
+\DoxyCodeLine{  // global setup...}
+\DoxyCodeLine{}
+\DoxyCodeLine{  int result = Catch::Session().run( argc, argv );}
+\DoxyCodeLine{}
+\DoxyCodeLine{  // global clean-\/up...}
+\DoxyCodeLine{}
+\DoxyCodeLine{  return result;}
+\DoxyCodeLine{\}}
+\end{DoxyCode}
+\hypertarget{md_submodules_Catch2_docs_own-main_autotoc_md217}{}\doxysubsection{Amending the config}\label{md_submodules_Catch2_docs_own-main_autotoc_md217}
+If you still want Catch to process the command line, but you want to programmatically tweak the config, you can do so in one of two ways\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{ \{c++\}}
+\DoxyCodeLine{\#define CATCH\_CONFIG\_RUNNER}
+\DoxyCodeLine{\#include "catch.hpp"}
+\DoxyCodeLine{}
+\DoxyCodeLine{int main( int argc, char* argv[] )}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  Catch::Session session; // There must be exactly one instance}
+\DoxyCodeLine{ }
+\DoxyCodeLine{  // writing to session.configData() here sets defaults}
+\DoxyCodeLine{  // this is the preferred way to set them}
+\DoxyCodeLine{    }
+\DoxyCodeLine{  int returnCode = session.applyCommandLine( argc, argv );}
+\DoxyCodeLine{  if( returnCode != 0 ) // Indicates a command line error}
+\DoxyCodeLine{        return returnCode;}
+\DoxyCodeLine{ }
+\DoxyCodeLine{  // writing to session.configData() or session.Config() here }
+\DoxyCodeLine{  // overrides command line args}
+\DoxyCodeLine{  // only do this if you know you need to}
+\DoxyCodeLine{}
+\DoxyCodeLine{  int numFailed = session.run();}
+\DoxyCodeLine{  }
+\DoxyCodeLine{  // numFailed is clamped to 255 as some unices only use the lower 8 bits.}
+\DoxyCodeLine{  // This clamping has already been applied, so just return it here}
+\DoxyCodeLine{  // You can also do any post run clean-\/up here}
+\DoxyCodeLine{  return numFailed;}
+\DoxyCodeLine{\}}
+\end{DoxyCode}
+
+
+Take a look at the definitions of Config and Config\+Data to see what you can do with them.
+
+To take full control of the config simply omit the call to {\ttfamily apply\+Command\+Line()}.\hypertarget{md_submodules_Catch2_docs_own-main_autotoc_md218}{}\doxysubsection{Adding your own command line options}\label{md_submodules_Catch2_docs_own-main_autotoc_md218}
+Catch embeds a powerful command line parser called \href{https://github.com/philsquared/Clara}{\texttt{ Clara}}. As of Catch2 (and Clara 1.\+0) Clara allows you to write {\itshape composable} option and argument parsers, so extending Catch\textquotesingle{}s own command line options is now easy.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{ \{c++\}}
+\DoxyCodeLine{\#define CATCH\_CONFIG\_RUNNER}
+\DoxyCodeLine{\#include "catch.hpp"}
+\DoxyCodeLine{}
+\DoxyCodeLine{int main( int argc, char* argv[] )}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  Catch::Session session; // There must be exactly one instance}
+\DoxyCodeLine{  }
+\DoxyCodeLine{  int height = 0; // Some user variable you want to be able to set}
+\DoxyCodeLine{  }
+\DoxyCodeLine{  // Build a new parser on top of Catch's}
+\DoxyCodeLine{  using namespace Catch::clara;}
+\DoxyCodeLine{  auto cli }
+\DoxyCodeLine{    = session.cli() // Get Catch's composite command line parser}
+\DoxyCodeLine{    | Opt( height, "height" ) // bind variable to a new option, with a hint string}
+\DoxyCodeLine{        ["-\/g"]["-\/-\/height"]    // the option names it will respond to}
+\DoxyCodeLine{        ("how high?");        // description string for the help output}
+\DoxyCodeLine{        }
+\DoxyCodeLine{  // Now pass the new composite back to Catch so it uses that}
+\DoxyCodeLine{  session.cli( cli ); }
+\DoxyCodeLine{  }
+\DoxyCodeLine{  // Let Catch (using Clara) parse the command line}
+\DoxyCodeLine{  int returnCode = session.applyCommandLine( argc, argv );}
+\DoxyCodeLine{  if( returnCode != 0 ) // Indicates a command line error}
+\DoxyCodeLine{      return returnCode;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  // if set on the command line then 'height' is now set at this point}
+\DoxyCodeLine{  if( height > 0 )}
+\DoxyCodeLine{      std::cout << "height: " << height << std::endl;}
+\DoxyCodeLine{}
+\DoxyCodeLine{  return session.run();}
+\DoxyCodeLine{\}}
+\end{DoxyCode}
+
+
+See the \href{https://github.com/philsquared/Clara/blob/master/README.md}{\texttt{ Clara documentation}} for more details.\hypertarget{md_submodules_Catch2_docs_own-main_autotoc_md219}{}\doxysubsection{Version detection}\label{md_submodules_Catch2_docs_own-main_autotoc_md219}
+Catch provides a triplet of macros providing the header\textquotesingle{}s version,
+
+
+\begin{DoxyItemize}
+\item {\ttfamily C\+A\+T\+C\+H\+\_\+\+V\+E\+R\+S\+I\+O\+N\+\_\+\+M\+A\+J\+OR}
+\item {\ttfamily C\+A\+T\+C\+H\+\_\+\+V\+E\+R\+S\+I\+O\+N\+\_\+\+M\+I\+N\+OR}
+\item {\ttfamily C\+A\+T\+C\+H\+\_\+\+V\+E\+R\+S\+I\+O\+N\+\_\+\+P\+A\+T\+CH}
+\end{DoxyItemize}
+
+these macros expand into a single number, that corresponds to the appropriate part of the version. As an example, given single header version v2.\+3.\+4, the macros would expand into {\ttfamily 2}, {\ttfamily 3}, and {\ttfamily 4} respectively.
+
+\DoxyHorRuler{0}
+
+
+\href{Readme.md\#top}{\texttt{ Home}} 

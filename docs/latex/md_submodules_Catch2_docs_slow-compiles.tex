@@ -1,0 +1,97 @@
+\label{_top}%
+ \hypertarget{md_submodules_Catch2_docs_slow-compiles_autotoc_md455}{}\doxysection{Why do my tests take so long to compile?}\label{md_submodules_Catch2_docs_slow-compiles_autotoc_md455}
+{\bfseries{Contents}}~\newline
+ \href{\#short-answer}{\texttt{ Short answer}}~\newline
+ \href{\#long-answer}{\texttt{ Long answer}}~\newline
+ \href{\#practical-example}{\texttt{ Practical example}}~\newline
+ \href{\#using-the-static-library-catch2withmain}{\texttt{ Using the static library Catch2\+With\+Main}}~\newline
+ \href{\#other-possible-solutions}{\texttt{ Other possible solutions}}~\newline
+
+
+Several people have reported that test code written with Catch takes much longer to compile than they would expect. Why is that?
+
+Catch is implemented entirely in headers. There is a little overhead due to this -\/ but not as much as you might think -\/ and you can minimise it simply by organising your test code as follows\+:\hypertarget{md_submodules_Catch2_docs_slow-compiles_autotoc_md456}{}\doxysubsection{Short answer}\label{md_submodules_Catch2_docs_slow-compiles_autotoc_md456}
+Exactly one source file must {\ttfamily \#define} either {\ttfamily C\+A\+T\+C\+H\+\_\+\+C\+O\+N\+F\+I\+G\+\_\+\+M\+A\+IN} or {\ttfamily C\+A\+T\+C\+H\+\_\+\+C\+O\+N\+F\+I\+G\+\_\+\+R\+U\+N\+N\+ER} before {\ttfamily \#include}-\/ing Catch. In this file {\itshape do not write any test cases}! In most cases that means this file will just contain two lines (the {\ttfamily \#define} and the {\ttfamily \#include}).\hypertarget{md_submodules_Catch2_docs_slow-compiles_autotoc_md457}{}\doxysubsection{Long answer}\label{md_submodules_Catch2_docs_slow-compiles_autotoc_md457}
+Usually C++ code is split between a header file, containing declarations and prototypes, and an implementation file (.cpp) containing the definition, or implementation, code. Each implementation file, along with all the headers that it includes (and which those headers include, etc), is expanded into a single entity called a translation unit -\/ which is then passed to the compiler and compiled down to an object file.
+
+But functions and methods can also be written inline in header files. The downside to this is that these definitions will then be compiled in {\itshape every} translation unit that includes the header.
+
+Because Catch is implemented {\itshape entirely} in headers you might think that the whole of Catch must be compiled into every translation unit that uses it! Actually it\textquotesingle{}s not quite as bad as that. Catch mitigates this situation by effectively maintaining the traditional separation between the implementation code and declarations. Internally the implementation code is protected by {\ttfamily \#ifdef}s and is conditionally compiled into only one translation unit. This translation unit is that one that {\ttfamily \#define}s {\ttfamily C\+A\+T\+C\+H\+\_\+\+C\+O\+N\+F\+I\+G\+\_\+\+M\+A\+IN} or {\ttfamily C\+A\+T\+C\+H\+\_\+\+C\+O\+N\+F\+I\+G\+\_\+\+R\+U\+N\+N\+ER}. Let\textquotesingle{}s call this the main source file.
+
+As a result the main source file {\itshape does} compile the whole of Catch every time! So it makes sense to dedicate this file to {\itshape only} {\ttfamily \#define}-\/ing the identifier and {\ttfamily \#include}-\/ing Catch (and implementing the runner code, if you\textquotesingle{}re doing that). Keep all your test cases in other files. This way you won\textquotesingle{}t pay the recompilation cost for the whole of Catch.\hypertarget{md_submodules_Catch2_docs_slow-compiles_autotoc_md458}{}\doxysubsection{Practical example}\label{md_submodules_Catch2_docs_slow-compiles_autotoc_md458}
+Assume you have the {\ttfamily Factorial} function from the \href{tutorial.md\#top}{\texttt{ tutorial}} in {\ttfamily factorial.\+cpp} (with forward declaration in {\ttfamily factorial.\+h}) and want to test it and keep the compile times down when adding new tests. Then you should have 2 files, {\ttfamily tests-\/main.\+cpp} and {\ttfamily tests-\/factorial.\+cpp}\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{comment}{// tests-\/main.cpp}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#define CATCH\_CONFIG\_MAIN}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include "catch.hpp"}}
+\end{DoxyCode}
+
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{comment}{// tests-\/factorial.cpp}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include "catch.hpp"}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include "factorial.h"}}
+\DoxyCodeLine{}
+\DoxyCodeLine{TEST\_CASE( \textcolor{stringliteral}{"Factorials are computed"}, \textcolor{stringliteral}{"[factorial]"} ) \{}
+\DoxyCodeLine{    REQUIRE( Factorial(1) == 1 );}
+\DoxyCodeLine{    REQUIRE( Factorial(2) == 2 );}
+\DoxyCodeLine{    REQUIRE( Factorial(3) == 6 );}
+\DoxyCodeLine{    REQUIRE( Factorial(10) == 3628800 );}
+\DoxyCodeLine{\}}
+\end{DoxyCode}
+
+
+After compiling {\ttfamily tests-\/main.\+cpp} once, it is enough to link it with separately compiled {\ttfamily tests-\/factorial.\+cpp}. This means that adding more tests to {\ttfamily tests-\/factorial.\+cpp}, will not result in recompiling Catch\textquotesingle{}s main and the resulting compilation times will decrease substantially.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\$ g++ tests-\/main.cpp -\/c}
+\DoxyCodeLine{\$ g++ factorial.cpp -\/c}
+\DoxyCodeLine{\$ g++ tests-\/main.o factorial.o tests-\/factorial.cpp -\/o tests \&\& ./tests -\/r compact}
+\DoxyCodeLine{Passed 1 test case with 4 assertions.}
+\end{DoxyCode}
+
+
+Now, the next time we change the file {\ttfamily tests-\/factorial.\+cpp} (say we add {\ttfamily R\+E\+Q\+U\+I\+RE( Factorial(0) == 1)}), it is enough to recompile the tests instead of recompiling main as well\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\$ g++ tests-\/main.o factorial.o tests-\/factorial.cpp -\/o tests \&\& ./tests -\/r compact}
+\DoxyCodeLine{tests-\/factorial.cpp:11: failed: Factorial(0) == 1 for: 0 == 1}
+\DoxyCodeLine{Failed 1 test case, failed 1 assertion.}
+\end{DoxyCode}
+\hypertarget{md_submodules_Catch2_docs_slow-compiles_autotoc_md459}{}\doxysubsection{Using the static library Catch2\+With\+Main}\label{md_submodules_Catch2_docs_slow-compiles_autotoc_md459}
+Catch2 also provides a static library that implements the runner. Note that this support is experimental, due to interactions between Catch2 v2 implementation and C++ linking limitations.
+
+As with the {\ttfamily Catch2} target, the {\ttfamily Catch2\+With\+Main} C\+Make target can be used either from a subdirectory, or from installed build.\hypertarget{md_submodules_Catch2_docs_slow-compiles_autotoc_md460}{}\doxysubsubsection{C\+Make}\label{md_submodules_Catch2_docs_slow-compiles_autotoc_md460}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{add\_executable(tests-\/factorial tests-\/factorial.cpp)}
+\DoxyCodeLine{}
+\DoxyCodeLine{target\_link\_libraries(tests-\/factorial Catch2::Catch2WithMain)}
+\end{DoxyCode}
+\hypertarget{md_submodules_Catch2_docs_slow-compiles_autotoc_md461}{}\doxysubsubsection{bazel}\label{md_submodules_Catch2_docs_slow-compiles_autotoc_md461}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{cc\_test(}
+\DoxyCodeLine{    name = "hello\_world\_test",}
+\DoxyCodeLine{    srcs = [}
+\DoxyCodeLine{        "test/hello\_world\_test.cpp",}
+\DoxyCodeLine{    ],}
+\DoxyCodeLine{    deps = [}
+\DoxyCodeLine{        "lib\_hello\_world",}
+\DoxyCodeLine{        "@catch2//:catch2\_with\_main",}
+\DoxyCodeLine{    ],}
+\DoxyCodeLine{)}
+\end{DoxyCode}
+\hypertarget{md_submodules_Catch2_docs_slow-compiles_autotoc_md462}{}\doxysubsection{Other possible solutions}\label{md_submodules_Catch2_docs_slow-compiles_autotoc_md462}
+You can also opt to sacrifice some features in order to speed-\/up Catch\textquotesingle{}s compilation times. For details see the \href{configuration.md\#other-toggles}{\texttt{ documentation on Catch\textquotesingle{}s compile-\/time configuration}}.
+
+\DoxyHorRuler{0}
+
+
+\href{Readme.md\#top}{\texttt{ Home}} 

@@ -1,0 +1,72 @@
+\label{_top}%
+ \hypertarget{md_submodules_Catch2_docs_event-listeners_autotoc_md130}{}\doxysection{Event Listeners}\label{md_submodules_Catch2_docs_event-listeners_autotoc_md130}
+A {\ttfamily Listener} is a class you can register with Catch that will then be passed events, such as a test case starting or ending, as they happen during a test run. {\ttfamily Listeners} are actually types of {\ttfamily Reporters}, with a few small differences\+:
+
+
+\begin{DoxyEnumerate}
+\item Once registered in code they are automatically used -\/ you don\textquotesingle{}t need to specify them on the command line
+\item They are called in addition to (just before) any reporters, and you can register multiple listeners.
+\item They derive from {\ttfamily \mbox{\hyperlink{structCatch_1_1TestEventListenerBase}{Catch\+::\+Test\+Event\+Listener\+Base}}}, which has default stubs for all the events, so you are not forced to implement events you\textquotesingle{}re not interested in.
+\item You register a listener with {\ttfamily C\+A\+T\+C\+H\+\_\+\+R\+E\+G\+I\+S\+T\+E\+R\+\_\+\+L\+I\+S\+T\+E\+N\+ER}
+\end{DoxyEnumerate}\hypertarget{md_submodules_Catch2_docs_event-listeners_autotoc_md131}{}\doxysubsection{Implementing a Listener}\label{md_submodules_Catch2_docs_event-listeners_autotoc_md131}
+Simply derive a class from {\ttfamily \mbox{\hyperlink{structCatch_1_1TestEventListenerBase}{Catch\+::\+Test\+Event\+Listener\+Base}}} and implement the methods you are interested in, either in the main source file (i.\+e. the one that defines {\ttfamily C\+A\+T\+C\+H\+\_\+\+C\+O\+N\+F\+I\+G\+\_\+\+M\+A\+IN} or {\ttfamily C\+A\+T\+C\+H\+\_\+\+C\+O\+N\+F\+I\+G\+\_\+\+R\+U\+N\+N\+ER}), or in a file that defines {\ttfamily C\+A\+T\+C\+H\+\_\+\+C\+O\+N\+F\+I\+G\+\_\+\+E\+X\+T\+E\+R\+N\+A\+L\+\_\+\+I\+N\+T\+E\+R\+F\+A\+C\+ES}.
+
+Then register it using {\ttfamily C\+A\+T\+C\+H\+\_\+\+R\+E\+G\+I\+S\+T\+E\+R\+\_\+\+L\+I\+S\+T\+E\+N\+ER}.
+
+For example (\href{../examples/210-Evt-EventListeners.cpp}{\texttt{ complete source code}})\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{ \{c++\}}
+\DoxyCodeLine{\#define CATCH\_CONFIG\_MAIN}
+\DoxyCodeLine{\#include "catch.hpp"}
+\DoxyCodeLine{}
+\DoxyCodeLine{struct MyListener : Catch::TestEventListenerBase \{}
+\DoxyCodeLine{}
+\DoxyCodeLine{    using TestEventListenerBase::TestEventListenerBase; // inherit constructor}
+\DoxyCodeLine{}
+\DoxyCodeLine{    void testCaseStarting( Catch::TestCaseInfo const\& testInfo ) override \{}
+\DoxyCodeLine{        // Perform some setup before a test case is run}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    }
+\DoxyCodeLine{    void testCaseEnded( Catch::TestCaseStats const\& testCaseStats ) override \{}
+\DoxyCodeLine{        // Tear-\/down after a test case is run}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{\};}
+\DoxyCodeLine{CATCH\_REGISTER\_LISTENER( MyListener )}
+\end{DoxyCode}
+
+
+{\itshape Note that you should not use any assertion macros within a Listener!}\hypertarget{md_submodules_Catch2_docs_event-listeners_autotoc_md132}{}\doxysubsection{Events that can be hooked}\label{md_submodules_Catch2_docs_event-listeners_autotoc_md132}
+The following are the methods that can be overridden in the Listener\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{ \{c++\}}
+\DoxyCodeLine{// The whole test run, starting and ending}
+\DoxyCodeLine{virtual void testRunStarting( TestRunInfo const\& testRunInfo );}
+\DoxyCodeLine{virtual void testRunEnded( TestRunStats const\& testRunStats );}
+\DoxyCodeLine{}
+\DoxyCodeLine{// Test cases starting and ending}
+\DoxyCodeLine{virtual void testCaseStarting( TestCaseInfo const\& testInfo );}
+\DoxyCodeLine{virtual void testCaseEnded( TestCaseStats const\& testCaseStats );}
+\DoxyCodeLine{}
+\DoxyCodeLine{// Sections starting and ending}
+\DoxyCodeLine{virtual void sectionStarting( SectionInfo const\& sectionInfo );}
+\DoxyCodeLine{virtual void sectionEnded( SectionStats const\& sectionStats );}
+\DoxyCodeLine{}
+\DoxyCodeLine{// Assertions before/ after}
+\DoxyCodeLine{virtual void assertionStarting( AssertionInfo const\& assertionInfo );}
+\DoxyCodeLine{virtual bool assertionEnded( AssertionStats const\& assertionStats );}
+\DoxyCodeLine{}
+\DoxyCodeLine{// A test is being skipped (because it is "hidden")}
+\DoxyCodeLine{virtual void skipTest( TestCaseInfo const\& testInfo );}
+\end{DoxyCode}
+
+
+More information about the events (e.\+g. name of the test case) is contained in the structs passed as arguments -\/ just look in the source code to see what fields are available.
+
+\DoxyHorRuler{0}
+
+
+\href{Readme.md\#top}{\texttt{ Home}} 

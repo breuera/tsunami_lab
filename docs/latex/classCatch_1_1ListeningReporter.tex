@@ -1,0 +1,88 @@
+\hypertarget{classCatch_1_1ListeningReporter}{}\doxysection{Catch\+::Listening\+Reporter Class Reference}
+\label{classCatch_1_1ListeningReporter}\index{Catch::ListeningReporter@{Catch::ListeningReporter}}
+
+
+Inheritance diagram for Catch\+::Listening\+Reporter\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=226pt]{classCatch_1_1ListeningReporter__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Catch\+::Listening\+Reporter\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=226pt]{classCatch_1_1ListeningReporter__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classCatch_1_1ListeningReporter_af0651069faf2a2f8442a7f456cb648e3}\label{classCatch_1_1ListeningReporter_af0651069faf2a2f8442a7f456cb648e3}} 
+void {\bfseries add\+Listener} (I\+Streaming\+Reporter\+Ptr \&\&listener)
+\item 
+\mbox{\Hypertarget{classCatch_1_1ListeningReporter_a133cee99cffbaa1bb4b82e4c8df757ce}\label{classCatch_1_1ListeningReporter_a133cee99cffbaa1bb4b82e4c8df757ce}} 
+void {\bfseries add\+Reporter} (I\+Streaming\+Reporter\+Ptr \&\&reporter)
+\item 
+\mbox{\Hypertarget{classCatch_1_1ListeningReporter_aba18a06b704eca4aec42eb8869f8a92c}\label{classCatch_1_1ListeningReporter_aba18a06b704eca4aec42eb8869f8a92c}} 
+\mbox{\hyperlink{structCatch_1_1ReporterPreferences}{Reporter\+Preferences}} {\bfseries get\+Preferences} () const override
+\item 
+\mbox{\Hypertarget{classCatch_1_1ListeningReporter_a9f2dd7fd9ad465474d0991de5e8a8022}\label{classCatch_1_1ListeningReporter_a9f2dd7fd9ad465474d0991de5e8a8022}} 
+void {\bfseries no\+Matching\+Test\+Cases} (std\+::string const \&spec) override
+\item 
+\mbox{\Hypertarget{classCatch_1_1ListeningReporter_a0eb12a1f6a53491920fcd3e4b8d53c24}\label{classCatch_1_1ListeningReporter_a0eb12a1f6a53491920fcd3e4b8d53c24}} 
+void {\bfseries report\+Invalid\+Arguments} (std\+::string const \&arg) override
+\item 
+\mbox{\Hypertarget{classCatch_1_1ListeningReporter_a5681779111a3f8c0827000d04f7de199}\label{classCatch_1_1ListeningReporter_a5681779111a3f8c0827000d04f7de199}} 
+void {\bfseries test\+Run\+Starting} (\mbox{\hyperlink{structCatch_1_1TestRunInfo}{Test\+Run\+Info}} const \&test\+Run\+Info) override
+\item 
+\mbox{\Hypertarget{classCatch_1_1ListeningReporter_a3d2ffe4c24a7877657bc3e5e0e9ae7d2}\label{classCatch_1_1ListeningReporter_a3d2ffe4c24a7877657bc3e5e0e9ae7d2}} 
+void {\bfseries test\+Group\+Starting} (\mbox{\hyperlink{structCatch_1_1GroupInfo}{Group\+Info}} const \&group\+Info) override
+\item 
+\mbox{\Hypertarget{classCatch_1_1ListeningReporter_a41a88ece54222d8a5fd629e58ed2b676}\label{classCatch_1_1ListeningReporter_a41a88ece54222d8a5fd629e58ed2b676}} 
+void {\bfseries test\+Case\+Starting} (\mbox{\hyperlink{structCatch_1_1TestCaseInfo}{Test\+Case\+Info}} const \&test\+Info) override
+\item 
+\mbox{\Hypertarget{classCatch_1_1ListeningReporter_af1df5628b89d61db63b4d9d4d5bd3bf2}\label{classCatch_1_1ListeningReporter_af1df5628b89d61db63b4d9d4d5bd3bf2}} 
+void {\bfseries section\+Starting} (\mbox{\hyperlink{structCatch_1_1SectionInfo}{Section\+Info}} const \&section\+Info) override
+\item 
+\mbox{\Hypertarget{classCatch_1_1ListeningReporter_ac54f461297eca221a06425ed5edc2129}\label{classCatch_1_1ListeningReporter_ac54f461297eca221a06425ed5edc2129}} 
+void {\bfseries assertion\+Starting} (\mbox{\hyperlink{structCatch_1_1AssertionInfo}{Assertion\+Info}} const \&assertion\+Info) override
+\item 
+\mbox{\Hypertarget{classCatch_1_1ListeningReporter_a2c47aa9e99eba2ba5fe60c76d81b3660}\label{classCatch_1_1ListeningReporter_a2c47aa9e99eba2ba5fe60c76d81b3660}} 
+bool {\bfseries assertion\+Ended} (\mbox{\hyperlink{structCatch_1_1AssertionStats}{Assertion\+Stats}} const \&assertion\+Stats) override
+\item 
+\mbox{\Hypertarget{classCatch_1_1ListeningReporter_a6e85b5d61a9e5c894288086e52449c2e}\label{classCatch_1_1ListeningReporter_a6e85b5d61a9e5c894288086e52449c2e}} 
+void {\bfseries section\+Ended} (\mbox{\hyperlink{structCatch_1_1SectionStats}{Section\+Stats}} const \&section\+Stats) override
+\item 
+\mbox{\Hypertarget{classCatch_1_1ListeningReporter_a81969997dee722a6eed64a81dda6a9d1}\label{classCatch_1_1ListeningReporter_a81969997dee722a6eed64a81dda6a9d1}} 
+void {\bfseries test\+Case\+Ended} (\mbox{\hyperlink{structCatch_1_1TestCaseStats}{Test\+Case\+Stats}} const \&test\+Case\+Stats) override
+\item 
+\mbox{\Hypertarget{classCatch_1_1ListeningReporter_a8bb6e2d75f76be7c4b2012e9b8659d57}\label{classCatch_1_1ListeningReporter_a8bb6e2d75f76be7c4b2012e9b8659d57}} 
+void {\bfseries test\+Group\+Ended} (\mbox{\hyperlink{structCatch_1_1TestGroupStats}{Test\+Group\+Stats}} const \&test\+Group\+Stats) override
+\item 
+\mbox{\Hypertarget{classCatch_1_1ListeningReporter_ae07e52e85111d49886059403c02b9347}\label{classCatch_1_1ListeningReporter_ae07e52e85111d49886059403c02b9347}} 
+void {\bfseries test\+Run\+Ended} (\mbox{\hyperlink{structCatch_1_1TestRunStats}{Test\+Run\+Stats}} const \&test\+Run\+Stats) override
+\item 
+\mbox{\Hypertarget{classCatch_1_1ListeningReporter_a61c6d70973c7bc21414007c9c7497241}\label{classCatch_1_1ListeningReporter_a61c6d70973c7bc21414007c9c7497241}} 
+void {\bfseries skip\+Test} (\mbox{\hyperlink{structCatch_1_1TestCaseInfo}{Test\+Case\+Info}} const \&test\+Info) override
+\item 
+\mbox{\Hypertarget{classCatch_1_1ListeningReporter_a7e162ceca38f3fa2416b323cc4eb03ab}\label{classCatch_1_1ListeningReporter_a7e162ceca38f3fa2416b323cc4eb03ab}} 
+bool {\bfseries is\+Multi} () const override
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classCatch_1_1ListeningReporter_ada5661109a24e986b70ed4a7e6d78d46}\label{classCatch_1_1ListeningReporter_ada5661109a24e986b70ed4a7e6d78d46}} 
+static std\+::set$<$ Verbosity $>$ {\bfseries get\+Supported\+Verbosities} ()
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+submodules/\+Catch2/include/reporters/catch\+\_\+reporter\+\_\+listening.\+h\item 
+submodules/\+Catch2/include/reporters/catch\+\_\+reporter\+\_\+listening.\+cpp\end{DoxyCompactItemize}

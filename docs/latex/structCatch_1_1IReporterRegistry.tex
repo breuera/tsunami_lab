@@ -1,0 +1,39 @@
+\hypertarget{structCatch_1_1IReporterRegistry}{}\doxysection{Catch\+::I\+Reporter\+Registry Struct Reference}
+\label{structCatch_1_1IReporterRegistry}\index{Catch::IReporterRegistry@{Catch::IReporterRegistry}}
+
+
+Inheritance diagram for Catch\+::I\+Reporter\+Registry\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=216pt]{structCatch_1_1IReporterRegistry__inherit__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structCatch_1_1IReporterRegistry_a29a909d3b5285692826124d992717f2c}\label{structCatch_1_1IReporterRegistry_a29a909d3b5285692826124d992717f2c}} 
+using {\bfseries Factory\+Map} = std\+::map$<$ std\+::string, I\+Reporter\+Factory\+Ptr $>$
+\item 
+\mbox{\Hypertarget{structCatch_1_1IReporterRegistry_a7ca2e70d2b1e76cdcb1dd9017e84a17f}\label{structCatch_1_1IReporterRegistry_a7ca2e70d2b1e76cdcb1dd9017e84a17f}} 
+using {\bfseries Listeners} = std\+::vector$<$ I\+Reporter\+Factory\+Ptr $>$
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structCatch_1_1IReporterRegistry_a6a1b86a882828ae2f7e6f9f21431ed72}\label{structCatch_1_1IReporterRegistry_a6a1b86a882828ae2f7e6f9f21431ed72}} 
+virtual I\+Streaming\+Reporter\+Ptr {\bfseries create} (std\+::string const \&name, I\+Config\+Ptr const \&config) const =0
+\item 
+\mbox{\Hypertarget{structCatch_1_1IReporterRegistry_a76ffc8a26c38929f370196937ed112b5}\label{structCatch_1_1IReporterRegistry_a76ffc8a26c38929f370196937ed112b5}} 
+virtual Factory\+Map const  \& {\bfseries get\+Factories} () const =0
+\item 
+\mbox{\Hypertarget{structCatch_1_1IReporterRegistry_a784a7eb1c731d20c32779087126c6933}\label{structCatch_1_1IReporterRegistry_a784a7eb1c731d20c32779087126c6933}} 
+virtual Listeners const  \& {\bfseries get\+Listeners} () const =0
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+submodules/\+Catch2/include/internal/catch\+\_\+interfaces\+\_\+reporter.\+h\item 
+submodules/\+Catch2/include/internal/catch\+\_\+interfaces\+\_\+reporter.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,76 @@
+\hypertarget{classCatch_1_1clara_1_1detail_1_1BasicResult}{}\doxysection{Catch\+::clara\+::detail\+::Basic\+Result$<$ T $>$ Class Template Reference}
+\label{classCatch_1_1clara_1_1detail_1_1BasicResult}\index{Catch::clara::detail::BasicResult$<$ T $>$@{Catch::clara::detail::BasicResult$<$ T $>$}}
+
+
+Inheritance diagram for Catch\+::clara\+::detail\+::Basic\+Result$<$ T $>$\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=229pt]{classCatch_1_1clara_1_1detail_1_1BasicResult__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Catch\+::clara\+::detail\+::Basic\+Result$<$ T $>$\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=229pt]{classCatch_1_1clara_1_1detail_1_1BasicResult__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classCatch_1_1clara_1_1detail_1_1BasicResult_a5cb7828a582737ad53e382564862ce96}\label{classCatch_1_1clara_1_1detail_1_1BasicResult_a5cb7828a582737ad53e382564862ce96}} 
+{\footnotesize template$<$typename U $>$ }\\{\bfseries Basic\+Result} (\mbox{\hyperlink{classCatch_1_1clara_1_1detail_1_1BasicResult}{Basic\+Result}}$<$ U $>$ const \&other)
+\item 
+\mbox{\Hypertarget{classCatch_1_1clara_1_1detail_1_1BasicResult_a66f1c6432466fd76e4d8b8a380a72cae}\label{classCatch_1_1clara_1_1detail_1_1BasicResult_a66f1c6432466fd76e4d8b8a380a72cae}} 
+{\bfseries operator bool} () const
+\item 
+\mbox{\Hypertarget{classCatch_1_1clara_1_1detail_1_1BasicResult_a089aa56ae430901921b2fa3141ef4f98}\label{classCatch_1_1clara_1_1detail_1_1BasicResult_a089aa56ae430901921b2fa3141ef4f98}} 
+auto {\bfseries type} () const -\/$>$ Result\+Base\+::\+Type
+\item 
+\mbox{\Hypertarget{classCatch_1_1clara_1_1detail_1_1BasicResult_a345c969aea90d10790390bb74a34d77d}\label{classCatch_1_1clara_1_1detail_1_1BasicResult_a345c969aea90d10790390bb74a34d77d}} 
+auto {\bfseries error\+Message} () const -\/$>$ std\+::string
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classCatch_1_1clara_1_1detail_1_1BasicResult_ae188ed68f0ed48ae4f035f18eec58ae1}\label{classCatch_1_1clara_1_1detail_1_1BasicResult_ae188ed68f0ed48ae4f035f18eec58ae1}} 
+{\footnotesize template$<$typename U $>$ }\\static auto {\bfseries ok} (U const \&value) -\/$>$ \mbox{\hyperlink{classCatch_1_1clara_1_1detail_1_1BasicResult}{Basic\+Result}}
+\item 
+\mbox{\Hypertarget{classCatch_1_1clara_1_1detail_1_1BasicResult_ac48a1cb282f89218d149c021cbd32eb6}\label{classCatch_1_1clara_1_1detail_1_1BasicResult_ac48a1cb282f89218d149c021cbd32eb6}} 
+static auto {\bfseries ok} () -\/$>$ \mbox{\hyperlink{classCatch_1_1clara_1_1detail_1_1BasicResult}{Basic\+Result}}
+\item 
+\mbox{\Hypertarget{classCatch_1_1clara_1_1detail_1_1BasicResult_ad3fa504334ce2f7d9b98fd680cf30e3d}\label{classCatch_1_1clara_1_1detail_1_1BasicResult_ad3fa504334ce2f7d9b98fd680cf30e3d}} 
+static auto {\bfseries logic\+Error} (std\+::string const \&message) -\/$>$ \mbox{\hyperlink{classCatch_1_1clara_1_1detail_1_1BasicResult}{Basic\+Result}}
+\item 
+\mbox{\Hypertarget{classCatch_1_1clara_1_1detail_1_1BasicResult_a8beb3ea9d8153ee786cb1f5578f938a8}\label{classCatch_1_1clara_1_1detail_1_1BasicResult_a8beb3ea9d8153ee786cb1f5578f938a8}} 
+static auto {\bfseries runtime\+Error} (std\+::string const \&message) -\/$>$ \mbox{\hyperlink{classCatch_1_1clara_1_1detail_1_1BasicResult}{Basic\+Result}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classCatch_1_1clara_1_1detail_1_1BasicResult_afdfd35ef0417e8284392a9fa1232ce97}\label{classCatch_1_1clara_1_1detail_1_1BasicResult_afdfd35ef0417e8284392a9fa1232ce97}} 
+void {\bfseries enforce\+Ok} () const override
+\item 
+\mbox{\Hypertarget{classCatch_1_1clara_1_1detail_1_1BasicResult_a50568460600b4a53e1318b17ae62d5e5}\label{classCatch_1_1clara_1_1detail_1_1BasicResult_a50568460600b4a53e1318b17ae62d5e5}} 
+{\bfseries Basic\+Result} (Result\+Base\+::\+Type type, std\+::string const \&message)
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classCatch_1_1clara_1_1detail_1_1BasicResult_aff921e0ed43c193530e6c224ba333a34}\label{classCatch_1_1clara_1_1detail_1_1BasicResult_aff921e0ed43c193530e6c224ba333a34}} 
+std\+::string {\bfseries m\+\_\+error\+Message}
+\item 
+\mbox{\Hypertarget{classCatch_1_1clara_1_1detail_1_1BasicResult_a5ae9b615359f0868248905bc1a6952d8}\label{classCatch_1_1clara_1_1detail_1_1BasicResult_a5ae9b615359f0868248905bc1a6952d8}} 
+Type {\bfseries m\+\_\+type}
+\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+submodules/\+Catch2/include/external/clara.\+hpp\end{DoxyCompactItemize}

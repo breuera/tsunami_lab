@@ -1,0 +1,17 @@
+\hypertarget{catch__config__uncaught__exceptions_8hpp}{}\doxysection{submodules/\+Catch2/include/internal/catch\+\_\+config\+\_\+uncaught\+\_\+exceptions.hpp File Reference}
+\label{catch__config__uncaught__exceptions_8hpp}\index{submodules/Catch2/include/internal/catch\_config\_uncaught\_exceptions.hpp@{submodules/Catch2/include/internal/catch\_config\_uncaught\_exceptions.hpp}}
+{\ttfamily \#include $<$exception$>$}\newline
+Include dependency graph for catch\+\_\+config\+\_\+uncaught\+\_\+exceptions.\+hpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=231pt]{catch__config__uncaught__exceptions_8hpp__incl}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Detailed Description}
+Wrapper for U\+N\+C\+A\+U\+G\+H\+T\+\_\+\+E\+X\+C\+E\+P\+T\+I\+O\+NS configuration option
+
+For some functionality, Catch2 requires to know whether there is an active exception. Because {\ttfamily std\+::uncaught\+\_\+exception} is deprecated in C++17, we want to use {\ttfamily std\+::uncaught\+\_\+exceptions} if possible. 

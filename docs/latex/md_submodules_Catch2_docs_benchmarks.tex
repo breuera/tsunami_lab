@@ -1,0 +1,199 @@
+\label{_top}%
+ \hypertarget{md_submodules_Catch2_docs_benchmarks_autotoc_md18}{}\doxysection{Authoring benchmarks}\label{md_submodules_Catch2_docs_benchmarks_autotoc_md18}
+\begin{quote}
+\href{https://github.com/catchorg/Catch2/issues/1616}{\texttt{ Introduced}} in Catch 2.\+9.\+0. \end{quote}
+
+
+{\itshape Note that benchmarking support is disabled by default and to enable it, you need to define {\ttfamily C\+A\+T\+C\+H\+\_\+\+C\+O\+N\+F\+I\+G\+\_\+\+E\+N\+A\+B\+L\+E\+\_\+\+B\+E\+N\+C\+H\+M\+A\+R\+K\+I\+NG}. For more details, see the \href{configuration.md\#top}{\texttt{ compile-\/time configuration documentation}}.}
+
+Writing benchmarks is not easy. Catch simplifies certain aspects but you\textquotesingle{}ll always need to take care about various aspects. Understanding a few things about the way Catch runs your code will be very helpful when writing your benchmarks.
+
+First off, let\textquotesingle{}s go over some terminology that will be used throughout this guide.
+
+
+\begin{DoxyItemize}
+\item {\itshape User code}\+: user code is the code that the user provides to be measured.
+\item {\itshape Run}\+: one run is one execution of the user code.
+\item {\itshape Sample}\+: one sample is one data point obtained by measuring the time it takes to perform a certain number of runs. One sample can consist of more than one run if the clock available does not have enough resolution to accurately measure a single run. All samples for a given benchmark execution are obtained with the same number of runs.
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_benchmarks_autotoc_md19}{}\doxysubsection{Execution procedure}\label{md_submodules_Catch2_docs_benchmarks_autotoc_md19}
+Now I can explain how a benchmark is executed in Catch. There are three main steps, though the first does not need to be repeated for every benchmark.
+
+
+\begin{DoxyEnumerate}
+\item {\itshape Environmental probe}\+: before any benchmarks can be executed, the clock\textquotesingle{}s resolution is estimated. A few other environmental artifacts are also estimated at this point, like the cost of calling the clock function, but they almost never have any impact in the results.
+\item {\itshape Estimation}\+: the user code is executed a few times to obtain an estimate of the amount of runs that should be in each sample. This also has the potential effect of bringing relevant code and data into the caches before the actual measurement starts.
+\item {\itshape Measurement}\+: all the samples are collected sequentially by performing the number of runs estimated in the previous step for each sample.
+\end{DoxyEnumerate}
+
+This already gives us one important rule for writing benchmarks for Catch\+: the benchmarks must be repeatable. The user code will be executed several times, and the number of times it will be executed during the estimation step cannot be known beforehand since it depends on the time it takes to execute the code. User code that cannot be executed repeatedly will lead to bogus results or crashes.\hypertarget{md_submodules_Catch2_docs_benchmarks_autotoc_md20}{}\doxysubsection{Benchmark specification}\label{md_submodules_Catch2_docs_benchmarks_autotoc_md20}
+Benchmarks can be specified anywhere inside a Catch test case. There is a simple and a slightly more advanced version of the {\ttfamily B\+E\+N\+C\+H\+M\+A\+RK} macro.
+
+Let\textquotesingle{}s have a look how a naive Fibonacci implementation could be benchmarked\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{ \{c++\}}
+\DoxyCodeLine{std::uint64\_t Fibonacci(std::uint64\_t number) \{}
+\DoxyCodeLine{    return number < 2 ? 1 : Fibonacci(number -\/ 1) + Fibonacci(number -\/ 2);}
+\DoxyCodeLine{\}}
+\end{DoxyCode}
+
+
+Now the most straight forward way to benchmark this function, is just adding a {\ttfamily B\+E\+N\+C\+H\+M\+A\+RK} macro to our test case\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{ \{c++\}}
+\DoxyCodeLine{TEST\_CASE("Fibonacci") \{}
+\DoxyCodeLine{    CHECK(Fibonacci(0) == 1);}
+\DoxyCodeLine{    // some more asserts..}
+\DoxyCodeLine{    CHECK(Fibonacci(5) == 8);}
+\DoxyCodeLine{    // some more asserts..}
+\DoxyCodeLine{}
+\DoxyCodeLine{    // now let's benchmark:}
+\DoxyCodeLine{    BENCHMARK("Fibonacci 20") \{}
+\DoxyCodeLine{        return Fibonacci(20);}
+\DoxyCodeLine{    \};}
+\DoxyCodeLine{}
+\DoxyCodeLine{    BENCHMARK("Fibonacci 25") \{}
+\DoxyCodeLine{        return Fibonacci(25);}
+\DoxyCodeLine{    \};}
+\DoxyCodeLine{}
+\DoxyCodeLine{    BENCHMARK("Fibonacci 30") \{}
+\DoxyCodeLine{        return Fibonacci(30);}
+\DoxyCodeLine{    \};}
+\DoxyCodeLine{}
+\DoxyCodeLine{    BENCHMARK("Fibonacci 35") \{}
+\DoxyCodeLine{        return Fibonacci(35);}
+\DoxyCodeLine{    \};}
+\DoxyCodeLine{\}}
+\end{DoxyCode}
+
+
+There\textquotesingle{}s a few things to note\+:
+\begin{DoxyItemize}
+\item As {\ttfamily B\+E\+N\+C\+H\+M\+A\+RK} expands to a lambda expression it is necessary to add a semicolon after the closing brace (as opposed to the first experimental version).
+\item The {\ttfamily return} is a handy way to avoid the compiler optimizing away the benchmark code.
+\end{DoxyItemize}
+
+Running this already runs the benchmarks and outputs something similar to\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}
+\DoxyCodeLine{Fibonacci}
+\DoxyCodeLine{-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}
+\DoxyCodeLine{C:\(\backslash\)path\(\backslash\)to\(\backslash\)Catch2\(\backslash\)Benchmark.tests.cpp(10)}
+\DoxyCodeLine{...............................................................................}
+\DoxyCodeLine{benchmark name                                  samples       iterations    estimated}
+\DoxyCodeLine{                                                mean          low mean      high mean}
+\DoxyCodeLine{                                                std dev       low std dev   high std dev}
+\DoxyCodeLine{-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}
+\DoxyCodeLine{Fibonacci 20                                            100       416439   83.2878 ms}
+\DoxyCodeLine{                                                       2 ns         2 ns         2 ns}
+\DoxyCodeLine{                                                       0 ns         0 ns         0 ns}
+\DoxyCodeLine{}
+\DoxyCodeLine{Fibonacci 25                                            100       400776   80.1552 ms}
+\DoxyCodeLine{                                                       3 ns         3 ns         3 ns}
+\DoxyCodeLine{                                                       0 ns         0 ns         0 ns}
+\DoxyCodeLine{}
+\DoxyCodeLine{Fibonacci 30                                            100       396873   79.3746 ms}
+\DoxyCodeLine{                                                      17 ns        17 ns        17 ns}
+\DoxyCodeLine{                                                       0 ns         0 ns         0 ns}
+\DoxyCodeLine{}
+\DoxyCodeLine{Fibonacci 35                                            100       145169   87.1014 ms}
+\DoxyCodeLine{                                                     468 ns       464 ns       473 ns}
+\DoxyCodeLine{                                                      21 ns        15 ns        34 ns}
+\end{DoxyCode}
+\hypertarget{md_submodules_Catch2_docs_benchmarks_autotoc_md21}{}\doxysubsubsection{Advanced benchmarking}\label{md_submodules_Catch2_docs_benchmarks_autotoc_md21}
+The simplest use case shown above, takes no arguments and just runs the user code that needs to be measured. However, if using the {\ttfamily B\+E\+N\+C\+H\+M\+A\+R\+K\+\_\+\+A\+D\+V\+A\+N\+C\+ED} macro and adding a {\ttfamily \mbox{\hyperlink{structCatch_1_1Benchmark_1_1Chronometer}{Catch\+::\+Benchmark\+::\+Chronometer}}} argument after the macro, some advanced features are available. The contents of the simple benchmarks are invoked once per run, while the blocks of the advanced benchmarks are invoked exactly twice\+: once during the estimation phase, and another time during the execution phase.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{ \{c++\}}
+\DoxyCodeLine{BENCHMARK("simple")\{ return long\_computation(); \};}
+\DoxyCodeLine{}
+\DoxyCodeLine{BENCHMARK\_ADVANCED("advanced")(Catch::Benchmark::Chronometer meter) \{}
+\DoxyCodeLine{    set\_up();}
+\DoxyCodeLine{    meter.measure([] \{ return long\_computation(); \});}
+\DoxyCodeLine{\};}
+\end{DoxyCode}
+
+
+These advanced benchmarks no longer consist entirely of user code to be measured. In these cases, the code to be measured is provided via the {\ttfamily Catch\+::\+Benchmark\+::\+Chronometer\+::measure} member function. This allows you to set up any kind of state that might be required for the benchmark but is not to be included in the measurements, like making a vector of random integers to feed to a sorting algorithm.
+
+A single call to {\ttfamily Catch\+::\+Benchmark\+::\+Chronometer\+::measure} performs the actual measurements by invoking the callable object passed in as many times as necessary. Anything that needs to be done outside the measurement can be done outside the call to {\ttfamily measure}.
+
+The callable object passed in to {\ttfamily measure} can optionally accept an {\ttfamily int} parameter.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{ \{c++\}}
+\DoxyCodeLine{meter.measure([](int i) \{ return long\_computation(i); \});}
+\end{DoxyCode}
+
+
+If it accepts an {\ttfamily int} parameter, the sequence number of each run will be passed in, starting with 0. This is useful if you want to measure some mutating code, for example. The number of runs can be known beforehand by calling {\ttfamily Catch\+::\+Benchmark\+::\+Chronometer\+::runs}; with this one can set up a different instance to be mutated by each run.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{ \{c++\}}
+\DoxyCodeLine{std::vector<std::string> v(meter.runs());}
+\DoxyCodeLine{std::fill(v.begin(), v.end(), test\_string());}
+\DoxyCodeLine{meter.measure([\&v](int i) \{ in\_place\_escape(v[i]); \});}
+\end{DoxyCode}
+
+
+Note that it is not possible to simply use the same instance for different runs and resetting it between each run since that would pollute the measurements with the resetting code.
+
+It is also possible to just provide an argument name to the simple {\ttfamily B\+E\+N\+C\+H\+M\+A\+RK} macro to get the same semantics as providing a callable to {\ttfamily meter.\+measure} with {\ttfamily int} argument\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{ \{c++\}}
+\DoxyCodeLine{BENCHMARK("indexed", i)\{ return long\_computation(i); \};}
+\end{DoxyCode}
+\hypertarget{md_submodules_Catch2_docs_benchmarks_autotoc_md22}{}\doxysubsubsection{Constructors and destructors}\label{md_submodules_Catch2_docs_benchmarks_autotoc_md22}
+All of these tools give you a lot mileage, but there are two things that still need special handling\+: constructors and destructors. The problem is that if you use automatic objects they get destroyed by the end of the scope, so you end up measuring the time for construction and destruction together. And if you use dynamic allocation instead, you end up including the time to allocate memory in the measurements.
+
+To solve this conundrum, Catch provides class templates that let you manually construct and destroy objects without dynamic allocation and in a way that lets you measure construction and destruction separately.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{ \{c++\}}
+\DoxyCodeLine{BENCHMARK\_ADVANCED("construct")(Catch::Benchmark::Chronometer meter) \{}
+\DoxyCodeLine{    std::vector<Catch::Benchmark::storage\_for<std::string>> storage(meter.runs());}
+\DoxyCodeLine{    meter.measure([\&](int i) \{ storage[i].construct("thing"); \});}
+\DoxyCodeLine{\};}
+\DoxyCodeLine{}
+\DoxyCodeLine{BENCHMARK\_ADVANCED("destroy")(Catch::Benchmark::Chronometer meter) \{}
+\DoxyCodeLine{    std::vector<Catch::Benchmark::destructable\_object<std::string>> storage(meter.runs());}
+\DoxyCodeLine{    for(auto\&\& o : storage)}
+\DoxyCodeLine{        o.construct("thing");}
+\DoxyCodeLine{    meter.measure([\&](int i) \{ storage[i].destruct(); \});}
+\DoxyCodeLine{\};}
+\end{DoxyCode}
+
+
+{\ttfamily Catch\+::\+Benchmark\+::storage\+\_\+for$<$T$>$} objects are just pieces of raw storage suitable for {\ttfamily T} objects. You can use the {\ttfamily Catch\+::\+Benchmark\+::storage\+\_\+for\+::construct} member function to call a constructor and create an object in that storage. So if you want to measure the time it takes for a certain constructor to run, you can just measure the time it takes to run this function.
+
+When the lifetime of a {\ttfamily Catch\+::\+Benchmark\+::storage\+\_\+for$<$T$>$} object ends, if an actual object was constructed there it will be automatically destroyed, so nothing leaks.
+
+If you want to measure a destructor, though, we need to use {\ttfamily Catch\+::\+Benchmark\+::destructable\+\_\+object$<$T$>$}. These objects are similar to {\ttfamily Catch\+::\+Benchmark\+::storage\+\_\+for$<$T$>$} in that construction of the {\ttfamily T} object is manual, but it does not destroy anything automatically. Instead, you are required to call the {\ttfamily Catch\+::\+Benchmark\+::destructable\+\_\+object\+::destruct} member function, which is what you can use to measure the destruction time.\hypertarget{md_submodules_Catch2_docs_benchmarks_autotoc_md23}{}\doxysubsubsection{The optimizer}\label{md_submodules_Catch2_docs_benchmarks_autotoc_md23}
+Sometimes the optimizer will optimize away the very code that you want to measure. There are several ways to use results that will prevent the optimiser from removing them. You can use the {\ttfamily volatile} keyword, or you can output the value to standard output or to a file, both of which force the program to actually generate the value somehow.
+
+Catch adds a third option. The values returned by any function provided as user code are guaranteed to be evaluated and not optimised out. This means that if your user code consists of computing a certain value, you don\textquotesingle{}t need to bother with using {\ttfamily volatile} or forcing output. Just {\ttfamily return} it from the function. That helps with keeping the code in a natural fashion.
+
+Here\textquotesingle{}s an example\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{ \{c++\}}
+\DoxyCodeLine{// may measure nothing at all by skipping the long calculation since its}
+\DoxyCodeLine{// result is not used}
+\DoxyCodeLine{BENCHMARK("no return")\{ long\_calculation(); \};}
+\DoxyCodeLine{}
+\DoxyCodeLine{// the result of long\_calculation() is guaranteed to be computed somehow}
+\DoxyCodeLine{BENCHMARK("with return")\{ return long\_calculation(); \};}
+\end{DoxyCode}
+
+
+However, there\textquotesingle{}s no other form of control over the optimizer whatsoever. It is up to you to write a benchmark that actually measures what you want and doesn\textquotesingle{}t just measure the time to do a whole bunch of nothing.
+
+To sum up, there are two simple rules\+: whatever you would do in handwritten code to control optimization still works in Catch; and Catch makes return values from user code into observable effects that can\textquotesingle{}t be optimized away.
+
+{\itshape Adapted from nonius\textquotesingle{} documentation.} 

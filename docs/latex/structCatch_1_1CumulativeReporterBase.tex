@@ -1,0 +1,135 @@
+\hypertarget{structCatch_1_1CumulativeReporterBase}{}\doxysection{Catch\+::Cumulative\+Reporter\+Base$<$ DerivedT $>$ Struct Template Reference}
+\label{structCatch_1_1CumulativeReporterBase}\index{Catch::CumulativeReporterBase$<$ DerivedT $>$@{Catch::CumulativeReporterBase$<$ DerivedT $>$}}
+
+
+Inheritance diagram for Catch\+::Cumulative\+Reporter\+Base$<$ DerivedT $>$\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=229pt]{structCatch_1_1CumulativeReporterBase__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Catch\+::Cumulative\+Reporter\+Base$<$ DerivedT $>$\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{structCatch_1_1CumulativeReporterBase__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structCatch_1_1CumulativeReporterBase_1_1BySectionInfo}{By\+Section\+Info}}
+\item 
+struct \mbox{\hyperlink{structCatch_1_1CumulativeReporterBase_1_1Node}{Node}}
+\item 
+struct \mbox{\hyperlink{structCatch_1_1CumulativeReporterBase_1_1SectionNode}{Section\+Node}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structCatch_1_1CumulativeReporterBase_aaa25c59c56acf15cdab3d622ce3b9c96}\label{structCatch_1_1CumulativeReporterBase_aaa25c59c56acf15cdab3d622ce3b9c96}} 
+using {\bfseries Test\+Case\+Node} = \mbox{\hyperlink{structCatch_1_1CumulativeReporterBase_1_1Node}{Node}}$<$ \mbox{\hyperlink{structCatch_1_1TestCaseStats}{Test\+Case\+Stats}}, \mbox{\hyperlink{structCatch_1_1CumulativeReporterBase_1_1SectionNode}{Section\+Node}} $>$
+\item 
+\mbox{\Hypertarget{structCatch_1_1CumulativeReporterBase_a0d18cb91a442f50c12f32cbb61e701d1}\label{structCatch_1_1CumulativeReporterBase_a0d18cb91a442f50c12f32cbb61e701d1}} 
+using {\bfseries Test\+Group\+Node} = \mbox{\hyperlink{structCatch_1_1CumulativeReporterBase_1_1Node}{Node}}$<$ \mbox{\hyperlink{structCatch_1_1TestGroupStats}{Test\+Group\+Stats}}, \mbox{\hyperlink{structCatch_1_1CumulativeReporterBase_1_1Node}{Test\+Case\+Node}} $>$
+\item 
+\mbox{\Hypertarget{structCatch_1_1CumulativeReporterBase_a6480567a0eff5f984f95458b4a96d787}\label{structCatch_1_1CumulativeReporterBase_a6480567a0eff5f984f95458b4a96d787}} 
+using {\bfseries Test\+Run\+Node} = \mbox{\hyperlink{structCatch_1_1CumulativeReporterBase_1_1Node}{Node}}$<$ \mbox{\hyperlink{structCatch_1_1TestRunStats}{Test\+Run\+Stats}}, \mbox{\hyperlink{structCatch_1_1CumulativeReporterBase_1_1Node}{Test\+Group\+Node}} $>$
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structCatch_1_1CumulativeReporterBase_ad51e1c1fcdd79b4a6db911f0af104ff5}\label{structCatch_1_1CumulativeReporterBase_ad51e1c1fcdd79b4a6db911f0af104ff5}} 
+{\bfseries Cumulative\+Reporter\+Base} (\mbox{\hyperlink{structCatch_1_1ReporterConfig}{Reporter\+Config}} const \&\+\_\+config)
+\item 
+\mbox{\Hypertarget{structCatch_1_1CumulativeReporterBase_a45960ead3e300a607d6b2e7237a712ab}\label{structCatch_1_1CumulativeReporterBase_a45960ead3e300a607d6b2e7237a712ab}} 
+\mbox{\hyperlink{structCatch_1_1ReporterPreferences}{Reporter\+Preferences}} {\bfseries get\+Preferences} () const override
+\item 
+\mbox{\Hypertarget{structCatch_1_1CumulativeReporterBase_a99061d05f2f9e162989f616c68670dbb}\label{structCatch_1_1CumulativeReporterBase_a99061d05f2f9e162989f616c68670dbb}} 
+void {\bfseries test\+Run\+Starting} (\mbox{\hyperlink{structCatch_1_1TestRunInfo}{Test\+Run\+Info}} const \&) override
+\item 
+\mbox{\Hypertarget{structCatch_1_1CumulativeReporterBase_a2422d4701dd7796d1c60dfb90a99b9d0}\label{structCatch_1_1CumulativeReporterBase_a2422d4701dd7796d1c60dfb90a99b9d0}} 
+void {\bfseries test\+Group\+Starting} (\mbox{\hyperlink{structCatch_1_1GroupInfo}{Group\+Info}} const \&) override
+\item 
+\mbox{\Hypertarget{structCatch_1_1CumulativeReporterBase_a5ac5bcd607982d0a33829893ea6963c9}\label{structCatch_1_1CumulativeReporterBase_a5ac5bcd607982d0a33829893ea6963c9}} 
+void {\bfseries test\+Case\+Starting} (\mbox{\hyperlink{structCatch_1_1TestCaseInfo}{Test\+Case\+Info}} const \&) override
+\item 
+\mbox{\Hypertarget{structCatch_1_1CumulativeReporterBase_a179ba3a2d5c94ab93b53be42fa0bdb0a}\label{structCatch_1_1CumulativeReporterBase_a179ba3a2d5c94ab93b53be42fa0bdb0a}} 
+void {\bfseries section\+Starting} (\mbox{\hyperlink{structCatch_1_1SectionInfo}{Section\+Info}} const \&section\+Info) override
+\item 
+\mbox{\Hypertarget{structCatch_1_1CumulativeReporterBase_a1e5ae547b7bef0be697f6e77add75d9c}\label{structCatch_1_1CumulativeReporterBase_a1e5ae547b7bef0be697f6e77add75d9c}} 
+void {\bfseries assertion\+Starting} (\mbox{\hyperlink{structCatch_1_1AssertionInfo}{Assertion\+Info}} const \&) override
+\item 
+\mbox{\Hypertarget{structCatch_1_1CumulativeReporterBase_ad64bc50fc91ce50f3ecbfc0de5de6e2c}\label{structCatch_1_1CumulativeReporterBase_ad64bc50fc91ce50f3ecbfc0de5de6e2c}} 
+bool {\bfseries assertion\+Ended} (\mbox{\hyperlink{structCatch_1_1AssertionStats}{Assertion\+Stats}} const \&assertion\+Stats) override
+\item 
+\mbox{\Hypertarget{structCatch_1_1CumulativeReporterBase_a105f802576dcac9ddab9c10b10d6cd86}\label{structCatch_1_1CumulativeReporterBase_a105f802576dcac9ddab9c10b10d6cd86}} 
+void {\bfseries section\+Ended} (\mbox{\hyperlink{structCatch_1_1SectionStats}{Section\+Stats}} const \&section\+Stats) override
+\item 
+\mbox{\Hypertarget{structCatch_1_1CumulativeReporterBase_a74282d5b47c5994e0337b1bebce21ee4}\label{structCatch_1_1CumulativeReporterBase_a74282d5b47c5994e0337b1bebce21ee4}} 
+void {\bfseries test\+Case\+Ended} (\mbox{\hyperlink{structCatch_1_1TestCaseStats}{Test\+Case\+Stats}} const \&test\+Case\+Stats) override
+\item 
+\mbox{\Hypertarget{structCatch_1_1CumulativeReporterBase_a7e33466bcd3a32923d8808bcc0fe9fe7}\label{structCatch_1_1CumulativeReporterBase_a7e33466bcd3a32923d8808bcc0fe9fe7}} 
+void {\bfseries test\+Group\+Ended} (\mbox{\hyperlink{structCatch_1_1TestGroupStats}{Test\+Group\+Stats}} const \&test\+Group\+Stats) override
+\item 
+\mbox{\Hypertarget{structCatch_1_1CumulativeReporterBase_a86b6b628c217ed77c16de39b844c9eb8}\label{structCatch_1_1CumulativeReporterBase_a86b6b628c217ed77c16de39b844c9eb8}} 
+void {\bfseries test\+Run\+Ended} (\mbox{\hyperlink{structCatch_1_1TestRunStats}{Test\+Run\+Stats}} const \&test\+Run\+Stats) override
+\item 
+\mbox{\Hypertarget{structCatch_1_1CumulativeReporterBase_a71dae102874b1950ad7c686d5efd66b7}\label{structCatch_1_1CumulativeReporterBase_a71dae102874b1950ad7c686d5efd66b7}} 
+virtual void {\bfseries test\+Run\+Ended\+Cumulative} ()=0
+\item 
+\mbox{\Hypertarget{structCatch_1_1CumulativeReporterBase_ad3fd3b17f7385ae4efcae8958987fdef}\label{structCatch_1_1CumulativeReporterBase_ad3fd3b17f7385ae4efcae8958987fdef}} 
+void {\bfseries skip\+Test} (\mbox{\hyperlink{structCatch_1_1TestCaseInfo}{Test\+Case\+Info}} const \&) override
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structCatch_1_1CumulativeReporterBase_aa0e38db0712ae8e214403b9fa619f6a4}\label{structCatch_1_1CumulativeReporterBase_aa0e38db0712ae8e214403b9fa619f6a4}} 
+static std\+::set$<$ Verbosity $>$ {\bfseries get\+Supported\+Verbosities} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structCatch_1_1CumulativeReporterBase_a2f9067f97068a6b92def5463f6ff483a}\label{structCatch_1_1CumulativeReporterBase_a2f9067f97068a6b92def5463f6ff483a}} 
+I\+Config\+Ptr {\bfseries m\+\_\+config}
+\item 
+\mbox{\Hypertarget{structCatch_1_1CumulativeReporterBase_a89e3447c9751c8fa72b2a12746880d81}\label{structCatch_1_1CumulativeReporterBase_a89e3447c9751c8fa72b2a12746880d81}} 
+std\+::ostream \& {\bfseries stream}
+\item 
+\mbox{\Hypertarget{structCatch_1_1CumulativeReporterBase_ac1d8cc6406e46cbbbbdff0f4440a11b2}\label{structCatch_1_1CumulativeReporterBase_ac1d8cc6406e46cbbbbdff0f4440a11b2}} 
+std\+::vector$<$ \mbox{\hyperlink{structCatch_1_1AssertionStats}{Assertion\+Stats}} $>$ {\bfseries m\+\_\+assertions}
+\item 
+\mbox{\Hypertarget{structCatch_1_1CumulativeReporterBase_a636b100a82f4e0df0a71e491df4ac7f6}\label{structCatch_1_1CumulativeReporterBase_a636b100a82f4e0df0a71e491df4ac7f6}} 
+std\+::vector$<$ std\+::vector$<$ std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structCatch_1_1CumulativeReporterBase_1_1SectionNode}{Section\+Node}} $>$ $>$ $>$ {\bfseries m\+\_\+sections}
+\item 
+\mbox{\Hypertarget{structCatch_1_1CumulativeReporterBase_a6850ef07b579478d0c7bd7d098db7ee6}\label{structCatch_1_1CumulativeReporterBase_a6850ef07b579478d0c7bd7d098db7ee6}} 
+std\+::vector$<$ std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structCatch_1_1CumulativeReporterBase_1_1Node}{Test\+Case\+Node}} $>$ $>$ {\bfseries m\+\_\+test\+Cases}
+\item 
+\mbox{\Hypertarget{structCatch_1_1CumulativeReporterBase_a8f368439d89460c1c583037dcb18c225}\label{structCatch_1_1CumulativeReporterBase_a8f368439d89460c1c583037dcb18c225}} 
+std\+::vector$<$ std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structCatch_1_1CumulativeReporterBase_1_1Node}{Test\+Group\+Node}} $>$ $>$ {\bfseries m\+\_\+test\+Groups}
+\item 
+\mbox{\Hypertarget{structCatch_1_1CumulativeReporterBase_a6ef3e2abd8ff6e8187e3761bff85ae69}\label{structCatch_1_1CumulativeReporterBase_a6ef3e2abd8ff6e8187e3761bff85ae69}} 
+std\+::vector$<$ std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structCatch_1_1CumulativeReporterBase_1_1Node}{Test\+Run\+Node}} $>$ $>$ {\bfseries m\+\_\+test\+Runs}
+\item 
+\mbox{\Hypertarget{structCatch_1_1CumulativeReporterBase_a35587696a4f2f1568da6b10c978e78d4}\label{structCatch_1_1CumulativeReporterBase_a35587696a4f2f1568da6b10c978e78d4}} 
+std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structCatch_1_1CumulativeReporterBase_1_1SectionNode}{Section\+Node}} $>$ {\bfseries m\+\_\+root\+Section}
+\item 
+\mbox{\Hypertarget{structCatch_1_1CumulativeReporterBase_a0b30dfcc3ea5b7f063109a7f1ef78b5f}\label{structCatch_1_1CumulativeReporterBase_a0b30dfcc3ea5b7f063109a7f1ef78b5f}} 
+std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structCatch_1_1CumulativeReporterBase_1_1SectionNode}{Section\+Node}} $>$ {\bfseries m\+\_\+deepest\+Section}
+\item 
+\mbox{\Hypertarget{structCatch_1_1CumulativeReporterBase_ae786938c43bd980fa5ea70f59dc520d7}\label{structCatch_1_1CumulativeReporterBase_ae786938c43bd980fa5ea70f59dc520d7}} 
+std\+::vector$<$ std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structCatch_1_1CumulativeReporterBase_1_1SectionNode}{Section\+Node}} $>$ $>$ {\bfseries m\+\_\+section\+Stack}
+\item 
+\mbox{\Hypertarget{structCatch_1_1CumulativeReporterBase_a397bbd433fe1062e43b418ffe4c39c49}\label{structCatch_1_1CumulativeReporterBase_a397bbd433fe1062e43b418ffe4c39c49}} 
+\mbox{\hyperlink{structCatch_1_1ReporterPreferences}{Reporter\+Preferences}} {\bfseries m\+\_\+reporter\+Prefs}
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+submodules/\+Catch2/include/reporters/catch\+\_\+reporter\+\_\+bases.\+hpp\end{DoxyCompactItemize}

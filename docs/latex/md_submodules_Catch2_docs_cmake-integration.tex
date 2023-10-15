@@ -1,0 +1,230 @@
+\label{_top}%
+ \hypertarget{md_submodules_Catch2_docs_cmake-integration_autotoc_md37}{}\doxysection{C\+Make integration}\label{md_submodules_Catch2_docs_cmake-integration_autotoc_md37}
+{\bfseries{Contents}}~\newline
+ \href{\#cmake-target}{\texttt{ C\+Make target}}~\newline
+ \href{\#automatic-test-registration}{\texttt{ Automatic test registration}}~\newline
+ \href{\#cmake-project-options}{\texttt{ C\+Make project options}}~\newline
+ \href{\#installing-catch2-from-git-repository}{\texttt{ Installing Catch2 from git repository}}~\newline
+ \href{\#installing-catch2-from-vcpkg}{\texttt{ Installing Catch2 from vcpkg}}~\newline
+
+
+Because we use C\+Make to build Catch2, we also provide a couple of integration points for our users.
+
+1) Catch2 exports a (namespaced) C\+Make target 2) Catch2\textquotesingle{}s repository contains C\+Make scripts for automatic registration of {\ttfamily T\+E\+S\+T\+\_\+\+C\+A\+SE}s in C\+Test\hypertarget{md_submodules_Catch2_docs_cmake-integration_autotoc_md38}{}\doxysubsection{C\+Make target}\label{md_submodules_Catch2_docs_cmake-integration_autotoc_md38}
+Catch2\textquotesingle{}s C\+Make build exports an interface target {\ttfamily Catch2\+::\+Catch2}. Linking against it will add the proper include path and all necessary capabilities to the resulting binary.
+
+This means that if Catch2 has been installed on the system, it should be enough to do\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{find\_package(Catch2 REQUIRED)}
+\DoxyCodeLine{target\_link\_libraries(tests Catch2::Catch2)}
+\end{DoxyCode}
+
+
+This target is also provided when Catch2 is used as a subdirectory. Assuming that Catch2 has been cloned to {\ttfamily lib/\+Catch2}\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{add\_subdirectory(lib/Catch2)}
+\DoxyCodeLine{target\_link\_libraries(tests Catch2::Catch2)}
+\end{DoxyCode}
+
+
+Another possibility is to use \href{https://cmake.org/cmake/help/latest/module/FetchContent.html}{\texttt{ Fetch\+Content}}\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{Include(FetchContent)}
+\DoxyCodeLine{}
+\DoxyCodeLine{FetchContent\_Declare(}
+\DoxyCodeLine{  Catch2}
+\DoxyCodeLine{  GIT\_REPOSITORY https://github.com/catchorg/Catch2.git}
+\DoxyCodeLine{  GIT\_TAG        v2.13.9 \# or a later release}
+\DoxyCodeLine{)}
+\DoxyCodeLine{}
+\DoxyCodeLine{FetchContent\_MakeAvailable(Catch2)}
+\DoxyCodeLine{}
+\DoxyCodeLine{target\_link\_libraries(tests Catch2::Catch2)}
+\end{DoxyCode}
+\hypertarget{md_submodules_Catch2_docs_cmake-integration_autotoc_md39}{}\doxysubsection{Automatic test registration}\label{md_submodules_Catch2_docs_cmake-integration_autotoc_md39}
+Catch2\textquotesingle{}s repository also contains two C\+Make scripts that help users with automatically registering their {\ttfamily T\+E\+S\+T\+\_\+\+C\+A\+SE}s with C\+Test. They can be found in the {\ttfamily contrib} folder, and are
+
+1) {\ttfamily Catch.\+cmake} (and its dependency {\ttfamily Catch\+Add\+Tests.\+cmake}) 2) {\ttfamily Parse\+And\+Add\+Catch\+Tests.\+cmake} (deprecated)
+
+If Catch2 has been installed in system, both of these can be used after doing {\ttfamily find\+\_\+package(\+Catch2 R\+E\+Q\+U\+I\+R\+E\+D)}. Otherwise you need to add them to your C\+Make module path.\hypertarget{md_submodules_Catch2_docs_cmake-integration_autotoc_md40}{}\doxysubsubsection{$<$tt$>$\+Catch.\+cmake$<$/tt$>$ and $<$tt$>$\+Catch\+Add\+Tests.\+cmake$<$/tt$>$}\label{md_submodules_Catch2_docs_cmake-integration_autotoc_md40}
+{\ttfamily Catch.\+cmake} provides function {\ttfamily catch\+\_\+discover\+\_\+tests} to get tests from a target. This function works by running the resulting executable with {\ttfamily -\/-\/list-\/test-\/names-\/only} flag, and then parsing the output to find all existing tests.\hypertarget{md_submodules_Catch2_docs_cmake-integration_autotoc_md41}{}\doxyparagraph{Usage}\label{md_submodules_Catch2_docs_cmake-integration_autotoc_md41}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{cmake\_minimum\_required(VERSION 3.5)}
+\DoxyCodeLine{}
+\DoxyCodeLine{project(baz LANGUAGES CXX VERSION 0.0.1)}
+\DoxyCodeLine{}
+\DoxyCodeLine{find\_package(Catch2 REQUIRED)}
+\DoxyCodeLine{add\_executable(foo test.cpp)}
+\DoxyCodeLine{target\_link\_libraries(foo Catch2::Catch2)}
+\DoxyCodeLine{}
+\DoxyCodeLine{include(CTest)}
+\DoxyCodeLine{include(Catch)}
+\DoxyCodeLine{catch\_discover\_tests(foo)}
+\end{DoxyCode}
+\hypertarget{md_submodules_Catch2_docs_cmake-integration_autotoc_md42}{}\doxyparagraph{Customization}\label{md_submodules_Catch2_docs_cmake-integration_autotoc_md42}
+{\ttfamily catch\+\_\+discover\+\_\+tests} can be given several extra argumets\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{catch\_discover\_tests(target}
+\DoxyCodeLine{                     [TEST\_SPEC arg1...]}
+\DoxyCodeLine{                     [EXTRA\_ARGS arg1...]}
+\DoxyCodeLine{                     [WORKING\_DIRECTORY dir]}
+\DoxyCodeLine{                     [TEST\_PREFIX prefix]}
+\DoxyCodeLine{                     [TEST\_SUFFIX suffix]}
+\DoxyCodeLine{                     [PROPERTIES name1 value1...]}
+\DoxyCodeLine{                     [TEST\_LIST var]}
+\DoxyCodeLine{                     [REPORTER reporter]}
+\DoxyCodeLine{                     [OUTPUT\_DIR dir]}
+\DoxyCodeLine{                     [OUTPUT\_PREFIX prefix]}
+\DoxyCodeLine{                     [OUTPUT\_SUFFIX suffix]}
+\DoxyCodeLine{)}
+\end{DoxyCode}
+
+
+
+\begin{DoxyItemize}
+\item {\ttfamily T\+E\+S\+T\+\_\+\+S\+P\+EC arg1...}
+\end{DoxyItemize}
+
+Specifies test cases, wildcarded test cases, tags and tag expressions to pass to the Catch executable alongside the {\ttfamily -\/-\/list-\/test-\/names-\/only} flag.
+
+
+\begin{DoxyItemize}
+\item {\ttfamily E\+X\+T\+R\+A\+\_\+\+A\+R\+GS arg1...}
+\end{DoxyItemize}
+
+Any extra arguments to pass on the command line to each test case.
+
+
+\begin{DoxyItemize}
+\item {\ttfamily W\+O\+R\+K\+I\+N\+G\+\_\+\+D\+I\+R\+E\+C\+T\+O\+RY dir}
+\end{DoxyItemize}
+
+Specifies the directory in which to run the discovered test cases. If this option is not provided, the current binary directory is used.
+
+
+\begin{DoxyItemize}
+\item {\ttfamily T\+E\+S\+T\+\_\+\+P\+R\+E\+F\+IX prefix}
+\end{DoxyItemize}
+
+Specifies a {\itshape prefix} to be added to the name of each discovered test case. This can be useful when the same test executable is being used in multiple calls to {\ttfamily catch\+\_\+discover\+\_\+tests()}, with different {\ttfamily T\+E\+S\+T\+\_\+\+S\+P\+EC} or {\ttfamily E\+X\+T\+R\+A\+\_\+\+A\+R\+GS}.
+
+
+\begin{DoxyItemize}
+\item {\ttfamily T\+E\+S\+T\+\_\+\+S\+U\+F\+F\+IX suffix}
+\end{DoxyItemize}
+
+Same as {\ttfamily T\+E\+S\+T\+\_\+\+P\+R\+E\+F\+IX}, except it specific the {\itshape suffix} for the test names. Both {\ttfamily T\+E\+S\+T\+\_\+\+P\+R\+E\+F\+IX} and {\ttfamily T\+E\+S\+T\+\_\+\+S\+U\+F\+F\+IX} can be specified at the same time.
+
+
+\begin{DoxyItemize}
+\item {\ttfamily P\+R\+O\+P\+E\+R\+T\+I\+ES name1 value1...}
+\end{DoxyItemize}
+
+Specifies additional properties to be set on all tests discovered by this invocation of {\ttfamily catch\+\_\+discover\+\_\+tests}.
+
+
+\begin{DoxyItemize}
+\item {\ttfamily T\+E\+S\+T\+\_\+\+L\+I\+ST var}
+\end{DoxyItemize}
+
+Make the list of tests available in the variable {\ttfamily var}, rather than the default {\ttfamily $<$target$>$\+\_\+\+T\+E\+S\+TS}. This can be useful when the same test executable is being used in multiple calls to {\ttfamily catch\+\_\+discover\+\_\+tests()}. Note that this variable is only available in C\+Test.
+
+
+\begin{DoxyItemize}
+\item {\ttfamily R\+E\+P\+O\+R\+T\+ER reporter}
+\end{DoxyItemize}
+
+Use the specified reporter when running the test case. The reporter will be passed to the test runner as {\ttfamily -\/-\/reporter reporter}.
+
+
+\begin{DoxyItemize}
+\item {\ttfamily O\+U\+T\+P\+U\+T\+\_\+\+D\+IR dir}
+\end{DoxyItemize}
+
+If specified, the parameter is passed along as {\ttfamily -\/-\/out dir/$<$test\+\_\+name$>$} to test executable. The actual file name is the same as the test name. This should be used instead of {\ttfamily E\+X\+T\+R\+A\+\_\+\+A\+R\+GS -\/-\/out foo} to avoid race conditions writing the result output when using parallel test execution.
+
+
+\begin{DoxyItemize}
+\item {\ttfamily O\+U\+T\+P\+U\+T\+\_\+\+P\+R\+E\+F\+IX prefix}
+\end{DoxyItemize}
+
+May be used in conjunction with {\ttfamily O\+U\+T\+P\+U\+T\+\_\+\+D\+IR}. If specified, {\ttfamily prefix} is added to each output file name, like so {\ttfamily -\/-\/out dir/prefix$<$test\+\_\+name$>$}.
+
+
+\begin{DoxyItemize}
+\item {\ttfamily O\+U\+T\+P\+U\+T\+\_\+\+S\+U\+F\+F\+IX suffix}
+\end{DoxyItemize}
+
+May be used in conjunction with {\ttfamily O\+U\+T\+P\+U\+T\+\_\+\+D\+IR}. If specified, {\ttfamily suffix} is added to each output file name, like so {\ttfamily -\/-\/out dir/$<$test\+\_\+name$>$suffix}. This can be used to add a file extension to the output file name e.\+g. \char`\"{}.\+xml\char`\"{}.\hypertarget{md_submodules_Catch2_docs_cmake-integration_autotoc_md43}{}\doxysubsubsection{$<$tt$>$\+Parse\+And\+Add\+Catch\+Tests.\+cmake$<$/tt$>$}\label{md_submodules_Catch2_docs_cmake-integration_autotoc_md43}
+⚠ This script is \href{https://github.com/catchorg/Catch2/pull/2120}{\texttt{ deprecated}} in Catch 2.\+13.\+4 and superseded by the above approach using {\ttfamily catch\+\_\+discover\+\_\+tests}. See \href{https://github.com/catchorg/Catch2/issues/2092}{\texttt{ \#2092}} for details.
+
+{\ttfamily Parse\+And\+Add\+Catch\+Tests} works by parsing all implementation files associated with the provided target, and registering them via C\+Test\textquotesingle{}s {\ttfamily add\+\_\+test}. This approach has some limitations, such as the fact that commented-\/out tests will be registered anyway. More serious, only a subset of the assertion macros currently available in Catch can be detected by this script and tests with any macros that cannot be parsed are {\itshape silently ignored}.\hypertarget{md_submodules_Catch2_docs_cmake-integration_autotoc_md44}{}\doxyparagraph{Usage}\label{md_submodules_Catch2_docs_cmake-integration_autotoc_md44}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{cmake\_minimum\_required(VERSION 3.5)}
+\DoxyCodeLine{}
+\DoxyCodeLine{project(baz LANGUAGES CXX VERSION 0.0.1)}
+\DoxyCodeLine{}
+\DoxyCodeLine{find\_package(Catch2 REQUIRED)}
+\DoxyCodeLine{add\_executable(foo test.cpp)}
+\DoxyCodeLine{target\_link\_libraries(foo Catch2::Catch2)}
+\DoxyCodeLine{}
+\DoxyCodeLine{include(CTest)}
+\DoxyCodeLine{include(ParseAndAddCatchTests)}
+\DoxyCodeLine{ParseAndAddCatchTests(foo)}
+\end{DoxyCode}
+\hypertarget{md_submodules_Catch2_docs_cmake-integration_autotoc_md45}{}\doxyparagraph{Customization}\label{md_submodules_Catch2_docs_cmake-integration_autotoc_md45}
+{\ttfamily Parse\+And\+Add\+Catch\+Tests} provides some customization points\+:
+\begin{DoxyItemize}
+\item {\ttfamily P\+A\+R\+S\+E\+\_\+\+C\+A\+T\+C\+H\+\_\+\+T\+E\+S\+T\+S\+\_\+\+V\+E\+R\+B\+O\+SE} -- When {\ttfamily ON}, the script prints debug messages. Defaults to {\ttfamily O\+FF}.
+\item {\ttfamily P\+A\+R\+S\+E\+\_\+\+C\+A\+T\+C\+H\+\_\+\+T\+E\+S\+T\+S\+\_\+\+N\+O\+\_\+\+H\+I\+D\+D\+E\+N\+\_\+\+T\+E\+S\+TS} -- When {\ttfamily ON}, hidden tests (tests tagged with any of {\ttfamily \mbox{[}!hide\mbox{]}}, {\ttfamily \mbox{[}.\mbox{]}} or {\ttfamily \mbox{[}.foo\mbox{]}}) will not be registered. Defaults to {\ttfamily O\+FF}.
+\item {\ttfamily P\+A\+R\+S\+E\+\_\+\+C\+A\+T\+C\+H\+\_\+\+T\+E\+S\+T\+S\+\_\+\+A\+D\+D\+\_\+\+F\+I\+X\+T\+U\+R\+E\+\_\+\+I\+N\+\_\+\+T\+E\+S\+T\+\_\+\+N\+A\+ME} -- When {\ttfamily ON}, adds fixture class name to the test name in C\+Test. Defaults to {\ttfamily ON}.
+\item {\ttfamily P\+A\+R\+S\+E\+\_\+\+C\+A\+T\+C\+H\+\_\+\+T\+E\+S\+T\+S\+\_\+\+A\+D\+D\+\_\+\+T\+A\+R\+G\+E\+T\+\_\+\+I\+N\+\_\+\+T\+E\+S\+T\+\_\+\+N\+A\+ME} -- When {\ttfamily ON}, adds target name to the test name in C\+Test. Defaults to {\ttfamily ON}.
+\item {\ttfamily P\+A\+R\+S\+E\+\_\+\+C\+A\+T\+C\+H\+\_\+\+T\+E\+S\+T\+S\+\_\+\+A\+D\+D\+\_\+\+T\+O\+\_\+\+C\+O\+N\+F\+I\+G\+U\+R\+E\+\_\+\+D\+E\+P\+E\+N\+DS} -- When {\ttfamily ON}, adds test file to {\ttfamily C\+M\+A\+K\+E\+\_\+\+C\+O\+N\+F\+I\+G\+U\+R\+E\+\_\+\+D\+E\+P\+E\+N\+DS}. This means that the C\+Make configuration step will be re-\/ran when the test files change, letting new tests be automatically discovered. Defaults to {\ttfamily O\+FF}.
+\end{DoxyItemize}
+
+Optionally, one can specify a launching command to run tests by setting the variable {\ttfamily Optional\+Catch\+Test\+Launcher} before calling {\ttfamily Parse\+And\+Add\+Catch\+Tests}. For instance to run some tests using {\ttfamily M\+PI} and other sequentially, one can write 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{set(OptionalCatchTestLauncher \$\{MPIEXEC\} \$\{MPIEXEC\_NUMPROC\_FLAG\} \$\{NUMPROC\})}
+\DoxyCodeLine{ParseAndAddCatchTests(mpi\_foo)}
+\DoxyCodeLine{unset(OptionalCatchTestLauncher)}
+\DoxyCodeLine{ParseAndAddCatchTests(bar)}
+\end{DoxyCode}
+\hypertarget{md_submodules_Catch2_docs_cmake-integration_autotoc_md46}{}\doxysubsection{C\+Make project options}\label{md_submodules_Catch2_docs_cmake-integration_autotoc_md46}
+Catch2\textquotesingle{}s C\+Make project also provides some options for other projects that consume it. These are
+
+
+\begin{DoxyItemize}
+\item {\ttfamily C\+A\+T\+C\+H\+\_\+\+B\+U\+I\+L\+D\+\_\+\+T\+E\+S\+T\+I\+NG} -- When {\ttfamily ON}, Catch2\textquotesingle{}s Self\+Test project will be built. Defaults to {\ttfamily ON}. Note that Catch2 also obeys {\ttfamily B\+U\+I\+L\+D\+\_\+\+T\+E\+S\+T\+I\+NG} C\+Make variable, so {\itshape both} of them need to be {\ttfamily ON} for the Self\+Test to be built, and either of them can be set to {\ttfamily O\+FF} to disable building Self\+Test.
+\item {\ttfamily C\+A\+T\+C\+H\+\_\+\+B\+U\+I\+L\+D\+\_\+\+E\+X\+A\+M\+P\+L\+ES} -- When {\ttfamily ON}, Catch2\textquotesingle{}s usage examples will be built. Defaults to {\ttfamily O\+FF}.
+\item {\ttfamily C\+A\+T\+C\+H\+\_\+\+I\+N\+S\+T\+A\+L\+L\+\_\+\+D\+O\+CS} -- When {\ttfamily ON}, Catch2\textquotesingle{}s documentation will be included in the installation. Defaults to {\ttfamily ON}.
+\item {\ttfamily C\+A\+T\+C\+H\+\_\+\+I\+N\+S\+T\+A\+L\+L\+\_\+\+H\+E\+L\+P\+E\+RS} -- When {\ttfamily ON}, Catch2\textquotesingle{}s contrib folder will be included in the installation. Defaults to {\ttfamily ON}.
+\item {\ttfamily B\+U\+I\+L\+D\+\_\+\+T\+E\+S\+T\+I\+NG} -- When {\ttfamily ON} and the project is not used as a subproject, Catch2\textquotesingle{}s test binary will be built. Defaults to {\ttfamily ON}.
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_cmake-integration_autotoc_md47}{}\doxysubsection{Installing Catch2 from git repository}\label{md_submodules_Catch2_docs_cmake-integration_autotoc_md47}
+If you cannot install Catch2 from a package manager (e.\+g. Ubuntu 16.\+04 provides catch only in version 1.\+2.\+0) you might want to install it from the repository instead. Assuming you have enough rights, you can just install it to the default location, like so\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\$ git clone https://github.com/catchorg/Catch2.git}
+\DoxyCodeLine{\$ cd Catch2}
+\DoxyCodeLine{\$ cmake -\/Bbuild -\/H. -\/DBUILD\_TESTING=OFF}
+\DoxyCodeLine{\$ sudo cmake -\/-\/build build/ -\/-\/target install}
+\end{DoxyCode}
+
+
+If you do not have superuser rights, you will also need to specify \href{https://cmake.org/cmake/help/latest/variable/CMAKE_INSTALL_PREFIX.html}{\texttt{ C\+M\+A\+K\+E\+\_\+\+I\+N\+S\+T\+A\+L\+L\+\_\+\+P\+R\+E\+F\+IX}} when configuring the build, and then modify your calls to \href{https://cmake.org/cmake/help/latest/command/find_package.html}{\texttt{ find\+\_\+package}} accordingly.\hypertarget{md_submodules_Catch2_docs_cmake-integration_autotoc_md48}{}\doxysubsection{Installing Catch2 from vcpkg}\label{md_submodules_Catch2_docs_cmake-integration_autotoc_md48}
+Alternatively, you can build and install Catch2 using \href{https://github.com/microsoft/vcpkg/}{\texttt{ vcpkg}} dependency manager\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{git clone https://github.com/Microsoft/vcpkg.git}
+\DoxyCodeLine{cd vcpkg}
+\DoxyCodeLine{./bootstrap-\/vcpkg.sh}
+\DoxyCodeLine{./vcpkg integrate install}
+\DoxyCodeLine{./vcpkg install catch2}
+\end{DoxyCode}
+
+
+The catch2 port in vcpkg is kept up to date by microsoft team members and community contributors. If the version is out of date, please \href{https://github.com/Microsoft/vcpkg}{\texttt{ create an issue or pull request}} on the vcpkg repository.
+
+\DoxyHorRuler{0}
+
+
+\href{Readme.md\#top}{\texttt{ Home}} 

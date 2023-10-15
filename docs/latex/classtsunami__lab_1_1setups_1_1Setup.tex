@@ -1,0 +1,112 @@
+\hypertarget{classtsunami__lab_1_1setups_1_1Setup}{}\doxysection{tsunami\+\_\+lab\+::setups\+::Setup Class Reference}
+\label{classtsunami__lab_1_1setups_1_1Setup}\index{tsunami\_lab::setups::Setup@{tsunami\_lab::setups::Setup}}
+
+
+{\ttfamily \#include $<$Setup.\+h$>$}
+
+
+
+Inheritance diagram for tsunami\+\_\+lab\+::setups\+::Setup\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=195pt]{classtsunami__lab_1_1setups_1_1Setup__inherit__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual \mbox{\hyperlink{classtsunami__lab_1_1setups_1_1Setup_a0b6131241d5bd20fc68d3d6a764bcd35}{$\sim$\+Setup}} ()
+\item 
+virtual \mbox{\hyperlink{namespacetsunami__lab_a2db0f215df0d48460ce6a8c1e7bfe5a9}{t\+\_\+real}} \mbox{\hyperlink{classtsunami__lab_1_1setups_1_1Setup_aa7e72a3e93aad13342423ec4f06e4f87}{get\+Height}} (\mbox{\hyperlink{namespacetsunami__lab_a2db0f215df0d48460ce6a8c1e7bfe5a9}{t\+\_\+real}} i\+\_\+x, \mbox{\hyperlink{namespacetsunami__lab_a2db0f215df0d48460ce6a8c1e7bfe5a9}{t\+\_\+real}} i\+\_\+y) const =0
+\item 
+virtual \mbox{\hyperlink{namespacetsunami__lab_a2db0f215df0d48460ce6a8c1e7bfe5a9}{t\+\_\+real}} \mbox{\hyperlink{classtsunami__lab_1_1setups_1_1Setup_a7e9e033b4954247a7fc0a9d808a53296}{get\+MomentumX}} (\mbox{\hyperlink{namespacetsunami__lab_a2db0f215df0d48460ce6a8c1e7bfe5a9}{t\+\_\+real}} i\+\_\+x, \mbox{\hyperlink{namespacetsunami__lab_a2db0f215df0d48460ce6a8c1e7bfe5a9}{t\+\_\+real}} i\+\_\+y) const =0
+\item 
+virtual \mbox{\hyperlink{namespacetsunami__lab_a2db0f215df0d48460ce6a8c1e7bfe5a9}{t\+\_\+real}} \mbox{\hyperlink{classtsunami__lab_1_1setups_1_1Setup_a30f2396047c8658922c617a2be739f09}{get\+MomentumY}} (\mbox{\hyperlink{namespacetsunami__lab_a2db0f215df0d48460ce6a8c1e7bfe5a9}{t\+\_\+real}} i\+\_\+x, \mbox{\hyperlink{namespacetsunami__lab_a2db0f215df0d48460ce6a8c1e7bfe5a9}{t\+\_\+real}} i\+\_\+y) const =0
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Base setup. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classtsunami__lab_1_1setups_1_1Setup_a0b6131241d5bd20fc68d3d6a764bcd35}\label{classtsunami__lab_1_1setups_1_1Setup_a0b6131241d5bd20fc68d3d6a764bcd35}} 
+\index{tsunami\_lab::setups::Setup@{tsunami\_lab::setups::Setup}!````~Setup@{$\sim$Setup}}
+\index{````~Setup@{$\sim$Setup}!tsunami\_lab::setups::Setup@{tsunami\_lab::setups::Setup}}
+\doxysubsubsection{\texorpdfstring{$\sim$Setup()}{~Setup()}}
+{\footnotesize\ttfamily virtual tsunami\+\_\+lab\+::setups\+::\+Setup\+::$\sim$\+Setup (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+Virtual destructor for base class. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classtsunami__lab_1_1setups_1_1Setup_aa7e72a3e93aad13342423ec4f06e4f87}\label{classtsunami__lab_1_1setups_1_1Setup_aa7e72a3e93aad13342423ec4f06e4f87}} 
+\index{tsunami\_lab::setups::Setup@{tsunami\_lab::setups::Setup}!getHeight@{getHeight}}
+\index{getHeight@{getHeight}!tsunami\_lab::setups::Setup@{tsunami\_lab::setups::Setup}}
+\doxysubsubsection{\texorpdfstring{getHeight()}{getHeight()}}
+{\footnotesize\ttfamily virtual \mbox{\hyperlink{namespacetsunami__lab_a2db0f215df0d48460ce6a8c1e7bfe5a9}{t\+\_\+real}} tsunami\+\_\+lab\+::setups\+::\+Setup\+::get\+Height (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespacetsunami__lab_a2db0f215df0d48460ce6a8c1e7bfe5a9}{t\+\_\+real}}}]{i\+\_\+x,  }\item[{\mbox{\hyperlink{namespacetsunami__lab_a2db0f215df0d48460ce6a8c1e7bfe5a9}{t\+\_\+real}}}]{i\+\_\+y }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Gets the water height at a given point.
+
+
+\begin{DoxyParams}{Parameters}
+{\em i\+\_\+x} & x-\/coordinate of the queried point. \\
+\hline
+{\em i\+\_\+y} & y-\/coordinate of the queried point. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+water height at the given point. 
+\end{DoxyReturn}
+
+
+Implemented in \mbox{\hyperlink{classtsunami__lab_1_1setups_1_1DamBreak1d_a81271bb57c44ea59e88dcc9541cf00ee}{tsunami\+\_\+lab\+::setups\+::\+Dam\+Break1d}}.
+
+\mbox{\Hypertarget{classtsunami__lab_1_1setups_1_1Setup_a7e9e033b4954247a7fc0a9d808a53296}\label{classtsunami__lab_1_1setups_1_1Setup_a7e9e033b4954247a7fc0a9d808a53296}} 
+\index{tsunami\_lab::setups::Setup@{tsunami\_lab::setups::Setup}!getMomentumX@{getMomentumX}}
+\index{getMomentumX@{getMomentumX}!tsunami\_lab::setups::Setup@{tsunami\_lab::setups::Setup}}
+\doxysubsubsection{\texorpdfstring{getMomentumX()}{getMomentumX()}}
+{\footnotesize\ttfamily virtual \mbox{\hyperlink{namespacetsunami__lab_a2db0f215df0d48460ce6a8c1e7bfe5a9}{t\+\_\+real}} tsunami\+\_\+lab\+::setups\+::\+Setup\+::get\+MomentumX (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespacetsunami__lab_a2db0f215df0d48460ce6a8c1e7bfe5a9}{t\+\_\+real}}}]{i\+\_\+x,  }\item[{\mbox{\hyperlink{namespacetsunami__lab_a2db0f215df0d48460ce6a8c1e7bfe5a9}{t\+\_\+real}}}]{i\+\_\+y }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Gets the momentum in x-\/direction.
+
+
+\begin{DoxyParams}{Parameters}
+{\em i\+\_\+x} & x-\/coordinate of the queried point. \\
+\hline
+{\em i\+\_\+y} & y-\/coordinate of the queried point. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+momentum in x-\/direction. 
+\end{DoxyReturn}
+
+
+Implemented in \mbox{\hyperlink{classtsunami__lab_1_1setups_1_1DamBreak1d_a425544509438f8b6ee2a705cf02d9a3c}{tsunami\+\_\+lab\+::setups\+::\+Dam\+Break1d}}.
+
+\mbox{\Hypertarget{classtsunami__lab_1_1setups_1_1Setup_a30f2396047c8658922c617a2be739f09}\label{classtsunami__lab_1_1setups_1_1Setup_a30f2396047c8658922c617a2be739f09}} 
+\index{tsunami\_lab::setups::Setup@{tsunami\_lab::setups::Setup}!getMomentumY@{getMomentumY}}
+\index{getMomentumY@{getMomentumY}!tsunami\_lab::setups::Setup@{tsunami\_lab::setups::Setup}}
+\doxysubsubsection{\texorpdfstring{getMomentumY()}{getMomentumY()}}
+{\footnotesize\ttfamily virtual \mbox{\hyperlink{namespacetsunami__lab_a2db0f215df0d48460ce6a8c1e7bfe5a9}{t\+\_\+real}} tsunami\+\_\+lab\+::setups\+::\+Setup\+::get\+MomentumY (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespacetsunami__lab_a2db0f215df0d48460ce6a8c1e7bfe5a9}{t\+\_\+real}}}]{i\+\_\+x,  }\item[{\mbox{\hyperlink{namespacetsunami__lab_a2db0f215df0d48460ce6a8c1e7bfe5a9}{t\+\_\+real}}}]{i\+\_\+y }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Gets the momentum in y-\/direction.
+
+
+\begin{DoxyParams}{Parameters}
+{\em i\+\_\+x} & x-\/coordinate of the queried point. \\
+\hline
+{\em i\+\_\+y} & y-\/coordinate of the queried point. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+momentum in y-\/direction. 
+\end{DoxyReturn}
+
+
+Implemented in \mbox{\hyperlink{classtsunami__lab_1_1setups_1_1DamBreak1d_a1f16fbb0280757323fb3696fb460da66}{tsunami\+\_\+lab\+::setups\+::\+Dam\+Break1d}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/setups/Setup.\+h\end{DoxyCompactItemize}

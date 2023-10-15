@@ -1,0 +1,1765 @@
+\label{_top}%
+\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md222}{}\doxysection{Release notes}\label{md_submodules_Catch2_docs_release-notes_autotoc_md222}
+{\bfseries{Contents}}~\newline
+ \href{\#21310}{\texttt{ 2.\+13.\+10}}~\newline
+ \href{\#2139}{\texttt{ 2.\+13.\+9}}~\newline
+ \href{\#2138}{\texttt{ 2.\+13.\+8}}~\newline
+ \href{\#2137}{\texttt{ 2.\+13.\+7}}~\newline
+ \href{\#2136}{\texttt{ 2.\+13.\+6}}~\newline
+ \href{\#2135}{\texttt{ 2.\+13.\+5}}~\newline
+ \href{\#2134}{\texttt{ 2.\+13.\+4}}~\newline
+ \href{\#2133}{\texttt{ 2.\+13.\+3}}~\newline
+ \href{\#2132}{\texttt{ 2.\+13.\+2}}~\newline
+ \href{\#2131}{\texttt{ 2.\+13.\+1}}~\newline
+ \href{\#2130}{\texttt{ 2.\+13.\+0}}~\newline
+ \href{\#2124}{\texttt{ 2.\+12.\+4}}~\newline
+ \href{\#2123}{\texttt{ 2.\+12.\+3}}~\newline
+ \href{\#2122}{\texttt{ 2.\+12.\+2}}~\newline
+ \href{\#2121}{\texttt{ 2.\+12.\+1}}~\newline
+ \href{\#2120}{\texttt{ 2.\+12.\+0}}~\newline
+ \href{\#2113}{\texttt{ 2.\+11.\+3}}~\newline
+ \href{\#2112}{\texttt{ 2.\+11.\+2}}~\newline
+ \href{\#2111}{\texttt{ 2.\+11.\+1}}~\newline
+ \href{\#2110}{\texttt{ 2.\+11.\+0}}~\newline
+ \href{\#2102}{\texttt{ 2.\+10.\+2}}~\newline
+ \href{\#2101}{\texttt{ 2.\+10.\+1}}~\newline
+ \href{\#2100}{\texttt{ 2.\+10.\+0}}~\newline
+ \href{\#292}{\texttt{ 2.\+9.\+2}}~\newline
+ \href{\#291}{\texttt{ 2.\+9.\+1}}~\newline
+ \href{\#290}{\texttt{ 2.\+9.\+0}}~\newline
+ \href{\#280}{\texttt{ 2.\+8.\+0}}~\newline
+ \href{\#272}{\texttt{ 2.\+7.\+2}}~\newline
+ \href{\#271}{\texttt{ 2.\+7.\+1}}~\newline
+ \href{\#270}{\texttt{ 2.\+7.\+0}}~\newline
+ \href{\#261}{\texttt{ 2.\+6.\+1}}~\newline
+ \href{\#260}{\texttt{ 2.\+6.\+0}}~\newline
+ \href{\#250}{\texttt{ 2.\+5.\+0}}~\newline
+ \href{\#242}{\texttt{ 2.\+4.\+2}}~\newline
+ \href{\#241}{\texttt{ 2.\+4.\+1}}~\newline
+ \href{\#240}{\texttt{ 2.\+4.\+0}}~\newline
+ \href{\#230}{\texttt{ 2.\+3.\+0}}~\newline
+ \href{\#223}{\texttt{ 2.\+2.\+3}}~\newline
+ \href{\#222}{\texttt{ 2.\+2.\+2}}~\newline
+ \href{\#221}{\texttt{ 2.\+2.\+1}}~\newline
+ \href{\#220}{\texttt{ 2.\+2.\+0}}~\newline
+ \href{\#212}{\texttt{ 2.\+1.\+2}}~\newline
+ \href{\#211}{\texttt{ 2.\+1.\+1}}~\newline
+ \href{\#210}{\texttt{ 2.\+1.\+0}}~\newline
+ \href{\#201}{\texttt{ 2.\+0.\+1}}~\newline
+ \href{\#older-versions}{\texttt{ Older versions}}~\newline
+ \href{\#even-older-versions}{\texttt{ Even Older versions}}~\newline
+\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md223}{}\doxysubsection{2.\+13.\+10}\label{md_submodules_Catch2_docs_release-notes_autotoc_md223}
+\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md224}{}\doxysubsubsection{Fixes}\label{md_submodules_Catch2_docs_release-notes_autotoc_md224}
+
+\begin{DoxyItemize}
+\item Fixed issue with {\ttfamily catch\+\_\+discover\+\_\+tests} when there is multiple of 256 tests (\#2401, \#2503)
+\item Catch2-\/provided {\ttfamily main} and {\ttfamily wmain} are explicitly marked as {\ttfamily \+\_\+\+\_\+cdecl} when compiled with M\+S\+VC (\#2486, \#2487)
+\item Improved break-\/into-\/debugger behaviour for A\+RM Macs. It should now be possible to step execution after the break (\#2422)
+\item Replaced deprecated {\ttfamily std\+::aligned\+\_\+storage} (\#2419, \#2420)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md225}{}\doxysubsection{2.\+13.\+9}\label{md_submodules_Catch2_docs_release-notes_autotoc_md225}
+\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md226}{}\doxysubsubsection{Fixes}\label{md_submodules_Catch2_docs_release-notes_autotoc_md226}
+
+\begin{DoxyItemize}
+\item Fixed issue with {\ttfamily -\/\#} (filename-\/as-\/tag) flag when {\ttfamily \+\_\+\+\_\+\+F\+I\+L\+E\+\_\+\+\_\+} expands into filename without directories (\#2328, \#2393)
+\item Fixed {\ttfamily C\+A\+P\+T\+U\+RE} macro not being variadic when disabled through {\ttfamily C\+A\+T\+C\+H\+\_\+\+C\+O\+N\+F\+I\+G\+\_\+\+D\+I\+S\+A\+B\+LE} (\#2316, \#2378)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md227}{}\doxysubsection{2.\+13.\+8}\label{md_submodules_Catch2_docs_release-notes_autotoc_md227}
+\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md228}{}\doxysubsubsection{Fixes}\label{md_submodules_Catch2_docs_release-notes_autotoc_md228}
+
+\begin{DoxyItemize}
+\item Made {\ttfamily Approx\+::operator()} const (\#2288)
+\item Improved pkg-\/config files (\#2284)
+\item Fixed warning suppression leaking out of Catch2 when compiled with clang.\+exe (\#2280)
+\item The macro-\/generated names for things like {\ttfamily T\+E\+S\+T\+\_\+\+C\+A\+SE} no longer create reserved identifiers (\#2336)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md229}{}\doxysubsubsection{Improvements}\label{md_submodules_Catch2_docs_release-notes_autotoc_md229}
+
+\begin{DoxyItemize}
+\item Clang-\/tidy should no longer warn about missing virtual dispatch in {\ttfamily Filter\+Generator}\textquotesingle{}s constructor (\#2314)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md230}{}\doxysubsection{2.\+13.\+7}\label{md_submodules_Catch2_docs_release-notes_autotoc_md230}
+\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md231}{}\doxysubsubsection{Fixes}\label{md_submodules_Catch2_docs_release-notes_autotoc_md231}
+
+\begin{DoxyItemize}
+\item Added missing {\ttfamily $<$iterator$>$} include in benchmarking. (\#2231)
+\item Fixed noexcept build with benchmarking enabled (\#2235)
+\item Fixed build for compilers with C++17 support but without C++17 library support (\#2195)
+\item J\+Unit only uses 3 decimal places when reporting durations (\#2221)
+\item {\ttfamily !mayfail} tagged tests are now marked as {\ttfamily skipped} in J\+Unit reporter output (\#2116)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md232}{}\doxysubsection{2.\+13.\+6}\label{md_submodules_Catch2_docs_release-notes_autotoc_md232}
+\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md233}{}\doxysubsubsection{Fixes}\label{md_submodules_Catch2_docs_release-notes_autotoc_md233}
+
+\begin{DoxyItemize}
+\item Disabling all signal handlers no longer breaks compilation (\#2212, \#2213)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md234}{}\doxysubsubsection{Miscellaneous}\label{md_submodules_Catch2_docs_release-notes_autotoc_md234}
+
+\begin{DoxyItemize}
+\item {\ttfamily catch\+\_\+discover\+\_\+tests} should handle escaped semicolon ({\ttfamily ;}) better (\#2214, \#2215)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md235}{}\doxysubsection{2.\+13.\+5}\label{md_submodules_Catch2_docs_release-notes_autotoc_md235}
+\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md236}{}\doxysubsubsection{Improvements}\label{md_submodules_Catch2_docs_release-notes_autotoc_md236}
+
+\begin{DoxyItemize}
+\item Detection of M\+AC and I\+P\+H\+O\+NE platforms has been improved (\#2140, \#2157)
+\item Added workaround for bug in X\+LC 16.\+1.\+0.\+1 (\#2155)
+\item Add detection for L\+CC when it is masquerading as G\+CC (\#2199)
+\item Modified posix signal handling so it supports newer libcs (\#2178)
+\begin{DoxyItemize}
+\item {\ttfamily M\+I\+N\+S\+I\+G\+S\+T\+K\+SZ} was no longer usable in constexpr context.
+\end{DoxyItemize}
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md237}{}\doxysubsubsection{Fixes}\label{md_submodules_Catch2_docs_release-notes_autotoc_md237}
+
+\begin{DoxyItemize}
+\item Fixed compilation of benchmarking when {\ttfamily min} and {\ttfamily max} macros are defined (\#2159)
+\begin{DoxyItemize}
+\item Including {\ttfamily windows.\+h} without {\ttfamily N\+O\+M\+I\+N\+M\+AX} remains a really bad idea, don\textquotesingle{}t do it
+\end{DoxyItemize}
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md238}{}\doxysubsubsection{Miscellaneous}\label{md_submodules_Catch2_docs_release-notes_autotoc_md238}
+
+\begin{DoxyItemize}
+\item {\ttfamily Catch2\+With\+Main} target (static library) is no longer built by default (\#2142)
+\begin{DoxyItemize}
+\item Building it by default was at best unnecessary overhead for people not using it, and at worst it caused trouble with install paths
+\item To have it built, set C\+Make option {\ttfamily C\+A\+T\+C\+H\+\_\+\+B\+U\+I\+L\+D\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+L\+I\+B\+R\+A\+RY} to {\ttfamily ON}
+\end{DoxyItemize}
+\item The check whether Catch2 is being built as a subproject is now more reliable (\#2202, \#2204)
+\begin{DoxyItemize}
+\item The problem was that if the variable name used internally was defined the project including Catch2 as subproject, it would not be properly overwritten for Catch2\textquotesingle{}s C\+Make.
+\end{DoxyItemize}
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md239}{}\doxysubsection{2.\+13.\+4}\label{md_submodules_Catch2_docs_release-notes_autotoc_md239}
+\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md240}{}\doxysubsubsection{Improvements}\label{md_submodules_Catch2_docs_release-notes_autotoc_md240}
+
+\begin{DoxyItemize}
+\item Improved the hashing algorithm used for shuffling test cases (\#2070)
+\begin{DoxyItemize}
+\item {\ttfamily T\+E\+S\+T\+\_\+\+C\+A\+SE}s that differ only in the last character should be properly shuffled
+\item Note that this means that v2.\+13.\+4 gives you a different order of test cases than 2.\+13.\+3, even given the same seed.
+\end{DoxyItemize}
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md241}{}\doxysubsubsection{Miscellaneous}\label{md_submodules_Catch2_docs_release-notes_autotoc_md241}
+
+\begin{DoxyItemize}
+\item Deprecated {\ttfamily Parse\+And\+Add\+Catch\+Tests} C\+Make integration (\#2092)
+\begin{DoxyItemize}
+\item It is impossible to implement it properly for all the different test case variants Catch2 provides, and there are better options provided.
+\item Use {\ttfamily catch\+\_\+discover\+\_\+tests} instead, which uses runtime information about available tests.
+\end{DoxyItemize}
+\item Fixed bug in {\ttfamily catch\+\_\+discover\+\_\+tests} that would cause it to fail when used in specific project structures (\#2119)
+\item Added Bazel build file
+\item Added an experimental static library target to C\+Make
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md242}{}\doxysubsection{2.\+13.\+3}\label{md_submodules_Catch2_docs_release-notes_autotoc_md242}
+\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md243}{}\doxysubsubsection{Fixes}\label{md_submodules_Catch2_docs_release-notes_autotoc_md243}
+
+\begin{DoxyItemize}
+\item Fixed possible infinite loop when combining generators with section filter ({\ttfamily -\/c} option) (\#2025)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md244}{}\doxysubsubsection{Miscellaneous}\label{md_submodules_Catch2_docs_release-notes_autotoc_md244}
+
+\begin{DoxyItemize}
+\item Fixed {\ttfamily Parse\+And\+Add\+Catch\+Tests} not finding {\ttfamily T\+E\+S\+T\+\_\+\+C\+A\+SE}s without tags (\#2055, \#2056)
+\item {\ttfamily Parse\+And\+Add\+Catch\+Tests} supports {\ttfamily C\+M\+P0110} policy for changing behaviour of {\ttfamily add\+\_\+test} (\#2057)
+\begin{DoxyItemize}
+\item This was the shortlived change in C\+Make 3.\+18.\+0 that temporarily broke {\ttfamily Parse\+And\+Add\+Catch\+Tests}
+\end{DoxyItemize}
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md245}{}\doxysubsection{2.\+13.\+2}\label{md_submodules_Catch2_docs_release-notes_autotoc_md245}
+\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md246}{}\doxysubsubsection{Improvements}\label{md_submodules_Catch2_docs_release-notes_autotoc_md246}
+
+\begin{DoxyItemize}
+\item Implemented workaround for Apple\+Clang shadowing bug (\#2030)
+\item Implemented workaround for N\+V\+CC I\+CE (\#2005, \#2027)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md247}{}\doxysubsubsection{Fixes}\label{md_submodules_Catch2_docs_release-notes_autotoc_md247}
+
+\begin{DoxyItemize}
+\item Fixed detection of {\ttfamily std\+::uncaught\+\_\+exceptions} support under non-\/msvc platforms (\#2021)
+\item Fixed the experimental stdout/stderr capture under Windows (\#2013)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md248}{}\doxysubsubsection{Miscellaneous}\label{md_submodules_Catch2_docs_release-notes_autotoc_md248}
+
+\begin{DoxyItemize}
+\item {\ttfamily catch\+\_\+discover\+\_\+tests} has been improved significantly (\#2023, \#2039)
+\begin{DoxyItemize}
+\item You can now specify which reporter should be used
+\item You can now modify where the output will be written
+\item {\ttfamily W\+O\+R\+K\+I\+N\+G\+\_\+\+D\+I\+R\+E\+C\+T\+O\+RY} setting is respected
+\end{DoxyItemize}
+\item {\ttfamily Parse\+And\+Add\+Catch\+Tests} now supports {\ttfamily T\+E\+M\+P\+L\+A\+T\+E\+\_\+\+T\+E\+S\+T\+\_\+\+C\+A\+SE} macros (\#2031)
+\item Various documentation fixes and improvements (\#2022, \#2028, \#2034)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md249}{}\doxysubsection{2.\+13.\+1}\label{md_submodules_Catch2_docs_release-notes_autotoc_md249}
+\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md250}{}\doxysubsubsection{Improvements}\label{md_submodules_Catch2_docs_release-notes_autotoc_md250}
+
+\begin{DoxyItemize}
+\item {\ttfamily Parse\+And\+Add\+Catch\+Tests} handles C\+Make v3.\+18.\+0 correctly (\#1984)
+\item Improved autodetection of {\ttfamily std\+::byte} (\#1992)
+\item Simplified implementation of templated test cases (\#2007)
+\begin{DoxyItemize}
+\item This should have a tiny positive effect on its compilation throughput
+\end{DoxyItemize}
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md251}{}\doxysubsubsection{Fixes}\label{md_submodules_Catch2_docs_release-notes_autotoc_md251}
+
+\begin{DoxyItemize}
+\item Automatic stringification of ranges handles sentinel ranges properly (\#2004)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md252}{}\doxysubsection{2.\+13.\+0}\label{md_submodules_Catch2_docs_release-notes_autotoc_md252}
+\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md253}{}\doxysubsubsection{Improvements}\label{md_submodules_Catch2_docs_release-notes_autotoc_md253}
+
+\begin{DoxyItemize}
+\item {\ttfamily G\+E\+N\+E\+R\+A\+TE} can now follow a {\ttfamily S\+E\+C\+T\+I\+ON} at the same level of nesting (\#1938)
+\begin{DoxyItemize}
+\item The {\ttfamily S\+E\+C\+T\+I\+ON}(s) before the {\ttfamily G\+E\+N\+E\+R\+A\+TE} will not be run multiple times, the following ones will.
+\end{DoxyItemize}
+\item Added {\ttfamily -\/D}/{\ttfamily -\/-\/min-\/duration} command line flag (\#1910)
+\begin{DoxyItemize}
+\item If a test takes longer to finish than the provided value, its name and duration will be printed.
+\item This flag is overriden by setting {\ttfamily -\/d}/{\ttfamily -\/-\/duration}.
+\end{DoxyItemize}
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md254}{}\doxysubsubsection{Fixes}\label{md_submodules_Catch2_docs_release-notes_autotoc_md254}
+
+\begin{DoxyItemize}
+\item {\ttfamily T\+A\+P\+Reporter} no longer skips successful assertions (\#1983)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md255}{}\doxysubsection{2.\+12.\+4}\label{md_submodules_Catch2_docs_release-notes_autotoc_md255}
+\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md256}{}\doxysubsubsection{Improvements}\label{md_submodules_Catch2_docs_release-notes_autotoc_md256}
+
+\begin{DoxyItemize}
+\item Added support for Mac\+OS on A\+RM (\#1971)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md257}{}\doxysubsection{2.\+12.\+3}\label{md_submodules_Catch2_docs_release-notes_autotoc_md257}
+\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md258}{}\doxysubsubsection{Fixes}\label{md_submodules_Catch2_docs_release-notes_autotoc_md258}
+
+\begin{DoxyItemize}
+\item {\ttfamily G\+E\+N\+E\+R\+A\+TE} nested in a for loop no longer creates multiple generators (\#1913)
+\item Fixed copy paste error breaking {\ttfamily T\+E\+M\+P\+L\+A\+T\+E\+\_\+\+T\+E\+S\+T\+\_\+\+C\+A\+S\+E\+\_\+\+S\+IG} for 6 or more arguments (\#1954)
+\item Fixed potential UB when handling non-\/\+A\+S\+C\+II characters in C\+LI args (\#1943)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md259}{}\doxysubsubsection{Improvements}\label{md_submodules_Catch2_docs_release-notes_autotoc_md259}
+
+\begin{DoxyItemize}
+\item There can be multiple calls to {\ttfamily G\+E\+N\+E\+R\+A\+TE} on a single line
+\item Improved {\ttfamily fno-\/except} support for platforms that do not provide shims for exception-\/related std functions (\#1950)
+\begin{DoxyItemize}
+\item E.\+g. the Green Hills C++ compiler
+\end{DoxyItemize}
+\item Xml\+Reporter now also reports test-\/case-\/level statistics (\#1958)
+\begin{DoxyItemize}
+\item This is done via a new element, {\ttfamily Overall\+Results\+Cases}
+\end{DoxyItemize}
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md260}{}\doxysubsubsection{Miscellaneous}\label{md_submodules_Catch2_docs_release-notes_autotoc_md260}
+
+\begin{DoxyItemize}
+\item Added {\ttfamily .clang-\/format} file to the repo (\#1182, \#1920)
+\item Rewrote contributing docs
+\begin{DoxyItemize}
+\item They should explain the different levels of testing and so on much better
+\end{DoxyItemize}
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md261}{}\doxysubsection{2.\+12.\+2}\label{md_submodules_Catch2_docs_release-notes_autotoc_md261}
+\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md262}{}\doxysubsubsection{Fixes}\label{md_submodules_Catch2_docs_release-notes_autotoc_md262}
+
+\begin{DoxyItemize}
+\item Fixed compilation failure if {\ttfamily is\+\_\+range} A\+DL found deleted function (\#1929)
+\item Fixed potential UB in {\ttfamily C\+A\+P\+T\+U\+RE} if the expression contained non-\/\+A\+S\+C\+II characters (\#1925)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md263}{}\doxysubsubsection{Improvements}\label{md_submodules_Catch2_docs_release-notes_autotoc_md263}
+
+\begin{DoxyItemize}
+\item {\ttfamily std\+::result\+\_\+of} is not used if {\ttfamily std\+::invoke\+\_\+result} is available (\#1934)
+\item J\+Unit reporter writes out {\ttfamily status} attribute for tests (\#1899)
+\item Suppresed clang-\/tidy\textquotesingle{}s {\ttfamily hicpp-\/vararg} warning (\#1921)
+\begin{DoxyItemize}
+\item Catch2 was already suppressing the {\ttfamily cppcoreguidelines-\/pro-\/type-\/vararg} alias of the warning
+\end{DoxyItemize}
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md264}{}\doxysubsection{2.\+12.\+1}\label{md_submodules_Catch2_docs_release-notes_autotoc_md264}
+\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md265}{}\doxysubsubsection{Fixes}\label{md_submodules_Catch2_docs_release-notes_autotoc_md265}
+
+\begin{DoxyItemize}
+\item Vector matchers now support initializer list literals better
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md266}{}\doxysubsubsection{Improvements}\label{md_submodules_Catch2_docs_release-notes_autotoc_md266}
+
+\begin{DoxyItemize}
+\item Added support for {\ttfamily $^\wedge$} (bitwise xor) to {\ttfamily C\+H\+E\+CK} and {\ttfamily R\+E\+Q\+U\+I\+RE}
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md267}{}\doxysubsection{2.\+12.\+0}\label{md_submodules_Catch2_docs_release-notes_autotoc_md267}
+\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md268}{}\doxysubsubsection{Improvements}\label{md_submodules_Catch2_docs_release-notes_autotoc_md268}
+
+\begin{DoxyItemize}
+\item Running tests in random order ({\ttfamily -\/-\/order rand}) has been reworked significantly (\#1908)
+\begin{DoxyItemize}
+\item Given same seed, all platforms now produce the same order
+\item Given same seed, the relative order of tests does not change if you select only a subset of them
+\end{DoxyItemize}
+\item Vector matchers support custom allocators (\#1909)
+\item {\ttfamily $\vert$} and {\ttfamily \&} (bitwise or and bitwise and) are now supported in {\ttfamily C\+H\+E\+CK} and {\ttfamily R\+E\+Q\+U\+I\+RE}
+\begin{DoxyItemize}
+\item The resulting type must be convertible to {\ttfamily bool}
+\end{DoxyItemize}
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md269}{}\doxysubsubsection{Fixes}\label{md_submodules_Catch2_docs_release-notes_autotoc_md269}
+
+\begin{DoxyItemize}
+\item Fixed computation of benchmarking column widths in Console\+Reporter (\#1885, \#1886)
+\item Suppressed clang-\/tidy\textquotesingle{}s {\ttfamily cppcoreguidelines-\/pro-\/type-\/vararg} in assertions (\#1901)
+\begin{DoxyItemize}
+\item It was a false positive trigered by the new warning support workaround
+\end{DoxyItemize}
+\item Fixed bug in test specification parser handling of OR\textquotesingle{}d patterns using escaping (\#1905)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md270}{}\doxysubsubsection{Miscellaneous}\label{md_submodules_Catch2_docs_release-notes_autotoc_md270}
+
+\begin{DoxyItemize}
+\item Worked around I\+BM XL\textquotesingle{}s codegen bug (\#1907)
+\begin{DoxyItemize}
+\item It would emit code for {\itshape destructors} of temporaries in an unevaluated context
+\end{DoxyItemize}
+\item Improved detection of stdlib\textquotesingle{}s support for {\ttfamily std\+::uncaught\+\_\+exceptions} (\#1911)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md271}{}\doxysubsection{2.\+11.\+3}\label{md_submodules_Catch2_docs_release-notes_autotoc_md271}
+\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md272}{}\doxysubsubsection{Fixes}\label{md_submodules_Catch2_docs_release-notes_autotoc_md272}
+
+\begin{DoxyItemize}
+\item Fixed compilation error caused by lambdas in assertions under M\+S\+VC
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md273}{}\doxysubsection{2.\+11.\+2}\label{md_submodules_Catch2_docs_release-notes_autotoc_md273}
+\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md274}{}\doxysubsubsection{Improvements}\label{md_submodules_Catch2_docs_release-notes_autotoc_md274}
+
+\begin{DoxyItemize}
+\item G\+CC and Clang now issue warnings for suspicious code in assertions (\#1880)
+\begin{DoxyItemize}
+\item E.\+g. {\ttfamily R\+E\+Q\+U\+I\+RE( int != unsigned int )} will now issue mixed signedness comparison warning
+\item This has always worked on M\+S\+VC, but it now also works for G\+CC and current Clang versions
+\end{DoxyItemize}
+\item Colorization of \char`\"{}\+Test filters\char`\"{} output should be more robust now
+\item {\ttfamily -\/-\/wait-\/for-\/keypress} now also accepts {\ttfamily never} as an option (\#1866)
+\item Reporters no longer round-\/off nanoseconds when reporting benchmarking results (\#1876)
+\item Catch2\textquotesingle{}s debug break now supports i\+OS while using Thumb instruction set (\#1862)
+\item It is now possible to customize benchmark\textquotesingle{}s warm-\/up time when running the test binary (\#1844)
+\begin{DoxyItemize}
+\item {\ttfamily -\/-\/benchmark-\/warmup-\/time \{ms\}}
+\end{DoxyItemize}
+\item User can now specify how Catch2 should break into debugger (\#1846)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md275}{}\doxysubsubsection{Fixes}\label{md_submodules_Catch2_docs_release-notes_autotoc_md275}
+
+\begin{DoxyItemize}
+\item Fixes missing {\ttfamily $<$random$>$} include in benchmarking (\#1831)
+\item Fixed missing {\ttfamily $<$iterator$>$} include in benchmarking (\#1874)
+\item \mbox{\hyperlink{structHidden}{Hidden}} test cases are now also tagged with {\ttfamily \mbox{[}!hide\mbox{]}} as per documentation (\#1847)
+\item Detection of whether libc provides {\ttfamily std\+::nextafter} has been improved (\#1854)
+\item Detection of {\ttfamily wmain} no longer incorrectly looks for {\ttfamily W\+I\+N32} macro (\#1849)
+\begin{DoxyItemize}
+\item Now it just detects Windows platform
+\end{DoxyItemize}
+\item Composing already-\/composed matchers no longer modifies the partially-\/composed matcher expression
+\begin{DoxyItemize}
+\item This bug has been present for the last $\sim$2 years and nobody reported it
+\end{DoxyItemize}
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md276}{}\doxysubsection{2.\+11.\+1}\label{md_submodules_Catch2_docs_release-notes_autotoc_md276}
+\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md277}{}\doxysubsubsection{Improvements}\label{md_submodules_Catch2_docs_release-notes_autotoc_md277}
+
+\begin{DoxyItemize}
+\item Breaking into debugger is supported on i\+OS (\#1817)
+\item {\ttfamily google-\/build-\/using-\/namespace} clang-\/tidy warning is suppressed (\#1799)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md278}{}\doxysubsubsection{Fixes}\label{md_submodules_Catch2_docs_release-notes_autotoc_md278}
+
+\begin{DoxyItemize}
+\item Clang on Windows is no longer assumed to implement M\+S\+VC\textquotesingle{}s traditional preprocessor (\#1806)
+\item {\ttfamily Object\+Storage} now behaves properly in {\ttfamily const} contexts (\#1820)
+\item {\ttfamily G\+E\+N\+E\+R\+A\+T\+E\+\_\+\+C\+O\+P\+Y(a, b)} now compiles properly (\#1809, \#1815)
+\item Some more cleanups in the benchmarking support
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md279}{}\doxysubsection{2.\+11.\+0}\label{md_submodules_Catch2_docs_release-notes_autotoc_md279}
+\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md280}{}\doxysubsubsection{Improvements}\label{md_submodules_Catch2_docs_release-notes_autotoc_md280}
+
+\begin{DoxyItemize}
+\item J\+Unit reporter output now contains more details in case of failure (\#1347, \#1719)
+\item Added Sonar\+Qube Test \mbox{\hyperlink{structData}{Data}} reporter (\#1738)
+\begin{DoxyItemize}
+\item It is in a separate header, just like the T\+AP, Automake, and Team\+City reporters
+\end{DoxyItemize}
+\item {\ttfamily range} generator now allows floating point numbers (\#1776)
+\item Reworked part of internals to increase throughput
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md281}{}\doxysubsubsection{Fixes}\label{md_submodules_Catch2_docs_release-notes_autotoc_md281}
+
+\begin{DoxyItemize}
+\item The single header version should contain full benchmarking support (\#1800)
+\item {\ttfamily \mbox{[}.foo\mbox{]}} is now properly parsed as {\ttfamily \mbox{[}.\mbox{]}\mbox{[}foo\mbox{]}} when used on the command line (\#1798)
+\item Fixed compilation of benchmarking on platforms where {\ttfamily steady\+\_\+clock\+::period} is not {\ttfamily std\+::nano} (\#1794)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md282}{}\doxysubsection{2.\+10.\+2}\label{md_submodules_Catch2_docs_release-notes_autotoc_md282}
+\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md283}{}\doxysubsubsection{Improvements}\label{md_submodules_Catch2_docs_release-notes_autotoc_md283}
+
+\begin{DoxyItemize}
+\item Catch2 will now compile on platform where {\ttfamily I\+N\+F\+I\+N\+I\+TY} is double (\#1782)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md284}{}\doxysubsubsection{Fixes}\label{md_submodules_Catch2_docs_release-notes_autotoc_md284}
+
+\begin{DoxyItemize}
+\item Warning suppressed during listener registration will no longer leak
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md285}{}\doxysubsection{2.\+10.\+1}\label{md_submodules_Catch2_docs_release-notes_autotoc_md285}
+\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md286}{}\doxysubsubsection{Improvements}\label{md_submodules_Catch2_docs_release-notes_autotoc_md286}
+
+\begin{DoxyItemize}
+\item Catch2 now guards itself against {\ttfamily min} and {\ttfamily max} macros from {\ttfamily windows.\+h} (\#1772)
+\item Templated tests will now compile with I\+CC (\#1748)
+\item {\ttfamily Within\+U\+LP} matcher now uses scientific notation for stringification (\#1760)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md287}{}\doxysubsubsection{Fixes}\label{md_submodules_Catch2_docs_release-notes_autotoc_md287}
+
+\begin{DoxyItemize}
+\item Templated tests no longer trigger {\ttfamily -\/Wunused-\/templates} (\#1762)
+\item Suppressed clang-\/analyzer false positive in context getter (\#1230, \#1735)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md288}{}\doxysubsubsection{Miscellaneous}\label{md_submodules_Catch2_docs_release-notes_autotoc_md288}
+
+\begin{DoxyItemize}
+\item C\+Make no longer prohibits in-\/tree build when Catch2 is used as a subproject (\#1773, \#1774)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md289}{}\doxysubsection{2.\+10.\+0}\label{md_submodules_Catch2_docs_release-notes_autotoc_md289}
+\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md290}{}\doxysubsubsection{Fixes}\label{md_submodules_Catch2_docs_release-notes_autotoc_md290}
+
+\begin{DoxyItemize}
+\item {\ttfamily T\+E\+M\+P\+L\+A\+T\+E\+\_\+\+L\+I\+S\+T\+\_\+\+T\+E\+S\+T\+\_\+\+C\+A\+SE} now properly handles non-\/copyable and non-\/movable types (\#1729)
+\item Fixed compilation error on Solaris caused by a system header defining macro {\ttfamily TT} (\#1722, \#1723)
+\item {\ttfamily R\+E\+G\+I\+S\+T\+E\+R\+\_\+\+E\+N\+UM} will now fail at compilation time if the registered enum is too large
+\item Removed use of {\ttfamily std\+::is\+\_\+same\+\_\+v} in C++17 mode (\#1757)
+\item Fixed parsing of escaped special characters when reading test specs from a file (\#1767, \#1769)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md291}{}\doxysubsubsection{Improvements}\label{md_submodules_Catch2_docs_release-notes_autotoc_md291}
+
+\begin{DoxyItemize}
+\item Trailing and leading whitespace in test/section specs are now ignored.
+\item Writing to Android debug log now uses {\ttfamily \+\_\+\+\_\+android\+\_\+log\+\_\+write} instead of {\ttfamily \+\_\+\+\_\+android\+\_\+log\+\_\+print}
+\item Android logging support can now be turned on/off at compile time (\#1743)
+\begin{DoxyItemize}
+\item The toggle is {\ttfamily C\+A\+T\+C\+H\+\_\+\+C\+O\+N\+F\+I\+G\+\_\+\+A\+N\+D\+R\+O\+I\+D\+\_\+\+L\+O\+G\+W\+R\+I\+TE}
+\end{DoxyItemize}
+\item Added a generator that returns elements of a range
+\begin{DoxyItemize}
+\item Use via {\ttfamily from\+\_\+range(from, to)} or {\ttfamily from\+\_\+range(container)}
+\end{DoxyItemize}
+\item Added support for C\+R\+Ts that do not provide {\ttfamily std\+::nextafter} (\#1739)
+\begin{DoxyItemize}
+\item They must still provide global {\ttfamily nextafter\{f,l,\}}
+\item Enabled via {\ttfamily C\+A\+T\+C\+H\+\_\+\+C\+O\+N\+F\+I\+G\+\_\+\+G\+L\+O\+B\+A\+L\+\_\+\+N\+E\+X\+T\+A\+F\+T\+ER}
+\end{DoxyItemize}
+\item Special cased {\ttfamily Approx(inf)} not to match non-\/infinite values
+\begin{DoxyItemize}
+\item Very strictly speaking this might be a breaking change, but it should match user expectations better
+\end{DoxyItemize}
+\item The output of benchmarking through the Console reporter when {\ttfamily -\/-\/benchmark-\/no-\/analysis} is set is now much simpler (\#1768)
+\item Added a matcher that can be used for checking an exceptions message (\#1649, \#1728)
+\begin{DoxyItemize}
+\item The matcher helper function is called {\ttfamily Message}
+\item The exception must publicly derive from {\ttfamily std\+::exception}
+\item The matching is done exactly, including case and whitespace
+\end{DoxyItemize}
+\item Added a matcher that can be used for checking relative equality of floating point numbers (\#1746)
+\begin{DoxyItemize}
+\item Unlike {\ttfamily Approx}, it considers both sides when determining the allowed margin
+\item Special cases {\ttfamily NaN} and {\ttfamily I\+N\+F\+I\+N\+I\+TY} to match user expectations
+\item The matcher helper function is called {\ttfamily Within\+Rel}
+\end{DoxyItemize}
+\item The U\+LP matcher now allows for any possible distance between the two numbers
+\item The random number generators now use Catch-\/global instance of R\+NG (\#1734, \#1736)
+\begin{DoxyItemize}
+\item This means that nested random number generators actually generate different numbers
+\end{DoxyItemize}
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md292}{}\doxysubsubsection{Miscellaneous}\label{md_submodules_Catch2_docs_release-notes_autotoc_md292}
+
+\begin{DoxyItemize}
+\item In-\/repo P\+N\+Gs have been optimized to lower overhead of using Catch2 via git clone
+\item Catch2 now uses its own implementation of the U\+R\+BG concept
+\begin{DoxyItemize}
+\item In the future we also plan to use our own implementation of the distributions from {\ttfamily $<$random$>$} to provide cross-\/platform repeatability of random results
+\end{DoxyItemize}
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md293}{}\doxysubsection{2.\+9.\+2}\label{md_submodules_Catch2_docs_release-notes_autotoc_md293}
+\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md294}{}\doxysubsubsection{Fixes}\label{md_submodules_Catch2_docs_release-notes_autotoc_md294}
+
+\begin{DoxyItemize}
+\item {\ttfamily Chunk\+Generator} can now be used with chunks of size 0 (\#1671)
+\item Nested subsections are now run properly when specific section is run via the {\ttfamily -\/c} argument (\#1670, \#1673)
+\item Catch2 now consistently uses {\ttfamily \+\_\+\+W\+I\+N32} to detect Windows platform (\#1676)
+\item {\ttfamily T\+E\+M\+P\+L\+A\+T\+E\+\_\+\+L\+I\+S\+T\+\_\+\+T\+E\+S\+T\+\_\+\+C\+A\+SE} now support non-\/default constructible type lists (\#1697)
+\item Fixed a crash in the X\+M\+L\+Reporter when a benchmark throws exception during warmup (\#1706)
+\item Fixed a possible infinite loop in Compact\+Reporter (\#1715)
+\item Fixed {\ttfamily -\/w No\+Tests} returning 0 even when no tests were matched (\#1449, \#1683, \#1684)
+\item Fixed matcher compilation under Obj-\/\+C++ (\#1661)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md295}{}\doxysubsubsection{Improvements}\label{md_submodules_Catch2_docs_release-notes_autotoc_md295}
+
+\begin{DoxyItemize}
+\item {\ttfamily Repeat\+Generator} and {\ttfamily Fixed\+Values\+Generator} now fail to compile when used with {\ttfamily bool} (\#1692)
+\begin{DoxyItemize}
+\item Previously they would fail at runtime.
+\end{DoxyItemize}
+\item Catch2 now supports Android\textquotesingle{}s debug logging for its debug output (\#1710)
+\item Catch2 now detects and configures itself for the R\+TX platform (\#1693)
+\begin{DoxyItemize}
+\item You still need to pass {\ttfamily -\/-\/benchmark-\/no-\/analysis} if you are using benchmarking under R\+TX
+\end{DoxyItemize}
+\item Removed a \char`\"{}storage class is not first\char`\"{} warning when compiling Catch2 with P\+GI compiler (\#1717)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md296}{}\doxysubsubsection{Miscellaneous}\label{md_submodules_Catch2_docs_release-notes_autotoc_md296}
+
+\begin{DoxyItemize}
+\item Documentation now contains indication when a specific feature was introduced (\#1695)
+\begin{DoxyItemize}
+\item These start with Catch2 v2.\+3.\+0, (a bit over a year ago).
+\item {\ttfamily docs/contributing.\+md} has been updated to provide contributors guidance on how to add these to newly written documentation
+\end{DoxyItemize}
+\item Various other documentation improvements
+\begin{DoxyItemize}
+\item ToC fixes
+\item Documented {\ttfamily -\/-\/order} and {\ttfamily -\/-\/rng-\/seed} command line options
+\item Benchmarking documentation now clearly states that it requires opt-\/in
+\item Documented {\ttfamily C\+A\+T\+C\+H\+\_\+\+C\+O\+N\+F\+I\+G\+\_\+\+C\+P\+P17\+\_\+\+O\+P\+T\+I\+O\+N\+AL} and {\ttfamily C\+A\+T\+C\+H\+\_\+\+C\+O\+N\+F\+I\+G\+\_\+\+C\+P\+P17\+\_\+\+B\+Y\+TE} macros
+\item Properly documented built-\/in vector matchers
+\item Improved {\ttfamily $\ast$\+\_\+\+T\+H\+R\+O\+W\+S\+\_\+\+M\+A\+T\+C\+H\+ES} documentation a bit
+\end{DoxyItemize}
+\item C\+Make config file is now arch-\/independent even if {\ttfamily C\+M\+A\+K\+E\+\_\+\+S\+I\+Z\+E\+O\+F\+\_\+\+V\+O\+I\+D\+\_\+P} is in C\+Make cache (\#1660)
+\item {\ttfamily Catch\+Add\+Tests} now properly escapes {\ttfamily \mbox{[}} and {\ttfamily \mbox{]}} in test names (\#1634, \#1698)
+\item Reverted {\ttfamily Catch\+Add\+Tests} adding tags as C\+Test labels (\#1658)
+\begin{DoxyItemize}
+\item The script broke when test names were too long
+\item Overwriting {\ttfamily L\+A\+B\+E\+LS} caused trouble for users who set them manually
+\item C\+Make does not let users append to {\ttfamily L\+A\+B\+E\+LS} if the test name has spaces
+\end{DoxyItemize}
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md297}{}\doxysubsection{2.\+9.\+1}\label{md_submodules_Catch2_docs_release-notes_autotoc_md297}
+\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md298}{}\doxysubsubsection{Fixes}\label{md_submodules_Catch2_docs_release-notes_autotoc_md298}
+
+\begin{DoxyItemize}
+\item Fix benchmarking compilation failure in files without {\ttfamily C\+A\+T\+C\+H\+\_\+\+C\+O\+N\+F\+I\+G\+\_\+\+E\+X\+T\+E\+R\+N\+A\+L\+\_\+\+I\+N\+T\+E\+R\+F\+A\+C\+ES} (or implementation)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md299}{}\doxysubsection{2.\+9.\+0}\label{md_submodules_Catch2_docs_release-notes_autotoc_md299}
+\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md300}{}\doxysubsubsection{Improvements}\label{md_submodules_Catch2_docs_release-notes_autotoc_md300}
+
+\begin{DoxyItemize}
+\item The experimental benchmarking support has been replaced by integrating Nonius code (\#1616)
+\begin{DoxyItemize}
+\item This provides a much more featurefull micro-\/benchmarking support.
+\item Due to the compilation cost, it is disabled by default. See the documentation for details.
+\item As far as backwards compatibility is concerned, this feature is still considered experimental in that we might change the interface based on user feedback.
+\end{DoxyItemize}
+\item {\ttfamily Within\+U\+LP} matcher now shows the acceptable range (\#1581)
+\item Template test cases now support type lists (\#1627)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md301}{}\doxysubsection{2.\+8.\+0}\label{md_submodules_Catch2_docs_release-notes_autotoc_md301}
+\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md302}{}\doxysubsubsection{Improvements}\label{md_submodules_Catch2_docs_release-notes_autotoc_md302}
+
+\begin{DoxyItemize}
+\item Templated test cases no longer check whether the provided types are unique (\#1628)
+\begin{DoxyItemize}
+\item This allows you to e.\+g. test over {\ttfamily uint32\+\_\+t}, {\ttfamily uint64\+\_\+t}, and {\ttfamily size\+\_\+t} without compilation failing
+\end{DoxyItemize}
+\item The precision of floating point stringification can be modified by user (\#1612, \#1614)
+\item We now provide {\ttfamily R\+E\+G\+I\+S\+T\+E\+R\+\_\+\+E\+N\+UM} convenience macro for generating {\ttfamily String\+Maker} specializations for enums
+\begin{DoxyItemize}
+\item See the \char`\"{}\+String conversion\char`\"{} documentation for details
+\end{DoxyItemize}
+\item Added new set of macros for template test cases that enables the use of N\+T\+T\+Ps (\#1531, \#1609)
+\begin{DoxyItemize}
+\item See \char`\"{}\+Test cases and sections\char`\"{} documentation for details
+\end{DoxyItemize}
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md303}{}\doxysubsubsection{Fixes}\label{md_submodules_Catch2_docs_release-notes_autotoc_md303}
+
+\begin{DoxyItemize}
+\item {\ttfamily U\+N\+S\+C\+O\+P\+E\+D\+\_\+\+I\+N\+FO} macro now has a prefixed/disabled/prefixed+disabled versions (\#1611)
+\item Reporting errors at startup should no longer cause a segfault under certain circumstances (\#1626)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md304}{}\doxysubsubsection{Miscellaneous}\label{md_submodules_Catch2_docs_release-notes_autotoc_md304}
+
+\begin{DoxyItemize}
+\item C\+Make will now prevent you from attempting in-\/tree build (\#1636, \#1638)
+\begin{DoxyItemize}
+\item Previously it would break with an obscure error message during the build step
+\end{DoxyItemize}
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md305}{}\doxysubsection{2.\+7.\+2}\label{md_submodules_Catch2_docs_release-notes_autotoc_md305}
+\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md306}{}\doxysubsubsection{Improvements}\label{md_submodules_Catch2_docs_release-notes_autotoc_md306}
+
+\begin{DoxyItemize}
+\item Added an approximate vector matcher (\#1499)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md307}{}\doxysubsubsection{Fixes}\label{md_submodules_Catch2_docs_release-notes_autotoc_md307}
+
+\begin{DoxyItemize}
+\item Filters will no longer be shown if there were none
+\item Fixed compilation error when using Homebrew G\+CC on OS X (\#1588, \#1589)
+\item Fixed the console reporter not showing messages that start with a newline (\#1455, \#1470)
+\item Modified J\+Unit reporter\textquotesingle{}s output so that rng seed and filters are reported according to the J\+Unit schema (\#1598)
+\item Fixed some obscure warnings and static analysis passes
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md308}{}\doxysubsubsection{Miscellaneous}\label{md_submodules_Catch2_docs_release-notes_autotoc_md308}
+
+\begin{DoxyItemize}
+\item Various improvements to {\ttfamily Parse\+And\+Add\+Catch\+Tests} (\#1559, \#1601)
+\begin{DoxyItemize}
+\item When a target is parsed, it receives {\ttfamily Parse\+And\+Add\+Catch\+Tests\+\_\+\+T\+E\+S\+TS} property which summarizes found tests
+\item Fixed problem with tests not being found if the {\ttfamily Optional\+Catch\+Test\+Launcher} variables is used
+\item Including the script will no longer forcefully modify {\ttfamily C\+M\+A\+K\+E\+\_\+\+M\+I\+N\+I\+M\+U\+M\+\_\+\+R\+E\+Q\+U\+I\+R\+E\+D\+\_\+\+V\+E\+R\+S\+I\+ON}
+\item C\+Make object libraries are ignored when parsing to avoid needless warnings
+\end{DoxyItemize}
+\item {\ttfamily Catch\+Add\+Tests} now adds test\textquotesingle{}s tags to their C\+Test labels (\#1600)
+\item Added basic C\+Pack support to our build
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md309}{}\doxysubsection{2.\+7.\+1}\label{md_submodules_Catch2_docs_release-notes_autotoc_md309}
+\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md310}{}\doxysubsubsection{Improvements}\label{md_submodules_Catch2_docs_release-notes_autotoc_md310}
+
+\begin{DoxyItemize}
+\item Reporters now print out the filters applied to test cases (\#1550, \#1585)
+\item Added {\ttfamily G\+E\+N\+E\+R\+A\+T\+E\+\_\+\+C\+O\+PY} and {\ttfamily G\+E\+N\+E\+R\+A\+T\+E\+\_\+\+R\+EF} macros that can use variables inside the generator expression
+\begin{DoxyItemize}
+\item Because of the significant danger of lifetime issues, the default {\ttfamily G\+E\+N\+E\+R\+A\+TE} macro still does not allow variables
+\end{DoxyItemize}
+\item The {\ttfamily map} generator helper now deduces the mapped return type (\#1576)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md311}{}\doxysubsubsection{Fixes}\label{md_submodules_Catch2_docs_release-notes_autotoc_md311}
+
+\begin{DoxyItemize}
+\item Fixed Obj\+C++ compilation (\#1571)
+\item Fixed test tag parsing so that {\ttfamily \mbox{[}.foo\mbox{]}} is now parsed as {\ttfamily \mbox{[}.\mbox{]}\mbox{[}foo\mbox{]}}.
+\item Suppressed warning caused by the Windows headers defining SE codes in different manners (\#1575)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md312}{}\doxysubsection{2.\+7.\+0}\label{md_submodules_Catch2_docs_release-notes_autotoc_md312}
+\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md313}{}\doxysubsubsection{Improvements}\label{md_submodules_Catch2_docs_release-notes_autotoc_md313}
+
+\begin{DoxyItemize}
+\item {\ttfamily T\+E\+M\+P\+L\+A\+T\+E\+\_\+\+P\+R\+O\+D\+U\+C\+T\+\_\+\+T\+E\+S\+T\+\_\+\+C\+A\+SE} now uses the resulting type in the name, instead of the serial number (\#1544)
+\item Catch2\textquotesingle{}s single header is now strictly A\+S\+C\+II (\#1542)
+\item Added generator for random integral/floating point types
+\begin{DoxyItemize}
+\item The types are inferred within the {\ttfamily random} helper
+\end{DoxyItemize}
+\item Added back Range\+Generator (\#1526)
+\begin{DoxyItemize}
+\item Range\+Generator returns elements within a certain range
+\end{DoxyItemize}
+\item Added Chunk\+Generator generic transform (\#1538)
+\begin{DoxyItemize}
+\item A Chunk\+Generator returns the elements from different generator in chunks of n elements
+\end{DoxyItemize}
+\item Added {\ttfamily U\+N\+S\+C\+O\+P\+E\+D\+\_\+\+I\+N\+FO} (\#415, \#983, \#1522)
+\begin{DoxyItemize}
+\item This is a variant of {\ttfamily I\+N\+FO} that lives until next assertion/end of the test case.
+\end{DoxyItemize}
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md314}{}\doxysubsubsection{Fixes}\label{md_submodules_Catch2_docs_release-notes_autotoc_md314}
+
+\begin{DoxyItemize}
+\item All calls to C stdlib functions are now {\ttfamily std\+:\+:} qualified (\#1541)
+\begin{DoxyItemize}
+\item Code brought in from Clara was also updated.
+\end{DoxyItemize}
+\item Running tests will no longer open the specified output file twice (\#1545)
+\begin{DoxyItemize}
+\item This would cause trouble when the file was not a file, but rather a named pipe
+\item Fixes the C\+Lion/\+Resharper integration with Catch
+\end{DoxyItemize}
+\item Fixed {\ttfamily -\/Wunreachable-\/code} occurring with (old) ccache+cmake+clang combination (\#1540)
+\item Fixed {\ttfamily -\/Wdefaulted-\/function-\/deleted} warning with Clang 8 (\#1537)
+\item Catch2\textquotesingle{}s type traits and helpers are now properly namespaced inside {\ttfamily Catch\+:\+:} (\#1548)
+\item Fixed std\{out,err\} redirection for failing test (\#1514, \#1525)
+\begin{DoxyItemize}
+\item Somehow, this bug has been present for well over a year before it was reported
+\end{DoxyItemize}
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md315}{}\doxysubsubsection{Contrib}\label{md_submodules_Catch2_docs_release-notes_autotoc_md315}
+
+\begin{DoxyItemize}
+\item {\ttfamily Parse\+And\+Add\+Catch\+Tests} now properly escapes commas in the test name
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md316}{}\doxysubsection{2.\+6.\+1}\label{md_submodules_Catch2_docs_release-notes_autotoc_md316}
+\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md317}{}\doxysubsubsection{Improvements}\label{md_submodules_Catch2_docs_release-notes_autotoc_md317}
+
+\begin{DoxyItemize}
+\item The J\+Unit reporter now also reports random seed (\#1520, \#1521)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md318}{}\doxysubsubsection{Fixes}\label{md_submodules_Catch2_docs_release-notes_autotoc_md318}
+
+\begin{DoxyItemize}
+\item The T\+AP reporter now formats comments with test name properly (\#1529)
+\item {\ttfamily C\+A\+T\+C\+H\+\_\+\+R\+E\+Q\+U\+I\+R\+E\+\_\+\+T\+H\+R\+O\+WS}\textquotesingle{}s internals were unified with {\ttfamily R\+E\+Q\+U\+I\+R\+E\+\_\+\+T\+H\+R\+O\+WS} (\#1536)
+\begin{DoxyItemize}
+\item This fixes a potential {\ttfamily -\/Wunused-\/value} warning when used
+\end{DoxyItemize}
+\item Fixed a potential segfault when using any of the {\ttfamily -\/-\/list-\/$\ast$} options (\#1533, \#1534)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md319}{}\doxysubsection{2.\+6.\+0}\label{md_submodules_Catch2_docs_release-notes_autotoc_md319}
+{\bfseries{With this release the data generator feature is now fully supported.}}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md320}{}\doxysubsubsection{Improvements}\label{md_submodules_Catch2_docs_release-notes_autotoc_md320}
+
+\begin{DoxyItemize}
+\item Added {\ttfamily T\+E\+M\+P\+L\+A\+T\+E\+\_\+\+P\+R\+O\+D\+U\+C\+T\+\_\+\+T\+E\+S\+T\+\_\+\+C\+A\+SE} (\#1454, \#1468)
+\begin{DoxyItemize}
+\item This allows you to easily test various type combinations, see documentation for details
+\end{DoxyItemize}
+\item The error message for {\ttfamily \&\&} and {\ttfamily $\vert$$\vert$} inside assertions has been improved (\#1273, \#1480)
+\item The error message for chained comparisons inside assertions has been improved (\#1481)
+\item Added {\ttfamily String\+Maker} specialization for {\ttfamily std\+::optional} (\#1510)
+\item The generator interface has been redone once again (\#1516)
+\begin{DoxyItemize}
+\item It is no longer considered experimental and is fully supported
+\item The new interface supports \char`\"{}\+Input\char`\"{} generators
+\item The generator documentation has been fully updated
+\item We also added 2 generator examples
+\end{DoxyItemize}
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md321}{}\doxysubsubsection{Fixes}\label{md_submodules_Catch2_docs_release-notes_autotoc_md321}
+
+\begin{DoxyItemize}
+\item Fixed {\ttfamily -\/Wredundant-\/move} on newer Clang (\#1474)
+\item Removed unreachable mentions {\ttfamily std\+::current\+\_\+exception}, {\ttfamily std\+::rethrow\+\_\+exception} in no-\/exceptions mode (\#1462)
+\begin{DoxyItemize}
+\item This should fix compilation with I\+AR
+\end{DoxyItemize}
+\item Fixed missing {\ttfamily $<$type\+\_\+traits$>$} include (\#1494)
+\item Fixed various static analysis warnings
+\begin{DoxyItemize}
+\item Unrestored stream state in {\ttfamily Xml\+Writer} (\#1489)
+\item Potential division by zero in {\ttfamily estimate\+Clock\+Resolution} (\#1490)
+\item Uninitialized member in {\ttfamily Run\+Context} (\#1491)
+\item {\ttfamily Source\+Line\+Info} move ops are now marked {\ttfamily noexcept}
+\item {\ttfamily C\+A\+T\+C\+H\+\_\+\+B\+R\+E\+A\+K\+\_\+\+I\+N\+T\+O\+\_\+\+D\+E\+B\+U\+G\+G\+ER} is now always a function
+\end{DoxyItemize}
+\item Fix double run of a test case if user asks for a specific section (\#1394, \#1492)
+\item A\+N\+SI colour code output now respects {\ttfamily -\/o} flag and writes to the file as well (\#1502)
+\item Fixed detection of {\ttfamily std\+::variant} support for compilers other than Clang (\#1511)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md322}{}\doxysubsubsection{Contrib}\label{md_submodules_Catch2_docs_release-notes_autotoc_md322}
+
+\begin{DoxyItemize}
+\item {\ttfamily Parse\+And\+Add\+Catch\+Tests} has learned how to use {\ttfamily D\+I\+S\+A\+B\+L\+ED} C\+Test property (\#1452)
+\item {\ttfamily Parse\+And\+Add\+Catch\+Tests} now works when there is a whitspace before the test name (\#1493)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md323}{}\doxysubsubsection{Miscellaneous}\label{md_submodules_Catch2_docs_release-notes_autotoc_md323}
+
+\begin{DoxyItemize}
+\item We added new issue templates for reporting issues on Git\+Hub
+\item {\ttfamily contributing.\+md} has been updated to reflect the current test status (\#1484)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md324}{}\doxysubsection{2.\+5.\+0}\label{md_submodules_Catch2_docs_release-notes_autotoc_md324}
+\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md325}{}\doxysubsubsection{Improvements}\label{md_submodules_Catch2_docs_release-notes_autotoc_md325}
+
+\begin{DoxyItemize}
+\item Added support for templated tests via {\ttfamily T\+E\+M\+P\+L\+A\+T\+E\+\_\+\+T\+E\+S\+T\+\_\+\+C\+A\+SE} (\#1437)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md326}{}\doxysubsubsection{Fixes}\label{md_submodules_Catch2_docs_release-notes_autotoc_md326}
+
+\begin{DoxyItemize}
+\item Fixed compilation of {\ttfamily Predicate\+Matcher$<$const char$\ast$$>$} by removing partial specialization of {\ttfamily Matcher\+Method$<$T$\ast$$>$}
+\item Listeners now implicitly support any verbosity (\#1426)
+\item Fixed compilation with Embarcadero builder by introducing {\ttfamily Catch\+::isnan} polyfill (\#1438)
+\item Fixed {\ttfamily C\+A\+P\+T\+U\+RE} asserting for non-\/trivial captures (\#1436, \#1448)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md327}{}\doxysubsubsection{Miscellaneous}\label{md_submodules_Catch2_docs_release-notes_autotoc_md327}
+
+\begin{DoxyItemize}
+\item We should now be providing first party Conan support via \href{https://bintray.com/catchorg/Catch2}{\texttt{ https\+://bintray.\+com/catchorg/\+Catch2}} (\#1443)
+\item Added new section \char`\"{}deprecations and planned changes\char`\"{} to the documentation
+\begin{DoxyItemize}
+\item It contains summary of what is deprecated and might change with next major version
+\end{DoxyItemize}
+\item From this release forward, the released headers should be pgp signed (\#430)
+\begin{DoxyItemize}
+\item Key\+ID {\ttfamily E29C 46F3 B8\+A7 5028 6079 3B7D E\+C\+C9 C20E 314B 2360}
+\item or \href{https://codingnest.com/files/horenmar-publickey.asc}{\texttt{ https\+://codingnest.\+com/files/horenmar-\/publickey.\+asc}}
+\end{DoxyItemize}
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md328}{}\doxysubsection{2.\+4.\+2}\label{md_submodules_Catch2_docs_release-notes_autotoc_md328}
+\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md329}{}\doxysubsubsection{Improvements}\label{md_submodules_Catch2_docs_release-notes_autotoc_md329}
+
+\begin{DoxyItemize}
+\item Xml\+Reporter now also outputs the R\+NG seed that was used in a run (\#1404)
+\item {\ttfamily Catch\+::\+Session\+::apply\+Command\+Line} now also accepts {\ttfamily wchar\+\_\+t} arguments.
+\begin{DoxyItemize}
+\item However, Catch2 still does not support unicode.
+\end{DoxyItemize}
+\item Added {\ttfamily S\+T\+A\+T\+I\+C\+\_\+\+R\+E\+Q\+U\+I\+RE} macro (\#1356, \#1362)
+\item Catch2\textquotesingle{}s singleton\textquotesingle{}s are now cleaned up even if tests are run (\#1411)
+\begin{DoxyItemize}
+\item This is mostly useful as a FP prevention for users who define their own main.
+\end{DoxyItemize}
+\item Specifying an invalid reporter via {\ttfamily -\/r} is now reported sooner (\#1351, \#1422)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md330}{}\doxysubsubsection{Fixes}\label{md_submodules_Catch2_docs_release-notes_autotoc_md330}
+
+\begin{DoxyItemize}
+\item Stringification no longer assumes that {\ttfamily char} is signed (\#1399, \#1407)
+\begin{DoxyItemize}
+\item This caused a {\ttfamily Wtautological-\/compare} warning.
+\end{DoxyItemize}
+\item S\+F\+I\+N\+AE for {\ttfamily operator$<$$<$} no longer sees different overload set than the actual insertion (\#1403)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md331}{}\doxysubsubsection{Contrib}\label{md_submodules_Catch2_docs_release-notes_autotoc_md331}
+
+\begin{DoxyItemize}
+\item {\ttfamily catch\+\_\+discover\+\_\+tests} correctly adds tests with comma in name (\#1327, \#1409)
+\item Added a new customization point in how the tests are launched to {\ttfamily catch\+\_\+discover\+\_\+tests}
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md332}{}\doxysubsection{2.\+4.\+1}\label{md_submodules_Catch2_docs_release-notes_autotoc_md332}
+\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md333}{}\doxysubsubsection{Improvements}\label{md_submodules_Catch2_docs_release-notes_autotoc_md333}
+
+\begin{DoxyItemize}
+\item Added a String\+Maker for {\ttfamily std\+:\+:(w)string\+\_\+view} (\#1375, \#1376)
+\item Added a String\+Maker for {\ttfamily std\+::variant} (\#1380)
+\begin{DoxyItemize}
+\item This one is disabled by default to avoid increased compile-\/time drag
+\end{DoxyItemize}
+\item Added detection for cygwin environment without {\ttfamily std\+::to\+\_\+string} (\#1396, \#1397)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md334}{}\doxysubsubsection{Fixes}\label{md_submodules_Catch2_docs_release-notes_autotoc_md334}
+
+\begin{DoxyItemize}
+\item {\ttfamily Unordered\+Equals\+Matcher} will no longer accept erroneously accept vectors that share suffix, but are not permutation of the desired vector
+\item Abort after ({\ttfamily -\/x N}) can no longer be overshot by nested {\ttfamily R\+E\+Q\+U\+I\+R\+ES} and subsequently ignored (\#1391, \#1392)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md335}{}\doxysubsection{2.\+4.\+0}\label{md_submodules_Catch2_docs_release-notes_autotoc_md335}
+{\bfseries{This release brings two new experimental features, generator support and a {\ttfamily -\/fno-\/exceptions} support. Being experimental means that they will not be subject to the usual stability guarantees provided by semver.}}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md336}{}\doxysubsubsection{Improvements}\label{md_submodules_Catch2_docs_release-notes_autotoc_md336}
+
+\begin{DoxyItemize}
+\item Various small runtime performance improvements
+\item {\ttfamily C\+A\+P\+T\+U\+RE} macro is now variadic
+\item Added {\ttfamily A\+N\+D\+\_\+\+G\+I\+V\+EN} macro (\#1360)
+\item Added experimental support for data generators
+\begin{DoxyItemize}
+\item See their documentation for details
+\end{DoxyItemize}
+\item Added support for compiling and running Catch without exceptions
+\begin{DoxyItemize}
+\item Doing so limits the functionality somewhat
+\item Look \href{configuration.md\#disablingexceptions}{\texttt{ into the documentation}} for details
+\end{DoxyItemize}
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md337}{}\doxysubsubsection{Fixes}\label{md_submodules_Catch2_docs_release-notes_autotoc_md337}
+
+\begin{DoxyItemize}
+\item Suppressed {\ttfamily -\/Wnon-\/virtual-\/dtor} warnings in Matchers (\#1357)
+\item Suppressed {\ttfamily -\/Wunreachable-\/code} warnings in floating point matchers (\#1350)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md338}{}\doxysubsubsection{C\+Make}\label{md_submodules_Catch2_docs_release-notes_autotoc_md338}
+
+\begin{DoxyItemize}
+\item It is now possible to override which Python is used to run Catch\textquotesingle{}s tests (\#1365)
+\item Catch now provides infrastructure for adding tests that check compile-\/time configuration
+\item Catch no longer tries to install itself when used as a subproject (\#1373)
+\item Catch2\+Config\+Version.\+cmake is now generated as arch-\/independent (\#1368)
+\begin{DoxyItemize}
+\item This means that installing Catch from 32-\/bit machine and copying it to 64-\/bit one works
+\item This fixes conan installation of Catch
+\end{DoxyItemize}
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md339}{}\doxysubsection{2.\+3.\+0}\label{md_submodules_Catch2_docs_release-notes_autotoc_md339}
+{\bfseries{This release changes the include paths provided by our C\+Make and pkg-\/config integration. The proper include path for the single-\/header when using one of the above is now {\ttfamily $<$\mbox{\hyperlink{single__include_2catch2_2catch_8hpp_source}{catch2/catch.\+hpp}}$>$}. This change also necessitated changes to paths inside the repository, so that the single-\/header version is now at {\ttfamily \mbox{\hyperlink{single__include_2catch2_2catch_8hpp_source}{single\+\_\+include/catch2/catch.\+hpp}}}, rather than {\ttfamily single\+\_\+include/catch.\+hpp}.}}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md340}{}\doxysubsubsection{Fixes}\label{md_submodules_Catch2_docs_release-notes_autotoc_md340}
+
+\begin{DoxyItemize}
+\item Fixed Objective-\/\+C++ build
+\item {\ttfamily -\/Wunused-\/variable} suppression no longer leaks from Catch\textquotesingle{}s header under Clang
+\item Implementation of the experimental new output capture can now be disabled (\#1335)
+\begin{DoxyItemize}
+\item This allows building Catch2 on platforms that do not provide things like {\ttfamily dup} or {\ttfamily tmpfile}.
+\end{DoxyItemize}
+\item The J\+Unit and X\+ML reporters will no longer skip over successful tests when running without {\ttfamily -\/s} (\#1264, \#1267, \#1310)
+\begin{DoxyItemize}
+\item See improvements for more details
+\end{DoxyItemize}
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md341}{}\doxysubsubsection{Improvements}\label{md_submodules_Catch2_docs_release-notes_autotoc_md341}
+
+\begin{DoxyItemize}
+\item pkg-\/config and C\+Make integration has been rewritten
+\begin{DoxyItemize}
+\item If you use them, the new include path is {\ttfamily \#include $<$\mbox{\hyperlink{single__include_2catch2_2catch_8hpp_source}{catch2/catch.\+hpp}}$>$}
+\item C\+Make installation now also installs scripts from {\ttfamily contrib/}
+\item For details see the \href{cmake-integration.md\#top}{\texttt{ new documentation}}
+\end{DoxyItemize}
+\item Reporters now have a new customization point, {\ttfamily Reporter\+Preferences\+::should\+Report\+All\+Assertions}
+\begin{DoxyItemize}
+\item When this is set to {\ttfamily false} and the tests are run without {\ttfamily -\/s}, passing assertions are not sent to the reporter.
+\item Defaults to {\ttfamily false}.
+\end{DoxyItemize}
+\item Added {\ttfamily D\+Y\+N\+A\+M\+I\+C\+\_\+\+S\+E\+C\+T\+I\+ON}, a section variant that constructs its name using stream
+\begin{DoxyItemize}
+\item This means that you can do {\ttfamily D\+Y\+N\+A\+M\+I\+C\+\_\+\+S\+E\+C\+T\+I\+ON(\char`\"{}\+For X \+:= \char`\"{} $<$$<$ x)}.
+\end{DoxyItemize}
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md342}{}\doxysubsection{2.\+2.\+3}\label{md_submodules_Catch2_docs_release-notes_autotoc_md342}
+{\bfseries{To fix some of the bugs, some behavior had to change in potentially breaking manner.}} {\bfseries{This means that even though this is a patch release, it might not be a drop-\/in replacement.}}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md343}{}\doxysubsubsection{Fixes}\label{md_submodules_Catch2_docs_release-notes_autotoc_md343}
+
+\begin{DoxyItemize}
+\item Listeners are now called before reporter
+\begin{DoxyItemize}
+\item This was always documented to be the case, now it actually works that way
+\end{DoxyItemize}
+\item Catch\textquotesingle{}s commandline will no longer accept multiple reporters
+\begin{DoxyItemize}
+\item This was done because multiple reporters never worked properly and broke things in non-\/obvious ways
+\item {\bfseries{This has potential to be a breaking change}}
+\end{DoxyItemize}
+\item Min\+GW is now detected as Windows platform w/o S\+EH support (\#1257)
+\begin{DoxyItemize}
+\item This means that Catch2 no longer tries to use P\+O\+S\+IX signal handling when compiled with Min\+GW
+\end{DoxyItemize}
+\item Fixed potential UB in parsing tags using non-\/\+A\+S\+C\+II characters (\#1266)
+\begin{DoxyItemize}
+\item Note that Catch2 still supports only A\+S\+C\+II test names/tags/etc
+\end{DoxyItemize}
+\item {\ttfamily T\+E\+S\+T\+\_\+\+C\+A\+S\+E\+\_\+\+M\+E\+T\+H\+OD} can now be used on classnames containing commas (\#1245)
+\begin{DoxyItemize}
+\item You have to enclose the classname in extra set of parentheses
+\end{DoxyItemize}
+\item Fixed insufficient alt stack size for P\+O\+S\+IX signal handling (\#1225)
+\item Fixed compilation error on Android due to missing {\ttfamily std\+::to\+\_\+string} in C++11 mode (\#1280)
+\item Fixed the order of user-\/provided {\ttfamily F\+A\+L\+L\+B\+A\+C\+K\+\_\+\+S\+T\+R\+I\+N\+G\+I\+F\+I\+ER} in stringification machinery (\#1024)
+\begin{DoxyItemize}
+\item It was intended to be replacement for built-\/in fallbacks, but it was used {\itshape after} them.
+\item {\bfseries{This has potential to be a breaking change}}
+\end{DoxyItemize}
+\item Fixed compilation error when a type has an {\ttfamily operator$<$$<$} with templated lhs (\#1285, \#1306)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md344}{}\doxysubsubsection{Improvements}\label{md_submodules_Catch2_docs_release-notes_autotoc_md344}
+
+\begin{DoxyItemize}
+\item Added a new, experimental, output capture (\#1243)
+\begin{DoxyItemize}
+\item This capture can also redirect output written via C apis, e.\+g. {\ttfamily printf}
+\item To opt-\/in, define {\ttfamily C\+A\+T\+C\+H\+\_\+\+C\+O\+N\+F\+I\+G\+\_\+\+E\+X\+P\+E\+R\+I\+M\+E\+N\+T\+A\+L\+\_\+\+R\+E\+D\+I\+R\+E\+CT} in the implementation file
+\end{DoxyItemize}
+\item Added a new fallback stringifier for classes derived from {\ttfamily std\+::exception}
+\begin{DoxyItemize}
+\item Both {\ttfamily String\+Maker} specialization and {\ttfamily operator$<$$<$} overload are given priority
+\end{DoxyItemize}
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md345}{}\doxysubsubsection{Miscellaneous}\label{md_submodules_Catch2_docs_release-notes_autotoc_md345}
+
+\begin{DoxyItemize}
+\item {\ttfamily contrib/} now contains dbg scripts that skip over Catch\textquotesingle{}s internals (\#904, \#1283)
+\begin{DoxyItemize}
+\item {\ttfamily gdbinit} for gdb {\ttfamily lldbinit} for lldb
+\end{DoxyItemize}
+\item {\ttfamily Catch\+Add\+Tests.\+cmake} no longer strips whitespace from tests (\#1265, \#1281)
+\item Online documentation now describes {\ttfamily -\/-\/use-\/colour} option (\#1263)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md346}{}\doxysubsection{2.\+2.\+2}\label{md_submodules_Catch2_docs_release-notes_autotoc_md346}
+\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md347}{}\doxysubsubsection{Fixes}\label{md_submodules_Catch2_docs_release-notes_autotoc_md347}
+
+\begin{DoxyItemize}
+\item Fixed bug in {\ttfamily Within\+Abs\+::match()} failing spuriously (\#1228)
+\item Fixed clang-\/tidy diagnostic about virtual call in destructor (\#1226)
+\item Reduced the number of G\+CC warnings suppression leaking out of the header (\#1090, \#1091)
+\begin{DoxyItemize}
+\item Only {\ttfamily -\/Wparentheses} should be leaking now
+\end{DoxyItemize}
+\item Added upper bound on the time benchmark timer calibration is allowed to take (\#1237)
+\begin{DoxyItemize}
+\item On platforms where {\ttfamily std\+::chrono\+::high\+\_\+resolution\+\_\+clock}\textquotesingle{}s resolution is low, the calibration would appear stuck
+\end{DoxyItemize}
+\item Fixed compilation error when stringifying static arrays of {\ttfamily unsigned char}s (\#1238)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md348}{}\doxysubsubsection{Improvements}\label{md_submodules_Catch2_docs_release-notes_autotoc_md348}
+
+\begin{DoxyItemize}
+\item X\+ML encoder now hex-\/encodes invalid U\+T\+F-\/8 sequences (\#1207)
+\begin{DoxyItemize}
+\item This affects xml and junit reporters
+\item Some invalid U\+T\+F-\/8 parts are left as is, e.\+g. surrogate pairs. This is because certain extensions of U\+T\+F-\/8 allow them, such as W\+T\+F-\/8.
+\end{DoxyItemize}
+\item C\+LR objects ({\ttfamily T$^\wedge$}) can now be stringified (\#1216)
+\begin{DoxyItemize}
+\item This affects code compiled as C++/\+C\+LI
+\end{DoxyItemize}
+\item Added {\ttfamily Predicate\+Matcher}, a matcher that takes an arbitrary predicate function (\#1236)
+\begin{DoxyItemize}
+\item See \href{https://github.com/catchorg/Catch2/blob/v2.x/docs/matchers.md}{\texttt{ documentation for details}}
+\end{DoxyItemize}
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md349}{}\doxysubsubsection{Others}\label{md_submodules_Catch2_docs_release-notes_autotoc_md349}
+
+\begin{DoxyItemize}
+\item Modified C\+Make-\/installed pkg-\/config to allow {\ttfamily \#include $<$catch.\+hpp$>$}(\#1239)
+\begin{DoxyItemize}
+\item The plans to standardize on {\ttfamily \#include $<$\mbox{\hyperlink{single__include_2catch2_2catch_8hpp_source}{catch2/catch.\+hpp}}$>$} are still in effect
+\end{DoxyItemize}
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md350}{}\doxysubsection{2.\+2.\+1}\label{md_submodules_Catch2_docs_release-notes_autotoc_md350}
+\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md351}{}\doxysubsubsection{Fixes}\label{md_submodules_Catch2_docs_release-notes_autotoc_md351}
+
+\begin{DoxyItemize}
+\item Fixed compilation error when compiling Catch2 with {\ttfamily std=c++17} against libc++ (\#1214)
+\begin{DoxyItemize}
+\item Clara (Catch2\textquotesingle{}s C\+LI parsing library) used {\ttfamily std\+::optional} without including it explicitly
+\end{DoxyItemize}
+\item Fixed Catch2 return code always being 0 (\#1215)
+\begin{DoxyItemize}
+\item In the words of S\+TL, \char`\"{}\+We feel superbad about letting this in\char`\"{}
+\end{DoxyItemize}
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md352}{}\doxysubsection{2.\+2.\+0}\label{md_submodules_Catch2_docs_release-notes_autotoc_md352}
+\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md353}{}\doxysubsubsection{Fixes}\label{md_submodules_Catch2_docs_release-notes_autotoc_md353}
+
+\begin{DoxyItemize}
+\item \mbox{\hyperlink{structHidden}{Hidden}} tests are not listed by default when listing tests (\#1175)
+\begin{DoxyItemize}
+\item This makes {\ttfamily catch\+\_\+discover\+\_\+tests} C\+Make script work better
+\end{DoxyItemize}
+\item Fixed regression that meant {\ttfamily $<$windows.\+h$>$} could potentially not be included properly (\#1197)
+\item Fixed installing {\ttfamily Catch2\+Config\+Version.\+cmake} when Catch2 is a subproject.
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md354}{}\doxysubsubsection{Improvements}\label{md_submodules_Catch2_docs_release-notes_autotoc_md354}
+
+\begin{DoxyItemize}
+\item Added an option to warn (+ exit with error) when no tests were ran (\#1158)
+\begin{DoxyItemize}
+\item Use as {\ttfamily -\/w No\+Tests}
+\end{DoxyItemize}
+\item Added provisional support for Emscripten (\#1114)
+\item \href{https://github.com/catchorg/Catch2/blob/v2.x/docs/configuration.md\#fallback-stringifier}{\texttt{ Added a way to override the fallback stringifier}} (\#1024)
+\begin{DoxyItemize}
+\item This allows project\textquotesingle{}s own stringification machinery to be easily reused for Catch
+\end{DoxyItemize}
+\item {\ttfamily Catch\+::\+Session\+::run()} now accepts {\ttfamily char const $\ast$ const $\ast$}, allowing it to accept array of string literals (\#1031, \#1178)
+\begin{DoxyItemize}
+\item The embedded version of Clara was bumped to v1.\+1.\+3
+\end{DoxyItemize}
+\item Various minor performance improvements
+\item Added support for D\+J\+G\+PP D\+OS crosscompiler (\#1206)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md355}{}\doxysubsection{2.\+1.\+2}\label{md_submodules_Catch2_docs_release-notes_autotoc_md355}
+\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md356}{}\doxysubsubsection{Fixes}\label{md_submodules_Catch2_docs_release-notes_autotoc_md356}
+
+\begin{DoxyItemize}
+\item Fixed compilation error with {\ttfamily -\/fno-\/rtti} (\#1165)
+\item Fixed No\+Assertion warnings
+\item {\ttfamily operator$<$$<$} is used before range-\/based stringification (\#1172)
+\item Fixed {\ttfamily -\/Wpedantic} warnings (extra semicolons and binary literals) (\#1173)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md357}{}\doxysubsubsection{Improvements}\label{md_submodules_Catch2_docs_release-notes_autotoc_md357}
+
+\begin{DoxyItemize}
+\item Added {\ttfamily C\+A\+T\+C\+H\+\_\+\+V\+E\+R\+S\+I\+O\+N\+\_\+\{M\+A\+J\+OR,M\+I\+N\+OR,P\+A\+T\+CH\}} macros (\#1131)
+\item Added {\ttfamily Bright\+Yellow} colour for use in reporters (\#979)
+\begin{DoxyItemize}
+\item It is also used by Console\+Reporter for reconstructed expressions
+\end{DoxyItemize}
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md358}{}\doxysubsubsection{Other changes}\label{md_submodules_Catch2_docs_release-notes_autotoc_md358}
+
+\begin{DoxyItemize}
+\item Catch is now exported as a C\+Make package and linkable target (\#1170)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md359}{}\doxysubsection{2.\+1.\+1}\label{md_submodules_Catch2_docs_release-notes_autotoc_md359}
+\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md360}{}\doxysubsubsection{Improvements}\label{md_submodules_Catch2_docs_release-notes_autotoc_md360}
+
+\begin{DoxyItemize}
+\item Static arrays are now properly stringified like ranges across M\+S\+V\+C/\+G\+C\+C/\+Clang
+\item Embedded newer version of Clara -- v1.\+1.\+1
+\begin{DoxyItemize}
+\item This should fix some warnings dragged in from Clara
+\end{DoxyItemize}
+\item M\+S\+VC\textquotesingle{}s C\+LR exceptions are supported
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md361}{}\doxysubsubsection{Fixes}\label{md_submodules_Catch2_docs_release-notes_autotoc_md361}
+
+\begin{DoxyItemize}
+\item Fixed compilation when comparison operators do not return bool (\#1147)
+\item Fixed C\+LR exceptions blowing up the executable during translation (\#1138)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md362}{}\doxysubsubsection{Other changes}\label{md_submodules_Catch2_docs_release-notes_autotoc_md362}
+
+\begin{DoxyItemize}
+\item Many C\+Make changes
+\begin{DoxyItemize}
+\item {\ttfamily N\+O\+\_\+\+S\+E\+L\+F\+T\+E\+ST} option is deprecated, use {\ttfamily B\+U\+I\+L\+D\+\_\+\+T\+E\+S\+T\+I\+NG} instead.
+\item Catch specific C\+Make options were prefixed with {\ttfamily C\+A\+T\+C\+H\+\_\+} for namespacing purposes
+\item Other changes to simplify Catch2\textquotesingle{}s packaging
+\end{DoxyItemize}
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md363}{}\doxysubsection{2.\+1.\+0}\label{md_submodules_Catch2_docs_release-notes_autotoc_md363}
+\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md364}{}\doxysubsubsection{Improvements}\label{md_submodules_Catch2_docs_release-notes_autotoc_md364}
+
+\begin{DoxyItemize}
+\item Various performance improvements
+\begin{DoxyItemize}
+\item On top of the performance regression fixes
+\end{DoxyItemize}
+\item Experimental support for P\+CH was added (\#1061)
+\item {\ttfamily C\+A\+T\+C\+H\+\_\+\+C\+O\+N\+F\+I\+G\+\_\+\+E\+X\+T\+E\+R\+N\+A\+L\+\_\+\+I\+N\+T\+E\+R\+F\+A\+C\+ES} now brings in declarations of Console, Compact, X\+ML and J\+Unit reporters
+\item {\ttfamily Matcher\+Base} no longer has a pointless second template argument
+\item Reduced the number of warning suppressions that leak into user\textquotesingle{}s code
+\begin{DoxyItemize}
+\item Bugs in g++ 4.\+x and 5.\+x mean that some of them have to be left in
+\end{DoxyItemize}
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md365}{}\doxysubsubsection{Fixes}\label{md_submodules_Catch2_docs_release-notes_autotoc_md365}
+
+\begin{DoxyItemize}
+\item Fixed performance regression from Catch classic
+\begin{DoxyItemize}
+\item One of the performance improvement patches for Catch classic was not applied to Catch2
+\end{DoxyItemize}
+\item Fixed platform detection for i\+OS (\#1084)
+\item Fixed compilation when {\ttfamily g++} is used together with {\ttfamily libc++} (\#1110)
+\item Fixed Team\+City reporter compilation with the single header version
+\begin{DoxyItemize}
+\item To fix the underlying issue we will be versioning reporters in single\+\_\+include folder per release
+\end{DoxyItemize}
+\item The X\+ML reporter will now report {\ttfamily W\+A\+RN} messages even when not used with {\ttfamily -\/s}
+\item Fixed compilation when {\ttfamily Vector\+Contains} matcher was combined using {\ttfamily \&\&} (\#1092)
+\item Fixed test duration overflowing after 10 seconds (\#1125, \#1129)
+\item Fixed {\ttfamily std\+::uncaught\+\_\+exception} deprecation warning (\#1124)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md366}{}\doxysubsubsection{New features}\label{md_submodules_Catch2_docs_release-notes_autotoc_md366}
+
+\begin{DoxyItemize}
+\item New Matchers
+\begin{DoxyItemize}
+\item Regex matcher for strings, {\ttfamily Matches}.
+\item Set-\/equal matcher for vectors, {\ttfamily Unordered\+Equals}
+\item Floating point matchers, {\ttfamily Within\+Abs} and {\ttfamily Within\+U\+LP}.
+\end{DoxyItemize}
+\item Stringification now attempts to decompose all containers (\#606)
+\begin{DoxyItemize}
+\item Containers are objects that respond to A\+DL {\ttfamily begin(\+T)} and {\ttfamily end(\+T)}.
+\end{DoxyItemize}
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md367}{}\doxysubsubsection{Other changes}\label{md_submodules_Catch2_docs_release-notes_autotoc_md367}
+
+\begin{DoxyItemize}
+\item Reporters will now be versioned in the {\ttfamily single\+\_\+include} folder to ensure their compatibility with the last released version
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md368}{}\doxysubsection{2.\+0.\+1}\label{md_submodules_Catch2_docs_release-notes_autotoc_md368}
+\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md369}{}\doxysubsubsection{Breaking changes}\label{md_submodules_Catch2_docs_release-notes_autotoc_md369}
+
+\begin{DoxyItemize}
+\item Removed C++98 support
+\item Removed legacy reporter support
+\item Removed legacy generator support
+\begin{DoxyItemize}
+\item Generator support will come back later, reworked
+\end{DoxyItemize}
+\item Removed {\ttfamily Catch\+::to\+String} support
+\begin{DoxyItemize}
+\item The new stringification machinery uses {\ttfamily \mbox{\hyperlink{structCatch_1_1StringMaker}{Catch\+::\+String\+Maker}}} specializations first and {\ttfamily operator$<$$<$} overloads second.
+\end{DoxyItemize}
+\item Removed legacy {\ttfamily S\+C\+O\+P\+E\+D\+\_\+\+M\+SG} and {\ttfamily S\+C\+O\+P\+E\+D\+\_\+\+I\+N\+FO} macros
+\item Removed {\ttfamily I\+N\+T\+E\+R\+N\+A\+L\+\_\+\+C\+A\+T\+C\+H\+\_\+\+R\+E\+G\+I\+S\+T\+E\+R\+\_\+\+R\+E\+P\+O\+R\+T\+ER}
+\begin{DoxyItemize}
+\item {\ttfamily C\+A\+T\+C\+H\+\_\+\+R\+E\+G\+I\+S\+T\+E\+R\+\_\+\+R\+E\+P\+O\+R\+T\+ER} should be used to register reporters
+\end{DoxyItemize}
+\item Removed legacy {\ttfamily \mbox{[}hide\mbox{]}} tag
+\begin{DoxyItemize}
+\item {\ttfamily \mbox{[}.\mbox{]}}, {\ttfamily \mbox{[}.foo\mbox{]}} and {\ttfamily \mbox{[}!hide\mbox{]}} are still supported
+\end{DoxyItemize}
+\item Output into debugger is now colourized
+\item {\ttfamily $\ast$\+\_\+\+T\+H\+R\+O\+W\+S\+\_\+\+AS(expr, exception\+\_\+type)} now unconditionally appends {\ttfamily const\&} to the exception type.
+\item {\ttfamily C\+A\+T\+C\+H\+\_\+\+C\+O\+N\+F\+I\+G\+\_\+\+F\+A\+S\+T\+\_\+\+C\+O\+M\+P\+I\+LE} now affects the {\ttfamily C\+H\+E\+C\+K\+\_\+} family of assertions as well as {\ttfamily R\+E\+Q\+U\+I\+R\+E\+\_\+} family of assertions
+\begin{DoxyItemize}
+\item This is most noticeable in {\ttfamily C\+H\+E\+C\+K(throws())}, which would previously report failure, properly stringify the exception and continue. Now it will report failure and stop executing current section.
+\end{DoxyItemize}
+\item Removed deprecated matcher utility functions {\ttfamily Not}, {\ttfamily All\+Of} and {\ttfamily Any\+Of}.
+\begin{DoxyItemize}
+\item They are superseded by operators {\ttfamily !}, {\ttfamily \&\&} and {\ttfamily $\vert$$\vert$}, which are natural and do not have limited arity
+\end{DoxyItemize}
+\item Removed support for non-\/const comparison operators
+\begin{DoxyItemize}
+\item Non-\/const comparison operators are an abomination that should not exist
+\item They were breaking support for comparing function to function pointer
+\end{DoxyItemize}
+\item {\ttfamily std\+::pair} and {\ttfamily std\+::tuple} are no longer stringified by default
+\begin{DoxyItemize}
+\item This is done to avoid dragging in {\ttfamily $<$tuple$>$} and {\ttfamily $<$utility$>$} headers in common path
+\item Their stringification can be enabled per-\/file via new configuration macros
+\end{DoxyItemize}
+\item {\ttfamily Approx} is subtly different and hopefully behaves more as users would expect
+\begin{DoxyItemize}
+\item {\ttfamily Approx\+::scale} defaults to {\ttfamily 0.\+0}
+\item {\ttfamily Approx\+::epsilon} no longer applies to the larger of the two compared values, but only to the {\ttfamily Approx}\textquotesingle{}s value
+\item {\ttfamily I\+N\+F\+I\+N\+I\+TY == Approx(\+I\+N\+F\+I\+N\+I\+T\+Y)} returns true
+\end{DoxyItemize}
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md370}{}\doxysubsubsection{Improvements}\label{md_submodules_Catch2_docs_release-notes_autotoc_md370}
+
+\begin{DoxyItemize}
+\item Reporters and Listeners can be defined in files different from the main file
+\begin{DoxyItemize}
+\item The file has to define {\ttfamily C\+A\+T\+C\+H\+\_\+\+C\+O\+N\+F\+I\+G\+\_\+\+E\+X\+T\+E\+R\+N\+A\+L\+\_\+\+I\+N\+T\+E\+R\+F\+A\+C\+ES} before including catch.\+hpp.
+\end{DoxyItemize}
+\item Errors that happen during set up before main are now caught and properly reported once main is entered
+\begin{DoxyItemize}
+\item If you are providing your own main, you can access and use these as well.
+\end{DoxyItemize}
+\item New assertion macros, $\ast$\+\_\+\+T\+H\+R\+O\+W\+S\+\_\+\+M\+A\+T\+C\+H\+ES(expr, exception\+\_\+type, matcher) are provided
+\begin{DoxyItemize}
+\item As the arguments suggest, these allow you to assert that an expression throws desired type of exception and pass the exception to a matcher.
+\end{DoxyItemize}
+\item J\+Unit reporter no longer has significantly different output for test cases with and without sections
+\item Most assertions now support expressions containing commas (ie {\ttfamily R\+E\+Q\+U\+I\+RE(\mbox{\hyperlink{structfoo}{foo()}} == std\+::vector$<$int$>$\{1, 2, 3\});})
+\item Catch now contains experimental micro benchmarking support
+\begin{DoxyItemize}
+\item See {\ttfamily projects/\+Self\+Test/\+Benchmark.\+tests.\+cpp} for examples
+\item The support being experiment means that it can be changed without prior notice
+\end{DoxyItemize}
+\item Catch uses new C\+LI parsing library (Clara)
+\begin{DoxyItemize}
+\item Users can now easily add new command line options to the final executable
+\item This also leads to some changes in {\ttfamily \mbox{\hyperlink{classCatch_1_1Session}{Catch\+::\+Session}}} interface
+\end{DoxyItemize}
+\item All parts of matchers can be removed from a TU by defining {\ttfamily C\+A\+T\+C\+H\+\_\+\+C\+O\+N\+F\+I\+G\+\_\+\+D\+I\+S\+A\+B\+L\+E\+\_\+\+M\+A\+T\+C\+H\+E\+RS}
+\begin{DoxyItemize}
+\item This can be used to somewhat speed up compilation times
+\end{DoxyItemize}
+\item An experimental implementation of {\ttfamily C\+A\+T\+C\+H\+\_\+\+C\+O\+N\+F\+I\+G\+\_\+\+D\+I\+S\+A\+B\+LE} has been added
+\begin{DoxyItemize}
+\item Inspired by Doctest\textquotesingle{}s {\ttfamily D\+O\+C\+T\+E\+S\+T\+\_\+\+C\+O\+N\+F\+I\+G\+\_\+\+D\+I\+S\+A\+B\+LE}
+\item Useful for implementing tests in source files
+\begin{DoxyItemize}
+\item ie for functions in anonymous namespaces
+\end{DoxyItemize}
+\item Removes all assertions
+\item Prevents {\ttfamily T\+E\+S\+T\+\_\+\+C\+A\+SE} registrations
+\item Exception translators are not registered
+\item Reporters are not registered
+\item Listeners are not registered
+\end{DoxyItemize}
+\item Reporters/\+Listeners are now notified of fatal errors
+\begin{DoxyItemize}
+\item This means specific signals or structured exceptions
+\item The Reporter/\+Listener interface provides default, empty, implementation to preserve backward compatibility
+\end{DoxyItemize}
+\item Stringification of {\ttfamily std\+::chrono\+::duration} and {\ttfamily std\+::chrono\+::time\+\_\+point} is now supported
+\begin{DoxyItemize}
+\item Needs to be enabled by a per-\/file compile time configuration option
+\end{DoxyItemize}
+\item Add {\ttfamily pkg-\/config} support to C\+Make install command
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md371}{}\doxysubsubsection{Fixes}\label{md_submodules_Catch2_docs_release-notes_autotoc_md371}
+
+\begin{DoxyItemize}
+\item Don\textquotesingle{}t use console colour if running in X\+Code
+\item Explicit constructor in reporter base class
+\item Swept out {\ttfamily -\/Wweak-\/vtables}, {\ttfamily -\/Wexit-\/time-\/destructors}, {\ttfamily -\/Wglobal-\/constructors} warnings
+\item Compilation for Universal Windows Platform (U\+WP) is supported
+\begin{DoxyItemize}
+\item S\+EH handling and colorized output are disabled when compiling for U\+WP
+\end{DoxyItemize}
+\item Implemented a workaround for {\ttfamily std\+::uncaught\+\_\+exception} issues in libcxxrt
+\begin{DoxyItemize}
+\item These issues caused incorrect section traversals
+\item The workaround is only partial, user\textquotesingle{}s test can still trigger the issue by using {\ttfamily throw;} to rethrow an exception
+\end{DoxyItemize}
+\item Suppressed C4061 warning under M\+S\+VC
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md372}{}\doxysubsubsection{Internal changes}\label{md_submodules_Catch2_docs_release-notes_autotoc_md372}
+
+\begin{DoxyItemize}
+\item The development version now uses .cpp files instead of header files containing implementation.
+\begin{DoxyItemize}
+\item This makes partial rebuilds much faster during development
+\end{DoxyItemize}
+\item The expression decomposition layer has been rewritten
+\item The evaluation layer has been rewritten
+\item New library (Text\+Flow) is used for formatting text to output
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md373}{}\doxysubsection{Older versions}\label{md_submodules_Catch2_docs_release-notes_autotoc_md373}
+\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md374}{}\doxysubsubsection{1.\+12.\+x}\label{md_submodules_Catch2_docs_release-notes_autotoc_md374}
+\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md375}{}\doxyparagraph{1.\+12.\+2}\label{md_submodules_Catch2_docs_release-notes_autotoc_md375}
+\label{md_submodules_Catch2_docs_release-notes_autotoc_md376}%
+\Hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md376}%
+\doxysubparagraph*{Fixes}
+
+
+\begin{DoxyItemize}
+\item Fixed missing $<$cassert$>$ include
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md377}{}\doxyparagraph{1.\+12.\+1}\label{md_submodules_Catch2_docs_release-notes_autotoc_md377}
+\label{md_submodules_Catch2_docs_release-notes_autotoc_md378}%
+\Hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md378}%
+\doxysubparagraph*{Fixes}
+
+
+\begin{DoxyItemize}
+\item Fixed deprecation warning in {\ttfamily Scoped\+Message\+::$\sim$\+Scoped\+Message}
+\item All uses of {\ttfamily min} or {\ttfamily max} identifiers are now wrapped in parentheses
+\begin{DoxyItemize}
+\item This avoids problems when Windows headers define {\ttfamily min} and {\ttfamily max} macros
+\end{DoxyItemize}
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md379}{}\doxyparagraph{1.\+12.\+0}\label{md_submodules_Catch2_docs_release-notes_autotoc_md379}
+\label{md_submodules_Catch2_docs_release-notes_autotoc_md380}%
+\Hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md380}%
+\doxysubparagraph*{Fixes}
+
+
+\begin{DoxyItemize}
+\item Fixed compilation for strict C++98 mode (ie not gnu++98) and older compilers (\#1103)
+\item {\ttfamily I\+N\+FO} messages are included in the {\ttfamily xml} reporter output even without {\ttfamily -\/s} specified.
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md381}{}\doxysubsubsection{1.\+11.\+x}\label{md_submodules_Catch2_docs_release-notes_autotoc_md381}
+\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md382}{}\doxyparagraph{1.\+11.\+0}\label{md_submodules_Catch2_docs_release-notes_autotoc_md382}
+\label{md_submodules_Catch2_docs_release-notes_autotoc_md383}%
+\Hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md383}%
+\doxysubparagraph*{Fixes}
+
+
+\begin{DoxyItemize}
+\item The original expression in {\ttfamily R\+E\+Q\+U\+I\+R\+E\+\_\+\+F\+A\+L\+S\+E( expr )} is now reporter properly as {\ttfamily !( expr )} (\#1051)
+\begin{DoxyItemize}
+\item Previously the parentheses were missing and {\ttfamily x != y} would be expanded as {\ttfamily !x != x}
+\end{DoxyItemize}
+\item {\ttfamily Approx\+::\+Margin} is now inclusive (\#952)
+\begin{DoxyItemize}
+\item Previously it was meant and documented as inclusive, but the check itself wasn\textquotesingle{}t
+\item This means that {\ttfamily R\+E\+Q\+U\+I\+RE( 0.\+25f == Approx( 0.\+0f ).margin( 0.\+25f ) )} passes, instead of fails
+\end{DoxyItemize}
+\item {\ttfamily Random\+Number\+Generator\+::result\+\_\+type} is now unsigned (\#1050)
+\end{DoxyItemize}
+
+\label{md_submodules_Catch2_docs_release-notes_autotoc_md384}%
+\Hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md384}%
+\doxysubparagraph*{Improvements}
+
+
+\begin{DoxyItemize}
+\item {\ttfamily \+\_\+\+\_\+\+J\+E\+T\+B\+R\+A\+I\+N\+S\+\_\+\+I\+D\+E\+\_\+\+\_\+} macro handling is now C\+Lion version specific (\#1017)
+\begin{DoxyItemize}
+\item When C\+Lion 2017.\+3 or newer is detected, {\ttfamily \+\_\+\+\_\+\+C\+O\+U\+N\+T\+E\+R\+\_\+\+\_\+} is used instead of
+\end{DoxyItemize}
+\item Team\+City reporter now explicitly flushes output stream after each report (\#1057)
+\begin{DoxyItemize}
+\item On some platforms, output from redirected streams would show up only after the tests finished running
+\end{DoxyItemize}
+\item {\ttfamily Parse\+And\+Add\+Catch\+Tests} now can add test files as dependency to C\+Make configuration
+\begin{DoxyItemize}
+\item This means you do not have to manually rerun C\+Make configuration step to detect new tests
+\end{DoxyItemize}
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md385}{}\doxysubsubsection{1.\+10.\+x}\label{md_submodules_Catch2_docs_release-notes_autotoc_md385}
+\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md386}{}\doxyparagraph{1.\+10.\+0}\label{md_submodules_Catch2_docs_release-notes_autotoc_md386}
+\label{md_submodules_Catch2_docs_release-notes_autotoc_md387}%
+\Hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md387}%
+\doxysubparagraph*{Fixes}
+
+
+\begin{DoxyItemize}
+\item Evaluation layer has been rewritten (backported from Catch 2)
+\begin{DoxyItemize}
+\item The new layer is much simpler and fixes some issues (\#981)
+\end{DoxyItemize}
+\item Implemented workaround for VS 2017 raw string literal stringification bug (\#995)
+\item Fixed interaction between {\ttfamily \mbox{[}!shouldfail\mbox{]}} and {\ttfamily \mbox{[}!mayfail\mbox{]}} tags and sections
+\begin{DoxyItemize}
+\item Previously sections with failing assertions would be marked as failed, not failed-\/but-\/ok
+\end{DoxyItemize}
+\end{DoxyItemize}
+
+\label{md_submodules_Catch2_docs_release-notes_autotoc_md388}%
+\Hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md388}%
+\doxysubparagraph*{Improvements}
+
+
+\begin{DoxyItemize}
+\item Added \href{https://github.com/janwilmans/LibIdentify}{\texttt{ libidentify}} support
+\item Added \char`\"{}wait-\/for-\/keypress\char`\"{} option
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md389}{}\doxysubsubsection{1.\+9.\+x}\label{md_submodules_Catch2_docs_release-notes_autotoc_md389}
+\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md390}{}\doxyparagraph{1.\+9.\+6}\label{md_submodules_Catch2_docs_release-notes_autotoc_md390}
+\label{md_submodules_Catch2_docs_release-notes_autotoc_md391}%
+\Hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md391}%
+\doxysubparagraph*{Improvements}
+
+
+\begin{DoxyItemize}
+\item Catch\textquotesingle{}s runtime overhead has been significantly decreased (\#937, \#939)
+\item Added {\ttfamily -\/-\/list-\/extra-\/info} cli option (\#934).
+\begin{DoxyItemize}
+\item It lists all tests together with extra information, ie filename, line number and description.
+\end{DoxyItemize}
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md392}{}\doxyparagraph{1.\+9.\+5}\label{md_submodules_Catch2_docs_release-notes_autotoc_md392}
+\label{md_submodules_Catch2_docs_release-notes_autotoc_md393}%
+\Hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md393}%
+\doxysubparagraph*{Fixes}
+
+
+\begin{DoxyItemize}
+\item Truthy expressions are now reconstructed properly, not as booleans (\#914)
+\item Various warnings are no longer erroneously suppressed in test files (files that include {\ttfamily catch.\+hpp}, but do not define {\ttfamily C\+A\+T\+C\+H\+\_\+\+C\+O\+N\+F\+I\+G\+\_\+\+M\+A\+IN} or {\ttfamily C\+A\+T\+C\+H\+\_\+\+C\+O\+N\+F\+I\+G\+\_\+\+R\+U\+N\+N\+ER}) (\#871)
+\item Catch no longer fails to link when main is compiled as C++, but linked against Objective-\/C (\#855)
+\item Fixed incorrect gcc version detection when deciding to use {\ttfamily \+\_\+\+\_\+\+C\+O\+U\+N\+T\+E\+R\+\_\+\+\_\+} (\#928)
+\begin{DoxyItemize}
+\item Previously any G\+CC with minor version less than 3 would be incorrectly classified as not supporting {\ttfamily \+\_\+\+\_\+\+C\+O\+U\+N\+T\+E\+R\+\_\+\+\_\+}.
+\end{DoxyItemize}
+\item Suppressed C4996 warning caused by upcoming updated to M\+S\+VC 2017, marking {\ttfamily std\+::uncaught\+\_\+exception} as deprecated. (\#927)
+\end{DoxyItemize}
+
+\label{md_submodules_Catch2_docs_release-notes_autotoc_md394}%
+\Hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md394}%
+\doxysubparagraph*{Improvements}
+
+
+\begin{DoxyItemize}
+\item C\+Make integration script now incorporates debug messages and registers tests in an improved way (\#911)
+\item Various documentation improvements
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md395}{}\doxyparagraph{1.\+9.\+4}\label{md_submodules_Catch2_docs_release-notes_autotoc_md395}
+\label{md_submodules_Catch2_docs_release-notes_autotoc_md396}%
+\Hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md396}%
+\doxysubparagraph*{Fixes}
+
+
+\begin{DoxyItemize}
+\item {\ttfamily C\+A\+T\+C\+H\+\_\+\+F\+A\+IL} macro no longer causes compilation error without variadic macro support
+\item {\ttfamily I\+N\+FO} messages are no longer cleared after being reported once
+\end{DoxyItemize}
+
+\label{md_submodules_Catch2_docs_release-notes_autotoc_md397}%
+\Hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md397}%
+\doxysubparagraph*{Improvements and minor changes}
+
+
+\begin{DoxyItemize}
+\item Catch now uses {\ttfamily wmain} when compiled under Windows and {\ttfamily U\+N\+I\+C\+O\+DE} is defined.
+\begin{DoxyItemize}
+\item Note that Catch still officially supports only A\+S\+C\+II
+\end{DoxyItemize}
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md398}{}\doxyparagraph{1.\+9.\+3}\label{md_submodules_Catch2_docs_release-notes_autotoc_md398}
+\label{md_submodules_Catch2_docs_release-notes_autotoc_md399}%
+\Hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md399}%
+\doxysubparagraph*{Fixes}
+
+
+\begin{DoxyItemize}
+\item Completed the fix for (lack of) uint64\+\_\+t in earlier Visual Studios
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md400}{}\doxyparagraph{1.\+9.\+2}\label{md_submodules_Catch2_docs_release-notes_autotoc_md400}
+\label{md_submodules_Catch2_docs_release-notes_autotoc_md401}%
+\Hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md401}%
+\doxysubparagraph*{Improvements and minor changes}
+
+
+\begin{DoxyItemize}
+\item All of {\ttfamily Approx}\textquotesingle{}s member functions now accept strong typedefs in C++11 mode (\#888)
+\begin{DoxyItemize}
+\item Previously {\ttfamily Approx\+::scale}, {\ttfamily Approx\+::epsilon}, {\ttfamily Approx\+::margin} and {\ttfamily Approx\+::operator()} didn\textquotesingle{}t.
+\end{DoxyItemize}
+\end{DoxyItemize}
+
+\label{md_submodules_Catch2_docs_release-notes_autotoc_md402}%
+\Hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md402}%
+\doxysubparagraph*{Fixes}
+
+
+\begin{DoxyItemize}
+\item P\+O\+S\+IX signals are now disabled by default under Q\+NX (\#889)
+\begin{DoxyItemize}
+\item Q\+NX does not support current enough (2001) P\+O\+S\+IX specification
+\end{DoxyItemize}
+\item J\+Unit no longer counts exceptions as failures if given test case is marked as ok to fail.
+\item {\ttfamily \mbox{\hyperlink{classCatch_1_1Option}{Catch\+::\+Option}}} should now have its storage properly aligned.
+\item Catch no longer attempts to define {\ttfamily uint64\+\_\+t} on windows (\#862)
+\begin{DoxyItemize}
+\item This was causing trouble when compiled under Cygwin
+\end{DoxyItemize}
+\end{DoxyItemize}
+
+\label{md_submodules_Catch2_docs_release-notes_autotoc_md403}%
+\Hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md403}%
+\doxysubparagraph*{Other}
+
+
+\begin{DoxyItemize}
+\item Catch is now compiled under M\+S\+VC 2017 using {\ttfamily std\+:c++latest} (C++17 mode) in CI
+\item We now provide cmake script that autoregisters Catch tests into ctest.
+\begin{DoxyItemize}
+\item See {\ttfamily contrib} folder.
+\end{DoxyItemize}
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md404}{}\doxyparagraph{1.\+9.\+1}\label{md_submodules_Catch2_docs_release-notes_autotoc_md404}
+\label{md_submodules_Catch2_docs_release-notes_autotoc_md405}%
+\Hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md405}%
+\doxysubparagraph*{Fixes}
+
+
+\begin{DoxyItemize}
+\item Unexpected exceptions are no longer ignored by default (\#885, \#887)
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md406}{}\doxyparagraph{1.\+9.\+0}\label{md_submodules_Catch2_docs_release-notes_autotoc_md406}
+\label{md_submodules_Catch2_docs_release-notes_autotoc_md407}%
+\Hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md407}%
+\doxysubparagraph*{Improvements and minor changes}
+
+
+\begin{DoxyItemize}
+\item Catch no longer attempts to ensure the exception type passed by user in {\ttfamily R\+E\+Q\+U\+I\+R\+E\+\_\+\+T\+H\+R\+O\+W\+S\+\_\+\+AS} is a constant reference.
+\begin{DoxyItemize}
+\item It was causing trouble when {\ttfamily R\+E\+Q\+U\+I\+R\+E\+\_\+\+T\+H\+R\+O\+W\+S\+\_\+\+AS} was used inside templated functions
+\item This actually reverts changes made in v1.\+7.\+2
+\end{DoxyItemize}
+\item Catch\textquotesingle{}s {\ttfamily Version} struct should no longer be double freed when multiple instances of Catch tests are loaded into single program (\#858)
+\begin{DoxyItemize}
+\item It is now a static variable in an inline function instead of being an {\ttfamily extern}ed struct.
+\end{DoxyItemize}
+\item Attempt to register invalid tag or tag alias now throws instead of calling {\ttfamily exit()}.
+\begin{DoxyItemize}
+\item Because this happen before entering main, it still aborts execution
+\item Further improvements to this are coming
+\end{DoxyItemize}
+\item {\ttfamily C\+A\+T\+C\+H\+\_\+\+C\+O\+N\+F\+I\+G\+\_\+\+F\+A\+S\+T\+\_\+\+C\+O\+M\+P\+I\+LE} now speeds-\/up compilation of {\ttfamily R\+E\+Q\+U\+I\+R\+E$\ast$} assertions by further $\sim$15\%.
+\begin{DoxyItemize}
+\item The trade-\/off is disabling translation of unexpected exceptions into text.
+\end{DoxyItemize}
+\item When Catch is compiled using C++11, {\ttfamily Approx} is now constructible with anything that can be explicitly converted to {\ttfamily double}.
+\item Captured messages are now printed on unexpected exceptions
+\end{DoxyItemize}
+
+\label{md_submodules_Catch2_docs_release-notes_autotoc_md408}%
+\Hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md408}%
+\doxysubparagraph*{Fixes\+:}
+
+
+\begin{DoxyItemize}
+\item Clang\textquotesingle{}s {\ttfamily -\/Wexit-\/time-\/destructors} should be suppressed for Catch\textquotesingle{}s internals
+\item G\+CC\textquotesingle{}s {\ttfamily -\/Wparentheses} is now suppressed for all TU\textquotesingle{}s that include {\ttfamily catch.\+hpp}.
+\begin{DoxyItemize}
+\item This is functionally a revert of changes made in 1.\+8.\+0, where we tried using {\ttfamily \+\_\+\+Pragma} based suppression. This should have kept the suppression local to Catch\textquotesingle{}s assertions, but bugs in G\+CC\textquotesingle{}s handling of {\ttfamily \+\_\+\+Pragma}s in C++ mode meant that it did not always work.
+\end{DoxyItemize}
+\item You can now tell Catch to use C++11-\/based check when checking whether a type can be streamed to output.
+\begin{DoxyItemize}
+\item This fixes cases when an unstreamable type has streamable private base (\#877)
+\item \href{configuration.md\#catch_config_cpp11_stream_insertable_check}{\texttt{ Details can be found in documentation}}
+\end{DoxyItemize}
+\end{DoxyItemize}
+
+\label{md_submodules_Catch2_docs_release-notes_autotoc_md409}%
+\Hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md409}%
+\doxysubparagraph*{Other notes\+:}
+
+
+\begin{DoxyItemize}
+\item We have added VS 2017 to our CI
+\item Work on Catch 2 should start soon
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md410}{}\doxysubsubsection{1.\+8.\+x}\label{md_submodules_Catch2_docs_release-notes_autotoc_md410}
+\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md411}{}\doxyparagraph{1.\+8.\+2}\label{md_submodules_Catch2_docs_release-notes_autotoc_md411}
+\label{md_submodules_Catch2_docs_release-notes_autotoc_md412}%
+\Hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md412}%
+\doxysubparagraph*{Improvements and minor changes}
+
+
+\begin{DoxyItemize}
+\item T\+AP reporter now behaves as if {\ttfamily -\/s} was always set
+\begin{DoxyItemize}
+\item This should be more consistent with the protocol desired behaviour.
+\end{DoxyItemize}
+\item Compact reporter now obeys {\ttfamily -\/d yes} argument (\#780)
+\begin{DoxyItemize}
+\item The format is \char`\"{}\+X\+X\+X.\+123 s\+: $<$section-\/name$>$\char`\"{} (3 decimal places are always present).
+\item Before it did not report the durations at all.
+\end{DoxyItemize}
+\item X\+ML reporter now behaves the same way as Console reporter in regards to {\ttfamily I\+N\+FO}
+\begin{DoxyItemize}
+\item This means it reports {\ttfamily I\+N\+FO} messages on success, if output on success ({\ttfamily -\/s}) is enabled.
+\item Previously it only reported {\ttfamily I\+N\+FO} messages on failure.
+\end{DoxyItemize}
+\item {\ttfamily C\+A\+P\+T\+U\+R\+E(expr)} now stringifies {\ttfamily expr} in the same way assertion macros do (\#639)
+\item Listeners are now finally \href{event-listeners.md\#top}{\texttt{ documented}}.
+\begin{DoxyItemize}
+\item Listeners provide a way to hook into events generated by running your tests, including start and end of run, every test case, every section and every assertion.
+\end{DoxyItemize}
+\end{DoxyItemize}
+
+\label{md_submodules_Catch2_docs_release-notes_autotoc_md413}%
+\Hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md413}%
+\doxysubparagraph*{Fixes\+:}
+
+
+\begin{DoxyItemize}
+\item Catch no longer attempts to reconstruct expression that led to a fatal error (\#810)
+\begin{DoxyItemize}
+\item This fixes possible signal/\+S\+EH loop when processing expressions, where the signal was triggered by expression decomposition.
+\end{DoxyItemize}
+\item Fixed (C4265) missing virtual destructor warning in Matchers (\#844)
+\item {\ttfamily std\+::string}s are now taken by {\ttfamily const\&} everywhere (\#842).
+\begin{DoxyItemize}
+\item Previously some places were taking them by-\/value.
+\end{DoxyItemize}
+\item Catch should no longer change errno (\#835).
+\begin{DoxyItemize}
+\item This was caused by libstdc++ bug that we now work around.
+\end{DoxyItemize}
+\item Catch now provides {\ttfamily F\+A\+I\+L\+\_\+\+C\+H\+E\+C\+K( ... )} macro (\#765).
+\begin{DoxyItemize}
+\item Same as {\ttfamily F\+A\+I\+L( ... )}, but does not abort the test.
+\end{DoxyItemize}
+\item Functions like {\ttfamily fabs}, {\ttfamily tolower}, {\ttfamily memset}, {\ttfamily isalnum} are now used with {\ttfamily std\+:\+:} qualification (\#543).
+\item Clara no longer assumes first argument (binary name) is always present (\#729)
+\begin{DoxyItemize}
+\item If it is missing, empty string is used as default.
+\end{DoxyItemize}
+\item Clara no longer reads 1 character past argument string (\#830)
+\item Regression in Objective-\/C bindings (Matchers) fixed (\#854)
+\end{DoxyItemize}
+
+\label{md_submodules_Catch2_docs_release-notes_autotoc_md414}%
+\Hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md414}%
+\doxysubparagraph*{Other notes\+:}
+
+
+\begin{DoxyItemize}
+\item We have added VS 2013 and 2015 to our CI
+\item Catch Classic (1.\+x.\+x) now contains its own, forked, version of Clara (the argument parser).
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md415}{}\doxyparagraph{1.\+8.\+1}\label{md_submodules_Catch2_docs_release-notes_autotoc_md415}
+\label{md_submodules_Catch2_docs_release-notes_autotoc_md416}%
+\Hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md416}%
+\doxysubparagraph*{Fixes}
+
+Cygwin issue with {\ttfamily gettimeofday} -\/ {\ttfamily \#define} was not early enough\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md417}{}\doxyparagraph{1.\+8.\+0}\label{md_submodules_Catch2_docs_release-notes_autotoc_md417}
+\label{md_submodules_Catch2_docs_release-notes_autotoc_md418}%
+\Hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md418}%
+\doxysubparagraph*{New features/ minor changes}
+
+
+\begin{DoxyItemize}
+\item Matchers have new, simpler (and documented) interface.
+\begin{DoxyItemize}
+\item Catch provides string and vector matchers.
+\item For details see \href{matchers.md\#top}{\texttt{ Matchers documentation}}.
+\end{DoxyItemize}
+\item Changed console reporter test duration reporting format (\#322)
+\begin{DoxyItemize}
+\item Old format\+: {\ttfamily Some simple comparisons between doubles completed in 0.\+000123s}
+\item New format\+: {\ttfamily xxx.\+123s\+: Some simple comparisons between doubles} \+\_\+(\+There will always be exactly 3 decimal places)\+\_\+
+\end{DoxyItemize}
+\item Added opt-\/in leak detection under M\+S\+VC + Windows (\#439)
+\begin{DoxyItemize}
+\item Enable it by compiling Catch\textquotesingle{}s main with {\ttfamily C\+A\+T\+C\+H\+\_\+\+C\+O\+N\+F\+I\+G\+\_\+\+W\+I\+N\+D\+O\+W\+S\+\_\+\+C\+R\+T\+D\+BG}
+\end{DoxyItemize}
+\item Introduced new compile-\/time flag, {\ttfamily C\+A\+T\+C\+H\+\_\+\+C\+O\+N\+F\+I\+G\+\_\+\+F\+A\+S\+T\+\_\+\+C\+O\+M\+P\+I\+LE}, trading features for compilation speed.
+\begin{DoxyItemize}
+\item Moves debug breaks out of tests and into implementation, speeding up test compilation time ($\sim$10\% on linux).
+\item {\itshape More changes are coming}
+\end{DoxyItemize}
+\item Added \href{https://testanything.org/}{\texttt{ T\+AP (Test Anything Protocol)}} and \href{https://www.gnu.org/software/automake/manual/html_node/Log-files-generation-and-test-results-recording.html\#Log-files-generation-and-test-results-recording}{\texttt{ Automake}} reporters.
+\begin{DoxyItemize}
+\item These are not present in the default single-\/include header and need to be downloaded from Git\+Hub separately.
+\item For details see \href{build-systems.md\#top}{\texttt{ documentation about integrating with build systems}}.
+\end{DoxyItemize}
+\item X\+ML reporter now reports filename as part of the {\ttfamily Section} and {\ttfamily Test\+Case} tags.
+\item {\ttfamily Approx} now supports an optional margin of absolute error
+\begin{DoxyItemize}
+\item It has also received \href{assertions.md\#top}{\texttt{ new documentation}}.
+\end{DoxyItemize}
+\end{DoxyItemize}
+
+\label{md_submodules_Catch2_docs_release-notes_autotoc_md419}%
+\Hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md419}%
+\doxysubparagraph*{Fixes}
+
+
+\begin{DoxyItemize}
+\item Silenced C4312 (\char`\"{}conversion from int to \textquotesingle{}\+Class\+Name $\ast$\char`\"{}) warnings in the evaluate layer.
+\item Fixed C4512 (\char`\"{}assignment operator could not be generated\char`\"{}) warnings under V\+S2013.
+\item Cygwin compatibility fixes
+\begin{DoxyItemize}
+\item Signal handling is no longer compiled by default.
+\item Usage of {\ttfamily gettimeofday} inside Catch should no longer cause compilation errors.
+\end{DoxyItemize}
+\item Improved {\ttfamily -\/Wparentheses} suppression for gcc (\#674)
+\begin{DoxyItemize}
+\item When compiled with gcc 4.\+8 or newer, the suppression is localized to assertions only
+\item Otherwise it is suppressed for the whole TU
+\end{DoxyItemize}
+\item Fixed test spec parser issue (with escapes in multiple names)
+\end{DoxyItemize}
+
+\label{md_submodules_Catch2_docs_release-notes_autotoc_md420}%
+\Hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md420}%
+\doxysubparagraph*{Other}
+
+
+\begin{DoxyItemize}
+\item Various documentation fixes and improvements
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md421}{}\doxysubsubsection{1.\+7.\+x}\label{md_submodules_Catch2_docs_release-notes_autotoc_md421}
+\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md422}{}\doxyparagraph{1.\+7.\+2}\label{md_submodules_Catch2_docs_release-notes_autotoc_md422}
+\label{md_submodules_Catch2_docs_release-notes_autotoc_md423}%
+\Hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md423}%
+\doxysubparagraph*{Fixes and minor improvements}
+
+Xml\+:
+
+(technically the first two are breaking changes but are also fixes and arguably break few if any people)
+\begin{DoxyItemize}
+\item C-\/escape control characters instead of X\+ML encoding them (which requires X\+ML 1.\+1)
+\item Revert X\+ML output to X\+ML 1.\+0
+\item Can provide stylesheet references by extending the X\+ML reporter
+\item Added description and tags attributes to X\+ML Reporter
+\item Tags are closed and the stream flushed more eagerly to avoid stdout interpolation
+\end{DoxyItemize}
+
+Other\+:
+\begin{DoxyItemize}
+\item {\ttfamily R\+E\+Q\+U\+I\+R\+E\+\_\+\+T\+H\+R\+O\+W\+S\+\_\+\+AS} now catches exception by {\ttfamily const\&} and reports expected type
+\item In {\ttfamily S\+E\+C\+T\+I\+ON}s the file/ line is now of the {\ttfamily S\+E\+C\+T\+I\+ON}. not the {\ttfamily T\+E\+S\+T\+\_\+\+C\+A\+SE}
+\item Added std\+:\+: qualification to some functions from C stdlib
+\item Removed use of R\+T\+TI ({\ttfamily dynamic\+\_\+cast}) that had crept back in
+\item Silenced a few more warnings in different circumstances
+\item Travis improvements
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md424}{}\doxyparagraph{1.\+7.\+1}\label{md_submodules_Catch2_docs_release-notes_autotoc_md424}
+\label{md_submodules_Catch2_docs_release-notes_autotoc_md425}%
+\Hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md425}%
+\doxysubparagraph*{Fixes\+:}
+
+
+\begin{DoxyItemize}
+\item Fixed inconsistency in defining {\ttfamily N\+O\+M\+I\+N\+M\+AX} and {\ttfamily W\+I\+N32\+\_\+\+L\+E\+A\+N\+\_\+\+A\+N\+D\+\_\+\+M\+E\+AN} inside {\ttfamily catch.\+hpp}.
+\item Fixed S\+E\+H-\/related compilation error under older Min\+GW compilers, by making Windows S\+EH handling opt-\/in for compilers other than M\+S\+VC.
+\begin{DoxyItemize}
+\item For specifics, look into the \href{configuration.md\#top}{\texttt{ documentation}}.
+\end{DoxyItemize}
+\item Fixed compilation error under Min\+GW caused by improper compiler detection.
+\item Fixed X\+ML reporter sometimes leaving an empty output file when a test ends with signal/structured exception.
+\item Fixed X\+ML reporter not reporting captured stdout/stderr.
+\item Fixed possible infinite recursion in Windows S\+EH.
+\item Fixed possible compilation error caused by Catch\textquotesingle{}s operator overloads being ambiguous in regards to user-\/defined templated operators.
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md426}{}\doxyparagraph{1.\+7.\+0}\label{md_submodules_Catch2_docs_release-notes_autotoc_md426}
+\label{md_submodules_Catch2_docs_release-notes_autotoc_md427}%
+\Hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md427}%
+\doxysubparagraph*{Features/ Changes\+:}
+
+
+\begin{DoxyItemize}
+\item Catch now runs significantly faster for passing tests
+\begin{DoxyItemize}
+\item Microbenchmark focused on Catch\textquotesingle{}s overhead went from $\sim$3.4s to $\sim$0.7s.
+\item Real world test using \href{https://github.com/nlohmann/json}{\texttt{ J\+S\+ON for Modern C++}}\textquotesingle{}s test suite went from $\sim$6m 25s to $\sim$4m 14s.
+\end{DoxyItemize}
+\item Catch can now run specific sections within test cases.
+\begin{DoxyItemize}
+\item For now the support is only basic (no wildcards or tags), for details see the \href{command-line.md\#top}{\texttt{ documentation}}.
+\end{DoxyItemize}
+\item Catch now supports S\+EH on Windows as well as signals on Linux.
+\begin{DoxyItemize}
+\item After receiving a signal, Catch reports failing assertion and then passes the signal onto the previous handler.
+\end{DoxyItemize}
+\item Approx can be used to compare values against strong typedefs (available in C++11 mode only).
+\begin{DoxyItemize}
+\item Strong typedefs mean types that are explicitly convertible to double.
+\end{DoxyItemize}
+\item C\+H\+E\+CK macro no longer stops executing section if an exception happens.
+\item Certain characters (space, tab, etc) are now pretty printed.
+\begin{DoxyItemize}
+\item This means that a `char c = ' \textquotesingle{}; R\+E\+Q\+U\+I\+RE(c == \textquotesingle{}\textbackslash{}t\textquotesingle{});{\ttfamily would be printed as}\textquotesingle{} \textquotesingle{} == \textquotesingle{}\textbackslash{}t\textquotesingle{}{\ttfamily , instead of} == 9\`{}.
+\end{DoxyItemize}
+\end{DoxyItemize}
+
+\label{md_submodules_Catch2_docs_release-notes_autotoc_md428}%
+\Hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md428}%
+\doxysubparagraph*{Fixes\+:}
+
+
+\begin{DoxyItemize}
+\item Text formatting no longer attempts to access out-\/of-\/bounds characters under certain conditions.
+\item T\+H\+R\+OW family of assertions no longer trigger {\ttfamily -\/Wunused-\/value} on expressions containing explicit cast.
+\item Breaking into debugger under OS X works again and no longer required {\ttfamily D\+E\+B\+UG} to be defined.
+\item Compilation no longer breaks under certain compiler if a lambda is used inside assertion macro.
+\end{DoxyItemize}
+
+\label{md_submodules_Catch2_docs_release-notes_autotoc_md429}%
+\Hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md429}%
+\doxysubparagraph*{Other\+:}
+
+
+\begin{DoxyItemize}
+\item Catch\textquotesingle{}s C\+Make\+Lists now defines install command.
+\item Catch\textquotesingle{}s C\+Make\+Lists now generates projects with warnings enabled.
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md430}{}\doxysubsubsection{1.\+6.\+x}\label{md_submodules_Catch2_docs_release-notes_autotoc_md430}
+\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md431}{}\doxyparagraph{1.\+6.\+1}\label{md_submodules_Catch2_docs_release-notes_autotoc_md431}
+\label{md_submodules_Catch2_docs_release-notes_autotoc_md432}%
+\Hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md432}%
+\doxysubparagraph*{Features/ Changes\+:}
+
+
+\begin{DoxyItemize}
+\item Catch now supports breaking into debugger on Linux
+\end{DoxyItemize}
+
+\label{md_submodules_Catch2_docs_release-notes_autotoc_md433}%
+\Hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md433}%
+\doxysubparagraph*{Fixes\+:}
+
+
+\begin{DoxyItemize}
+\item Generators no longer leak memory (generators are still unsupported in general)
+\item J\+Unit reporter now reports U\+TC timestamps, instead of \char`\"{}tbd\char`\"{}
+\item {\ttfamily C\+H\+E\+C\+K\+\_\+\+T\+H\+AT} macro is now properly defined as {\ttfamily C\+A\+T\+C\+H\+\_\+\+C\+H\+E\+C\+K\+\_\+\+T\+H\+AT} when using {\ttfamily C\+A\+T\+C\+H\+\_\+} prefixed macros
+\end{DoxyItemize}
+
+\label{md_submodules_Catch2_docs_release-notes_autotoc_md434}%
+\Hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md434}%
+\doxysubparagraph*{Other\+:}
+
+
+\begin{DoxyItemize}
+\item Types with overloaded {\ttfamily \&\&} operator are no longer evaluated twice when used in an assertion macro.
+\item The use of {\ttfamily \+\_\+\+\_\+\+C\+O\+U\+N\+T\+E\+R\+\_\+\+\_\+} is suppressed when Catch is parsed by C\+Lion
+\begin{DoxyItemize}
+\item This change is not active when compiling a binary
+\end{DoxyItemize}
+\item Approval tests can now be run on Windows
+\item C\+Make will now warn if a file is present in the {\ttfamily include} folder but not is not enumerated as part of the project
+\item Catch now defines {\ttfamily N\+O\+M\+I\+N\+M\+AX} and {\ttfamily W\+I\+N32\+\_\+\+L\+E\+A\+N\+\_\+\+A\+N\+D\+\_\+\+M\+E\+AN} before including {\ttfamily windows.\+h}
+\begin{DoxyItemize}
+\item This can be disabled if needed, see \href{configuration.md\#top}{\texttt{ documentation}} for details.
+\end{DoxyItemize}
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md435}{}\doxyparagraph{1.\+6.\+0}\label{md_submodules_Catch2_docs_release-notes_autotoc_md435}
+\label{md_submodules_Catch2_docs_release-notes_autotoc_md436}%
+\Hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md436}%
+\doxysubparagraph*{Cmake/ projects\+:}
+
+
+\begin{DoxyItemize}
+\item Moved C\+Make\+Lists.\+txt to root, made it friendlier for C\+Lion and generating X\+Code and VS projects, and removed the manually maintained X\+Code and VS projects.
+\end{DoxyItemize}
+
+\label{md_submodules_Catch2_docs_release-notes_autotoc_md437}%
+\Hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md437}%
+\doxysubparagraph*{Features/ Changes\+:}
+
+
+\begin{DoxyItemize}
+\item Approx now supports {\ttfamily $>$=} and {\ttfamily $<$=}
+\item Can now use {\ttfamily \textbackslash{}} to escape chars in test names on command line
+\item Standardize C++11 feature toggles
+\end{DoxyItemize}
+
+\label{md_submodules_Catch2_docs_release-notes_autotoc_md438}%
+\Hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md438}%
+\doxysubparagraph*{Fixes\+:}
+
+
+\begin{DoxyItemize}
+\item Blue shell colour
+\item Missing argument to {\ttfamily C\+A\+T\+C\+H\+\_\+\+C\+H\+E\+C\+K\+\_\+\+T\+H\+R\+O\+WS}
+\item Don\textquotesingle{}t encode extended A\+S\+C\+II in X\+ML
+\item use {\ttfamily std\+::shuffle} on more compilers (fixes deprecation warning/error)
+\item Use {\ttfamily \+\_\+\+\_\+\+C\+O\+U\+N\+T\+E\+R\+\_\+\+\_\+} more consistently (where available)
+\end{DoxyItemize}
+
+\label{md_submodules_Catch2_docs_release-notes_autotoc_md439}%
+\Hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md439}%
+\doxysubparagraph*{Other\+:}
+
+
+\begin{DoxyItemize}
+\item Tweaks and changes to scripts -\/ particularly for Approval test -\/ to make them more portable
+\end{DoxyItemize}\hypertarget{md_submodules_Catch2_docs_release-notes_autotoc_md440}{}\doxysubsection{Even Older versions}\label{md_submodules_Catch2_docs_release-notes_autotoc_md440}
+Release notes were not maintained prior to v1.\+6.\+0, but you should be able to work them out from the Git history
+
+\DoxyHorRuler{0}
+
+
+\href{Readme.md\#top}{\texttt{ Home}} 

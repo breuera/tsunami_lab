@@ -1,0 +1,31 @@
+\label{_top}%
+ \hypertarget{md_submodules_Catch2_docs_release-process_autotoc_md442}{}\doxysection{How to release}\label{md_submodules_Catch2_docs_release-process_autotoc_md442}
+When enough changes have accumulated, it is time to release new version of Catch. This document describes the process in doing so, that no steps are forgotten. Note that all referenced scripts can be found in the {\ttfamily scripts/} directory.\hypertarget{md_submodules_Catch2_docs_release-process_autotoc_md443}{}\doxysubsection{Necessary steps}\label{md_submodules_Catch2_docs_release-process_autotoc_md443}
+These steps are necessary and have to be performed before each new release. They serve to make sure that the new release is correct and linked-\/to from the standard places.\hypertarget{md_submodules_Catch2_docs_release-process_autotoc_md444}{}\doxysubsubsection{Testing}\label{md_submodules_Catch2_docs_release-process_autotoc_md444}
+All of the tests are currently run in our CI setup based on Travis\+CI and App\+Veyor. As long as the last commit tested green, the release can proceed.\hypertarget{md_submodules_Catch2_docs_release-process_autotoc_md445}{}\doxysubsubsection{Incrementing version number}\label{md_submodules_Catch2_docs_release-process_autotoc_md445}
+Catch uses a variant of \href{http://semver.org/}{\texttt{ semantic versioning}}, with breaking A\+PI changes (and thus major version increments) being very rare. Thus, the release will usually increment the patch version, when it only contains couple of bugfixes, or minor version, when it contains new functionality, or larger changes in implementation of current functionality.
+
+After deciding which part of version number should be incremented, you can use one of the {\ttfamily $\ast$\+Release.py} scripts to perform the required changes to Catch.
+
+This will take care of generating the single include header, updating version numbers everywhere and pushing the new version to Wandbox.\hypertarget{md_submodules_Catch2_docs_release-process_autotoc_md446}{}\doxysubsubsection{Release notes}\label{md_submodules_Catch2_docs_release-process_autotoc_md446}
+Once a release is ready, release notes need to be written. They should summarize changes done since last release. For rough idea of expected notes see previous releases. Once written, release notes should be added to {\ttfamily docs/release-\/notes.\+md}.\hypertarget{md_submodules_Catch2_docs_release-process_autotoc_md447}{}\doxysubsubsection{Commit and push update to Git\+Hub}\label{md_submodules_Catch2_docs_release-process_autotoc_md447}
+After version number is incremented, single-\/include header is regenerated and release notes are updated, changes should be committed and pushed to Git\+Hub.\hypertarget{md_submodules_Catch2_docs_release-process_autotoc_md448}{}\doxysubsubsection{Release on Git\+Hub}\label{md_submodules_Catch2_docs_release-process_autotoc_md448}
+After pushing changes to Git\+Hub, Git\+Hub release {\itshape needs} to be created. Tag version and release title should be same as the new version, description should contain the release notes for the current release. Single header version of {\ttfamily catch.\+hpp} {\itshape needs} to be attached as a binary, as that is where the official download link links to. Preferably it should use linux line endings. All non-\/bundled reporters (Automake, T\+AP, Team\+City, Sonar\+Qube) should also be attached as binaries, as they might be dependent on a specific version of the single-\/include header.
+
+Since 2.\+5.\+0, the release tag and the \char`\"{}binaries\char`\"{} (headers) should be P\+GP signed.\hypertarget{md_submodules_Catch2_docs_release-process_autotoc_md449}{}\doxyparagraph{Signing a tag}\label{md_submodules_Catch2_docs_release-process_autotoc_md449}
+To create a signed tag, use {\ttfamily git tag -\/s $<$V\+E\+R\+S\+I\+ON$>$}, where {\ttfamily $<$V\+E\+R\+S\+I\+ON$>$} is the version being released, e.\+g. {\ttfamily git tag -\/s v2.\+6.\+0}.
+
+Use the version name as the short message and the release notes as the body (long) message.\hypertarget{md_submodules_Catch2_docs_release-process_autotoc_md450}{}\doxyparagraph{Signing the headers}\label{md_submodules_Catch2_docs_release-process_autotoc_md450}
+This will create A\+S\+C\+I\+I-\/armored signatures for the headers that are uploaded to the Git\+Hub release\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\$ gpg2 -\/-\/armor -\/-\/output catch.hpp.asc -\/-\/detach-\/sig catch.hpp}
+\DoxyCodeLine{\$ gpg2 -\/-\/armor -\/-\/output catch\_reporter\_automake.hpp.asc -\/-\/detach-\/sig catch\_reporter\_automake.hpp}
+\DoxyCodeLine{\$ gpg2 -\/-\/armor -\/-\/output catch\_reporter\_teamcity.hpp.asc -\/-\/detach-\/sig catch\_reporter\_teamcity.hpp}
+\DoxyCodeLine{\$ gpg2 -\/-\/armor -\/-\/output catch\_reporter\_tap.hpp.asc -\/-\/detach-\/sig catch\_reporter\_tap.hpp}
+\DoxyCodeLine{\$ gpg2 -\/-\/armor -\/-\/output catch\_reporter\_sonarqube.hpp.asc -\/-\/detach-\/sig catch\_reporter\_sonarqube.hpp}
+\end{DoxyCode}
+
+
+{\itshape G\+PG does not support signing multiple files in single invocation.} 
