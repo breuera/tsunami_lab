@@ -68,6 +68,8 @@ env.Append( CXXFLAGS = [ '-isystem', 'submodules/Catch2/single_include' ] )
 # get source files
 VariantDir( variant_dir = 'build/src',
             src_dir     = 'src' )
+VariantDir( variant_dir = 'build/include',
+            src_dir     = 'include' )
 
 env.sources = []
 env.tests = []

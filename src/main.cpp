@@ -4,9 +4,9 @@
  * @section DESCRIPTION
  * Entry-point for simulations.
  **/
-#include "patches/WavePropagation1d.h"
-#include "setups/DamBreak1d.h"
-#include "io/Csv.h"
+#include "../include/patches/WavePropagation1d.h"
+#include "../include/setups/DamBreak1d.h"
+#include "../include/io/Csv.h"
 #include <cstdlib>
 #include <iostream>
 #include <cmath>

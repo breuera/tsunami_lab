@@ -5,7 +5,7 @@
  * Tests the dam break setup.
  **/
 #include <catch2/catch.hpp>
-#include "DamBreak1d.h"
+#include "../../include/setups/DamBreak1d.h"
 
 TEST_CASE( "Test the one-dimensional dam break setup.", "[DamBreak1d]" ) {
   tsunami_lab::setups::DamBreak1d l_damBreak( 25,

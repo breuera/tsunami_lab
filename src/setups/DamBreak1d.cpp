@@ -4,7 +4,7 @@
  * @section DESCRIPTION
  * One-dimensional dam break problem.
  **/
-#include "DamBreak1d.h"
+#include "../../include/setups/DamBreak1d.h"
 
 tsunami_lab::setups::DamBreak1d::DamBreak1d( t_real i_heightLeft,
                                              t_real i_heightRight,

@@ -4,7 +4,7 @@
  * @section DESCRIPTION
  * Roe Riemann solver for the shallow water equations.
  **/
-#include "Roe.h"
+#include "../../include/solvers/Roe.h"
 #include <cmath>
 
 void tsunami_lab::solvers::Roe::waveSpeeds( t_real   i_hL,

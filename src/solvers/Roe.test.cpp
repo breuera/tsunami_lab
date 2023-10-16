@@ -6,7 +6,7 @@
  **/
 #include <catch2/catch.hpp>
 #define private public
-#include "Roe.h"
+#include "../../include/solvers/Roe.h"
 #undef public
 
 TEST_CASE( "Test the derivation of the Roe speeds.", "[RoeSpeeds]" ) {
