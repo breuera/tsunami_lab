@@ -23,11 +23,14 @@ jobs:
       - name: Dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install scons
+          sudo apt-get install cmake
           sudo apt-get install valgrind
           sudo apt-get install cppcheck
           git submodule init
           git submodule update
+
+      - name: Configure the project
+        uses: threeal/cmake-action@v1.3.0
 
       - name: Static Code Analysis
         run:
@@ -35,21 +38,21 @@ jobs:
 
       - name: Sanitize
         run: |
-          scons mode=debug+san
-          ./build/tests
-          ./build/tsunami_lab 25
-          scons mode=release+san
-          ./build/tests
-          ./build/tsunami_lab 500
+          cmake --build build --config Debug --target sanitize
+          ./build/sanitize 25
+          cmake --build build --config Release --target sanitize
+          ./build/sanitize 500
 
       - name: Valgrind
         run: |
-          scons mode=debug
-          valgrind ./build/tests
-          valgrind ./build/tsunami_lab 25
+          cmake --build build --config Debug --target test
+          valgrind build/test
+          cmake --build build --config Debug --target build
+          valgrind build/build 25
 
       - name: Release
         run: |
-          scons
-          ./build/tests
-          ./build/tsunami_lab 500
+          cmake --build build --config Release --target test
+          ./build/test
+          cmake --build build --config Release --target build
+          ./build/build 500
