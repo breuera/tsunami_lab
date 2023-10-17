@@ -12,6 +12,7 @@
 #include <cmath>
 #include <fstream>
 #include <limits>
+#include <string>
 
 int main( int   i_argc,
           char *i_argv[] ) {
