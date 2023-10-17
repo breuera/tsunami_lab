@@ -87,7 +87,8 @@ html_static_path = ['_static']
 # -- Breathe configuration -------------------------------------------------
 
 breathe_projects = {
-    "Tsunami Simulation": "_build/xml/"
+    "Tsunami Simulation": "_build/xml/",
 }
+
 breathe_default_project = "Tsunami Simulation"
 breathe_default_members = ('members', 'undoc-members')

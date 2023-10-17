@@ -3,13 +3,20 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Tsunami Simulation's documentation!
-==============================================
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: GETTING STARTED
+   :glob:
 
+   getting_started/*
+
+.. toctree::
+   :maxdepth: 2
+   :caption: API
+   :glob:
+
+   api/*
 
 
 Indices and tables
@@ -18,12 +25,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-
-Table of Contents
-^^^^^^^^^^^^^^^^^
-
-.. toctree::
-    :maxdepth: 2
-
-    self
-    api/index
