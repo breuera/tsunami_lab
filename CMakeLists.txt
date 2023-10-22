@@ -54,23 +54,29 @@ add_executable(tsunami_lab src/main.cpp
         src/io/Csv.cpp)
 set_target_properties(tsunami_lab
         PROPERTIES
-        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/build/tsunami_lab/")
+        ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/tsunami_lab/arch"
+        LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/tsunami_lab/lib"
+        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/tsunami_lab/")
 message("configured simulation target")
 
 add_subdirectory(submodules/Catch2)
 add_executable(tests src/tests.cpp
         src/solvers/Roe.cpp
-        src/solvers/Roe.test.cpp
         src/patches/WavePropagation1d.cpp
-        src/patches/WavePropagation1d.test.cpp
         src/setups/DamBreak1d.cpp
-        src/setups/DamBreak1d.test.cpp
         src/io/Csv.cpp
+        src/solvers/Roe.test.cpp
+        src/patches/WavePropagation1d.test.cpp
+        src/setups/DamBreak1d.test.cpp
         src/io/Csv.test.cpp
         )
 target_link_libraries(tests PRIVATE Catch2::Catch2)
+set_target_properties(tests
+        PROPERTIES
+        ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/tests/arch"
+        LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/tests/lib"
+        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/tests/")
 message("configured test target")
-
 
 message("")
 message("finished build script")
