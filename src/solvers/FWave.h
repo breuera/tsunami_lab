@@ -12,11 +12,11 @@
 
 namespace tsunami_lab {
 	namespace solvers {
-		class F_Wafe;
+		class F_Wave;
 	}
 }
 
-class tsunami_lab::solvers::F_Wafe {
+class tsunami_lab::solvers::F_Wave {
 	private:
 
 		//! square root of gravity
@@ -95,8 +95,8 @@ class tsunami_lab::solvers::F_Wafe {
          * @param i_hR height of the right side.
          * @param i_huL momentum of the left side.
          * @param i_huR momentum of the right side.
-         * @param o_netUpdatesL will be set to the net-updates for the left side; 0: hight 1: momentum.
-		 * @param o_netUpdatesR will be set to the net-updates for the right side; 0: hight, 1: momentum. 
+         * @param o_netUpdateL will be set to the net-updates for the left side; 0: hight 1: momentum.
+		 * @param o_netUpdateR will be set to the net-updates for the right side; 0: hight, 1: momentum. 
         **/
 
 		static void netUpdates( t_real i_hL,
