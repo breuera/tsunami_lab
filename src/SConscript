@@ -21,6 +21,7 @@ env.standalone = env.Object( "main.cpp" )
 # gather unit tests
 l_tests = [ 'tests.cpp',
             'solvers/Roe.test.cpp',
+            'solvers/fWave/FWave.test.cpp',
             'patches/WavePropagation1d.test.cpp',
             'io/Csv.test.cpp',
             'setups/DamBreak1d.test.cpp' ]
