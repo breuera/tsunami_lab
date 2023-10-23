@@ -6,6 +6,7 @@
  **/
 #include <cmath>
 #include <cstdlib>
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <limits>
@@ -16,6 +17,23 @@
 
 int main(int i_argc,
          char *i_argv[]) {
+    
+    std::filesystem::path currentPath = std::filesystem::current_path();
+    std::filesystem::path targetPath;
+
+    if (currentPath.filename() == "build") {
+        targetPath = currentPath.parent_path() / "csv_dump";
+    } else {
+        targetPath = currentPath / "csv_dump";
+    }
+
+    if (!std::filesystem::exists(targetPath)) {
+        std::filesystem::create_directory(targetPath);
+    }
+
+    
+
+
     // number of cells in x- and y-direction
     tsunami_lab::t_idx l_nx = 0;
     tsunami_lab::t_idx l_ny = 1;
@@ -114,7 +132,7 @@ int main(int i_argc,
             std::cout << "  simulation time / #time steps: "
                       << l_simTime << " / " << l_timeStep << std::endl;
 
-            std::string l_path = "solutions/solution_" + std::to_string(l_nOut) + ".csv";
+            std::string l_path = targetPath.string() + "/" + "solution_" + std::to_string(l_nOut) + ".csv";
             std::cout << "  writing wave field to " << l_path << std::endl;
 
             std::ofstream l_file;
