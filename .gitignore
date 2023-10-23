@@ -1,4 +1,5 @@
 /build/**
 /.vscode/**
-/csv_dumps/**
+/solutions/**
+/docs/**
 .sconsign.dblite
