@@ -114,7 +114,7 @@ int main(int i_argc,
             std::cout << "  simulation time / #time steps: "
                       << l_simTime << " / " << l_timeStep << std::endl;
 
-            std::string l_path = "solution_" + std::to_string(l_nOut) + ".csv";
+            std::string l_path = "solutions/solution_" + std::to_string(l_nOut) + ".csv";
             std::cout << "  writing wave field to " << l_path << std::endl;
 
             std::ofstream l_file;
