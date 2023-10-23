@@ -30,8 +30,8 @@ class tsunami_lab::solvers::F_Wafe {
 		 * @param o_hight will be set to the average speed.
 		**/
 
-		static void heightAvg( t_real 	 i_hL,
-							   t_real 	 i_hR,
+		static void heightAvg( t_real 	i_hL,
+							   t_real 	i_hR,
 							   t_real & o_height);
 
         /**
@@ -99,13 +99,13 @@ class tsunami_lab::solvers::F_Wafe {
 		 * @param o_netUpdatesR will be set to the net-updates for the right side; 0: hight, 1: momentum. 
         **/
 
-		static void netUpdates( t_real   i_hL,
-								t_real   i_hR,
-								t_real   i_huL,
-								t_real   i_huR,
-								t_real & o_netUpdatesL[2],
-								t_real & o_netUpdatesR[2]);
-
+		static void netUpdates( t_real i_hL,
+                            	t_real i_hR,
+                            	t_real i_huL,
+                           		t_real i_huR,
+                            	t_real o_netUpdateL[2],
+                            	t_real o_netUpdateR[2] );
+};							
 #endif
 
 
