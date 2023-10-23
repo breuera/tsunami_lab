@@ -1,0 +1,22 @@
+- pip installieren
+- scons installieren über pip
+
+- SConstruct laufen (--help)
+
+- ssh @lechuck...
+- sftp
+- get ...
+
+
+Doxygen:
+    - 
+    - Recursive Yes &
+    - doxygen 
+
+Sphinx:
+    - Template ändern (pip install sphinx_rtd_theme)
+
+
+Developerdoku: Doxygen; Userdoku: sphinx
+
+- navier-stokes gleichungen recherchieren
