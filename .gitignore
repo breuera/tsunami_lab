@@ -1,3 +1,5 @@
 /cmake-build-default/
 /build/
 /.idea/
+
+*.dblite
