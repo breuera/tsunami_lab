@@ -57,7 +57,7 @@ TEST_CASE( "Test the derivation of the average particle velocity.", "[AvgParticl
   REQUIRE( l_velocity == Approx( 0.78 ) );
 }
 
-TEST_CASE( "Test the derivation of the average particle velocity.", "[AvgParticleVelocity]>
+TEST_CASE( "Test the derivation of the average particle velocity.", "[AvgParticleVelocity])
    /*
     * Test case:
     *  h:  9 | 16
