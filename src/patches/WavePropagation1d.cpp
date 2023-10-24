@@ -6,7 +6,7 @@
  **/
 #include "WavePropagation1d.h"
 
-#include "../solvers/Roe.h"
+#include "../solvers/roe/Roe.h"
 
 tsunami_lab::patches::WavePropagation1d::WavePropagation1d(t_idx i_nCells) {
     m_nCells = i_nCells;
