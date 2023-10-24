@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tsunami Report 1 Riemann Solver Project Report &mdash; Tsunami Report 1 Riemann Solver  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="#" class="icon icon-home">
+            Tsunami Report 1 Riemann Solver
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Tsunami Report 1 Riemann Solver Project Report</a><ul>
+<li><a class="reference internal" href="#links">Links:</a></li>
+<li><a class="reference internal" href="#individual-contributions">Individual Contributions:</a></li>
+<li><a class="reference internal" href="#riemann-solver">1.2 Riemann-Solver</a></li>
+<li><a class="reference internal" href="#id1">1.3 Riemann-Solver</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">Tsunami Report 1 Riemann Solver</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Tsunami Report 1 Riemann Solver Project Report</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="tsunami-report-1-riemann-solver-project-report">
+<h1>Tsunami Report 1 Riemann Solver Project Report<a class="headerlink" href="#tsunami-report-1-riemann-solver-project-report" title="Link to this heading"></a></h1>
+<section id="links">
+<h2>Links:<a class="headerlink" href="#links" title="Link to this heading"></a></h2>
+<p><a class="reference external" href="https://github.com/Minutenreis/tsunami_lab">Github Repo</a></p>
+<p><a class="reference external" href="https://tsunami-lab.readthedocs.io/en/latest/">User Doc</a></p>
+</section>
+<section id="individual-contributions">
+<h2>Individual Contributions:<a class="headerlink" href="#individual-contributions" title="Link to this heading"></a></h2>
+<p>Justus Dreßler: Wrote Code and Unit Test</p>
+<p>Thorsten Kröhl: Assisted Code and hosted User documentation</p>
+<p>Julius Halank: Assisted Code and wrote Project Report</p>
+</section>
+<section id="riemann-solver">
+<h2>1.2 Riemann-Solver<a class="headerlink" href="#riemann-solver" title="Link to this heading"></a></h2>
+<p>Created the doxygen Documentation with <code class="code docutils literal notranslate"><span class="pre">doxygen</span> <span class="pre">Doxyfile</span></code></p>
+<a class="reference internal image-reference" href="_images/doxygen.png"><img alt="_images/doxygen.png" src="_images/doxygen.png" style="width: 700px;" /></a>
+<p>Initial Unittests are successful and the results are visualized as:</p>
+<video controls="True" preload="auto" width="700"><source src="_static/height.mp4" type="video/mp4"></video><p>Height over Time after Dambreak</p>
+<video controls="True" preload="auto" width="700"><source src="_static/momentum.mp4" type="video/mp4"></video><p>Momentum over Time after Dambreak</p>
+<p>added new Catch2 Tests for example:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="w"> </span><span class="cm">/**</span>
+<span class="cm"> * Test case supersonic problem</span>
+<span class="cm"> *</span>
+<span class="cm"> *      left | right</span>
+<span class="cm"> *  h:   1   | 1</span>
+<span class="cm"> *  u:   100 | 10</span>
+<span class="cm"> *  hu:  100 | 10</span>
+<span class="cm"> *</span>
+<span class="cm"> *  FWave speeds are given as:</span>
+<span class="cm"> *</span>
+<span class="cm"> *  s1 = 55 - sqrt(9.80665 * 1) = 51.868443</span>
+<span class="cm"> *  s2 = 55 + sqrt(9.80665 * 1) = 58.131557</span>
+<span class="cm"> *</span>
+<span class="cm"> *  * Inversion of the matrix of right Eigenvectors:</span>
+<span class="cm"> *</span>
+<span class="cm"> *   wolframalpha.com query: invert {{1, 1}, {55 - sqrt(9.80665 * 1), 55 + sqrt(9.80665 * 1)}}</span>
+<span class="cm"> *</span>
+<span class="cm"> *          | 9.28157  -0.159665  |</span>
+<span class="cm"> *   Rinv = |                     |</span>
+<span class="cm"> *          | -8.28157  0.159665  |</span>
+<span class="cm"> *</span>
+<span class="cm"> * Multiplicaton with the jump in quantities gives the wave strengths:</span>
+<span class="cm"> *</span>
+<span class="cm"> *        |   0 -  0 |   |  14.3699 |   | a1 |</span>
+<span class="cm"> * Rinv * |          | = |          | = |    |</span>
+<span class="cm"> *        |  10 - 100|   | -14.3699 |   | a2 |</span>
+<span class="cm"> *</span>
+<span class="cm"> * The net-updates are given through the scaled eigenvectors added for #2 and 0 for #1 because both are greater than 0:</span>
+<span class="cm"> *</span>
+<span class="cm"> * update #1:     0</span>
+<span class="cm"> *</span>
+<span class="cm"> *                      |  1 |        |  1 |    | 0              |</span>
+<span class="cm"> * update #2:      a2 * |    | + a1 * |    |  = |                |</span>
+<span class="cm"> *                      | s2 |        | s1 |    | -90.0006609343 |</span>
+<span class="cm"> */</span>
+
+<span class="n">tsunami_lab</span><span class="o">::</span><span class="n">solvers</span><span class="o">::</span><span class="n">FWave</span><span class="o">::</span><span class="n">netUpdates</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span>
+<span class="w">                                        </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">                                        </span><span class="mi">100</span><span class="p">,</span>
+<span class="w">                                        </span><span class="mi">10</span><span class="p">,</span>
+<span class="w">                                        </span><span class="n">l_netUpdatesL</span><span class="p">,</span>
+<span class="w">                                        </span><span class="n">l_netUpdatesR</span><span class="p">);</span>
+
+<span class="n">REQUIRE</span><span class="p">(</span><span class="n">l_netUpdatesL</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Approx</span><span class="p">(</span><span class="mi">0</span><span class="p">));</span>
+<span class="n">REQUIRE</span><span class="p">(</span><span class="n">l_netUpdatesL</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Approx</span><span class="p">(</span><span class="mi">0</span><span class="p">));</span>
+
+<span class="n">REQUIRE</span><span class="p">(</span><span class="n">l_netUpdatesR</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Approx</span><span class="p">(</span><span class="mi">0</span><span class="p">));</span>
+<span class="n">REQUIRE</span><span class="p">(</span><span class="n">l_netUpdatesR</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="o">-</span><span class="n">Approx</span><span class="p">(</span><span class="mf">90.0006609343</span><span class="p">));</span>
+</pre></div>
+</div>
+</section>
+<section id="id1">
+<h2>1.3 Riemann-Solver<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<p>mainly the same as the Roe Solver with a small adjustment in the net-updates:</p>
+<ul class="simple">
+<li><p>the waves don’t have a <cite>* l_sL</cite> or <cite>* l_sR</cite> respectively</p></li>
+<li><p>the wave updates get added together instead of overriding each other (see supersonic case)</p></li>
+</ul>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="w">   </span><span class="c1">// compute waves</span>
+<span class="n">t_real</span><span class="w"> </span><span class="n">l_waveL</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+<span class="n">t_real</span><span class="w"> </span><span class="n">l_waveR</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+
+<span class="n">l_waveL</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">l_aL</span><span class="p">;</span>
+<span class="n">l_waveL</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">l_aL</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">l_sL</span><span class="p">;</span>
+
+<span class="n">l_waveR</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">l_aR</span><span class="p">;</span>
+<span class="n">l_waveR</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">l_aR</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">l_sR</span><span class="p">;</span>
+
+<span class="c1">// set net-updates depending on wave speeds</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">short</span><span class="w"> </span><span class="n">l_qt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">l_qt</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"> </span><span class="n">l_qt</span><span class="o">++</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// init</span>
+<span class="w">    </span><span class="n">o_netUpdateL</span><span class="p">[</span><span class="n">l_qt</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">o_netUpdateR</span><span class="p">[</span><span class="n">l_qt</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// 1st wave</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">l_sL</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">o_netUpdateL</span><span class="p">[</span><span class="n">l_qt</span><span class="p">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">l_waveL</span><span class="p">[</span><span class="n">l_qt</span><span class="p">];</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">else</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">o_netUpdateR</span><span class="p">[</span><span class="n">l_qt</span><span class="p">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">l_waveL</span><span class="p">[</span><span class="n">l_qt</span><span class="p">];</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// 2nd wave</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">l_sR</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">o_netUpdateR</span><span class="p">[</span><span class="n">l_qt</span><span class="p">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">l_waveR</span><span class="p">[</span><span class="n">l_qt</span><span class="p">];</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">else</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">o_netUpdateL</span><span class="p">[</span><span class="n">l_qt</span><span class="p">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">l_waveR</span><span class="p">[</span><span class="n">l_qt</span><span class="p">];</span>
+<span class="w">    </span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Justus Dreßler, Thorsten Kröhl, Julius Halank.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
