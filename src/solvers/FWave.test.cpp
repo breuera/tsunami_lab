@@ -214,7 +214,7 @@ TEST_CASE( "Test the derivation of the F Wave net-updates.", "[RoeUpdates]" ) {
    *
    *     left | right
    *   h:  10 | 10
-   *   hu:  0 | 0
+   *   hu:  0 |  0
    *
    * Roe speeds are given as:
    *
@@ -287,21 +287,21 @@ TEST_CASE( "Test the derivation of the F Wave net-updates.", "[RoeUpdates]" ) {
    *
    * wolframalpha.com query: {{0.673184,  -0.0449181}, {0.326816,  0.0449181 }} * {9-16, 45-48>
    *
-   *           |0.673184  -0.0449181|     | 9-16 |     |-4.12835|
+   *           |0.673184  -0.0449181|     | 9-16 |     |-4.57753|
    *           |                    |  *  |      |  =  |        |
-   *           |0.326816,  0.0449181|     | 45-48|     |-2.87165|
+   *           |0.326816,  0.0449181|     | 45-48|     |-2.42247|
    *
    * The derivation of the FWave speeds (s1, s2) and wave strengths (a1, a1) is given above.
    *
    * The net-updates are given through the scaled eigenvectors.
    *
-   *                          |     1     |   | -4.12835 |
-   * update #1:  -4.12835  *  |           | = |          |
-   *                          |  -7.27528 |   | 30.03490 |
+   *                          |     1     |   | -4.57753 |
+   * update #1:  -4.57753  *  |           | = |          |
+   *                          |  -7.27528 |   | 33.3028  |
    *
    *                          |     1     |   | -2.87165 |
-   * update #2:  -2.87165  *  |           | = |          |
-   *                          |  14.9869  |   | -43.9869 |
+   * update #2:  -2.42247  *  |           | = |          |
+   *                          |  14.9869  |   | -36.3053 |
    */
 
    tsunami_lab::solvers::F_Wave::netUpdates(    16,
@@ -310,8 +310,8 @@ TEST_CASE( "Test the derivation of the F Wave net-updates.", "[RoeUpdates]" ) {
                                                 5,
                                                 l_netUpdatesL,
                                                 l_netUpdatesR );
-   REQUIRE( l_netUpdatesL[0] == Approx( -4.12835 ) );
-   REQUIRE( l_netUpdatesL[1] == Approx( 30.03490 ) );
+   REQUIRE( l_netUpdatesL[0] == Approx( -4.57753 ) );
+   REQUIRE( l_netUpdatesL[1] == Approx( 33.3028  ) );
    REQUIRE( l_netUpdatesR[0] == Approx( -2.87165 ) );
-   REQUIRE( l_netUpdatesR[1] == Approx( -43.9869 ) );
+   REQUIRE( l_netUpdatesR[1] == Approx( -36.3053 ) );
 }
