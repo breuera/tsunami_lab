@@ -98,10 +98,24 @@ added new Catch2 Tests for example:
 1.3 Riemann-Solver
 ------------------
 
-mainly the same as the Roe Solver with a small adjustment in the net-updates:
+the Riemann-Solver is similar to the roe Solver (same results in tests for Dambreak), but:
 
-* the waves don't have a `* l_sL` or `* l_sR` respectively
+* instead of a jump in quantities a jump in fluxes gets input
+* the netupdates don't get multiplied by `l_sL` / `l_sR` respectively
 * the wave updates get added together instead of overriding each other (see supersonic case)
+
+.. code-block:: c++
+
+    void tsunami_lab::solvers::FWave::flux(t_real i_h,
+                                       t_real i_hu,
+                                       t_real &o_flux0,
+                                       t_real &o_flux1)
+    {
+        // f(q) = [hu, h*u^2 + 1/2*g*h^2]
+        o_flux0 = i_hu;
+        o_flux1 = i_hu * i_hu / i_h + 0.5f * m_g * i_h * i_h;
+    }
+
 
 .. code-block:: c++
 

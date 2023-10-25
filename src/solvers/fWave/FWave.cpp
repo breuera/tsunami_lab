@@ -31,6 +31,16 @@ void tsunami_lab::solvers::FWave::waveSpeeds(t_real i_hL,
     o_waveSpeedR = l_uRoe + l_ghSqrtRoe;
 }
 
+void tsunami_lab::solvers::FWave::flux(t_real i_h,
+                                       t_real i_hu,
+                                       t_real &o_flux0,
+                                       t_real &o_flux1)
+{
+    // f(q) = [hu, h*u^2 + 1/2*g*h^2]
+    o_flux0 = i_hu;
+    o_flux1 = i_hu * i_hu / i_h + 0.5f * m_g * i_h * i_h;
+}
+
 void tsunami_lab::solvers::FWave::waveStrengths(t_real i_hL,
                                                 t_real i_hR,
                                                 t_real i_huL,
@@ -49,16 +59,25 @@ void tsunami_lab::solvers::FWave::waveStrengths(t_real i_hL,
     l_rInv[1][0] = -l_detInv * i_waveSpeedL;
     l_rInv[1][1] = l_detInv;
 
-    // compute jump in quantities
-    t_real l_hJump = i_hR - i_hL;
-    t_real l_huJump = i_huR - i_huL;
+    // calculating the fluxes
+    t_real l_flux0L = 0;
+    t_real l_flux1L = 0;
+    t_real l_flux0R = 0;
+    t_real l_flux1R = 0;
+
+    flux(i_hL, i_huL, l_flux0L, l_flux1L);
+    flux(i_hR, i_huR, l_flux0R, l_flux1R);
+
+    // compute jump in fluxes
+    t_real l_flux0Jump = l_flux0R - l_flux0L;
+    t_real l_flux1Jump = l_flux1R - l_flux1L;
 
     // compute wave strengths
-    o_strengthL = l_rInv[0][0] * l_hJump;
-    o_strengthL += l_rInv[0][1] * l_huJump;
+    o_strengthL = l_rInv[0][0] * l_flux0Jump;
+    o_strengthL += l_rInv[0][1] * l_flux1Jump;
 
-    o_strengthR = l_rInv[1][0] * l_hJump;
-    o_strengthR += l_rInv[1][1] * l_huJump;
+    o_strengthR = l_rInv[1][0] * l_flux0Jump;
+    o_strengthR += l_rInv[1][1] * l_flux1Jump;
 }
 
 void tsunami_lab::solvers::FWave::netUpdates(t_real i_hL,

@@ -22,7 +22,8 @@ namespace tsunami_lab
 class tsunami_lab::solvers::FWave
 {
 private:
-    //! square root of gravity
+    //! gravity & square root of gravity
+    static t_real constexpr m_g = 9.80665;
     static t_real constexpr m_gSqrt = 3.131557121;
 
     /**
@@ -62,6 +63,19 @@ private:
                               t_real i_waveSpeedR,
                               t_real &o_strengthL,
                               t_real &o_strengthR);
+
+    /**
+     * Computes the Flux .
+     *
+     * @param i_h height
+     * @param i_hu momentum
+     * @param o_flux0 fluxfunction[0]
+     * @param o_flux1 fluxfunction[1]
+     **/
+    static void flux(t_real i_h,
+                     t_real i_hu,
+                     t_real &o_flux0,
+                     t_real &o_flux1);
 
 public:
     /**

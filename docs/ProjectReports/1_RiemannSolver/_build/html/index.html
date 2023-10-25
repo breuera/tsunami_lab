@@ -149,11 +149,23 @@
 </section>
 <section id="id1">
 <h2>1.3 Riemann-Solver<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
-<p>mainly the same as the Roe Solver with a small adjustment in the net-updates:</p>
+<p>the Riemann-Solver is similar to the roe Solver (same results in tests for Dambreak), but:</p>
 <ul class="simple">
-<li><p>the waves don’t have a <cite>* l_sL</cite> or <cite>* l_sR</cite> respectively</p></li>
+<li><p>instead of a jump in quantities a jump in fluxes gets input</p></li>
+<li><p>the netupdates don’t get multiplied by <cite>l_sL</cite> / <cite>l_sR</cite> respectively</p></li>
 <li><p>the wave updates get added together instead of overriding each other (see supersonic case)</p></li>
 </ul>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">tsunami_lab::solvers::FWave::flux</span><span class="p">(</span><span class="n">t_real</span><span class="w"> </span><span class="n">i_h</span><span class="p">,</span>
+<span class="w">                                   </span><span class="n">t_real</span><span class="w"> </span><span class="n">i_hu</span><span class="p">,</span>
+<span class="w">                                   </span><span class="n">t_real</span><span class="w"> </span><span class="o">&amp;</span><span class="n">o_flux0</span><span class="p">,</span>
+<span class="w">                                   </span><span class="n">t_real</span><span class="w"> </span><span class="o">&amp;</span><span class="n">o_flux1</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// f(q) = [hu, h*u^2 + 1/2*g*h^2]</span>
+<span class="w">    </span><span class="n">o_flux0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i_hu</span><span class="p">;</span>
+<span class="w">    </span><span class="n">o_flux1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i_hu</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">i_hu</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">i_h</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">0.5f</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">m_g</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">i_h</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">i_h</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="w">   </span><span class="c1">// compute waves</span>
 <span class="n">t_real</span><span class="w"> </span><span class="n">l_waveL</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
 <span class="n">t_real</span><span class="w"> </span><span class="n">l_waveR</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
