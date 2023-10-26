@@ -194,7 +194,7 @@ TEST_CASE("Test the derivation of the FWave net-updates.", "[FWaveUpdates]")
   REQUIRE(l_netUpdatesR[0] == Approx(0));
   REQUIRE(l_netUpdatesR[1] == Approx(0));
 
-  /** TODO FLUX
+  /**
    * Test case supersonic problem
    *
    *      left | right
