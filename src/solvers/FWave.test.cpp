@@ -84,19 +84,19 @@ TEST_CASE( "Test 1 the derivation of the F wave speeds.", "[FWaveSpeeds]" ) {
     * F wave height : 0.5 * ( 14 + 9 ) = 11.5
     * F wave velocity : ( sqrt(14) * -4 + sqrt(9) * 3 ) / ( sqrt(14) + sqrt(9) )
     * 			= -0.8850389755494463
-    * F wave speed : s1 = -0.8850389755494463 - sqrt(9.909665 * 11.5) = -11.5603
-    * F wave speed : s2 = -0.8850389755494463 + sqrt(9.909665 * 11.5) =   9.79022
+    * F wave speed : s1 = -0.8850389755494463 - sqrt(9.80665 * 11.5) = -11.5047
+    * F wave speed : s2 = -0.8850389755494463 + sqrt(9.80665 * 11.5) =   9.73459
    **/
   float l_waveSpeedL = 0;
   float l_waveSpeedR = 0;
-  tsunami_lab::solvers::F_Wave::waveSpeeds( 14,
-						                                -4,
-						                                9,
-						                                3,
-						                                l_waveSpeedL,
-						                                l_waveSpeedR  );
-  REQUIRE( l_waveSpeedL == Approx( -11.5603 ) );
-  REQUIRE( l_waveSpeedR == Approx( 9.79022 ) );
+  tsunami_lab::solvers::F_Wave::waveSpeeds( 	14,
+						9,
+		                                -4,
+		                               	3,
+		                               	l_waveSpeedL,
+		      				l_waveSpeedR  );
+  REQUIRE( l_waveSpeedL == Approx( -11.5047 ) );
+  REQUIRE( l_waveSpeedR == Approx( 9.73459 ) );
 }
 
 TEST_CASE( "Test 2 the derivation of the F wave speeds.", "[FWaveSpeeds]" ) {
@@ -105,11 +105,11 @@ TEST_CASE( "Test 2 the derivation of the F wave speeds.", "[FWaveSpeeds]" ) {
     *  h: 25 |36
     *  u: -8 | 9
     *
-    * F wave height : 0.5 * ( 25 + 36 ) = 25.5
+    * F wave height : 0.5 * ( 25 + 36 ) = 30.5
     * F wave velocity : ( sqrt(25) * -8 + sqrt(36) * 9 ) / ( sqrt(25) + sqrt(36) )
     *                   = 1.2727272727272727
-    * F wave speed : s1 = 1.2727272727272727 - sqrt(9.909665 * 25.5) = -14.6237
-    * F wave speed : s2 = 1.2727272727272727 + sqrt(9.909665 * 25.5) =  17.1692
+    * F wave speed : s1 = 1.2727272727272727 - sqrt(9.80665 * 30.5) = -16.0219
+    * F wave speed : s2 = 1.2727272727272727 + sqrt(9.80665 * 25.5) =  18.5673
    **/
   float l_waveSpeedL = 0;
   float l_waveSpeedR = 0;
@@ -119,8 +119,8 @@ TEST_CASE( "Test 2 the derivation of the F wave speeds.", "[FWaveSpeeds]" ) {
                                             9,
                                             l_waveSpeedL,
                                             l_waveSpeedR  );
-  REQUIRE( l_waveSpeedL == Approx( -14.6237 ) );
-  REQUIRE( l_waveSpeedR == Approx( 17.1692 ) );
+  REQUIRE( l_waveSpeedL == Approx( -16.0219 ) );
+  REQUIRE( l_waveSpeedR == Approx(  18.5673 ) );
 }
 
 TEST_CASE( "Test the derivation of the F wave speeds.", "[FWaveStrength]" ) {
@@ -140,37 +140,37 @@ TEST_CASE( "Test the derivation of the F wave speeds.", "[FWaveStrength]" ) {
    * Inversion yields:
    * F wave height :  12.5
    * F wave velocity : 0.4285714285714285
-   * F wave speed : s1 = 0.4285714285714285 - sqrt(9.909665 * 12.5) = -10.7012
-   * F wave speed : s2 = 0.4285714285714285 + sqrt(9.909665 * 12.5) = 11.5583
-   * wolframalpha.com query: invert {{1, 1}, {-10.7012, 11.5583}}
+   * F wave speed : s1 = 0.4285714285714285 - sqrt(9.80665 * 12.5) = -10.6432
+   * F wave speed : s2 = 0.4285714285714285 + sqrt(9.80665 * 12.5) = 11.5002
+   * wolframalpha.com query: invert {{1, 1}, {-10.6432, 11.5002}}
    *
-   *           |0.519252  -0.0449246|
+   *           |0.519351  -0.0451602|
    * Rinv =    |                    |
-   *           |0.480748  0.0449246 |
+   *           |0.480649  0.0451602 |
    *
    * Multiplication with the jump in quantities gives the wave strength:
    *
-   * wolframalpha.com query: {{0.519252, -0.0449246}, {0.480748, 0.0449246}} * {9-16, 36--48}
+   * wolframalpha.com query: {{0.519351, -0.0451602}, {0.480649, 0.0451602}} * {9-16, 45--48}
    *
-   *           |0.519252  -0.0449246|     | 9-16 |     |-7.81275 |
-   *           |                    |  *  |      |  =  |         |
-   *           |0.480748  0.0449246 |     |45--48|     | 0.812752|
+   *           |0.519353  -0.04516|     | 9-16  |     |-7.83536  |
+   *           |                  |  *  |       |  =  |          |
+   *           |0.480647  0.04516 |     |45--48 |     |0.835356 |
    */
   float l_strengthL = 0;
   float l_strengthR = 0;
 
-  float l_waveSpeedL = -10.7012;
-  float l_waveSpeedR = 11.5583;
+  float l_waveSpeedL = -10.6432;
+  float l_waveSpeedR = 11.5003;
   tsunami_lab::solvers::F_Wave::waveStrengths(	16,
                                                 9,
-                                                -3,
-                                                5,
+                                                -48,
+                                                45,
                                                 l_waveSpeedL,
                                                 l_waveSpeedR,
                                                 l_strengthL,
                                                 l_strengthR	);
-  REQUIRE( l_strengthL == Approx(-7.81275) );
-  REQUIRE( l_strengthR == Approx( 0.81275) );
+  REQUIRE( l_strengthL == Approx(-7.83536 ) );
+  REQUIRE( l_strengthR == Approx(0.835356) );
 }
 
 
@@ -187,27 +187,27 @@ TEST_CASE( "Test the derivation of the F Wave net-updates.", "[RoeUpdates]" ) {
    *
    * The net-updates are given through the scaled eigenvectors.
    *
-   *                    |  1 |   | -7.81275  |
+   *                    |  1 |   | -3.99675  |
    * update #1:  a1  *  |    | = |           |
-   *                    | s1 |   | -83.6058  |
+   *                    | s1 |   | -42.5382  |
    *
-   *                    |  1 |   |  0.81275 |
+   *                    |  1 |   | -3.00325 |
    * update #2:  a2  *  |    | = |          |
-   *                    | s2 |   |  9.39401 |
+   *                    | s2 |   | -34.5383 |
    */
-   float l_netUpdatesL[2] = { -5, 3 };
-   float l_netUpdatesR[2] = {  4, 7 };
+   float l_netUpdatesL[2] = { 0, 0 };
+   float l_netUpdatesR[2] = { 0, 0 };
 
-   tsunami_lab::solvers::F_Wave::netUpdates(	16,
+   tsunami_lab::solvers::F_Wave::netUpdates(  16,
                                               9,
-                                              -3,
-                                              5,
+                                              -48,
+                                              45,
                                               l_netUpdatesL,
                                               l_netUpdatesR );
-   REQUIRE( l_netUpdatesL[0] == Approx( -7.81275 ) );
-   REQUIRE( l_netUpdatesL[1] == Approx( -83.6058 ) );
-   REQUIRE( l_netUpdatesR[0] == Approx(  0.81275 ) );
-   REQUIRE( l_netUpdatesR[1] == Approx(  9.39401 ) );
+   REQUIRE( l_netUpdatesL[0] == Approx( -7.83536  ) );
+   REQUIRE( l_netUpdatesL[1] == Approx( 83.3933   ) );
+   REQUIRE( l_netUpdatesR[0] == Approx(  0.835356 ) );
+   REQUIRE( l_netUpdatesR[1] == Approx( -9.60676  ) );
 
   /*
    * Test case (dam break):
@@ -306,8 +306,8 @@ TEST_CASE( "Test the derivation of the F Wave net-updates.", "[RoeUpdates]" ) {
 
    tsunami_lab::solvers::F_Wave::netUpdates(    16,
                                                 9,
-                                                3,
-                                                5,
+                                                48,
+                                                45,
                                                 l_netUpdatesL,
                                                 l_netUpdatesR );
    REQUIRE( l_netUpdatesL[0] == Approx( -4.57753 ) );
