@@ -56,7 +56,35 @@ private:
                              t_real &o_strengthL,
                              t_real &o_strengthR);
 
+   /**
+    * Computes the flux.
+    *
+    * @param i_h height of the left/right side.
+    * @param i_huL momentum of the left/right side.
+    * @param o_flux will be set to the fluxfunction hu, h*u^2 + 1/2*g*h^2.
+    **/
+
+   static void flux(t_real i_h,
+                    t_real i_hu,
+                    t_real *&o_flux);
+
 public:
+   /**
+    * Computes the net-updates.
+    *
+    * @param i_hL height of the left side.
+    * @param i_hR height of the right side.
+    * @param i_huL momentum of the left side.
+    * @param i_huR momentum of the right side.
+    * @param o_netUpdateL will be set to the net-updates for the left side; 0: height, 1: momentum.
+    * @param o_netUpdateR will be set to the net-updates for the right side; 0: height, 1: momentum.
+    **/
+   static void netUpdates(t_real i_hL,
+                          t_real i_hR,
+                          t_real i_huL,
+                          t_real i_huR,
+                          t_real o_netUpdateL[2],
+                          t_real o_netUpdateR[2]);
 };
 
 #endif
