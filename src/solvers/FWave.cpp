@@ -52,8 +52,8 @@ void tsunami_lab::solvers::F_Wave::waveStrengths( t_real   i_hL,
 								                  t_real & o_strengthL,
 								                  t_real & o_strengthR) {
     //calculate jumps
-    t_real l_h_jump = i_hL - i_hR;
-    t_real l_hu_jump = i_huL - i_huR;
+    t_real l_h_jump = i_hR - i_hL;
+    t_real l_hu_jump = i_huR - i_huL;
 
     //calculate reversed determinant
     t_real l_rev_det = 1 / (i_waveSpeedR - i_waveSpeedL);
