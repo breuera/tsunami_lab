@@ -1,5 +1,3 @@
-- pip installieren
-- scons installieren über pip
 
 - SConstruct laufen (--help)
 
@@ -9,9 +7,8 @@
 
 
 Doxygen:
-    - 
-    - Recursive Yes &
-    - doxygen 
+    - Recursive Yes
+    - doxygen Doxyfile
 
 Sphinx:
     - Template ändern (pip install sphinx_rtd_theme)

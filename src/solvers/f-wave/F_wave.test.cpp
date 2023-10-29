@@ -190,4 +190,53 @@ TEST_CASE("Test the derivation of the FWave net-updates.", "[FWaveUpdates]")
 
     REQUIRE(l_netUpdatesR[0] == Approx(0));
     REQUIRE(l_netUpdatesR[1] == Approx(0));
+
+    /**
+     * Test case supersonic problem
+     *
+     *      left | right
+     *  h:   1   | 1
+     *  u:   100 | 10
+     *  hu:  100 | 10
+     *
+     *  FWave speeds are given as:
+     *
+     *  s1 = 55 - sqrt(9.80665 * 1) = 51.868443
+     *  s2 = 55 + sqrt(9.80665 * 1) = 58.131557
+     *
+     *  Inversion of the matrix of right Eigenvectors:
+     *
+     *   wolframalpha.com query: invert {{1, 1}, {55 - sqrt(9.80665 * 1), 55 + sqrt(9.80665 * 1)}}
+     *
+     *          | 9.28157  -0.159665 |
+     *   Rinv = |                    |
+     *          | -8.28157  0.159665 |
+     *
+     * Multiplicaton with the jump in fluxes gives the wave strengths:
+     *
+     *        | 10 - 100                                         |   |  745.342 |   | a1 |
+     * Rinv * |                                                  | = |          | = |    |
+     *        | 1*10^2+1/2*9.80665*1^2-(1*100^2+1/2*9.80665*1^2) |   | -835.342 |   | a2 |
+     *
+     * The net-updates are given through the scaled eigenvectors added for #2 and 0 for #1 because both are greater than 0:
+     *
+     * update #1:     0
+     *
+     *                     | 1  |         |  1 |    | -90             |
+     * update #2:     a1 * |    | +  a2 * |    |  = |                 |
+     *                     | s1 |         | s2 |    | -9900.002044988 |
+     */
+
+    tsunami_lab::solvers::FWave::netUpdates(1,
+                                            1,
+                                            100,
+                                            10,
+                                            l_netUpdatesL,
+                                            l_netUpdatesR);
+
+    REQUIRE(l_netUpdatesL[0] == Approx(0));
+    REQUIRE(l_netUpdatesL[1] == Approx(0));
+
+    REQUIRE(l_netUpdatesR[0] == Approx(-90));
+    REQUIRE(l_netUpdatesR[1] == Approx(-9900.002044988));
 }
