@@ -15,6 +15,7 @@ Doxygen:
 
 Sphinx:
     - Template ändern (pip install sphinx_rtd_theme)
+    - "make html" in user-doc ordner
 
 
 Developerdoku: Doxygen; Userdoku: sphinx

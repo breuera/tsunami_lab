@@ -1,6 +1,6 @@
 /**
  * @author Maurice Herold (maurice.herold AT uni-jena.de)
- *
+ * @author Mher Mnatsakanyan (mher.mnatsakanyan AT uni-jena.de)
  * @section DESCRIPTION
  * Unit tests of the FWave Riemann solver.
  **/
@@ -35,7 +35,7 @@ TEST_CASE("Test the derivation of the FWave speeds.", "[FWaveSpeeds]")
     REQUIRE(l_waveSpeedR == Approx(9.5731051658991654));
 }
 
-TEST_CASE("Test the derivation of the FWave wave speeds.", "[FWaveStrengths]")
+TEST_CASE("Test the derivation of the FWave wave strength.", "[FWaveStrengths]")
 {
     /*
      * Test case:

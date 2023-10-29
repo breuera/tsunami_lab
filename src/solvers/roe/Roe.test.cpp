@@ -9,7 +9,8 @@
 #include "Roe.h"
 #undef public
 
-TEST_CASE("Test the derivation of the Roe speeds.", "[RoeSpeeds]") {
+TEST_CASE("Test the derivation of the Roe speeds.", "[RoeSpeeds]")
+{
     /*
      * Test case:
      *  h: 10 | 9
@@ -34,7 +35,8 @@ TEST_CASE("Test the derivation of the Roe speeds.", "[RoeSpeeds]") {
     REQUIRE(l_waveSpeedR == Approx(9.5731051658991654));
 }
 
-TEST_CASE("Test the derivation of the Roe wave speeds.", "[RoeStrengths]") {
+TEST_CASE("Test the derivation of the Roe wave speeds.", "[RoeStrengths]")
+{
     /*
      * Test case:
      *  h:   10 | 9
@@ -82,7 +84,8 @@ TEST_CASE("Test the derivation of the Roe wave speeds.", "[RoeStrengths]") {
     REQUIRE(l_strengthR == Approx(2.4486306054668869));
 }
 
-TEST_CASE("Test the derivation of the Roe net-updates.", "[RoeUpdates]") {
+TEST_CASE("Test the derivation of the Roe net-updates.", "[RoeUpdates]")
+{
     /*
      * Test case:
      *
