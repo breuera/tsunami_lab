@@ -9,6 +9,7 @@
 
    self
    1_RiemannSolver
+   2_FiniteVolumeDiscretization
 
 
 Tsunami-Simulation User Documentation
