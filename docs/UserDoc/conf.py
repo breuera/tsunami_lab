@@ -13,7 +13,8 @@ author = 'Justus Dreßler, Thorsten Kröhl, Julius Halank'
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = ['sphinx_rtd_theme']
+extensions = ['sphinx_rtd_theme',    
+              "sphinxcontrib.video"]
 
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']

@@ -1,7 +1,8 @@
 var searchData=
 [
-  ['t_5fidx_14',['t_idx',['../namespacetsunami__lab.html#afd26f38678e954f652489c828656cbca',1,'tsunami_lab']]],
-  ['t_5freal_15',['t_real',['../namespacetsunami__lab.html#a2db0f215df0d48460ce6a8c1e7bfe5a9',1,'tsunami_lab']]],
-  ['timestep_16',['timeStep',['../classtsunami__lab_1_1patches_1_1WavePropagation.html#a3d8390f139fc8cede21eb4f534a4e7fc',1,'tsunami_lab::patches::WavePropagation::timeStep()'],['../classtsunami__lab_1_1patches_1_1WavePropagation1d.html#ac1884ddb6a52c08a5b65f60e21f6a547',1,'tsunami_lab::patches::WavePropagation1d::timeStep()']]],
-  ['tsunami_5flab_17',['tsunami_lab',['../namespacetsunami__lab.html',1,'']]]
+  ['setghostoutflow_19',['setGhostOutflow',['../classtsunami__lab_1_1patches_1_1WavePropagation.html#a02af1c6f56a9cc310efc8f997957faec',1,'tsunami_lab::patches::WavePropagation::setGhostOutflow()'],['../classtsunami__lab_1_1patches_1_1WavePropagation1d.html#a3f78574d12eb29fa6076e23004de2d22',1,'tsunami_lab::patches::WavePropagation1d::setGhostOutflow()']]],
+  ['setheight_20',['setHeight',['../classtsunami__lab_1_1patches_1_1WavePropagation.html#a46c844b7970b7cb96a62d13bc9f470f6',1,'tsunami_lab::patches::WavePropagation::setHeight()'],['../classtsunami__lab_1_1patches_1_1WavePropagation1d.html#adf9a1009d96ea10d8944f1b83daf5644',1,'tsunami_lab::patches::WavePropagation1d::setHeight()']]],
+  ['setmomentumx_21',['setMomentumX',['../classtsunami__lab_1_1patches_1_1WavePropagation.html#aed5a498ff7ca0dbefae90f21244e2671',1,'tsunami_lab::patches::WavePropagation::setMomentumX()'],['../classtsunami__lab_1_1patches_1_1WavePropagation1d.html#a0344a1bc28432b38bcce02fd0604b3f1',1,'tsunami_lab::patches::WavePropagation1d::setMomentumX()']]],
+  ['setmomentumy_22',['setMomentumY',['../classtsunami__lab_1_1patches_1_1WavePropagation.html#aa17fc8f451e46cf248b4cffd1604ef43',1,'tsunami_lab::patches::WavePropagation::setMomentumY()'],['../classtsunami__lab_1_1patches_1_1WavePropagation1d.html#ab1387901f780a042d2f1b21b1f95f2bb',1,'tsunami_lab::patches::WavePropagation1d::setMomentumY()']]],
+  ['setup_23',['Setup',['../classtsunami__lab_1_1setups_1_1Setup.html',1,'tsunami_lab::setups']]]
 ];
