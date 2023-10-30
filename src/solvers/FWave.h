@@ -67,6 +67,17 @@ class tsunami_lab::solvers::F_Wave {
 								t_real & o_wafeSpeedL,
 								t_real & o_wafeSpeedR);
 
+		/**
+		 * Computes the flux function for one cell.
+		 * 
+		 * @param i_h height of the cell
+		 * @param i_hu momentum of the cell
+		 * @param o_flux will be set to the flux function value  
+		**/
+		static void flux ( 	t_real i_h,
+							t_real i_hu,
+							t_real o_flux[2]);
+
         /**
 		 * Computes the wave strengths
 		 * 

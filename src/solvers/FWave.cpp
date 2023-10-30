@@ -43,6 +43,13 @@ void tsunami_lab::solvers::F_Wave::waveSpeeds( t_real   i_hL,
     o_waveSpeedR = l_partical_vel_avg + tsunami_lab::solvers::F_Wave::c_sqrt_g * sqrt(l_height_avg);
 }
 
+void tsunami_lab::solvers::F_Wave::flux( t_real i_h,
+                                         t_real i_hu,
+                                         t_real o_flux[2]) {
+    o_flux[0] = i_hu;
+    o_flux[1] = i_hu * i_hu + 0.5f * tsunami_lab::solvers::F_Wave::c_sqrt_g * i_h * i_h;
+}
+
 void tsunami_lab::solvers::F_Wave::waveStrengths( t_real   i_hL,
 								                  t_real   i_hR,
 								                  t_real   i_huL,
