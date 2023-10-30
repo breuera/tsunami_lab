@@ -7,7 +7,7 @@
 #ifndef TSUNAMI_LAB_SOLVERS_ROE
 #define TSUNAMI_LAB_SOLVERS_ROE
 
-#include "../constants.h"
+#include "../../constants.h"
 
 namespace tsunami_lab
 {
