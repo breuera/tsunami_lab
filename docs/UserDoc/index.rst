@@ -10,6 +10,10 @@
    self
    1_RiemannSolver
    2_FiniteVolumeDiscretization
+   doxygen
+
+  
+
 
 
 Tsunami-Simulation User Documentation

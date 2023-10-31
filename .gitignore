@@ -2,3 +2,4 @@
 /.vscode/**
 .sconsign.dblite
 /docs/UserDoc/_build/**
+/docs/build/html/**/

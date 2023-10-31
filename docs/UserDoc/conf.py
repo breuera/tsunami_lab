@@ -1,3 +1,4 @@
+import subprocess
 # Configuration file for the Sphinx documentation builder.
 #
 # For the full list of built-in configuration values, see the documentation:
@@ -14,15 +15,20 @@ author = 'Justus Dreßler, Thorsten Kröhl, Julius Halank'
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = ['sphinx_rtd_theme',    
-              "sphinxcontrib.video"]
+              "sphinxcontrib.video",
+              "breathe"]
 
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
-
+subprocess.call('cd ..; doxygen', shell=True)
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = "sphinx_rtd_theme"
 html_static_path = ['_static']
+
+
+#breathe configuration
+breathe_projects = { "tsunami23": "../build/html/xml/" }
