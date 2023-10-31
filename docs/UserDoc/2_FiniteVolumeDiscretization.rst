@@ -11,11 +11,11 @@ Links:
 Individual Contributions:
 -------------------------
 
-Justus Dreßler: wrote Projekt Report and implemented extra command line argument
+Justus Dreßler: Wrote Projekt Report and implemented extra command line argument
 
 Thorsten Kröhl: Implemented Doxygen Integration in Sphinx
 
-Julius Halank: <todo()>
+Julius Halank: Added Test Cases for Setups
 
 2.0 Integrate FWave Solver
 --------------------------
@@ -92,8 +92,23 @@ We also integrated Doxygen into our ReadTheDocs Documentation.
 2.1 Shock and Rarefaction Waves
 -------------------------------
 
-.. 
-  TODO Setup as Problem
+Implemented shock-shock and rare-rare Problems in /setups.
+They are mainly the same as the Dam Break setup, but with the same waterheight on both sides but different momentums.
+
+.. code:: c++
+
+  tsunami_lab::t_real tsunami_lab::setups::ShockShock1d::getMomentumX(t_real i_x,
+                                                                      t_real) const
+  {
+    if (i_x < m_middlePoint)
+    {
+      return m_momentum;
+    }
+    else
+    {
+      return -m_momentum;
+    }
+  } 
 
 Regarding the Wavespeeds:
 
