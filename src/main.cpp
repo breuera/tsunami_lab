@@ -10,29 +10,26 @@
 #include <fstream>
 #include <iostream>
 #include <limits>
+#include <string>
 
 #include "io/Csv.h"
 #include "patches/WavePropagation1d.h"
 #include "setups/DamBreak1d.h"
 
-int main(int i_argc,
-         char *i_argv[])
-{
+std::string solver_choice;
 
+int main(int i_argc,
+         char *i_argv[]) {
     std::filesystem::path currentPath = std::filesystem::current_path();
     std::filesystem::path targetPath;
 
-    if (currentPath.filename() == "build")
-    {
+    if (currentPath.filename() == "build") {
         targetPath = currentPath.parent_path() / "csv_dump";
-    }
-    else
-    {
+    } else {
         targetPath = currentPath / "csv_dump";
     }
 
-    if (!std::filesystem::exists(targetPath))
-    {
+    if (!std::filesystem::exists(targetPath)) {
         std::filesystem::create_directory(targetPath);
     }
 
@@ -49,18 +46,15 @@ int main(int i_argc,
     std::cout << "### https://scalable.uni-jena.de ###" << std::endl;
     std::cout << "####################################" << std::endl;
 
-    if (i_argc != 2)
-    {
+    if (i_argc != 3) {
         std::cerr << "invalid number of arguments, usage:" << std::endl;
         std::cerr << "  ./build/tsunami_lab N_CELLS_X" << std::endl;
         std::cerr << "where N_CELLS_X is the number of cells in x-direction." << std::endl;
         return EXIT_FAILURE;
-    }
-    else
-    {
+    } else {
+        solver_choice = std::string(i_argv[2]);
         l_nx = atoi(i_argv[1]);
-        if (l_nx < 1)
-        {
+        if (l_nx < 1) {
             std::cerr << "invalid number of cells" << std::endl;
             return EXIT_FAILURE;
         }
@@ -84,12 +78,10 @@ int main(int i_argc,
     tsunami_lab::t_real l_hMax = std::numeric_limits<tsunami_lab::t_real>::lowest();
 
     // set up solver
-    for (tsunami_lab::t_idx l_cy = 0; l_cy < l_ny; l_cy++)
-    {
+    for (tsunami_lab::t_idx l_cy = 0; l_cy < l_ny; l_cy++) {
         tsunami_lab::t_real l_y = l_cy * l_dxy;
 
-        for (tsunami_lab::t_idx l_cx = 0; l_cx < l_nx; l_cx++)
-        {
+        for (tsunami_lab::t_idx l_cx = 0; l_cx < l_nx; l_cx++) {
             tsunami_lab::t_real l_x = l_cx * l_dxy;
 
             // get initial values of the setup
@@ -135,10 +127,8 @@ int main(int i_argc,
     std::cout << "entering time loop" << std::endl;
 
     // iterate over time
-    while (l_simTime < l_endTime)
-    {
-        if (l_timeStep % 25 == 0)
-        {
+    while (l_simTime < l_endTime) {
+        if (l_timeStep % 25 == 0) {
             std::cout << "  simulation time / #time steps: "
                       << l_simTime << " / " << l_timeStep << std::endl;
 

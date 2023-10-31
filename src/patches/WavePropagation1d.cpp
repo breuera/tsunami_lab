@@ -6,11 +6,14 @@
  **/
 #include "WavePropagation1d.h"
 
+#include <iostream>
+#include <string>
+
+#include "../solvers/f-wave/F_wave.h"
 #include "../solvers/roe/Roe.h"
 
 tsunami_lab::patches::WavePropagation1d::WavePropagation1d(t_idx i_nCells) {
     m_nCells = i_nCells;
-
     // allocate memory including a single ghost cell on each side
     for (unsigned short l_st = 0; l_st < 2; l_st++) {
         m_h[l_st] = new t_real[m_nCells + 2];
