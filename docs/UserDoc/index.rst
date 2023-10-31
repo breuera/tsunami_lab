@@ -3,11 +3,24 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Tsunami-Simulation's documentation!
-==============================================
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+
+   self
+   1_RiemannSolver
+   2_FiniteVolumeDiscretization
+   doxygen
+
+  
+
+
+
+Tsunami-Simulation User Documentation
+=====================================
 
 Installing and Running
-===========================
+----------------------
 
 * clone the project with :code:`git clone https://github.com/Minutenreis/tsunami_lab.git` 
 * add the submodules with :code:`git submodule init` and :code:`git submodule update`

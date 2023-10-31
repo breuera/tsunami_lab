@@ -12,6 +12,7 @@
 #include <cmath>
 #include <fstream>
 #include <limits>
+#include <algorithm>
 
 int main(int i_argc,
          char *i_argv[])
@@ -19,6 +20,9 @@ int main(int i_argc,
   // number of cells in x- and y-direction
   tsunami_lab::t_idx l_nx = 0;
   tsunami_lab::t_idx l_ny = 1;
+
+  // bool if using FWave Solver
+  bool l_useFwave = true;
 
   // set cell size
   tsunami_lab::t_real l_dxy = 1;
@@ -29,11 +33,12 @@ int main(int i_argc,
   std::cout << "### https://scalable.uni-jena.de ###" << std::endl;
   std::cout << "####################################" << std::endl;
 
-  if (i_argc != 2)
+  if (i_argc != 2 && i_argc != 3)
   {
     std::cerr << "invalid number of arguments, usage:" << std::endl;
-    std::cerr << "  ./build/tsunami_lab N_CELLS_X" << std::endl;
+    std::cerr << "  ./build/tsunami_lab N_CELLS_X OPT_SOLVER" << std::endl;
     std::cerr << "where N_CELLS_X is the number of cells in x-direction." << std::endl;
+    std::cerr << "where OPT_SOLVER is the solver to be used (either 'Roe' or 'FWave', default is FWave)" << std::endl;
     return EXIT_FAILURE;
   }
   else
@@ -45,6 +50,26 @@ int main(int i_argc,
       return EXIT_FAILURE;
     }
     l_dxy = 10.0 / l_nx;
+    if (i_argc == 2)
+    {
+      std::cout << "using FWave solver" << std::endl;
+      l_useFwave = true;
+    }
+    else
+    {
+      std::string l_arg(i_argv[2]);
+      std::transform(l_arg.begin(), l_arg.end(), l_arg.begin(), ::toupper);
+      if (l_arg == "ROE")
+      {
+        std::cout << "using Roe solver" << std::endl;
+        l_useFwave = false;
+      }
+      else
+      {
+        std::cout << "using FWave solver" << std::endl;
+        l_useFwave = true;
+      }
+    }
   }
   std::cout << "runtime configuration" << std::endl;
   std::cout << "  number of cells in x-direction: " << l_nx << std::endl;
@@ -58,7 +83,7 @@ int main(int i_argc,
                                                 5);
   // construct solver
   tsunami_lab::patches::WavePropagation *l_waveProp;
-  l_waveProp = new tsunami_lab::patches::WavePropagation1d(l_nx);
+  l_waveProp = new tsunami_lab::patches::WavePropagation1d(l_nx, l_useFwave);
 
   // maximum observed height in the setup
   tsunami_lab::t_real l_hMax = std::numeric_limits<tsunami_lab::t_real>::lowest();
