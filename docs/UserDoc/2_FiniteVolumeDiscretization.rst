@@ -11,9 +11,9 @@ Links:
 Individual Contributions:
 -------------------------
 
-Justus Dreßler: <todo()>
+Justus Dreßler: wrote Projekt Report and implemented extra command line argument
 
-Thorsten Kröhl: <todo()>
+Thorsten Kröhl: Implemented Doxygen Integration in Sphinx
 
 Julius Halank: <todo()>
 
@@ -86,8 +86,8 @@ and adjust WavePropagation1d constructor to accept a bool for the solver type
 .. 
   TODO MiddleStates.csv
 
-.. 
-  TODO GitHub Actions
+We Activated Github Actions to run the tests on every push and pull request (literally just activated it, no changes to the yaml were made).
+We also integrated Doxygen into our ReadTheDocs Documentation.
 
 2.1 Shock and Rarefaction Waves
 -------------------------------
