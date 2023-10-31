@@ -103,16 +103,24 @@ void tsunami_lab::solvers::F_Wave::netUpdates(t_real i_hL,
     // calculate particle velocity
     t_real l_uL = i_huL / i_hL;
     t_real l_uR = i_huR / i_hR;
+    std::cout << "\nleft particle speed: " << l_uL << std::endl;
+    std::cout << "right particle speed: " << l_uR << std::endl;
 
     // calculate wavespeeds
     t_real l_waveSpeedL = 0;
     t_real l_waveSpeedR = 0;
+
     waveSpeeds(i_hL, i_hR, l_uL, l_uR, l_waveSpeedL, l_waveSpeedR);
+    std::cout << "left wave speed: " << l_waveSpeedL << std::endl;
+    std::cout << "right wave speed: " << l_waveSpeedR << std::endl;
 
     // calculate wave strengths
     t_real l_waveStrengthL = 0;
     t_real l_waveStrengthR = 0;
+
     waveStrengths(i_hL, i_hR, i_huL, i_huR, l_waveSpeedL, l_waveSpeedR, l_waveStrengthL, l_waveStrengthR);
+    std::cout << "left wave strength: " << l_waveStrengthL << std::endl;
+    std::cout << "right wave strength: " << l_waveStrengthR << std::endl;
 
     // calculate waves
     t_real l_waveL[2] = {0};
@@ -134,24 +142,24 @@ void tsunami_lab::solvers::F_Wave::netUpdates(t_real i_hL,
         if (l_waveSpeedL < 0)
         {
             // left-going wave
-            o_netUpdateL[i] = l_waveL[i];
+            o_netUpdateL[i] += l_waveL[i];
         }
         else
         {
             // right-going wave
-            o_netUpdateR[i] = l_waveL[i];
+            o_netUpdateR[i] += l_waveL[i];
         }
 
         // right wave
         if (l_waveSpeedR > 0)
         {
             // right-going wave
-            o_netUpdateR[i] = l_waveR[i];
+            o_netUpdateR[i] += l_waveR[i];
         }
         else
         {
             // left-going wave
-            o_netUpdateL[i] = l_waveR[i];
+            o_netUpdateL[i] += l_waveR[i];
         }
     }
 }
