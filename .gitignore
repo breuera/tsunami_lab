@@ -2,4 +2,5 @@
 /.vscode/**
 .sconsign.dblite
 /docs/UserDoc/_build/**
-/docs/build/html/**/
+/docs/UserDoc/_build_doxygen/**
+!**.gitkeep

@@ -21,7 +21,7 @@ extensions = ['sphinx_rtd_theme',
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
-subprocess.call('cd ..; doxygen', shell=True)
+subprocess.call('doxygen', shell=True)
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
@@ -31,4 +31,4 @@ html_static_path = ['_static']
 
 
 #breathe configuration
-breathe_projects = { "tsunami23": "../build/html/xml/" }
+breathe_projects = { "tsunami23": "_build_doxygen/xml/" }
