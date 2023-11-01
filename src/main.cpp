@@ -14,7 +14,7 @@
 
 #include "io/Csv.h"
 #include "patches/WavePropagation1d.h"
-#include "setups/DamBreak1d.h"
+#include "setups/DamBreak1d/DamBreak1d.h"
 
 // declaration of variables
 std::string solver_choice;

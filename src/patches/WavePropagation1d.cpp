@@ -16,7 +16,7 @@
 tsunami_lab::patches::WavePropagation1d::WavePropagation1d(t_idx i_nCells)
 {
     m_nCells = i_nCells;
-    // allocate memory including a single ghost cell on each side
+    // allocate memory including a single ghost cell on each side and initializing with 0
     for (unsigned short l_st = 0; l_st < 2; l_st++)
     {
         m_h[l_st] = new t_real[m_nCells + 2]{0};
