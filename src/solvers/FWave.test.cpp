@@ -237,13 +237,8 @@ TEST_CASE("Test the derivation of the wave strengths.", "[FWaveStrength]")
                                               l_waveSpeedR,
                                               l_strengthL,
                                               l_strengthR);
-<<<<<<< HEAD
   REQUIRE(l_strengthL == Approx(87.1305).margin(0.005));
   REQUIRE(l_strengthR == Approx(-30.1305).margin(0.005));
-=======
-  REQUIRE(l_strengthL == Approx(87.1305));
-  REQUIRE(l_strengthR == Approx(-30.1305));
->>>>>>> 8020b8f9763aee8fad5067d7c39223f58ee5adfa
 }
 
 TEST_CASE("Test the derivation of the F Wave net-updates.", "[FWaveUpdates]")
@@ -281,17 +276,10 @@ TEST_CASE("Test the derivation of the F Wave net-updates.", "[FWaveUpdates]")
                                            45,
                                            l_netUpdatesL,
                                            l_netUpdatesR);
-<<<<<<< HEAD
   REQUIRE(l_netUpdatesL[0] == Approx(99.6504).margin(0.005));
   REQUIRE(l_netUpdatesL[1] == Approx(-1060.6).margin(0.005));
   REQUIRE(l_netUpdatesR[0] == Approx(-6.65036).margin(0.005));
   REQUIRE(l_netUpdatesR[1] == Approx(-76.4811).margin(0.005));
-=======
-  REQUIRE(l_netUpdatesL[0] == Approx(99.6504));
-  REQUIRE(l_netUpdatesL[1] == Approx(-1060.6));
-  REQUIRE(l_netUpdatesR[0] == Approx(-6.65036));
-  REQUIRE(l_netUpdatesR[1] == Approx(-76.4811));
->>>>>>> 8020b8f9763aee8fad5067d7c39223f58ee5adfa
 }
 
 TEST_CASE("Test net-updates with in case of steady states.", "[FWaveUpdates]")
