@@ -5,8 +5,8 @@
  * @section DESCRIPTION
  * One-dimensional Shock-Shock problem.
  **/
-#ifndef TSUNAMI_LAB_SETUPS_DAM_BREAK_1D_H
-#define TSUNAMI_LAB_SETUPS_DAM_BREAK_1D_H
+#ifndef TSUNAMI_LAB_SETUPS_SHOCK_SHOCK_1D_H
+#define TSUNAMI_LAB_SETUPS_SHOCK_SHOCK_1D_H
 
 #include "./../Setup.h"
 

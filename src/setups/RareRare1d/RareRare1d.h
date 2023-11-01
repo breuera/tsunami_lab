@@ -5,8 +5,8 @@
  * @section DESCRIPTION
  * One-dimensional Rare-Rare problem.
  **/
-#ifndef TSUNAMI_LAB_SETUPS_DAM_BREAK_1D_H
-#define TSUNAMI_LAB_SETUPS_DAM_BREAK_1D_H
+#ifndef TSUNAMI_LAB_SETUPS_RARE_RARE_1D_H
+#define TSUNAMI_LAB_SETUPS_RARE_RARE_1D_H
 
 #include "./../Setup.h"
 
