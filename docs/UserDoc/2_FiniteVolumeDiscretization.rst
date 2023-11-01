@@ -123,5 +123,14 @@ which means the lambdas are :math:`\lambda_{1,2} = \mp \sqrt{gh}` only dependent
 ..
   TODO Impact of Waterheights and Particle Velocity in the river
 
-..
-  TODO Time to Evacuate (guess roughly 42 minutes)
+Village Evacuation Time:
+
+.. math::
+
+  s_{village} &= 25km \\
+  q_l &= \begin{bmatrix} 14 \\ 0 \end{bmatrix}\\
+  q_r &= \begin{bmatrix} 3.5 \\ 0.7 \end{bmatrix}\\
+  h^{Roe} &= \frac{1}{2} (h_l + h_r) = \frac{1}{2} (14 + 3.5) = 8.75 m \\
+  u^{Roe} &= \frac{u_l \sqrt{h_l} + u_r \sqrt{h_r}}{\sqrt{h_l}+\sqrt{h_r}} = \frac{0 \cdot \sqrt{14} + 0.7 \cdot \sqrt{3.5}}{\sqrt{14}+\sqrt{3.5}} = 0.23333 \frac{m}{s}\\
+  \lambda_r^{Roe} &= u^{Roe} + \sqrt{gh^{Roe}} = 0.23333 + \sqrt{9.80665 \cdot 8.75} = 9.49660 \frac{m}{s} = 34.18776 \frac{km}{h} \\	
+  t_{evacuation} &= \frac{s_{village}}{\lambda_r^{Roe}} = \frac{25}{34.18776} = 0.731 h = 43.86 min
