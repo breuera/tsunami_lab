@@ -13,6 +13,7 @@
 #include <fstream>
 #include <limits>
 #include <algorithm>
+#include <unistd.h>
 
 int main(int i_argc,
          char *i_argv[])
@@ -71,6 +72,22 @@ int main(int i_argc,
       }
     }
   }
+  int opt;
+  // Retrieve the options: TODO IMPLEMENT
+  while ((opt = getopt(i_argc, i_argv, "ab")) != -1)
+  { // for each option...
+    switch (opt)
+    {
+    case 'a':
+      break;
+    case 'b':
+      break;
+    case '?': // unknown option...
+      std::cerr << "Unknown option: '" << char(optopt) << "'!" << std::endl;
+      break;
+    }
+  }
+
   std::cout << "runtime configuration" << std::endl;
   std::cout << "  number of cells in x-direction: " << l_nx << std::endl;
   std::cout << "  number of cells in y-direction: " << l_ny << std::endl;

@@ -1,15 +1,15 @@
 Tsunami Report 1 Riemann Solver
 ===============================
 
-Links:
-------------
+Links
+-----
 
 `Github Repo <https://github.com/Minutenreis/tsunami_lab>`_
 
 `User Doc <https://tsunami-lab.readthedocs.io/en/latest/>`_
 
-Individual Contributions:
--------------------------
+Individual Contributions
+------------------------
 
 Justus Dreßler: Wrote Code and Unit Test
 
