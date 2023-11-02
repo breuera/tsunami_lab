@@ -144,3 +144,101 @@ TEST_CASE("Test the 1d wave propagation FWave solver.", "[WaveProp1dFWave]")
     REQUIRE(m_waveProp.getMomentumX()[l_ce] == Approx(0));
   }
 }
+
+TEST_CASE("Test the 1d wave propagation FWave solver shock-shock.", "[WaveProp1dFWaveShockShock]")
+{
+  /**
+   * @brief test steady state from middle_states.csv in the Shock-Shock Problem
+   * (Riemann Solutions obtained by Alexander Breuer)
+   *
+   * h_l = 9894.065328676988
+   * h_r = 9894.065328676988
+   * hu_l = 763.616897222239
+   * hu_r = -763.616897222239
+   * h* = 9896.516538751875
+   */
+
+  // construct solver and setup a shock-shock problem
+  tsunami_lab::patches::WavePropagation1d m_waveProp(100, true);
+
+  for (std::size_t l_ce = 0; l_ce < 50; l_ce++)
+  {
+    m_waveProp.setHeight(l_ce,
+                         0,
+                         9894.065328676988);
+    m_waveProp.setMomentumX(l_ce,
+                            0,
+                            763.616897222239);
+  }
+  for (std::size_t l_ce = 50; l_ce < 100; l_ce++)
+  {
+    m_waveProp.setHeight(l_ce,
+                         0,
+                         9894.065328676988);
+    m_waveProp.setMomentumX(l_ce,
+                            0,
+                            -763.616897222239);
+  }
+
+  // set outflow boundary condition
+  m_waveProp.setGhostOutflow();
+
+  // perform a time step
+  for (int i = 0; i < 30; i++)
+  {
+    m_waveProp.timeStep(0.001);
+  }
+
+  // test for h*
+  REQUIRE(m_waveProp.getHeight()[49] == Approx(9896.516538751875));
+  REQUIRE(m_waveProp.getHeight()[50] == Approx(9896.516538751875));
+}
+
+TEST_CASE("Test the 1d wave propagation FWave solver rare-rare.", "[WaveProp1dFWaveRareRare]")
+{
+  /**
+   * @brief test steady state from middle_states.csv in the Shock-Shock Problem
+   * (Riemann Solutions obtained by Alexander Breuer)
+   *
+   * h_l = 9976.904476606509
+   * h_r = 9976.904476606509
+   * hu_l = -906.6229611756387
+   * hu_r = 906.6229611756387
+   * h* = 9974.006714260977
+   */
+
+  // construct solver and setup a shock-shock problem
+  tsunami_lab::patches::WavePropagation1d m_waveProp(100, true);
+
+  for (std::size_t l_ce = 0; l_ce < 50; l_ce++)
+  {
+    m_waveProp.setHeight(l_ce,
+                         0,
+                         9976.904476606509);
+    m_waveProp.setMomentumX(l_ce,
+                            0,
+                            -906.6229611756387);
+  }
+  for (std::size_t l_ce = 50; l_ce < 100; l_ce++)
+  {
+    m_waveProp.setHeight(l_ce,
+                         0,
+                         9976.904476606509);
+    m_waveProp.setMomentumX(l_ce,
+                            0,
+                            906.6229611756387);
+  }
+
+  // set outflow boundary condition
+  m_waveProp.setGhostOutflow();
+
+  // perform a time step
+  for (int i = 0; i < 30; i++)
+  {
+    m_waveProp.timeStep(0.001);
+  }
+
+  // test for h*
+  REQUIRE(m_waveProp.getHeight()[49] == Approx(9974.006714260977));
+  REQUIRE(m_waveProp.getHeight()[50] == Approx(9974.006714260977));
+}

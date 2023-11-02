@@ -20,7 +20,7 @@ Julius Halank: Added Test Cases for Setups
 2.0 Integrate FWave Solver
 --------------------------
 
-extended main function to accept a second argument for the solver type optionally
+Extended main function to accept a second argument for the solver type optionally
 
 .. code:: c++
 
@@ -54,7 +54,7 @@ extended main function to accept a second argument for the solver type optionall
 
     l_waveProp = new tsunami_lab::patches::WavePropagation1d(l_nx, l_useFwave);
 
-and adjust WavePropagation1d constructor to accept a bool for the solver type
+and adjust WavePropagation1d constructor to accept a bool for the solver type.
 
 .. code:: c++
 
@@ -83,8 +83,58 @@ and adjust WavePropagation1d constructor to accept a bool for the solver type
                                l_netUpdates[1]);
     }
 
-.. 
-  TODO MiddleStates.csv
+Added new Testcases for the Setups with the values of middle_states.csv for Example:
+
+.. code:: c++
+
+  TEST_CASE("Test the 1d wave propagation FWave solver shock-shock.", "[WaveProp1dFWaveShockShock]")
+  {
+  /**
+   * @brief test steady state from middle_states.csv in the Shock-Shock Problem
+   * (Riemann Solutions obtained by Alexander Breuer)
+   *
+   * h_l = 9894.065328676988
+   * h_r = 9894.065328676988
+   * hu_l = 763.616897222239
+   * hu_r = -763.616897222239
+   * h* = 9896.516538751875
+   */
+
+  // construct solver and setup a shock-shock problem
+  tsunami_lab::patches::WavePropagation1d m_waveProp(100, true);
+
+  for (std::size_t l_ce = 0; l_ce < 50; l_ce++)
+  {
+    m_waveProp.setHeight(l_ce,
+                         0,
+                         9894.065328676988);
+    m_waveProp.setMomentumX(l_ce,
+                            0,
+                            763.616897222239);
+  }
+  for (std::size_t l_ce = 50; l_ce < 100; l_ce++)
+  {
+    m_waveProp.setHeight(l_ce,
+                         0,
+                         9894.065328676988);
+    m_waveProp.setMomentumX(l_ce,
+                            0,
+                            -763.616897222239);
+  }
+
+  // set outflow boundary condition
+  m_waveProp.setGhostOutflow();
+
+  // perform a time step
+  for (int i = 0; i < 30; i++)
+  {
+    m_waveProp.timeStep(0.001);
+  }
+
+  // test for h*
+  REQUIRE(m_waveProp.getHeight()[49] == Approx(9896.516538751875));
+  REQUIRE(m_waveProp.getHeight()[50] == Approx(9896.516538751875));
+  }
 
 We Activated Github Actions to run the tests on every push and pull request (literally just activated it, no changes to the yaml were made).
 We also integrated Doxygen into our ReadTheDocs Documentation.
