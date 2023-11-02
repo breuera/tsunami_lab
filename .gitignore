@@ -3,4 +3,5 @@
 .sconsign.dblite
 /docs/UserDoc/_build/**
 /docs/UserDoc/_build_doxygen/**
+/solutions/**
 !**.gitkeep

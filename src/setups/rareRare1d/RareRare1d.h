@@ -9,8 +9,10 @@
 
 #include "../Setup.h"
 
-namespace tsunami_lab {
-  namespace setups {
+namespace tsunami_lab
+{
+  namespace setups
+  {
     class RareRare1d;
   }
 }
@@ -18,54 +20,55 @@ namespace tsunami_lab {
 /**
  * 1d rarefaction rarefaction wave setup.
  **/
-class tsunami_lab::setups::RareRare1d: public Setup {
-  private:
-    //! height of the water, same for both sides 
-    t_real m_height = 0;
-    
-    //! momentum in x-direction
-    t_real m_momentum = 0;
+class tsunami_lab::setups::RareRare1d : public Setup
+{
+private:
+  //! height of the water, same for both sides
+  t_real m_height = 0;
 
-    //! location of the middle point
-    t_real m_locationMiddle = 0;
+  //! momentum in x-direction
+  t_real m_momentum = 0;
 
-  public:
-    /**
-     * Constructor.
-     *
-     * @param i_height water height on both sides.
-     * @param i_momentum momentum in x-direction.
-     * @param i_locationMiddle location of the middle point.
-     **/
-    RareRare1d( t_real i_height,
-                t_real i_momentum,
-                t_real i_locationMiddle );
+  //! location of the middle point
+  t_real m_middlePoint = 0;
 
-    /**
-     * Gets the water height at a given point.
-     *
-     
-     * @return height at the given point.
-     **/
-    t_real getHeight( t_real i_x,
-                      t_real      ) const;
+public:
+  /**
+   * Constructor.
+   *
+   * @param i_height water height on both sides.
+   * @param i_momentum momentum in x-direction.
+   * @param i_middlePoint location of the middle point.
+   **/
+  RareRare1d(t_real i_height,
+             t_real i_momentum,
+             t_real i_middlePoint);
 
-    /**
-     * Gets the momentum in x-direction.
-     * @param i_x momentum of the queried point in x-direction.
-     * @return momentum in x-direction.
-     **/
-    t_real getMomentumX( t_real,
-                         t_real ) const;
+  /**
+   * Gets the water height at a given point.
+   *
 
-    /**
-     * Gets the momentum in y-direction.
-     *
-     * @return momentum in y-direction.
-     **/
-    t_real getMomentumY( t_real,
-                         t_real ) const;
+   * @return height at the given point.
+   **/
+  t_real getHeight(t_real,
+                   t_real) const;
 
+  /**
+   * Gets the momentum in x-direction.
+   *
+   * @param i_x momentum of the queried point in x-direction.
+   * @return momentum in x-direction.
+   **/
+  t_real getMomentumX(t_real i_x,
+                      t_real) const;
+
+  /**
+   * Gets the momentum in y-direction.
+   *
+   * @return momentum in y-direction.
+   **/
+  t_real getMomentumY(t_real,
+                      t_real) const;
 };
 
 #endif

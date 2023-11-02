@@ -1,21 +1,21 @@
 Tsunami Report 2 Finite Volume Discretization
 =============================================
 
-Links:
-------
+Links
+-----
 
 `Github Repo <https://github.com/Minutenreis/tsunami_lab>`_
 
 `User Doc <https://tsunami-lab.readthedocs.io/en/latest/>`_
 
-Individual Contributions:
--------------------------
+Individual Contributions
+------------------------
 
-Justus Dreßler: <todo()>
+Justus Dreßler: Wrote Projekt Report and implemented extra command line argument
 
-Thorsten Kröhl: <todo()>
+Thorsten Kröhl: Implemented Doxygen Integration in Sphinx
 
-Julius Halank: <todo()>
+Julius Halank: Added Test Cases for Setups
 
 2.0 Integrate FWave Solver
 --------------------------
@@ -86,14 +86,29 @@ and adjust WavePropagation1d constructor to accept a bool for the solver type
 .. 
   TODO MiddleStates.csv
 
-.. 
-  TODO GitHub Actions
+We Activated Github Actions to run the tests on every push and pull request (literally just activated it, no changes to the yaml were made).
+We also integrated Doxygen into our ReadTheDocs Documentation.
 
 2.1 Shock and Rarefaction Waves
 -------------------------------
 
-.. 
-  TODO Setup as Problem
+Implemented shock-shock and rare-rare Problems in /setups.
+They are mainly the same as the Dam Break setup, but with the same waterheight on both sides but different momentums.
+
+.. code:: c++
+
+  tsunami_lab::t_real tsunami_lab::setups::ShockShock1d::getMomentumX(t_real i_x,
+                                                                      t_real) const
+  {
+    if (i_x < m_middlePoint)
+    {
+      return m_momentum;
+    }
+    else
+    {
+      return -m_momentum;
+    }
+  } 
 
 Regarding the Wavespeeds:
 
@@ -108,5 +123,14 @@ which means the lambdas are :math:`\lambda_{1,2} = \mp \sqrt{gh}` only dependent
 ..
   TODO Impact of Waterheights and Particle Velocity in the river
 
-..
-  TODO Time to Evacuate (guess roughly 42 minutes)
+Village Evacuation Time:
+
+.. math::
+
+  s_{village} &= 25km \\
+  q_l &= \begin{bmatrix} 14 \\ 0 \end{bmatrix}\\
+  q_r &= \begin{bmatrix} 3.5 \\ 0.7 \end{bmatrix}\\
+  h^{Roe} &= \frac{1}{2} (h_l + h_r) = \frac{1}{2} (14 + 3.5) = 8.75 m \\
+  u^{Roe} &= \frac{u_l \sqrt{h_l} + u_r \sqrt{h_r}}{\sqrt{h_l}+\sqrt{h_r}} = \frac{0 \cdot \sqrt{14} + 0.7 \cdot \sqrt{3.5}}{\sqrt{14}+\sqrt{3.5}} = 0.23333 \frac{m}{s}\\
+  \lambda_r^{Roe} &= u^{Roe} + \sqrt{gh^{Roe}} = 0.23333 + \sqrt{9.80665 \cdot 8.75} = 9.49660 \frac{m}{s} = 34.18776 \frac{km}{h} \\	
+  t_{evacuation} &= \frac{s_{village}}{\lambda_r^{Roe}} = \frac{25}{34.18776} = 0.731 h = 43.86 min

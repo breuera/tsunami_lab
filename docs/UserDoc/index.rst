@@ -22,10 +22,19 @@ Tsunami-Simulation User Documentation
 Installing and Running
 ----------------------
 
+:: 
+   todo: mehr Commandline Optionen hinzufügen?
+
 * clone the project with :code:`git clone https://github.com/Minutenreis/tsunami_lab.git` 
 * add the submodules with :code:`git submodule init` and :code:`git submodule update`
 * build with :code:`scons`
-* execute the Dam Simulation with :code:`./build/tsunami_lab <number of cells>` 
+* execute the Dam Break Problem with :code:`./build/tsunami_lab <number of cells> <opt: solver>` 
 * execute the tests with :code:`./build/tests`
 
-The output of the Dam Simulation is in :code:`/solutions`
+The output of the Dam Break Problem is in :code:`/solutions`
+
+Command Line Parameters
+-----------------------
+
+<number of cells>: number of cells the simulation gets broken up in.
+<opt: solver>: choose between 'roe' and 'fWave' solver, default is 'fWave'
