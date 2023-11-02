@@ -37,9 +37,9 @@ int main(int i_argc,
   if (i_argc != 2 && i_argc != 3)
   {
     std::cerr << "invalid number of arguments, usage:" << std::endl;
-    std::cerr << "  ./build/tsunami_lab N_CELLS_X OPT_SOLVER" << std::endl;
+    std::cerr << "  ./build/tsunami_lab N_CELLS_X [SOLVER]" << std::endl;
     std::cerr << "where N_CELLS_X is the number of cells in x-direction." << std::endl;
-    std::cerr << "where OPT_SOLVER is the solver to be used (either 'Roe' or 'FWave', default is FWave)" << std::endl;
+    std::cerr << "where [SOLVER] is the solver to be used (either 'Roe' or 'FWave', default is FWave)" << std::endl;
     return EXIT_FAILURE;
   }
   else
