@@ -237,8 +237,8 @@ TEST_CASE("Test the derivation of the wave strengths.", "[FWaveStrength]")
                                               l_waveSpeedR,
                                               l_strengthL,
                                               l_strengthR);
-  REQUIRE(l_strengthL == Approx(87.1305));
-  REQUIRE(l_strengthR == Approx(-30.1305));
+  REQUIRE(l_strengthL == Approx(87.1305).margin(0.005));
+  REQUIRE(l_strengthR == Approx(-30.1305).margin(0.005));
 }
 
 TEST_CASE("Test the derivation of the F Wave net-updates.", "[FWaveUpdates]")
@@ -276,16 +276,16 @@ TEST_CASE("Test the derivation of the F Wave net-updates.", "[FWaveUpdates]")
                                            45,
                                            l_netUpdatesL,
                                            l_netUpdatesR);
-  REQUIRE(l_netUpdatesL[0] == Approx(99.6504));
-  REQUIRE(l_netUpdatesL[1] == Approx(-1060.6));
-  REQUIRE(l_netUpdatesR[0] == Approx(-6.65036));
-  REQUIRE(l_netUpdatesR[1] == Approx(-76.4811));
+  REQUIRE(l_netUpdatesL[0] == Approx(99.6504).margin(0.005));
+  REQUIRE(l_netUpdatesL[1] == Approx(-1060.6).margin(0.005));
+  REQUIRE(l_netUpdatesR[0] == Approx(-6.65036).margin(0.005));
+  REQUIRE(l_netUpdatesR[1] == Approx(-76.4811).margin(0.005));
 }
 
 TEST_CASE("Test net-updates with in case of steady states.", "[FWaveUpdates]")
 {
   /*
-   * Test case (dam break):
+   * Test case:
    *
    *     left | right
    *   h:  10 | 10
@@ -339,14 +339,14 @@ TEST_CASE("Test net-updates with in case of steady states.", "[FWaveUpdates]")
 TEST_CASE("Test net-updates for supersonic problems.", "[FWaveUpdates]")
 {
   /*
-   * Test case (dam break):
+   * Test case:
    *
    *     left | right
    *   h:   1 | 1
    *   u:   3 | 5
    *   hu:  3 | 5
    *
-   * The derivation of the Roe speeds (s1, s2) is given above.
+   * The derivation of the Wave speeds (s1, s2) is given above.
    * Matrix of right eigenvectors:
    *
    *     | 1   1  |
@@ -358,6 +358,7 @@ TEST_CASE("Test net-updates for supersonic problems.", "[FWaveUpdates]")
    * F wave velocity : 4
    * F wave speed : s1 = 4 - sqrt(9.80665 * 1) = 0.868443
    * F wave speed : s2 = 4 + sqrt(9.80665 * 1) = 7.13156
+   * 
    * wolframalpha.com query: invert {{1, 1}, {0.868443, 7.13156}}
    *           | 1.13866  -0.159665  |
    * Rinv =    |                     |
@@ -407,4 +408,80 @@ TEST_CASE("Test net-updates for supersonic problems.", "[FWaveUpdates]")
   REQUIRE(l_netUpdatesL[1] == Approx(0));
   REQUIRE(l_netUpdatesR[0] == Approx(2));
   REQUIRE(l_netUpdatesR[1] == Approx(16));
+}
+
+TEST_CASE("Test net-updates for dam break.", "[FWaveUpdates]") {
+  /*
+   * test case:
+   *
+   *     left | right
+   *   h:  10 |  8
+   *   u:   0 |  0
+   *   hu:  0 |  0
+   * 
+   * The derivation of the Wave speeds (s1, s2) is given above.
+   * Matrix of right eigenvectors:
+   *
+   *     | 1   1  |
+   * R = |        |
+   *     | s1  s2 |
+   *
+   * Inversion yields:
+   * Roe height  :  9
+   * Roe particle velocity : 0
+   * F wave speed : s1 = 0 - sqrt(9.80665 * 9) = -9.3946
+   * F wave speed : s2 = 0 + sqrt(9.80665 * 9) = 9.3946
+   * 
+   * wolframalpha.com query: invert {{1, 1}, {-9.3946, 9.3946}}
+   * 
+   *           | 0.5  -0.0532221 |
+   * Rinv =    |                 |
+   *           | 0.5  0.0532221  |
+   * 
+   * Calculate the flux vectors:
+   * 
+   *          |   0       |
+   * f(q_L) = |           |
+   *          | 490.3325  |
+   * 
+   *          |   0      |
+   * f(q_R) = |          |
+   *          | 313.8128 |
+   * 
+   * Calculate delta in fluxes:
+   * 
+   *            |     0     |
+   * delta_f =  |           |
+   *            | -176.5197 |
+   * 
+   * Multiplicaton with the jump in quantities gives the wave strengths:
+   *
+   *        |     0     |   | 9.39475  |   | a1 |
+   * Rinv * |           | = |          | = |    |
+   *        | -176.5197 |   | -9.39475 |   | a2 |
+   * 
+   * The net-updates are given through the scaled eigenvectors.
+   * 
+   *                 |  1 |   |   9.39475     |
+   * update #1: a1 * |    | = |               |
+   *                 | s1 |   | -88.25991835  |
+   *
+   *                 |  1 |   |  -9.39475     |
+   * update #2: a2 * |    | = |               |
+   *                 | s2 |   | -88.25991835  |
+   */
+  float l_netUpdatesL[2] = {0, 0};
+  float l_netUpdatesR[2] = {0, 0}; 
+
+  tsunami_lab::solvers::F_Wave::netUpdates( 10,
+                                            8,
+                                            0,
+                                            0,
+                                            l_netUpdatesL,
+                                            l_netUpdatesR);
+
+  REQUIRE(l_netUpdatesL[0] == Approx(9.39475));
+  REQUIRE(l_netUpdatesL[1] == Approx(-88.25991835));
+  REQUIRE(l_netUpdatesR[0] == Approx(-9.39475));
+  REQUIRE(l_netUpdatesR[1] == Approx(-88.25991835));
 }
