@@ -11,6 +11,8 @@ l_sources = [ 'solvers/Roe.cpp',
               'solvers/FWave.cpp',
               'patches/WavePropagation1d.cpp',
               'setups/DamBreak1d.cpp',
+              'setups/RareRare1d.cpp',
+              'setups/ShockShock1d.cpp',
               'io/Csv.cpp' ]
 
 for l_so in l_sources:
@@ -24,6 +26,8 @@ l_tests = [ 'tests.cpp',
             'solvers/FWave.test.cpp',
             'patches/WavePropagation1d.test.cpp',
             'io/Csv.test.cpp',
+            'setups/ShockShock1d.test.cpp',
+            'setups/RareRare1d.test.cpp',
             'setups/DamBreak1d.test.cpp' ]
 
 for l_te in l_tests:
