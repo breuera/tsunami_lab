@@ -14,9 +14,9 @@
 
 #include "io/Csv.h"
 #include "patches/WavePropagation1d.h"
-#include "setups/DamBreak1d/DamBreak1d.h"
-#include "setups/ShockShock1d/ShockShock1d.h"
-#include "setups/RareRare1d/RareRare1d.h"
+#include "setups/dambreak1d/DamBreak1d.h"
+#include "setups/shockshock1d/ShockShock1d.h"
+#include "setups/rarerare1d/RareRare1d.h"
 
 // declaration of variables
 std::string solver_choice;
@@ -81,7 +81,7 @@ int main(int i_argc,
     // construct setup
     tsunami_lab::setups::Setup *l_setup;
     l_setup = new tsunami_lab::setups::ShockShock1d(25,
-                                                    1000,
+                                                    55,
                                                     5);
     // construct solver
     tsunami_lab::patches::WavePropagation *l_waveProp;
