@@ -33,23 +33,31 @@ jobs:
         run:
           cppcheck src/ --template=gcc --force --error-exitcode=1
 
+      - name: Static Code Analysis
+        run:
+          cppcheck src/ --template=gcc --force --error-exitcode=1
+
       - name: Sanitize
         run: |
           scons mode=debug+san
           ./build/tests
+          ./build/tsunami_lab 25 1
           ./build/tsunami_lab 25
           scons mode=release+san
           ./build/tests
+          ./build/tsunami_lab 500 1
           ./build/tsunami_lab 500
 
       - name: Valgrind
         run: |
           scons mode=debug
           valgrind ./build/tests
+          valgrind ./build/tsunami_lab 25 1
           valgrind ./build/tsunami_lab 25
 
       - name: Release
         run: |
           scons
           ./build/tests
+          ./build/tsunami_lab 500 1
           ./build/tsunami_lab 500
