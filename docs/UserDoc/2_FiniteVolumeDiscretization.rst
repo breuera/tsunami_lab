@@ -20,10 +20,10 @@ Julius Halank: Added test cases for setups
 2.0 Integrate FWave Solver
 --------------------------
 
-Extended main function to accept optional arguments -s SOLVER and -u SETUP.
-SOLVER = ROE or FWAVE
-SETUP = DAMBREAK1D h_l h_r, RARERARE1D h hu or SHOCKSHOCK1D h hu
-defaults are FWave and DamBreak1d 10 5 respectively
+| Extended main function to accept optional arguments :code:`-s SOLVER` and :code:`-u SETUP`.
+| :code:`SOLVER = ROE or FWAVE`
+| :code:`SETUP = DAMBREAK1D h_l h_r, RARERARE1D h hu or SHOCKSHOCK1D h hu`
+| defaults are :code:`FWave` and :code:`DamBreak1d 10 5` respectively
 
 .. code:: c++
 
