@@ -34,7 +34,7 @@ int main(int i_argc,
   std::cout << "####################################" << std::endl;
 
   // missing n_cells_x or getting -key as last argument (f.E. -h)
-  if ((i_argc <= 2) || (i_argv[i_argc - 1] == 0) || (i_argv[i_argc - 1][0] == '-'))
+  if ((i_argc < 2) || (i_argv[i_argc - 1] == 0) || (i_argv[i_argc - 1][0] == '-'))
   {
     // removed invalid number of arguments message for -h option
     std::cerr << "usage:" << std::endl;
