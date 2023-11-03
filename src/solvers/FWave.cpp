@@ -8,14 +8,14 @@
 #include "FWave.h"
 #include <cmath>
 
-void tsunami_lab::solvers::F_Wave::heightAvg(t_real i_hL,
+void tsunami_lab::solvers::FWave::heightAvg(t_real i_hL,
                                              t_real i_hR,
                                              t_real &o_height)
 {
     o_height = 0.5f * (i_hL + i_hR);
 }
 
-void tsunami_lab::solvers::F_Wave::particleVelocityAvg(t_real i_hL,
+void tsunami_lab::solvers::FWave::particleVelocityAvg(t_real i_hL,
                                                        t_real i_hR,
                                                        t_real i_uL,
                                                        t_real i_uR,
@@ -27,7 +27,7 @@ void tsunami_lab::solvers::F_Wave::particleVelocityAvg(t_real i_hL,
     o_velocity = o_velocity / (t_sqirt_hL + t_sqirt_hR);
 }
 
-void tsunami_lab::solvers::F_Wave::waveSpeeds(t_real i_hL,
+void tsunami_lab::solvers::FWave::waveSpeeds(t_real i_hL,
                                               t_real i_hR,
                                               t_real i_uL,
                                               t_real i_uR,
@@ -38,23 +38,24 @@ void tsunami_lab::solvers::F_Wave::waveSpeeds(t_real i_hL,
     t_real l_height_avg = 0;
     t_real l_partical_vel_avg = 0;
 
-    tsunami_lab::solvers::F_Wave::heightAvg(i_hL, i_hR, l_height_avg);
-    tsunami_lab::solvers::F_Wave::particleVelocityAvg(i_hL, i_hR, i_uL, i_uR, l_partical_vel_avg);
+    tsunami_lab::solvers::FWave::heightAvg(i_hL, i_hR, l_height_avg);
+    tsunami_lab::solvers::FWave::particleVelocityAvg(i_hL, i_hR, i_uL, i_uR, l_partical_vel_avg);
 
     // calculate speeds
-    o_waveSpeedL = l_partical_vel_avg - tsunami_lab::solvers::F_Wave::c_sqrt_g * sqrt(l_height_avg);
-    o_waveSpeedR = l_partical_vel_avg + tsunami_lab::solvers::F_Wave::c_sqrt_g * sqrt(l_height_avg);
+    o_waveSpeedL = l_partical_vel_avg - tsunami_lab::solvers::FWave::c_sqrt_g * sqrt(l_height_avg);
+    o_waveSpeedR = l_partical_vel_avg + tsunami_lab::solvers::FWave::c_sqrt_g * sqrt(l_height_avg);
 }
 
-void tsunami_lab::solvers::F_Wave::flux(t_real i_h,
+void tsunami_lab::solvers::FWave::flux(t_real i_h,
                                         t_real i_hu,
                                         t_real o_flux[2])
 {
     o_flux[0] = i_hu;
-    o_flux[1] = pow(i_hu, 2) + 0.5f * tsunami_lab::solvers::F_Wave::c_g * pow(i_h, 2);
+    t_real l_u = i_hu / i_h;
+    o_flux[1] = i_h * pow(l_u, 2) + 0.5f * tsunami_lab::solvers::FWave::c_g * pow(i_h, 2);
 }
 
-void tsunami_lab::solvers::F_Wave::waveStrengths(t_real i_hL,
+void tsunami_lab::solvers::FWave::waveStrengths(t_real i_hL,
                                                  t_real i_hR,
                                                  t_real i_huL,
                                                  t_real i_huR,
@@ -67,8 +68,8 @@ void tsunami_lab::solvers::F_Wave::waveStrengths(t_real i_hL,
     t_real l_fluxL[2] = {0};
     t_real l_fluxR[2] = {0};
 
-    tsunami_lab::solvers::F_Wave::flux(i_hL, i_huL, l_fluxL);
-    tsunami_lab::solvers::F_Wave::flux(i_hR, i_huR, l_fluxR);
+    tsunami_lab::solvers::FWave::flux(i_hL, i_huL, l_fluxL);
+    tsunami_lab::solvers::FWave::flux(i_hR, i_huR, l_fluxR);
 
     // calculate the delta of the flux functions
     t_real l_delta_flux[2] = {0};
@@ -92,7 +93,7 @@ void tsunami_lab::solvers::F_Wave::waveStrengths(t_real i_hL,
     o_strengthR += l_R_inv[1][1] * l_delta_flux[1];
 }
 
-void tsunami_lab::solvers::F_Wave::netUpdates(t_real i_hL,
+void tsunami_lab::solvers::FWave::netUpdates(t_real i_hL,
                                               t_real i_hR,
                                               t_real i_huL,
                                               t_real i_huR,
