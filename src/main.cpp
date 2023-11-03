@@ -27,9 +27,6 @@ int main(int i_argc,
   tsunami_lab::t_idx l_nx = 0;
   tsunami_lab::t_idx l_ny = 1;
 
-  // set cell size
-  tsunami_lab::t_real l_dxy = 1;
-
   std::cout << "####################################" << std::endl;
   std::cout << "### Tsunami Lab                  ###" << std::endl;
   std::cout << "###                              ###" << std::endl;
@@ -37,9 +34,10 @@ int main(int i_argc,
   std::cout << "####################################" << std::endl;
 
   // missing n_cells_x or getting -key as last argument (f.E. -h)
-  if ((i_argc <= 1) || (i_argv[i_argc - 1] == 0) || (i_argv[i_argc - 1][0] == '-'))
+  if ((i_argc <= 2) || (i_argv[i_argc - 1] == 0) || (i_argv[i_argc - 1][0] == '-'))
   {
-    std::cerr << "invalid number of arguments, usage:" << std::endl;
+    // removed invalid number of arguments message for -h option
+    std::cerr << "usage:" << std::endl;
     std::cerr << "  ./build/tsunami_lab [-s SOLVER] [-u SETUP] N_CELLS_X" << std::endl;
     std::cerr << "  N_CELLS_X = the number of cells in x-direction." << std::endl;
     std::cerr << "  -s SOLVER = 'Roe','FWave', default is 'FWave'" << std::endl;
@@ -47,6 +45,9 @@ int main(int i_argc,
     std::cerr << "  example: ./build/tsunami_lab -s roe -u 'ShockShock1d 10 100' 100" << std::endl;
     return EXIT_FAILURE;
   }
+
+  // set cell size
+  tsunami_lab::t_real l_dxy = 1;
   l_nx = atoi(i_argv[i_argc - 1]);
   if (l_nx < 1)
   {
@@ -61,10 +62,9 @@ int main(int i_argc,
 
   // defaults
   bool l_useFwave = true;
-  tsunami_lab::setups::Setup *l_setup;
-  l_setup = new tsunami_lab::setups::DamBreak1d(10,
-                                                5,
-                                                5);
+  tsunami_lab::setups::Setup *l_setup = new tsunami_lab::setups::DamBreak1d(10,
+                                                                            5,
+                                                                            5);
 
   while ((opt = getopt(i_argc, i_argv, "u:s:")) != -1)
   {
@@ -80,10 +80,15 @@ int main(int i_argc,
         std::cout << "using Roe solver" << std::endl;
         l_useFwave = false;
       }
-      else
+      else if (l_arg == "FWAVE")
       {
         std::cout << "using FWave solver" << std::endl;
         l_useFwave = true;
+      }
+      else
+      {
+        std::cerr << "unknown solver " << l_arg << std::endl;
+        return EXIT_FAILURE;
       }
       break;
     }
@@ -101,8 +106,8 @@ int main(int i_argc,
 
       // convert to upper case and t_real
       std::transform(l_setupName.begin(), l_setupName.end(), l_setupName.begin(), ::toupper);
-      double l_arg1 = std::stod(l_arg1Str);
-      double l_arg2 = std::stod(l_arg2Str);
+      double l_arg1 = std::stof(l_arg1Str);
+      double l_arg2 = std::stof(l_arg2Str);
       if (l_setupName == "DAMBREAK1D")
       {
         std::cout << "using DamBreak1d(" << l_arg1 << "," << l_arg2 << ",5) setup" << std::endl;
