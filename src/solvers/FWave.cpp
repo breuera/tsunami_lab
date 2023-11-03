@@ -7,7 +7,6 @@
 
 #include "FWave.h"
 #include <cmath>
-#include <iostream>
 
 void tsunami_lab::solvers::FWave::heightAvg(t_real i_hL,
                                              t_real i_hR,
