@@ -14,11 +14,11 @@ namespace tsunami_lab
 {
 	namespace solvers
 	{
-		class F_Wave;
+		class FWave;
 	}
 }
 
-class tsunami_lab::solvers::F_Wave
+class tsunami_lab::solvers::FWave
 {
 private:
 	//! gravity constant
@@ -90,8 +90,10 @@ private:
 	 * @param i_hR height of the right side.
 	 * @param i_huL momentum of the left side.
 	 * @param i_huR momentum of the right side.
-	 * @param o_waveSpeeds will be set to the strength of the wave propagation to the left.
-	 * @param o_wafeSpeeds will be set to the strength of the wave propagation to the right.
+	 * @param i_waveSpeedL wave speed of the left side.
+	 * @param i_waveSpeedR wave speed of the right side.
+	 * @param o_strengthL will be set to the strength of the wave propagation to the left.
+	 * @param o_strengthR will be set to the strength of the wave propagation to the right.
 	 **/
 
 	static void waveStrengths(t_real i_hL,

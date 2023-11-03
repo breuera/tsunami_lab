@@ -40,7 +40,7 @@ public:
    * Constructs the 1d wave propagation solver.
    *
    * @param i_nCells number of cells.
-   * @param i_use_roe_solver is the roe solver used
+   * @param i_use_roe_solver boolean showing if the roe solver is used (0 -> f-wave, 1 -> roe)
    **/
   WavePropagation1d(t_idx i_nCells, bool i_use_roe_solver);
 

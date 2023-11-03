@@ -18,7 +18,7 @@ TEST_CASE("(1.) Test the derivation of the average Heights.", "[AvgHeights]")
    * roe height: 1/2 (10 + 5) = 7.5
    */
   float l_height = 0;
-  tsunami_lab::solvers::F_Wave::heightAvg(10,
+  tsunami_lab::solvers::FWave::heightAvg( 10,
                                           5,
                                           l_height);
 
@@ -34,7 +34,7 @@ TEST_CASE("(2.) Test the derivation of the average Heights.", "[AvgHeights]")
    * avgHeight: 1/2 (7.18923 + 8.32434) = 7.756785
    */
   float l_height = 0;
-  tsunami_lab::solvers::F_Wave::heightAvg(7.18923,
+  tsunami_lab::solvers::FWave::heightAvg( 7.18923,
                                           8.32434,
                                           l_height);
 
@@ -51,7 +51,7 @@ TEST_CASE("(1.) Test the derivation of the average particle velocity.", "[AvgPar
    * 				= ( -6 + 9.9 ) / 5 = 3.9 / 5 = 0.78
    **/
   float l_velocity = 0;
-  tsunami_lab::solvers::F_Wave::particleVelocityAvg(4,
+  tsunami_lab::solvers::FWave::particleVelocityAvg( 4,
                                                     9,
                                                     -3,
                                                     3.3,
@@ -70,7 +70,7 @@ TEST_CASE("(2.) Test the derivation of the average particle velocity.", "[AvgPar
    *                           = ( -15 + 32 ) / 7 = 17 / 7 = 2.42857143
    **/
   float l_velocity = 0;
-  tsunami_lab::solvers::F_Wave::particleVelocityAvg(9,
+  tsunami_lab::solvers::FWave::particleVelocityAvg( 9,
                                                     16,
                                                     -5,
                                                     8,
@@ -94,7 +94,7 @@ TEST_CASE("(1.) Test the derivation of the wave speeds.", "[WaveSpeeds]")
    **/
   float l_waveSpeedL = 0;
   float l_waveSpeedR = 0;
-  tsunami_lab::solvers::F_Wave::waveSpeeds(14,
+  tsunami_lab::solvers::FWave::waveSpeeds( 14,
                                            9,
                                            -4,
                                            3,
@@ -119,7 +119,7 @@ TEST_CASE("(2.) Test the derivation of the wave speeds.", "[WaveSpeeds]")
    **/
   float l_waveSpeedL = 0;
   float l_waveSpeedR = 0;
-  tsunami_lab::solvers::F_Wave::waveSpeeds(25,
+  tsunami_lab::solvers::FWave::waveSpeeds( 25,
                                            36,
                                            -8,
                                            9,
@@ -133,22 +133,24 @@ TEST_CASE("(1.) Test the derivation of the flux function", "[FluxFunction]")
 {
   /*
    * Test case:
-   * h = 13
+   * h = 4
    * hu = 12
    *
-   * wolframalpha.com query: {{12}, {12^2 + 0.5 9.80665 13^2}}
+   * u = hu / h = 3
+   * 
+   * wolframalpha.com query: {{12}, {4 3^2 + 0.5 9.80665 4^2}}
    *
    *          |             12                 |   |    12    |
    * f(q) =   |                                | = |          |
-   *          |    12^2 + 0.5×9.80665×13^2     |   | 972.662  |
+   *          |    4×3^2 + 0.5×9.80665×13^2    |   | 114.453  |
    */
 
   float flux[2] = {0};
-  tsunami_lab::solvers::F_Wave::flux(13,
+  tsunami_lab::solvers::FWave::flux( 4,
                                      12,
                                      flux);
   REQUIRE(flux[0] == Approx(12));
-  REQUIRE(flux[1] == Approx(972.662));
+  REQUIRE(flux[1] == Approx(114.453));
 }
 
 TEST_CASE("(2.) Test the derivation of the flux function", "[FluxFunction]")
@@ -158,19 +160,21 @@ TEST_CASE("(2.) Test the derivation of the flux function", "[FluxFunction]")
    * h = 7
    * hu = -25
    *
-   * wolframalpha.com query: {{-25}, {(-25)^2 + 0.5 9.80665 7^2}}
+   * u = hu / h = -3.5714286
+   * 
+   * wolframalpha.com query: {{-25}, {7 (-3.5714286)^2 + 0.5 9.80665 7^2}}
    *
-   *          |             -25                |   |   -25    |
-   * f(q) =   |                                | = |          |
-   *          |    (-25)^2 + 0.5 9.80665 7^2   |   | 865.263  |
+   *          |             -25                         |   |   -25    |
+   * f(q) =   |                                         | = |          |
+   *          |    7 (-3.5714286)^2 + 0.5 9.80665 7^2   |   | 329.549  |
    */
 
   float flux[2] = {0};
-  tsunami_lab::solvers::F_Wave::flux(7,
+  tsunami_lab::solvers::FWave::flux( 7,
                                      -25,
                                      flux);
   REQUIRE(flux[0] == Approx(-25));
-  REQUIRE(flux[1] == Approx(865.263));
+  REQUIRE(flux[1] == Approx(329.549));
 }
 
 TEST_CASE("Test the derivation of the wave strengths.", "[FWaveStrength]")
@@ -203,33 +207,33 @@ TEST_CASE("Test the derivation of the wave strengths.", "[FWaveStrength]")
    *
    *          |   -30   |
    * f(q_l) = |         |
-   *          | 1390.33 |
+   *          | 580.333 |
    *
    *          |    27   |
    * f(q_r) = |         |
-   *          | 1126.17 |
+   *          | 478.169 |
    *
    * Flux function delta:
    *
-   *           |    57   |
-   * delta_f = |         |
-   *           | -264.16 |
+   *           |    57     |
+   * delta_f = |           |
+   *           | -102.163  |
    *
    * Multiplication of Rinv with the flux function delta gives the wave strengths:
    *
    *
-   * wolframalpha.com query: {{0.482161, -0.2258}, {0.517839, 0.2258}} . {{57}, {-264.16}}
+   * wolframalpha.com query: {{0.482161, -0.2258}, {0.517839, 0.2258}} . {{57}, {-102.163}}
    *
-   * | alpha_1 |         | 0.482161  -0.2258 |    |    57   |     |  87.1305 |
-   * |         |    =    |                   |  * |         | =   |          |
-   * | alpha_2 |         | 0.517839  0.2258  |    | -264.16 |     | -30.1305 |
+   * | alpha_1 |         | 0.482161  -0.2258 |    |    57    |     |  50.5516 |
+   * |         |    =    |                   |  * |          | =   |          |
+   * | alpha_2 |         | 0.517839  0.2258  |    | -102.163 |     | 6.44842  |
    */
   float l_strengthL = 0;
   float l_strengthR = 0;
 
   float l_waveSpeedL = -2.29335;
   float l_waveSpeedR = 2.13534;
-  tsunami_lab::solvers::F_Wave::waveStrengths(10,
+  tsunami_lab::solvers::FWave::waveStrengths( 10,
                                               9,
                                               -30,
                                               27,
@@ -237,8 +241,8 @@ TEST_CASE("Test the derivation of the wave strengths.", "[FWaveStrength]")
                                               l_waveSpeedR,
                                               l_strengthL,
                                               l_strengthR);
-  REQUIRE(l_strengthL == Approx(87.1305).margin(0.005));
-  REQUIRE(l_strengthR == Approx(-30.1305).margin(0.005));
+  REQUIRE(l_strengthL == Approx(50.5516));
+  REQUIRE(l_strengthR == Approx(6.44842));
 }
 
 TEST_CASE("Test the derivation of the F Wave net-updates.", "[FWaveUpdates]")
@@ -256,30 +260,30 @@ TEST_CASE("Test the derivation of the F Wave net-updates.", "[FWaveUpdates]")
    *
    * WaveSpeedLeft: s1 = -10.6432
    * WaveSpeedRight: s2 = 11.5003
-   * WaveStrengthLeft: a1 = 99.6504
-   * WaveStrengthLeft: a2 = -6.65036
+   * WaveStrengthLeft: a1 = 83.3928
+   * WaveStrengthLeft: a2 = 9.60719
    *
-   *                    |  1 |   | 99.6504  |
-   * update #1:  a1  *  |    | = |          |
-   *                    | s1 |   |  -1060.6 |
+   *                    |  1 |   | 83.3928   |
+   * update #1:  a1  *  |    | = |           |
+   *                    | s1 |   |  -887.556 |
    *
-   *                    |  1 |   | -6.65036  |
-   * update #2:  a2  *  |    | = |           |
-   *                    | s2 |   | -76.4811  |
+   *                    |  1 |   | 9.60719  |
+   * update #2:  a2  *  |    | = |          |
+   *                    | s2 |   | 110.486  |
    */
   float l_netUpdatesL[2] = {0, 0};
   float l_netUpdatesR[2] = {0, 0};
 
-  tsunami_lab::solvers::F_Wave::netUpdates(16,
+  tsunami_lab::solvers::FWave::netUpdates( 16,
                                            9,
                                            -48,
                                            45,
                                            l_netUpdatesL,
                                            l_netUpdatesR);
-  REQUIRE(l_netUpdatesL[0] == Approx(99.6504).margin(0.005));
-  REQUIRE(l_netUpdatesL[1] == Approx(-1060.6).margin(0.005));
-  REQUIRE(l_netUpdatesR[0] == Approx(-6.65036).margin(0.005));
-  REQUIRE(l_netUpdatesR[1] == Approx(-76.4811).margin(0.005));
+  REQUIRE(l_netUpdatesL[0] == Approx(83.3928).margin(0.005));
+  REQUIRE(l_netUpdatesL[1] == Approx(-887.556).margin(0.005));
+  REQUIRE(l_netUpdatesR[0] == Approx(9.60719).margin(0.005));
+  REQUIRE(l_netUpdatesR[1] == Approx(110.486).margin(0.005));
 }
 
 TEST_CASE("Test net-updates with in case of steady states.", "[FWaveUpdates]")
@@ -324,7 +328,7 @@ TEST_CASE("Test net-updates with in case of steady states.", "[FWaveUpdates]")
   float l_netUpdatesL[2] = {0, 0};
   float l_netUpdatesR[2] = {0, 0};
 
-  tsunami_lab::solvers::F_Wave::netUpdates(10,
+  tsunami_lab::solvers::FWave::netUpdates( 10,
                                            10,
                                            0,
                                            0,
@@ -398,7 +402,7 @@ TEST_CASE("Test net-updates for supersonic problems.", "[FWaveUpdates]")
   float l_netUpdatesL[2] = {0, 0};
   float l_netUpdatesR[2] = {0, 0};
 
-  tsunami_lab::solvers::F_Wave::netUpdates(1,
+  tsunami_lab::solvers::FWave::netUpdates( 1,
                                            1,
                                            3,
                                            5,
@@ -473,7 +477,7 @@ TEST_CASE("Test net-updates for dam break.", "[FWaveUpdates]") {
   float l_netUpdatesL[2] = {0, 0};
   float l_netUpdatesR[2] = {0, 0}; 
 
-  tsunami_lab::solvers::F_Wave::netUpdates( 10,
+  tsunami_lab::solvers::FWave::netUpdates(  10,
                                             8,
                                             0,
                                             0,

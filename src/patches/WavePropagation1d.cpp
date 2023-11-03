@@ -78,7 +78,7 @@ void tsunami_lab::patches::WavePropagation1d::timeStep(t_real i_scaling)
     }
     else
     {
-      solvers::F_Wave::netUpdates(l_hOld[l_ceL],
+      solvers::FWave::netUpdates(l_hOld[l_ceL],
                                   l_hOld[l_ceR],
                                   l_huOld[l_ceL],
                                   l_huOld[l_ceR],
@@ -89,7 +89,7 @@ void tsunami_lab::patches::WavePropagation1d::timeStep(t_real i_scaling)
     // update the cells' quantities
     l_hNew[l_ceL] -= i_scaling * l_netUpdates[0][0];
     l_huNew[l_ceL] -= i_scaling * l_netUpdates[0][1];
-    
+
     l_hNew[l_ceR] -= i_scaling * l_netUpdates[1][0];
     l_huNew[l_ceR] -= i_scaling * l_netUpdates[1][1];
   }
