@@ -6,7 +6,10 @@
  **/
 #include "patches/WavePropagation1d.h"
 #include "setups/damBreak1d/DamBreak1d.h"
+#include "setups/rareRare1d/RareRare1d.h"
+#include "setups/shockShock1d/ShockShock1d.h"
 #include "io/Csv.h"
+#include "constants.h"
 #include <cstdlib>
 #include <iostream>
 #include <cmath>
@@ -14,6 +17,8 @@
 #include <limits>
 #include <algorithm>
 #include <unistd.h>
+#include <vector>
+#include <sstream>
 
 int main(int i_argc,
          char *i_argv[])
@@ -21,9 +26,6 @@ int main(int i_argc,
   // number of cells in x- and y-direction
   tsunami_lab::t_idx l_nx = 0;
   tsunami_lab::t_idx l_ny = 1;
-
-  // bool if using FWave Solver
-  bool l_useFwave = true;
 
   // set cell size
   tsunami_lab::t_real l_dxy = 1;
@@ -34,31 +36,44 @@ int main(int i_argc,
   std::cout << "### https://scalable.uni-jena.de ###" << std::endl;
   std::cout << "####################################" << std::endl;
 
-  if (i_argc != 2 && i_argc != 3)
+  // missing n_cells_x or getting -key as last argument (f.E. -h)
+  if ((i_argc <= 1) || (i_argv[i_argc - 1] == 0) || (i_argv[i_argc - 1][0] == '-'))
   {
     std::cerr << "invalid number of arguments, usage:" << std::endl;
-    std::cerr << "  ./build/tsunami_lab N_CELLS_X [SOLVER]" << std::endl;
-    std::cerr << "where N_CELLS_X is the number of cells in x-direction." << std::endl;
-    std::cerr << "where [SOLVER] is the solver to be used (either 'Roe' or 'FWave', default is FWave)" << std::endl;
+    std::cerr << "  ./build/tsunami_lab [-s SOLVER] [-u SETUP] N_CELLS_X" << std::endl;
+    std::cerr << "  N_CELLS_X = the number of cells in x-direction." << std::endl;
+    std::cerr << "  -s SOLVER = 'Roe','FWave', default is 'FWave'" << std::endl;
+    std::cerr << "  -u SETUP  = 'DamBreak1d h_l h_r','RareRare1d h hu','ShockShock1d h hu', default is 'DamBreak1d 10 5'" << std::endl;
+    std::cerr << "  example: ./build/tsunami_lab -s roe -u 'ShockShock1d 10 100' 100" << std::endl;
     return EXIT_FAILURE;
   }
-  else
+  l_nx = atoi(i_argv[i_argc - 1]);
+  if (l_nx < 1)
   {
-    l_nx = atoi(i_argv[1]);
-    if (l_nx < 1)
+    std::cerr << "invalid number of cells" << std::endl;
+    return EXIT_FAILURE;
+  }
+  l_dxy = 10.0 / l_nx;
+
+  // get command line arguments
+  opterr = 0; // disable error messages of getopt
+  int opt;
+
+  // defaults
+  bool l_useFwave = true;
+  tsunami_lab::setups::Setup *l_setup;
+  l_setup = new tsunami_lab::setups::DamBreak1d(10,
+                                                5,
+                                                5);
+
+  while ((opt = getopt(i_argc, i_argv, "u:s:")) != -1)
+  {
+    switch (opt)
     {
-      std::cerr << "invalid number of cells" << std::endl;
-      return EXIT_FAILURE;
-    }
-    l_dxy = 10.0 / l_nx;
-    if (i_argc == 2)
+    // solver
+    case 's':
     {
-      std::cout << "using FWave solver" << std::endl;
-      l_useFwave = true;
-    }
-    else
-    {
-      std::string l_arg(i_argv[2]);
+      std::string l_arg(optarg);
       std::transform(l_arg.begin(), l_arg.end(), l_arg.begin(), ::toupper);
       if (l_arg == "ROE")
       {
@@ -70,21 +85,58 @@ int main(int i_argc,
         std::cout << "using FWave solver" << std::endl;
         l_useFwave = true;
       }
+      break;
     }
-  }
-  int opt;
-  // Retrieve the options: TODO IMPLEMENT
-  while ((opt = getopt(i_argc, i_argv, "ab")) != -1)
-  { // for each option...
-    switch (opt)
+    // setup
+    case 'u':
     {
-    case 'a':
+      std::string l_arg(optarg);
+
+      // split string by space
+      std::stringstream l_stream(l_arg);
+      std::string l_setupName, l_arg1Str, l_arg2Str;
+      std::getline(l_stream, l_setupName, ' ');
+      std::getline(l_stream, l_arg1Str, ' ');
+      std::getline(l_stream, l_arg2Str, ' ');
+
+      // convert to upper case and t_real
+      std::transform(l_setupName.begin(), l_setupName.end(), l_setupName.begin(), ::toupper);
+      double l_arg1 = std::stod(l_arg1Str);
+      double l_arg2 = std::stod(l_arg2Str);
+      if (l_setupName == "DAMBREAK1D")
+      {
+        std::cout << "using DamBreak1d(" << l_arg1 << "," << l_arg2 << ",5) setup" << std::endl;
+        l_setup = new tsunami_lab::setups::DamBreak1d(l_arg1,
+                                                      l_arg2,
+                                                      5);
+      }
+      else if (l_setupName == "RARERARE1D")
+      {
+        std::cout << "using RareRare1d(" << l_arg1 << "," << l_arg2 << ",5) setup" << std::endl;
+        l_setup = new tsunami_lab::setups::RareRare1d(l_arg1,
+                                                      l_arg2,
+                                                      5);
+      }
+      else if (l_setupName == "SHOCKSHOCK1D")
+      {
+        std::cout << "using ShockShock1d(" << l_arg1 << "," << l_arg2 << ",5) setup" << std::endl;
+        l_setup = new tsunami_lab::setups::ShockShock1d(l_arg1,
+                                                        l_arg2,
+                                                        5);
+      }
+      else
+      {
+        std::cerr << "unknown setup " << l_setupName << std::endl;
+        return EXIT_FAILURE;
+      }
       break;
-    case 'b':
+    }
+    // unknown option
+    case '?':
+    {
+      std::cerr << "unknown option: " << char(optopt) << std::endl;
       break;
-    case '?': // unknown option...
-      std::cerr << "Unknown option: '" << char(optopt) << "'!" << std::endl;
-      break;
+    }
     }
   }
 
@@ -93,11 +145,6 @@ int main(int i_argc,
   std::cout << "  number of cells in y-direction: " << l_ny << std::endl;
   std::cout << "  cell size:                      " << l_dxy << std::endl;
 
-  // construct setup
-  tsunami_lab::setups::Setup *l_setup;
-  l_setup = new tsunami_lab::setups::DamBreak1d(10,
-                                                5,
-                                                5);
   // construct solver
   tsunami_lab::patches::WavePropagation *l_waveProp;
   l_waveProp = new tsunami_lab::patches::WavePropagation1d(l_nx, l_useFwave);

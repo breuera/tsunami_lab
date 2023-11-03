@@ -11,32 +11,41 @@ Links
 Individual Contributions
 ------------------------
 
-Justus Dreßler: Wrote Projekt Report and implemented extra command line argument
+Justus Dreßler: Wrote project report and implemented extra command line argument
 
-Thorsten Kröhl: Implemented Doxygen Integration in Sphinx
+Thorsten Kröhl: Implemented Doxygen integration in Sphinx
 
-Julius Halank: Added Test Cases for Setups
+Julius Halank: Added test cases for setups
 
 2.0 Integrate FWave Solver
 --------------------------
 
-Extended main function to accept a second argument for the solver type optionally
+Extended main function to accept optional arguments -s SOLVER and -u SETUP.
+SOLVER = ROE or FWAVE
+SETUP = DAMBREAK1D h_l h_r, RARERARE1D h hu or SHOCKSHOCK1D h hu
+defaults are FWave and DamBreak1d 10 5 respectively
 
 .. code:: c++
 
-    // bool if using FWave Solver
-    bool l_useFwave = true;
+    // get command line arguments
+  opterr = 0; // disable error messages of getopt
+  int opt;
 
-    // stuff happens
+  // defaults
+  bool l_useFwave = true;
+  tsunami_lab::setups::Setup *l_setup;
+  l_setup = new tsunami_lab::setups::DamBreak1d(10,
+                                                5,
+                                                5);
 
-    if (i_argc == 2)
+  while ((opt = getopt(i_argc, i_argv, "u:s:")) != -1)
+  {
+    switch (opt)
     {
-      std::cout << "using FWave solver" << std::endl;
-      l_useFwave = true;
-    }
-    else
+    // solver
+    case 's':
     {
-      std::string l_arg(i_argv[2]);
+      std::string l_arg(optarg);
       std::transform(l_arg.begin(), l_arg.end(), l_arg.begin(), ::toupper);
       if (l_arg == "ROE")
       {
@@ -48,19 +57,76 @@ Extended main function to accept a second argument for the solver type optionall
         std::cout << "using FWave solver" << std::endl;
         l_useFwave = true;
       }
+      break;
     }
+    // setup
+    case 'u':
+    {
+      std::string l_arg(optarg);
+
+      // split string by space
+      std::stringstream l_stream(l_arg);
+      std::string l_setupName, l_arg1Str, l_arg2Str;
+      std::getline(l_stream, l_setupName, ' ');
+      std::getline(l_stream, l_arg1Str, ' ');
+      std::getline(l_stream, l_arg2Str, ' ');
+
+      // convert to upper case and t_real
+      std::transform(l_setupName.begin(), l_setupName.end(), l_setupName.begin(), ::toupper);
+      double l_arg1 = std::stod(l_arg1Str);
+      double l_arg2 = std::stod(l_arg2Str);
+      if (l_setupName == "DAMBREAK1D")
+      {
+        std::cout << "using DamBreak1d(" << l_arg1 << "," << l_arg2 << ",5) setup" << std::endl;
+        l_setup = new tsunami_lab::setups::DamBreak1d(l_arg1,
+                                                      l_arg2,
+                                                      5);
+      }
+      else if (l_setupName == "RARERARE1D")
+      {
+        std::cout << "using RareRare1d(" << l_arg1 << "," << l_arg2 << ",5) setup" << std::endl;
+        l_setup = new tsunami_lab::setups::RareRare1d(l_arg1,
+                                                      l_arg2,
+                                                      5);
+      }
+      else if (l_setupName == "SHOCKSHOCK1D")
+      {
+        std::cout << "using ShockShock1d(" << l_arg1 << "," << l_arg2 << ",5) setup" << std::endl;
+        l_setup = new tsunami_lab::setups::ShockShock1d(l_arg1,
+                                                        l_arg2,
+                                                        5);
+      }
+      else
+      {
+        std::cerr << "unknown setup " << l_setupName << std::endl;
+        return EXIT_FAILURE;
+      }
+      break;
+    }
+    // unknown option
+    case '?':
+    {
+      std::cerr << "unknown option: " << char(optopt) << std::endl;
+      break;
+    }
+    }
+  }
 
     // stuff happens
 
     l_waveProp = new tsunami_lab::patches::WavePropagation1d(l_nx, l_useFwave);
 
-and adjust WavePropagation1d constructor to accept a bool for the solver type.
+and adjust WavePropagation1d constructor to accept a boolean for the solver type.
 
 .. code:: c++
 
     tsunami_lab::patches::WavePropagation1d::WavePropagation1d(t_idx i_nCells, bool i_useFWave)
     {
-      m_nCells = i_nCells;
+    m_useFWave = i_useFWave;
+
+    // stuff happens
+
+    void tsunami_lab::patches::WavePropagation1d::timeStep(t_real i_scaling){
 
     // stuff happens
 
@@ -137,13 +203,13 @@ Added new Testcases for the Setups with the values of middle_states.csv for Exam
   }
 
 We Activated Github Actions to run the tests on every push and pull request (literally just activated it, no changes to the yaml were made).
-We also integrated Doxygen into our ReadTheDocs Documentation.
+We also integrated Doxygen into our Sphinx Documentation and pushing it automatically to ReadTheDocs. 
 
 2.1 Shock and Rarefaction Waves
 -------------------------------
 
 Implemented shock-shock and rare-rare Problems in /setups.
-They are mainly the same as the Dam Break setup, but with the same waterheight on both sides but different momentums.
+They are mainly the same as the Dam Break setup, but with the same waterheight and opposite momenta on both sides.
 
 .. code:: c++
 
@@ -159,6 +225,9 @@ They are mainly the same as the Dam Break setup, but with the same waterheight o
       return -m_momentum;
     }
   } 
+
+..
+  TODO run a few runs with different heights and momenta
 
 Regarding the Wavespeeds:
 
