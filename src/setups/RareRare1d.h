@@ -20,17 +20,11 @@ namespace tsunami_lab {
  **/
 class tsunami_lab::setups::RareRare1d: public Setup {
   private:
-    //! height on the left side 
-    t_real m_hL = 0;
-    
-    //! height on the right side
-    t_real m_hR= 0;
+    //! height on both sides 
+    t_real m_h = 0;
 
-    //! momentum on the left side
-    t_real m_huL= 0;
-
-    //! momentum on the right side
-    t_real m_huR= 0;
+    //! momentum on both sides
+    t_real m_hu= 0;
 
     //! location of the smash position
     t_real m_dis = 0;
@@ -39,16 +33,12 @@ class tsunami_lab::setups::RareRare1d: public Setup {
     /**
      * Constructor.
      *
-     * @param i_hL water height on the left side of the smash position.
-     * @param i_hR water height on the right side of the smash position.
-     * @param i_huL momentum on the left side of the smash position.
-     * @param i_huR momentum on the right side of the smash position.
+     * @param i_h water height on both sides of the smash position.
+     * @param i_hu momentum on both sides of the smash position.
      * @param i_dis location (x-coordinate) of the smash position.
      **/
-    RareRare1d( t_real i_hL,
-                t_real i_hR,
-                t_real i_huL,
-                t_real i_huR,
+    RareRare1d( t_real i_h,
+                t_real i_hu,
                 t_real i_dis );
 
     /**
