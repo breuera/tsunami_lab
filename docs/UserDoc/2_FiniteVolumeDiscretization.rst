@@ -389,4 +389,4 @@ Now we calculate it theoretically and compare results:
   \lambda_r^{Roe} &= u^{Roe} + \sqrt{gh^{Roe}} = 0.06667 + \sqrt{9.80665 \cdot 8.75} = 9.32994 \frac{m}{s} = 33.587784 \frac{km}{h} \\	
   t_{evacuation} &= \frac{s_{village}}{\lambda_r^{Roe}} = \frac{25}{33.587784} = 0.744 h = 44.64 min
 
-The calculated time is a bit higher than the simulation suggests, but still in the same order of magnitude, so it seems pretty accurate.
+The calculated time is a bit higher than the simulation suggests, but still in the same order of magnitude, so it seems the Roe Eigenvalues are a pretty decent approximation.
