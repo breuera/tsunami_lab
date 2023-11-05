@@ -181,6 +181,7 @@ CustomSetup1d allows us to fill the array with custom values.
 We extended the Csv.cpp with the read_middle_states function. The read_middle_states function reads specific data from a CSV file stream, storing it in arrays. It skips the header, allocates memory for arrays, and then reads and parses each line of the CSV file, extracting left heights, right heights, left momentums, right momentums, and h* values. The data is saved in separate arrays, and the function is designed to handle large datasets.
 
 **main.cpp**
+
 .. code-block::
     
   ...
@@ -326,8 +327,7 @@ We extended the Csv.cpp with the read_middle_states function. The read_middle_st
 
     // maximum observed height in the setup
     tsunami_lab::t_real l_hMax = std::numeric_limits<tsunami_lab::t_real>::lowest();
-
-  ...
+    ...
 
 We added this code-block to the main. It reads the user-selected scenario, allocates memory for scenario parameters, and initializes those parameters based on the selected scenario. Then, it iterates over each scenario and constructs a corresponding setup and solver for further tsunami simulation. Finally, it calculates the maximum observed height in the chosen setup.
 The function of this code is determined by the input scenario specified by the user. If the selected scenario is "Sanitize1d," it reads and calculates middle states from a CSV file. For other scenarios such as "DamBreak," "ShockShock," "RareRare," or "CustomSetup," it initializes parameters for these scenarios and constructs a solver for the tsunami simulation without reading middle states. 
@@ -431,8 +431,30 @@ only depend on the hight and the gravitational constant
 
   \lambda_{1,2}= \pm \sqrt{g h}
 
+Visualization
+^^^^^^^^^^^^^
 
-.. _ch:Dam-Break:
+.. figure:: ../_static/video_folder/RareRare_10_5_mom.mp4
+  :width: 600px
+
+.. figure:: ../_static/video_folder/RareRare_10_18.mp4
+  :width: 600px
+  
+.. figure:: ../_static/video_folder/RareRare_10_5.mp4
+  :width: 600px
+
+.. figure:: ../_static/video_folder/RareRare_20_5.mp4
+  :width: 600px
+
+.. figure:: ../_static/video_folder/ShockShock_10_18.mp4
+  :width: 600px
+
+.. figure:: ../_static/video_folder/ShockShock_10_5.mp4
+  :width: 600px
+
+.. figure:: ../_static/video_folder/ShockShock_20_5.mp4
+  :width: 600px
+
 Dam-Break
 ---------
 
@@ -442,3 +464,22 @@ Dam-Break
      What do you observe? How large is the impact of the particle velocity :math:`u_r` in the river?
   #. Assume a water reservoir of unlimited size and a village 25 km downstream with initial values :math:`q_l=[14, 0]^T` and :math:`q_r=[3.5, 0.7]^T`.
      How much time do you have to evacuate the village in our model before the shock wave arrives?
+
+
+
+.. figure:: ../_static/video_folder/DamBreak_10_0_3_3_mom.mp4
+  :width: 600px
+
+.. figure:: ../_static/video_folder/DamBreak_10_0_3_3.mp4
+  :width: 600px
+
+.. figure:: ../_static/video_folder/db_10_0_3_15.mp4
+  :width: 600px
+
+
+
+.. figure:: ../_static/video_folder/Dam_and_river_mom.mp4
+  :width: 600px
+
+.. figure:: ../_static/video_folder/Dam_and_river.mp4
+  :width: 600px
