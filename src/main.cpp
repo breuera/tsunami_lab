@@ -6,6 +6,8 @@
  **/
 #include "patches/WavePropagation1d.h"
 #include "setups/DamBreak1d.h"
+#include "setups/ShockShock1d.h"
+#include "setups/RareRare1d.h"
 #include "setups/CustomSetup1d.h"
 #include "io/Csv.h"
 #include <cstdlib>
@@ -96,7 +98,7 @@ int main(int i_argc,
   float *l_hStar;
 
   tsunami_lab::t_idx l_scenarioCount = 0;
-  tsunami_lab::t_idx l_locMiddle = 5;
+  tsunami_lab::t_real l_locMiddle = 5;
 
   if (l_scenario == "DamBreak") {
     // initialize dam break scenario
@@ -111,6 +113,53 @@ int main(int i_argc,
     l_hR[0] = 5;
     l_huL[0] = 0;
     l_huR[0] = 0;
+    l_hStar[0] = 0;
+  }
+  else if (l_scenario == "ShockShock") 
+  {
+    // initialize dam break scenario
+    l_scenarioCount = 1;
+    l_hL = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
+    l_hR = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
+    l_huL = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
+    l_huR = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
+    l_hStar = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
+
+    l_hL[0] = 10;
+    l_hR[0] = 10;
+    l_huL[0] = 18;
+    l_huR[0] = 18;
+    l_hStar[0] = 0;
+  }
+  else if (l_scenario == "RareRare") 
+  {
+    l_scenarioCount = 1;
+    l_hL = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
+    l_hR = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
+    l_huL = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
+    l_huR = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
+    l_hStar = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
+
+    l_hL[0] = 10;
+    l_hR[0] = 3;
+    l_huL[0] = 0;
+    l_huR[0] = 3;
+    l_hStar[0] = 0;
+  }
+  else if (l_scenario == "CustomSetup") 
+  {
+    l_scenarioCount = 1;
+    l_hL = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
+    l_hR = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
+    l_huL = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
+    l_huR = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
+    l_hStar = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
+
+    l_locMiddle = tsunami_lab::t_real(0.004);
+    l_hL[0] = tsunami_lab::t_real(1.4);
+    l_hR[0] = tsunami_lab::t_real(0.35);
+    l_huL[0] = 0;
+    l_huR[0] = tsunami_lab::t_real(0.07);
     l_hStar[0] = 0;
   }
   else if (l_scenario == "Sanitize1d") 
@@ -166,6 +215,26 @@ int main(int i_argc,
       l_setup = new tsunami_lab::setups::DamBreak1d(  l_hL[l_idx],
                                                       l_hR[l_idx],
                                                       l_locMiddle);
+    }
+    else if (l_scenario == "ShockShock") 
+    {
+      l_setup = new tsunami_lab::setups::ShockShock1d( l_hL[l_idx],
+                                                       l_huL[l_idx],
+                                                       l_locMiddle);
+    }
+    else if (l_scenario == "RareRare") 
+    {
+      l_setup = new tsunami_lab::setups::RareRare1d( l_hR[l_idx],
+                                                     l_huR[l_idx],
+                                                     l_locMiddle);
+    }
+    else if (l_scenario == "CustomSetup") 
+    {
+      l_setup = new tsunami_lab::setups::CustomSetup1d( l_hL[l_idx],
+                                                        l_hR[l_idx],
+                                                        l_huL[l_idx],
+                                                        l_huR[l_idx],
+                                                        l_locMiddle);
     }
     else if (l_scenario == "Sanitize1d") 
     {
@@ -280,7 +349,7 @@ int main(int i_argc,
         l_waveProp->setGhostOutflow();
         l_waveProp->timeStep(l_scaling);
 
-        tsunami_lab::t_real l_middle_state = l_waveProp->getHeight()[l_locMiddle];
+        tsunami_lab::t_real l_middle_state = l_waveProp->getHeight()[(tsunami_lab::t_idx)l_locMiddle];
         if (abs(l_middle_state - l_hStar[l_idx]) < 4.20) {
           l_is_correct_middle_state = true;
         }

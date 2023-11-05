@@ -63,3 +63,9 @@ jobs:
           ./build/tsunami_lab DamBreak 500 -f
           ./build/tsunami_lab Sanitize1d 500 -r
           ./build/tsunami_lab Sanitize1d 500 -f
+          ./build/tsunami_lab ShockShock 500 -r
+          ./build/tsunami_lab ShockShock 500 -f
+          ./build/tsunami_lab RareRare 500 -r
+          ./build/tsunami_lab RareRare 500 -f
+          ./build/tsunami_lab CustomSetup 500 -r
+          ./build/tsunami_lab CustomSetup 500 -f
