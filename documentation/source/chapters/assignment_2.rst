@@ -104,6 +104,36 @@ Connection between h_l and u_l
              h_l \\ -(hu)_l
            \end{bmatrix}.
 
+At first we have to calculate u.
+
+.. math::
+  :label: eq: particle velocity
+  u^{\text{Roe}}(q_l, q_r) &=  \frac{u_l \sqrt{h_l} + u_r \sqrt{h_r}}{\sqrt{h_l}+\sqrt{h_r}}
+
+We know that 
+.. math::
+  
+  h_r = h_r
+  u_l = - u_r
+
+So we can calculate u_l
+
+.. math::
+
+  \frac{u_l \sqrt{h} + (-u_l) \sqrt{h}}{2 \sqrt{h}}
+  = \frac{ \sqrt{h} (u_l - u_l)}{ 2 \sqrt{h}}
+  = \frac{0}{2 sqrt{h}}
+  = 0
+
+So the speeds
+.. math::
+  \lambda_{1,2}=u \pm \sqrt{g h}
+
+only depend on the hight and the gravitational constant
+
+.. math::
+  \lambda_{1,2}= \pm \sqrt{g h}
+
 
 .. _ch:Dam-Break:
 Dam-Break
