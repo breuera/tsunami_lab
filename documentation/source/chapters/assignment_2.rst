@@ -28,7 +28,7 @@ Implemntation of the WavePropagation1d
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block::
-  
+
   m_use_roe_solver = i_use_roe_solver;
 
   ... 
@@ -100,14 +100,88 @@ The main.cpp has been extended to accept command-line arguments. If provided wit
 
 Sanity check
 ^^^^^^^^^^^^
+**CustomSetup1d**
+
+* CustomSetup1d constructor:
+    Initializes the CustomSetup1d class with parameters representing a custom Roe problem, including height and x-momentum values on the left and right sides, and the location of the middle point.
+
+* getHeight function:
+    Returns the height value based on the x coordinate, distinguishing between the left and right sides of the middle point.
+
+* getMomentumX function:
+    Returns the x-momentum value based on the x coordinate, differentiating between the left and right sides of the middle point.
+
+* getMomentumY function:
+    Always returns a constant value of 0, indicating that the y-momentum is zero in this problem regardless of the location.
+
 .. literalinclude:: ../../../src/setups/CustomSetup1d.cpp
     :language: c++
 
-.. literalinclude:: ../../../src/patches/WavePropagation1d.h
-    :language: c++
+CustomSetup1d allows us to fill the array with custom values.
 
-.. literalinclude:: ../../../src/io/Csv.cpp
-    :language: c++
+**Csv.cpp**
+
+.. code-block::
+  void tsunami_lab::io::Csv::read_middle_states(std::ifstream &io_stream,
+                                              t_real *&o_heightsL,
+                                              t_real *&o_momentumsL,
+                                              t_real *&o_heightsR,
+                                              t_real *&o_momentumsR,
+                                              t_real *&o_hStar)
+  {
+    tsunami_lab::t_idx l_length = 1000000;
+    std::string l_line;
+    std::stringstream l_lineStream;
+
+    // skip header
+    for (size_t i = 0; i < 8; i++)
+    {
+      std::getline(io_stream, l_line);
+    }
+
+    o_heightsL = (t_real *)malloc(l_length * sizeof(t_real));
+    o_heightsR = (t_real *)malloc(l_length * sizeof(t_real));
+    o_momentumsL = (t_real *)malloc(l_length * sizeof(t_real));
+    o_momentumsR = (t_real *)malloc(l_length * sizeof(t_real));
+    o_hStar = (t_real *)malloc(l_length * sizeof(t_real));
+
+    for (t_idx i = 0; i < l_length; i++)
+    {
+      // read next line
+      std::getline(io_stream, l_line);
+      // std::cout << i << " : " << l_line << std::endl;
+      l_lineStream << l_line;
+      std::string l_cell;
+
+      // load left height
+      std::getline(l_lineStream, l_cell, ',');
+      o_heightsL[i] = std::stof(l_cell);
+
+      // load right height
+      std::getline(l_lineStream, l_cell, ',');
+      o_heightsR[i] = std::stof(l_cell);
+
+      // load left momentum
+      std::getline(l_lineStream, l_cell, ',');
+      o_momentumsL[i] = std::stof(l_cell);
+
+      // load right momentum
+      std::getline(l_lineStream, l_cell, ',');
+      o_momentumsR[i] = std::stof(l_cell);
+
+      // load h*
+      std::getline(l_lineStream, l_cell, ',');
+      o_hStar[i] = std::stof(l_cell);
+
+      l_lineStream.clear();
+    }
+  }
+
+We extended the Csv.cpp with the read_middle_states function. The read_middle_states function reads specific data from a CSV file stream, storing it in arrays. It skips the header, allocates memory for arrays, and then reads and parses each line of the CSV file, extracting left heights, right heights, left momentums, right momentums, and h* values. The data is saved in separate arrays, and the function is designed to handle large datasets.
+
+**main.cpp**
+
+
 
 .. _ch:Shock_and_Rarefaction_Waves:
 Shock and Rarefaction Waves 
