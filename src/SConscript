@@ -10,6 +10,7 @@ Import('env')
 l_sources = [ 'solvers/Roe.cpp',
               'solvers/FWave.cpp',
               'patches/WavePropagation1d.cpp',
+              'setups/CustomSetup1d.cpp',
               'setups/DamBreak1d.cpp',
               'io/Csv.cpp' ]
 
@@ -24,6 +25,7 @@ l_tests = [ 'tests.cpp',
             'solvers/FWave.test.cpp',
             'patches/WavePropagation1d.test.cpp',
             'io/Csv.test.cpp',
+            'setups/CustomSetup1d.test.cpp',
             'setups/DamBreak1d.test.cpp' ]
 
 for l_te in l_tests:
