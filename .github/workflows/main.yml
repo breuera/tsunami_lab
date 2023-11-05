@@ -37,23 +37,25 @@ jobs:
         run: |
           scons mode=debug+san
           ./build/tests
-          ./build/tsunami_lab 25 1
-          ./build/tsunami_lab 25
+          ./build/tsunami_lab DamBreak 25 -r
+          ./build/tsunami_lab DamBreak 25 -f
           scons mode=release+san
           ./build/tests
-          ./build/tsunami_lab 500 1
-          ./build/tsunami_lab 500
+          ./build/tsunami_lab DamBreak 500 -r
+          ./build/tsunami_lab DamBreak 500 -f
 
       - name: Valgrind
         run: |
           scons mode=debug
           valgrind ./build/tests
-          valgrind ./build/tsunami_lab 25 1
-          valgrind ./build/tsunami_lab 25
+          valgrind ./build/tsunami_lab DamBreak 25 -r
+          valgrind ./build/tsunami_lab DamBreak 25 -f
 
       - name: Release
         run: |
           scons
           ./build/tests
-          ./build/tsunami_lab 500 1
-          ./build/tsunami_lab 500
+          ./build/tsunami_lab DamBreak 500 -r
+          ./build/tsunami_lab DamBreak 500 -f
+          ./build/tsunami_lab Sanitize1d 500 -r
+          ./build/tsunami_lab Sanitize1d 500 -f
