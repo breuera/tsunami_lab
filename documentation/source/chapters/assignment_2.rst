@@ -10,6 +10,21 @@ Contribution
 .. _ch:User_Documentation:
 User Documentation
 ------------------
-.. literalinclude:: ../../../src/setups/DamBreak1d.cpp
+.. literalinclude:: ../../../src/setups/RareRare1d.h
+    :language: c
+
+.. literalinclude:: ../../../src/setups/RareRare1d.cpp
     :language: c++
+
+.. literalinclude:: ../../../src/setups/RareRare1d.test.cpp
+    :language: c++
+
+
+.. literalinclude:: ../../../src/setups/ShockShock1d.h
+    :language: c
     
+.. literalinclude:: ../../../src/setups/ShockShock1d.cpp
+    :language: c++
+
+.. literalinclude:: ../../../src/setups/ShockShock1d.test.cpp
+    :language: c++
