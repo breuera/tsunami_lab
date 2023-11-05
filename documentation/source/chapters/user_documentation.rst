@@ -14,6 +14,7 @@ Getting Started
 Prerequisites
 ^^^^^^^^^^^^^
 Before you can begin, ensure that you have the following prerequisites installed on your system:
+
 * Python3
 * C++ (Version 11 or later)
 * SCons
@@ -28,17 +29,17 @@ Downloading the Code
 #. Change to the directory where you want to store the project.
 
 #. Run the following command to clone the project repository from GitHub:
-
-.. code-block::
-    git clone https://github.com/PhillipRothenbeck/tsunami_lab.git
+    .. code-block:: bash
+        git clone https://github.com/PhillipRothenbeck/tsunami_lab.git
 
 #. Navigate into the directory
-.. code-block::
-    cd tsunami_lab
+    .. code-block:: bash
+        cd tsunami_lab
+
 #. Download all submodules
-.. code-block::
-    git submodules init
-    git submodules update
+    .. code-block:: bash
+        git submodules init
+        git submodules update
 
 .. _ch:Compiling_the_Code:
 Compiling the code
@@ -50,14 +51,13 @@ Compiling Doxygen
 #. Navigate to the project's root directory where the Doxygen configuration file (Doxyfile.in) is located.
 
 #. Run the following command to generate the documentation:
-
     .. code-block::
         doxygen Doxyfile.in
 
 #. Once the documentation generation is complete, you can open the documentation in your browser of choice by opening the following URL:
-
     .. code-block::
         file:///path/to/tsunami-lab-project/_build/html/index.html
+
 Compiling the project
 ^^^^^^^^^^^^^^^^^^^^^
 To compile the Tsunami Lab Project, you have various options and flags to choose from. 
@@ -136,7 +136,7 @@ Contact Information
 ^^^^^^^^^^^^^^^^^^^
 If you are unable to resolve your issue or face any other difficulties not mentioned here, please feel free to contact the Tsunami Lab Project maintainers for assistance. You can reach out to us at the following email addresses:
 
-    Bohdan Babii: bohdan.babii@uni-jena.de
-    Phillip Rothenbeck: phillip.rothenbeck@uni-jena.de
+    * Bohdan Babii: bohdan.babii@uni-jena.de
+    * Phillip Rothenbeck: phillip.rothenbeck@uni-jena.de
 
 We are here to help you with any questions or problems you may encounter while using the Tsunami Lab Project. Please don't hesitate to reach out, and we will do our best to assist you.
