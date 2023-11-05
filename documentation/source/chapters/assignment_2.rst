@@ -53,11 +53,38 @@ Shock and Rarefaction Waves
        connection to the wave speeds :math:`\lambda_{1/2} = u \mp \sqrt{gh}`
        in :numref:`ch:fwave`?
 
+1. Implemntation of Shock-Shock setups
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+#. RareRare1d: This is the constructor of the RareRare1d class, initializing the key parameters for the rare-rare problem, such as the initial height (i_h), initial x-momentum (i_hu), and the location of a discontinuity (i_dis).
+
+#. getHeight: This function is used to retrieve the height value at a specific location (i_x, i_y). In this 1D problem, the height value is constant and equal to m_h.
+
+#. getMomentumX: This function provides the x-momentum value at a specific location (i_x, i_y). The value depends on the location relative to the discontinuity (m_dis). If i_x is less than or equal to m_dis, the x-momentum is set to -m_hu, and otherwise, it is m_hu.
+
+#. getMomentumY: This function is used to retrieve the y-momentum value at a specific location (i_x, i_y). In this specific problem, the y-momentum is always constant and equal to 0.
+
 .. literalinclude:: ../../../src/setups/RareRare1d.cpp
     :language: c++
-    
+
+In this one-dimensional rare-rare problem represented by the RareRare1d class, the behavior of the wave is described by the distribution of momentum. Specifically, on the left side of the discontinuity point (m_dis), the x-momentum is positive, indicating that the wave is moving to the right. Conversely, on the right side of the discontinuity, the x-momentum is negative, signifying that the wave is moving to the left. These opposing momenta result in the two wave components colliding at the "smash position," which is the location of the discontinuity. 
+
+2. Implemntation of rare-rare setups
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+#. RareRare1d: This is the constructor of the RareRare1d class, initializing the key parameters for the rare-rare problem, such as the initial height (i_h), initial x-momentum (i_hu), and the location of a discontinuity (i_dis).
+
+#. getHeight: This function is used to retrieve the height value at a specific location (i_x, i_y). In this 1D problem, the height value is constant and equal to m_h.
+
+#. getMomentumX: This function provides the x-momentum value at a specific location (i_x, i_y). The value depends on the location relative to the discontinuity (m_dis). If i_x is less than or equal to m_dis, the x-momentum is set to -m_hu, and otherwise, it is m_hu.
+
+#. getMomentumY: This function is used to retrieve the y-momentum value at a specific location (i_x, i_y). In this specific problem, the y-momentum is always constant and equal to 0.
+
+
 .. literalinclude:: ../../../src/setups/ShockShock1d.cpp
     :language: c++
+
+In the rare-rare problem represented by the RareRare1d class, the wave behavior is distinct from the previous example. Here, the wave components are moving apart from each other on either side of the discontinuity point (m_dis). On the left side, the x-momentum is positive, indicating that the wave is traveling to the right, while on the right side, the x-momentum is also positive, signifying a rightward motion. This results in the wave components moving away from the m_dis point, rather than colliding. 
 
 .. _ch:Dam-Break:
 Dam-Break
