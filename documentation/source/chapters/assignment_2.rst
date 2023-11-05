@@ -98,8 +98,9 @@ The code snippet is added to the WavePropagation1d class, allowing it to switch 
 
 The main.cpp has been extended to accept command-line arguments. If provided with 3 arguments, it expects a scenario and the number of cells, defaulting to the F-Wave solver. With 4 arguments, it also allows users to specify the solver choice (Roe or F-Wave). This extension enhances the program's adaptability to various simulation scenarios and solver preferences.
 
-Sanity check
-^^^^^^^^^^^^
+Middle state check
+^^^^^^^^^^^^^^^^^^
+
 **CustomSetup1d**
 
 * CustomSetup1d constructor:
@@ -180,8 +181,156 @@ CustomSetup1d allows us to fill the array with custom values.
 We extended the Csv.cpp with the read_middle_states function. The read_middle_states function reads specific data from a CSV file stream, storing it in arrays. It skips the header, allocates memory for arrays, and then reads and parses each line of the CSV file, extracting left heights, right heights, left momentums, right momentums, and h* values. The data is saved in separate arrays, and the function is designed to handle large datasets.
 
 **main.cpp**
+.. code-block::
+    
+  ...
+    
+    else if (l_scenario == "ShockShock") 
+  {
+    // initialize dam break scenario
+    l_scenarioCount = 1;
+    l_hL = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
+    l_hR = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
+    l_huL = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
+    l_huR = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
+    l_hStar = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
 
+    l_hL[0] = 10;
+    l_hR[0] = 10;
+    l_huL[0] = 18;
+    l_huR[0] = 18;
+    l_hStar[0] = 0;
+  }
+  else if (l_scenario == "RareRare") 
+  {
+    l_scenarioCount = 1;
+    l_hL = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
+    l_hR = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
+    l_huL = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
+    l_huR = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
+    l_hStar = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
 
+    l_hL[0] = 10;
+    l_hR[0] = 3;
+    l_huL[0] = 0;
+    l_huR[0] = 3;
+    l_hStar[0] = 0;
+  }
+  else if (l_scenario == "CustomSetup") 
+  {
+    l_scenarioCount = 1;
+    l_hL = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
+    l_hR = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
+    l_huL = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
+    l_huR = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
+    l_hStar = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
+
+    l_locMiddle = tsunami_lab::t_real(0.004);
+    l_hL[0] = tsunami_lab::t_real(1.4);
+    l_hR[0] = tsunami_lab::t_real(0.35);
+    l_huL[0] = 0;
+    l_huR[0] = tsunami_lab::t_real(0.07);
+    l_hStar[0] = 0;
+  }
+  else if (l_scenario == "Sanitize1d") 
+  {
+    // initialize middle state sanitization
+    l_scenarioCount = 1000000;
+
+    std::ifstream l_stream;
+    // try to read middle states original file
+    std::cout << "reading /res/middle_states.csv ..." << std::endl;
+    l_stream.open("./res/middle_states.csv", std::fstream::in);
+
+    if(l_stream.fail()) 
+    {
+      std::cout << "failed to read /res/middle_states.csv" << std::endl;
+      l_stream.clear();
+
+      // try to read dummy middle states file
+      std::cout << "reading /res/dummy_middle_states.csv ..." << std::endl;
+      l_stream.open("./res/dummy_middle_states.csv", std::fstream::in);
+      l_scenarioCount = 10;
+      if(l_stream.fail()) 
+      {
+        std::cerr << "failed to read /res/dummy_middle_states.csv" << std::endl;
+        return EXIT_FAILURE;
+      }
+      std::cout << "finished reading /res/dummy_middle_states.csv" << std::endl;
+    } 
+    else 
+    {
+      std::cout << "finished reading /res/middle_states.csv" << std::endl;
+    }
+
+    tsunami_lab::io::Csv::read_middle_states( l_stream, 
+                                              l_hL, 
+                                              l_huL, 
+                                              l_hR, 
+                                              l_huR, 
+                                              l_hStar);
+  }
+  else
+  {
+    std::cerr << "entered SCENARIO_MODE is unknown" << std::endl;
+    return EXIT_FAILURE;
+  }
+  
+  for(tsunami_lab::t_idx l_idx = 0; l_idx < l_scenarioCount; l_idx++) 
+  {
+    std::cout << "enter scenario: " << l_idx << std::endl;
+    tsunami_lab::setups::Setup *l_setup;
+    if(l_scenario == "DamBreak") 
+    {
+      l_setup = new tsunami_lab::setups::DamBreak1d(  l_hL[l_idx],
+                                                      l_hR[l_idx],
+                                                      l_locMiddle);
+    }
+    else if (l_scenario == "ShockShock") 
+    {
+      l_setup = new tsunami_lab::setups::ShockShock1d( l_hL[l_idx],
+                                                       l_huL[l_idx],
+                                                       l_locMiddle);
+    }
+    else if (l_scenario == "RareRare") 
+    {
+      l_setup = new tsunami_lab::setups::RareRare1d( l_hR[l_idx],
+                                                     l_huR[l_idx],
+                                                     l_locMiddle);
+    }
+    else if (l_scenario == "CustomSetup") 
+    {
+      l_setup = new tsunami_lab::setups::CustomSetup1d( l_hL[l_idx],
+                                                        l_hR[l_idx],
+                                                        l_huL[l_idx],
+                                                        l_huR[l_idx],
+                                                        l_locMiddle);
+    }
+    else if (l_scenario == "Sanitize1d") 
+    {
+      l_setup = new tsunami_lab::setups::CustomSetup1d( l_hL[l_idx],
+                                                        l_hR[l_idx],
+                                                        l_huL[l_idx],
+                                                        l_huR[l_idx],
+                                                        l_locMiddle);
+    } 
+    else 
+    {
+      std::cerr << "entered SCENARIO_MODE is unknown" << std::endl;
+      return EXIT_FAILURE;
+    }
+
+    // construct solver
+    tsunami_lab::patches::WavePropagation *l_waveProp;
+    l_waveProp = new tsunami_lab::patches::WavePropagation1d(l_nx, l_use_roe_solver);
+
+    // maximum observed height in the setup
+    tsunami_lab::t_real l_hMax = std::numeric_limits<tsunami_lab::t_real>::lowest();
+
+  ...
+
+We added this code-block to the main. It reads the user-selected scenario, allocates memory for scenario parameters, and initializes those parameters based on the selected scenario. Then, it iterates over each scenario and constructs a corresponding setup and solver for further tsunami simulation. Finally, it calculates the maximum observed height in the chosen setup.
+The function of this code is determined by the input scenario specified by the user. If the selected scenario is "Sanitize1d," it reads and calculates middle states from a CSV file. For other scenarios such as "DamBreak," "ShockShock," "RareRare," or "CustomSetup," it initializes parameters for these scenarios and constructs a solver for the tsunami simulation without reading middle states. 
 
 .. _ch:Shock_and_Rarefaction_Waves:
 Shock and Rarefaction Waves 
