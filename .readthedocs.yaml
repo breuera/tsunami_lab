@@ -11,7 +11,7 @@ build:
     python: "3.12"
 python:
   install:
-    - requirements: docs/requirements.txt
+    - requirements: documentation/requirements.txt
     # You can also specify other tool versions:
     # nodejs: "20"
     # rust: "1.70"
@@ -19,7 +19,7 @@ python:
 
 # Build documentation in the "docs/" directory with Sphinx
 sphinx:
-  configuration: docs/source/conf.py
+  configuration: documentation/source/conf.py
   # You can configure Sphinx to use a different builder, for instance use the dirhtml builder for simpler URLs
   # builder: "dirhtml"
   # Fail on all warnings to avoid broken references

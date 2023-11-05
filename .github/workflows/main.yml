@@ -33,6 +33,10 @@ jobs:
         run:
           cppcheck src/ --template=gcc --force --error-exitcode=1
 
+      - name: Static Code Analysis
+        run:
+          cppcheck src/ --template=gcc --force --error-exitcode=1
+
       - name: Sanitize
         run: |
           scons mode=debug+san
