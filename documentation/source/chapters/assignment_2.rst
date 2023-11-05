@@ -34,7 +34,7 @@ Finite Volume Discretization
 .. literalinclude:: ../../../src/setups/CustomSetup1d.cpp
     :language: c++
 
-.. literalinclude:: ../../../src/patches/WavePropagation1d.hidden
+.. literalinclude:: ../../../src/patches/WavePropagation1d.h
     :language: c++
 
 .. literalinclude:: ../../../src/io/Csv.cpp
