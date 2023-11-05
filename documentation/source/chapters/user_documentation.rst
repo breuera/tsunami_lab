@@ -36,6 +36,10 @@ Downloading the Code
 # Navigate into the directory
 .. code-block::
     cd tsunami_lab
+# Download all submodules
+.. code-block::
+    git submodules init
+    git submodules update
 
 .. _ch:Compiling_the_Code:
 Compiling the code

@@ -2,10 +2,10 @@
 
 Report Week 2
 =============
-.._ch:Contribution:
+.. _ch:Contribution:
 Contribution
 ------------
 
-.._ch:User_Documentation:
+.. _ch:User_Documentation:
 User Documentation
 ------------
