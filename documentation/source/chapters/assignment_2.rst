@@ -28,6 +28,7 @@ Implemntation of the WavePropagation1d
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block::
+  
   m_use_roe_solver = i_use_roe_solver;
 
   ... 
