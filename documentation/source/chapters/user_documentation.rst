@@ -14,28 +14,28 @@ Getting Started
 Prerequisites
 ^^^^^^^^^^^^^
 Before you can begin, ensure that you have the following prerequisites installed on your system:
-#. Python3
-#. C++ (Version 11 or later)
-#. SCons
-#. CMake
-#. Doxygen
-#. git
+* Python3
+* C++ (Version 11 or later)
+* SCons
+* CMake
+* Doxygen
+* git
 
 Downloading the Code
 ^^^^^^^^^^^^^^^^^^^^
-* Open your terminal or command prompt.
+#. Open your terminal or command prompt.
 
-* Change to the directory where you want to store the project.
+#. Change to the directory where you want to store the project.
 
-* Run the following command to clone the project repository from GitHub:
+#. Run the following command to clone the project repository from GitHub:
 
 .. code-block::
     git clone https://github.com/PhillipRothenbeck/tsunami_lab.git
 
-* Navigate into the directory
+#. Navigate into the directory
 .. code-block::
     cd tsunami_lab
-* Download all submodules
+#. Download all submodules
 .. code-block::
     git submodules init
     git submodules update
@@ -45,14 +45,17 @@ Compiling the code
 ------------------
 Compiling Doxygen
 ^^^^^^^^^^^^^^^^^
-* Open your terminal or command prompt.
+#. Open your terminal or command prompt.
 
-* Navigate to the project's root directory where the Doxygen configuration file (Doxyfile.in) is located.
+#. Navigate to the project's root directory where the Doxygen configuration file (Doxyfile.in) is located.
 
-* Run the following command to generate the documentation:
+#. Run the following command to generate the documentation:
+
 .. code-block::
     doxygen Doxyfile.in
-* Once the documentation generation is complete, you can open the documentation in your browser of choice by opening the following URL:
+
+#. Once the documentation generation is complete, you can open the documentation in your browser of choice by opening the following URL:
+
 .. code-block::
     file:///path/to/tsunami-lab-project/_build/html/index.html
 Compiling the project
@@ -63,10 +66,10 @@ mode (Optional):
 
 Use scons without specifying the mode flag to build with default settings.
 You can use one of the following modes:
-    #. release: Optimized release mode.
-    #. release+san: Release mode with sanitizers.
-    #. debug: Debug mode.
-    #. debug+san: Debug mode with sanitizers.
+#. release: Optimized release mode.
+#. release+san: Release mode with sanitizers.
+#. debug: Debug mode.
+#. debug+san: Debug mode with sanitizers.
 
 To compile the project, navigate to the project's root directory and run the following command:
 .. code-block::
@@ -108,10 +111,12 @@ Example command to execute the project with flags:
 This will run the Tsunami Lab Project with the DamBreak setup, in sanitizer mode, using 100 cells, and the F-WaveSolver.
 
 You can customize the flags according to your requirements.
+
 .. _ch:Troubleshooting:
 Troubleshooting
 ---------------
 If you encounter any issues while working with the Tsunami Lab Project, please refer to the following common issues and contact information for assistance.
+
 Common issues
 ^^^^^^^^^^^^^
 * Compilation Errors:
