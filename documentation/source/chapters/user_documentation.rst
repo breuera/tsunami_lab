@@ -15,12 +15,12 @@ Prerequisites
 ^^^^^^^^^^^^^
 Before you can begin, ensure that you have the following prerequisites installed on your system:
 
-Python3
-C++ (Version 11 or later)
-SCons
-CMake
-Doxygen
-git
+* Python3
+* C++ (Version 11 or later)
+* SCons
+* CMake
+* Doxygen
+* git
 
 Downloading the Code
 ^^^^^^^^^^^^^^^^^^^^
@@ -28,11 +28,11 @@ Downloading the Code
 
 #. Change to the directory where you want to store the project.
 
-#. Run the following command to clone the project repository from GitHub:.
+#. Run the following command to clone the project repository from GitHub:
     .. code-block:: bash
-        git clone https://github.com/PhillipRothenbeck/tsunami_lab.git.
-#. Navigate into the directory.
-#. Download all submodules.
+        git clone https://github.com/PhillipRothenbeck/tsunami_lab.git
+#. Navigate into the directory
+#. Download all submodules
     .. code-block:: bash
         cd tsunami_lab
         git submodules init
