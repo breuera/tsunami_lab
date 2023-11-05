@@ -251,6 +251,7 @@ The higher the initial heights are, the higher the middlestate is and the faster
   :autoplay:
   :loop:
   :nocontrols:
+  :muted:
 
 Shock-Shock problem with h=10 and u=5
 
@@ -259,6 +260,7 @@ Shock-Shock problem with h=10 and u=5
   :autoplay:
   :loop:
   :nocontrols:
+  :muted:
 
 Shock-Shock problem with h=10 and u=10
 
@@ -267,6 +269,7 @@ Shock-Shock problem with h=10 and u=10
   :autoplay:
   :loop:
   :nocontrols:
+  :muted:
 
 Shock-Shock problem with h=40 and u=5
 
@@ -275,6 +278,7 @@ Shock-Shock problem with h=40 and u=5
   :autoplay:
   :loop:
   :nocontrols:
+  :muted:
 
 Rare-Rare problem with h=10 and u=2.5
 
@@ -283,6 +287,7 @@ Rare-Rare problem with h=10 and u=2.5
   :autoplay:
   :loop:
   :nocontrols:
+  :muted:
 
 Rare-Rare problem with h=10 and u=5
 
@@ -291,6 +296,7 @@ Rare-Rare problem with h=10 and u=5
   :autoplay:
   :loop:
   :nocontrols:
+  :muted:
 
 Rare-Rare problem with h=40 and u=5
 
@@ -316,13 +322,14 @@ Observations:
 The higher the initial height difference is, the larger is the momentum in the middle state.
 The wavespeed of the shock wave is seemingly unaffected by the right height while the rarefaction wave seems slower the larger the initial height difference is.
 The wavespeed of the shock wave seems to be proportional to the square root of the left height.
-The wavespeed of the shockwave does get faster the higher the momentum is in the right side, but it seems to be an overall minor impact.
+The wavespeed of the shockwave does get faster the higher the initial momentum on the right side is, but it seems to be an overall minor impact.
 
 .. video:: _static/DamBreak1d_10_2.mp4
   :width: 700
   :autoplay:
   :loop:
   :nocontrols:
+  :muted:
 
 Dam-Break problem with h_l=10 and h_r=2 and hu = 0
 
@@ -331,6 +338,7 @@ Dam-Break problem with h_l=10 and h_r=2 and hu = 0
   :autoplay:
   :loop:
   :nocontrols:
+  :muted:
 
 Dam-Break problem with h_l=10 and h_r=6 and hu = 0
 
@@ -339,6 +347,7 @@ Dam-Break problem with h_l=10 and h_r=6 and hu = 0
   :autoplay:
   :loop:
   :nocontrols:
+  :muted:
 
 Dam-Break problem with h_l=40 and h_r=8 and hu = 0
 
@@ -347,6 +356,7 @@ Dam-Break problem with h_l=40 and h_r=8 and hu = 0
   :autoplay:
   :loop:
   :nocontrols:
+  :muted:
 
 Dam-Break problem with h_l=40 and h_r=32 and hu = 0
 
@@ -355,6 +365,7 @@ Dam-Break problem with h_l=40 and h_r=32 and hu = 0
   :autoplay:
   :loop:
   :nocontrols:
+  :muted:
 
 
 Dam-Break problem with h_l=14 and h_r=3.5 and hu_l = 0 and hu_r = 0.7
@@ -364,6 +375,7 @@ Dam-Break problem with h_l=14 and h_r=3.5 and hu_l = 0 and hu_r = 0.7
   :autoplay:
   :loop:
   :nocontrols:
+  :muted:
 
 Dam-Break problem with h_l=14 and h_r=3.5 and hu_l = 0 and hu_r = 4
 
