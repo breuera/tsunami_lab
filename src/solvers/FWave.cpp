@@ -12,7 +12,7 @@ void tsunami_lab::solvers::FWave::heightAvg(t_real i_hL,
                                              t_real i_hR,
                                              t_real &o_height)
 {
-    o_height = 0.5f * (i_hL + i_hR);
+    o_height = tsunami_lab::t_real(0.5) * (i_hL + i_hR);
 }
 
 void tsunami_lab::solvers::FWave::particleVelocityAvg(t_real i_hL,
@@ -52,7 +52,7 @@ void tsunami_lab::solvers::FWave::flux(t_real i_h,
 {
     o_flux[0] = i_hu;
     t_real l_u = i_hu / i_h;
-    o_flux[1] = i_h * pow(l_u, 2) + 0.5f * tsunami_lab::solvers::FWave::c_g * pow(i_h, 2);
+    o_flux[1] = i_h * pow(l_u, 2) + tsunami_lab::t_real(0.5) * tsunami_lab::solvers::FWave::c_g * pow(i_h, 2);
 }
 
 void tsunami_lab::solvers::FWave::waveStrengths(t_real i_hL,
