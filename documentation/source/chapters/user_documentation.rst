@@ -51,13 +51,13 @@ Compiling Doxygen
 
 #. Run the following command to generate the documentation:
 
-.. code-block::
-    doxygen Doxyfile.in
+    .. code-block::
+        doxygen Doxyfile.in
 
 #. Once the documentation generation is complete, you can open the documentation in your browser of choice by opening the following URL:
 
-.. code-block::
-    file:///path/to/tsunami-lab-project/_build/html/index.html
+    .. code-block::
+        file:///path/to/tsunami-lab-project/_build/html/index.html
 Compiling the project
 ^^^^^^^^^^^^^^^^^^^^^
 To compile the Tsunami Lab Project, you have various options and flags to choose from. 
