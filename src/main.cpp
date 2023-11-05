@@ -105,11 +105,13 @@ int main(int i_argc,
     l_hR = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
     l_huL = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
     l_huR = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
+    l_hStar = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
 
     l_hL[0] = 10;
     l_hR[0] = 5;
     l_huL[0] = 0;
     l_huR[0] = 0;
+    l_hStar[0] = 0;
   }
   else if (l_scenario == "Sanitize1d") 
   {
