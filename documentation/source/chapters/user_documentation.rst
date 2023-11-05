@@ -29,11 +29,16 @@ Downloading the Code
 #. Change to the directory where you want to store the project.
 
 #. Run the following command to clone the project repository from GitHub:
+
     .. code-block:: bash
+        
         git clone https://github.com/PhillipRothenbeck/tsunami_lab.git
+
 #. Navigate into the directory
 #. Download all submodules
+
     .. code-block:: bash
+        
         cd tsunami_lab
         git submodules init
         git submodules update.
@@ -48,11 +53,15 @@ Compiling Doxygen
 #. Navigate to the project's root directory where the Doxygen configuration file (Doxyfile.in) is located.
 
 #. Run the following command to generate the documentation:
+
     .. code-block::
+
         doxygen Doxyfile.in
 
 #. Once the documentation generation is complete, you can open the documentation in your browser of choice by opening the following URL:
+
     .. code-block::
+
         file:///path/to/tsunami-lab-project/_build/html/index.html
 
 Compiling the project
