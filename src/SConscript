@@ -26,11 +26,11 @@ l_tests = [ 'tests.cpp',
             'solvers/Roe.test.cpp',
             'solvers/FWave.test.cpp',
             'patches/WavePropagation1d.test.cpp',
-            'io/Csv.test.cpp',
             'setups/CustomSetup1d.test.cpp',
+            'setups/DamBreak1d.test.cpp',
             'setups/ShockShock1d.test.cpp',
             'setups/RareRare1d.test.cpp',
-            'setups/DamBreak1d.test.cpp' ]
+            'io/Csv.test.cpp']
 
 for l_te in l_tests:
   env.tests.append( env.Object( l_te ) )
