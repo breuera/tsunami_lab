@@ -15,12 +15,12 @@ Prerequisites
 ^^^^^^^^^^^^^
 Before you can begin, ensure that you have the following prerequisites installed on your system:
 
-* Python3
-* C++ (Version 11 or later)
-* SCons
-* CMake
-* Doxygen
-* git
+Python3
+C++ (Version 11 or later)
+SCons
+CMake
+Doxygen
+git
 
 Downloading the Code
 ^^^^^^^^^^^^^^^^^^^^
@@ -28,18 +28,15 @@ Downloading the Code
 
 #. Change to the directory where you want to store the project.
 
-#. Run the following command to clone the project repository from GitHub:
+#. Run the following command to clone the project repository from GitHub:.
     .. code-block:: bash
-        git clone https://github.com/PhillipRothenbeck/tsunami_lab.git
-
-#. Navigate into the directory
+        git clone https://github.com/PhillipRothenbeck/tsunami_lab.git.
+#. Navigate into the directory.
+#. Download all submodules.
     .. code-block:: bash
         cd tsunami_lab
-
-#. Download all submodules
-    .. code-block:: bash
         git submodules init
-        git submodules update
+        git submodules update.
 
 .. _ch:Compiling_the_Code:
 Compiling the code
@@ -66,6 +63,7 @@ mode (Optional):
 
 Use scons without specifying the mode flag to build with default settings.
 You can use one of the following modes:
+
 #. release: Optimized release mode.
 #. release+san: Release mode with sanitizers.
 #. debug: Debug mode.
@@ -129,14 +127,13 @@ Common issues
 
 * Running the Project:
     If you encounter errors while running the project, ensure that you have provided the correct command-line flags as explained in the Compiling the Project section. Check for any typos or incorrect inputs.
-
     Verify that the required input files (e.g., Middle_states or dummie_middle_states) are present in the designated folders as mentioned in the project flags.
 
 Contact Information
 ^^^^^^^^^^^^^^^^^^^
 If you are unable to resolve your issue or face any other difficulties not mentioned here, please feel free to contact the Tsunami Lab Project maintainers for assistance. You can reach out to us at the following email addresses:
 
-    * Bohdan Babii: bohdan.babii@uni-jena.de
-    * Phillip Rothenbeck: phillip.rothenbeck@uni-jena.de
+* Bohdan Babii: bohdan.babii@uni-jena.de
+* Phillip Rothenbeck: phillip.rothenbeck@uni-jena.de
 
 We are here to help you with any questions or problems you may encounter while using the Tsunami Lab Project. Please don't hesitate to reach out, and we will do our best to assist you.
