@@ -1,5 +1,5 @@
 
-1 Rieman Solver
+1 Riemann Solver
 ========================================
 
 Links:
@@ -30,6 +30,7 @@ The following is a video representing the Dambreak and the Height/Momentum over 
    :width: 700
    :loop:
    :autoplay:
+   :muted:
 
 
 
