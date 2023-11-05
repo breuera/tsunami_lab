@@ -24,13 +24,81 @@ Finite Volume Discretization
        You may use any suitable tool for this task including `GitHub Actions <https://github.com/features/actions>`__, `GitLab Runner <https://docs.gitlab.com/runner/>`__, `Travis CI <https://www.travis-ci.com/>`__, `Buildkite <https://buildkite.com/>`__, `GoCD <https://www.gocd.org/>`__ and `Jenkins <https://www.jenkins.io/>`__.
 
 
+Implemntation of the WavePropagation1d
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. literalinclude:: ../../../src/patches/WavePropagation1d.cpp
-    :language: c++
+.. code-block::
+  m_use_roe_solver = i_use_roe_solver;
 
-.. literalinclude:: ../../../src/main.cpp
-    :language: c++
+  ... 
 
+  if (m_use_roe_solver)
+    {
+      solvers::Roe::netUpdates(l_hOld[l_ceL],
+                               l_hOld[l_ceR],
+                               l_huOld[l_ceL],
+                               l_huOld[l_ceR],
+                               l_netUpdates[0],
+                               l_netUpdates[1]);
+    }
+    else
+    {
+      solvers::FWave::netUpdates(l_hOld[l_ceL],
+                                  l_hOld[l_ceR],
+                                  l_huOld[l_ceL],
+                                  l_huOld[l_ceR],
+                                  l_netUpdates[0],
+                                  l_netUpdates[1]);
+    }
+
+The code snippet is added to the WavePropagation1d class, allowing it to switch between the Roe and FWave solvers based on the value of the m_use_roe_solver variable, enhancing the class's flexibility in handling wave propagation problems.
+
+.. code-block::
+
+    if (i_argc == 3)
+  {
+    l_scenario = i_argv[1];
+    l_nx = atoi(i_argv[2]);
+    if (l_nx < 1)
+    {
+      std::cerr << "invalid number of cells" << std::endl;
+      return EXIT_FAILURE;
+    }
+    std::cout << "solver defaults to f-wave solver" << std::endl;
+    l_dxy = 10.0 / l_nx;
+  }
+  else if (i_argc == 4)
+  {
+    l_scenario = i_argv[1];
+    l_nx = atoi(i_argv[2]);
+    if (l_nx < 1)
+    {
+      std::cerr << "invalid number of cells" << std::endl;
+      return EXIT_FAILURE;
+    }
+    l_dxy = 10.0 / l_nx;
+
+    if (!(strcmp(i_argv[3], "-f") == 0 || strcmp(i_argv[3], "-r") == 0))
+    {
+      std::cerr << "invalid third argument(needs to be '-r' or '-f')" << std::endl;
+      return EXIT_FAILURE;
+    }
+
+    l_use_roe_solver = (strcmp(i_argv[3], "-r") == 0);
+    if (l_use_roe_solver)
+    {
+      std::cout << "solver was set to the roe solver" << std::endl;
+    }
+    else
+    {
+      std::cout << "solver was set to the f-wave solver" << std::endl;
+    }
+  }
+
+The main.cpp has been extended to accept command-line arguments. If provided with 3 arguments, it expects a scenario and the number of cells, defaulting to the F-Wave solver. With 4 arguments, it also allows users to specify the solver choice (Roe or F-Wave). This extension enhances the program's adaptability to various simulation scenarios and solver preferences.
+
+Sanity check
+^^^^^^^^^^^^
 .. literalinclude:: ../../../src/setups/CustomSetup1d.cpp
     :language: c++
 
@@ -108,10 +176,11 @@ At first we have to calculate u.
 
 .. math::
   :label: eq: particle velocity
-  
-  u^{\text{Roe}}(q_l, q_r) &=  \frac{u_l \sqrt{h_l} + u_r \sqrt{h_r}}{\sqrt{h_l}+\sqrt{h_r}}
+
+  u^{\text{Roe}}(q_l, q_r) =  \frac{u_l \sqrt{h_l} + u_r \sqrt{h_r}}{\sqrt{h_l}+\sqrt{h_r}}
 
 We know that 
+
 .. math::
 
   h_r = h_r
