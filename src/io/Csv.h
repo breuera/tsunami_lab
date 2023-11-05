@@ -9,6 +9,7 @@
 
 #include "../constants.h"
 #include <cstring>
+#include <fstream> 
 #include <iostream>
 
 namespace tsunami_lab {
@@ -39,6 +40,23 @@ class tsunami_lab::io::Csv {
                        t_real       const * i_hu,
                        t_real       const * i_hv,
                        std::ostream       & io_stream );
+    
+    /**
+     * Reads a file filled with middle states from a given iostream.
+     * 
+     * @param iostream stream from which the CSV-Data is read.
+     * @param o_heightsL array of initial heigths on the left side
+     * @param o_momentumsL array of initial momentums on the left side
+     * @param o_heightsR array of initial heights on the right side
+     * @param o_momentumsR array of initial momentums on the right side 
+     * @param o_hStar array of middle state heights
+     **/
+    static void read_middle_states( std::ifstream  & io_stream,     
+                                    t_real         *& o_heightsL,
+                                    t_real         *& o_momentumsL,
+                                    t_real         *& o_heightsR,
+                                    t_real         *& o_momentumsR, 
+                                    t_real         *& o_hStar);
 };
 
 #endif
