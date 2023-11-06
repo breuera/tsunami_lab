@@ -6,24 +6,24 @@
  * @section DESCRIPTION
  * Entry-point for simulations.
  **/
+#include <unistd.h>
+
+#include <algorithm>
 #include <cmath>
 #include <cstdlib>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <limits>
-#include <string>
-#include <limits>
-#include <algorithm>
-#include <unistd.h>
-#include <vector>
 #include <sstream>
+#include <string>
+#include <vector>
 
 #include "io/Csv.h"
 #include "patches/WavePropagation1d.h"
 #include "setups/dambreak1d/DamBreak1d.h"
-#include "setups/shockshock1d/ShockShock1d.h"
 #include "setups/rarerare1d/RareRare1d.h"
+#include "setups/shockshock1d/ShockShock1d.h"
 
 // declaration of variables
 std::string solver_choice = "fwave";
@@ -183,6 +183,10 @@ int main(int i_argc,
                         << "be sure to only type in lower-case" << std::endl;
                     return EXIT_FAILURE;
                 }
+
+                // delete vector and free space
+                tokens.clear();
+                tokens.shrink_to_fit();
             }
             else
             {
@@ -192,8 +196,6 @@ int main(int i_argc,
                     << "Expected: 3" << std::endl;
                 return EXIT_FAILURE;
             }
-            tokens.clear();
-            tokens.shrink_to_fit();
             break;
         }
         // unknown option
