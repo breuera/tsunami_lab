@@ -192,6 +192,8 @@ int main(int i_argc,
                     << "Expected: 3" << std::endl;
                 return EXIT_FAILURE;
             }
+            tokens.clear();
+            tokens.shrink_to_fit();
             break;
         }
         // unknown option
