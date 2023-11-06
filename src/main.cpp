@@ -100,9 +100,7 @@ int main(int i_argc,
       // split string by space
       std::stringstream l_stream(l_arg);
       std::string l_setupName, l_arg1Str, l_arg2Str;
-      std::getline(l_stream, l_setupName, ' ');
-      std::getline(l_stream, l_arg1Str, ' ');
-      std::getline(l_stream, l_arg2Str, ' ');
+      l_stream >> l_setupName >> l_arg1Str >> l_arg2Str;
 
       // convert to upper case and t_real
       std::transform(l_setupName.begin(), l_setupName.end(), l_setupName.begin(), ::toupper);
