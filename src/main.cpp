@@ -156,9 +156,6 @@ int main(int i_argc,
                         return EXIT_FAILURE;
                     }
 
-                    // delete vector and free space
-                    tokens.clear();
-                    std::vector<std::string>().swap(tokens);
                 } else {
                     // if input doesn't follow the regulations "<name> <arg1> <arg2>"
                     std::cerr
