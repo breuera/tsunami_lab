@@ -29,17 +29,22 @@
 std::string solver_choice = "fwave";
 
 int main(int i_argc,
-         char *i_argv[]) {
+         char *i_argv[])
+{
     std::filesystem::path currentPath = std::filesystem::current_path();
     std::filesystem::path targetPath;
 
-    if (currentPath.filename() == "build") {
+    if (currentPath.filename() == "build")
+    {
         targetPath = currentPath.parent_path() / "csv_dump";
-    } else {
+    }
+    else
+    {
         targetPath = currentPath / "csv_dump";
     }
 
-    if (!std::filesystem::exists(targetPath)) {
+    if (!std::filesystem::exists(targetPath))
+    {
         std::filesystem::create_directory(targetPath);
     }
 
@@ -56,16 +61,20 @@ int main(int i_argc,
     std::cout << "### https://scalable.uni-jena.de ###" << std::endl;
     std::cout << "####################################" << std::endl;
 
-    if ((i_argc < 2) || (i_argv[i_argc - 1][0] == '-')) {
+    if ((i_argc < 2) || (i_argv[i_argc - 1][0] == '-'))
+    {
         std::cerr << "invalid number of arguments OR wrong order, usage:" << std::endl;
         std::cerr << "  ./build/tsunami_lab [-v SOLVER] [-s SETUP] N_CELLS_X" << std::endl;
         std::cerr << "where N_CELLS_X is the number of cells in x-direction." << std::endl;
         std::cerr << "-v SOLVER = 'roe','fwave', default is 'fwave'" << std::endl;
         std::cerr << "-s SETUP  = 'dambreak h_l h_r','rarerare h hu','shockshock h hu', default is 'dambreak 15 7'" << std::endl;
         return EXIT_FAILURE;
-    } else {
+    }
+    else
+    {
         l_nx = atoi(i_argv[i_argc - 1]);
-        if (l_nx < 1) {
+        if (l_nx < 1)
+        {
             std::cerr << "invalid number of cells" << std::endl;
             return EXIT_FAILURE;
         }
@@ -79,104 +88,127 @@ int main(int i_argc,
                                                   5);
 
     // get command line arguments
-    opterr = 0;  // disable error messages of getopt
+    opterr = 0; // disable error messages of getopt
     int opt;
 
-    while ((opt = getopt(i_argc, i_argv, "s:v:")) != -1) {
-        switch (opt) {
-            case 'v': {
-                if (std::string(optarg) == "roe") {
-                    std::cout << "using roe-solver" << std::endl;
-                    solver_choice = "roe";
-                } else if (std::string(optarg) == "fwave") {
-                    std::cout << "using fwave-solver" << std::endl;
-                    solver_choice = "fwave";
-                } else {
+    while ((opt = getopt(i_argc, i_argv, "s:v:")) != -1)
+    {
+        switch (opt)
+        {
+        case 'v':
+        {
+            if (std::string(optarg) == "roe")
+            {
+                std::cout << "using roe-solver" << std::endl;
+                solver_choice = "roe";
+            }
+            else if (std::string(optarg) == "fwave")
+            {
+                std::cout << "using fwave-solver" << std::endl;
+                solver_choice = "fwave";
+            }
+            else
+            {
+                std::cerr
+                    << "unknown solver "
+                    << std::string(optarg) << std::endl
+                    << "possible options are: 'roe' or 'fwave'" << std::endl
+                    << "be sure to only type in lower-case" << std::endl;
+                return EXIT_FAILURE;
+            }
+            break;
+        }
+        case 's':
+        {
+            std::string argument(optarg);
+            std::vector<std::string> tokens;
+            std::string intermediate;
+
+            // Create a stringstream object
+            std::stringstream check1(argument);
+
+            // Tokenizing w.r.t. the delimiter ' '
+            while (getline(check1, intermediate, ' '))
+            {
+                tokens.push_back(intermediate);
+                std::cout << intermediate << std::endl;
+            }
+
+            // ensure that segmentation fault is not caused
+            if (tokens.size() == 3)
+            {
+                // convert to t_real
+                double l_arg1, l_arg2;
+                try
+                {
+                    l_arg1 = std::stof(tokens[1]);
+                    l_arg2 = std::stof(tokens[2]);
+                }
+                // if input after the name isn't a number, then throw an error
+                catch (const std::invalid_argument &ia)
+                {
                     std::cerr
-                        << "unknown solver "
-                        << std::string(optarg) << std::endl
-                        << "possible options are: 'roe' or 'fwave'" << std::endl
+                        << "Invalid argument: " << ia.what() << std::endl
+                        << "be sure to only type numbers after the solver-name" << std::endl;
+                    return EXIT_FAILURE;
+                }
+                delete l_setup;
+
+                if (tokens[0] == "dambreak")
+                {
+                    std::cout << "using DamBreak1d(" << l_arg1 << ", " << l_arg2 << ", 5) setup" << std::endl;
+                    l_setup = new tsunami_lab::setups::DamBreak1d(l_arg1,
+                                                                  l_arg2,
+                                                                  5);
+                }
+                else if (tokens[0] == "shockshock")
+                {
+                    std::cout << "using ShockShock1d(" << l_arg1 << ", " << l_arg2 << ", 5) setup" << std::endl;
+                    l_setup = new tsunami_lab::setups::ShockShock1d(l_arg1,
+                                                                    l_arg2,
+                                                                    5);
+                }
+                else if (tokens[0] == "rarerare")
+                {
+                    std::cout << "using RareRare1d(" << l_arg1 << "," << l_arg2 << ", 5) setup" << std::endl;
+                    l_setup = new tsunami_lab::setups::RareRare1d(l_arg1,
+                                                                  l_arg2,
+                                                                  5);
+                }
+                // if input isn't a defined setup, throw an error
+                else
+                {
+                    std::cerr
+                        << "Undefined setup: " << tokens[0] << std::endl
+                        << "possible options are: 'dambreak', 'shockshock' or 'rarerare'" << std::endl
                         << "be sure to only type in lower-case" << std::endl;
                     return EXIT_FAILURE;
                 }
-                break;
+
+                // delete vector and free space
+                tokens.clear();
+                tokens.shrink_to_fit();
             }
-            case 's': {
-                std::string argument(optarg);
-                std::vector<std::string> tokens;
-                std::string intermediate;
-
-                // Create a stringstream object
-                std::stringstream check1(argument);
-
-                // Tokenizing w.r.t. the delimiter ' '
-                while (getline(check1, intermediate, ' ')) {
-                    tokens.push_back(intermediate);
-                    std::cout << intermediate << std::endl;
-                }
-
-                // ensure that segmentation fault is not caused
-                if (tokens.size() == 3) {
-                    // convert to t_real
-                    double l_arg1, l_arg2;
-                    try {
-                        l_arg1 = std::stof(tokens[1]);
-                        l_arg2 = std::stof(tokens[2]);
-                    }
-                    // if input after the name isn't a number, then throw an error
-                    catch (const std::invalid_argument &ia) {
-                        std::cerr
-                            << "Invalid argument: " << ia.what() << std::endl
-                            << "be sure to only type numbers after the solver-name" << std::endl;
-                        return EXIT_FAILURE;
-                    }
-
-                    if (tokens[0] == "dambreak") {
-                        std::cout << "using DamBreak1d(" << l_arg1 << ", " << l_arg2 << ", 5) setup" << std::endl;
-                        l_setup = new tsunami_lab::setups::DamBreak1d(l_arg1,
-                                                                      l_arg2,
-                                                                      5);
-                    } else if (tokens[0] == "shockshock") {
-                        std::cout << "using ShockShock1d(" << l_arg1 << ", " << l_arg2 << ", 5) setup" << std::endl;
-                        l_setup = new tsunami_lab::setups::ShockShock1d(l_arg1,
-                                                                        l_arg2,
-                                                                        5);
-                    } else if (tokens[0] == "rarerare") {
-                        std::cout << "using RareRare1d(" << l_arg1 << "," << l_arg2 << ", 5) setup" << std::endl;
-                        l_setup = new tsunami_lab::setups::RareRare1d(l_arg1,
-                                                                      l_arg2,
-                                                                      5);
-                    }
-                    // if input isn't a defined setup, throw an error
-                    else {
-                        std::cerr
-                            << "Undefined setup: " << tokens[0] << std::endl
-                            << "possible options are: 'dambreak', 'shockshock' or 'rarerare'" << std::endl
-                            << "be sure to only type in lower-case" << std::endl;
-                        return EXIT_FAILURE;
-                    }
-
-                    // delete vector and free space
-                    tokens.clear();
-                    tokens.shrink_to_fit();
-                } else {
-                    // if input doesn't follow the regulations "<name> <arg1> <arg2>"
-                    std::cerr
-                        << "False number of arguments for setup: " << tokens.size() << std::endl
-                        << "Expected: 3" << std::endl;
-                    return EXIT_FAILURE;
-                }
-                break;
-            }
-            // unknown option
-            case '?': {
+            else
+            {
+                // if input doesn't follow the regulations "<name> <arg1> <arg2>"
                 std::cerr
-                    << "Undefinded option: " << char(optopt) << std::endl
-                    << "possible options are:" << std::endl
-                    << "  -v SOLVER = 'roe','fwave', default is 'fwave'" << std::endl
-                    << "  -s SETUP  = 'dambreak h_l h_r','rarerare h hu','shockshock h hu', default is 'dambreak 15 7'" << std::endl;
-                break;
+                    << "False number of arguments for setup: " << tokens.size() << std::endl
+                    << "Expected: 3" << std::endl;
+                return EXIT_FAILURE;
             }
+            break;
+        }
+        // unknown option
+        case '?':
+        {
+            std::cerr
+                << "Undefinded option: " << char(optopt) << std::endl
+                << "possible options are:" << std::endl
+                << "  -v SOLVER = 'roe','fwave', default is 'fwave'" << std::endl
+                << "  -s SETUP  = 'dambreak h_l h_r','rarerare h hu','shockshock h hu', default is 'dambreak 15 7'" << std::endl;
+            break;
+        }
         }
     }
 
@@ -193,10 +225,12 @@ int main(int i_argc,
     tsunami_lab::t_real l_hMax = std::numeric_limits<tsunami_lab::t_real>::lowest();
 
     // set up solver
-    for (tsunami_lab::t_idx l_cy = 0; l_cy < l_ny; l_cy++) {
+    for (tsunami_lab::t_idx l_cy = 0; l_cy < l_ny; l_cy++)
+    {
         tsunami_lab::t_real l_y = l_cy * l_dxy;
 
-        for (tsunami_lab::t_idx l_cx = 0; l_cx < l_nx; l_cx++) {
+        for (tsunami_lab::t_idx l_cx = 0; l_cx < l_nx; l_cx++)
+        {
             tsunami_lab::t_real l_x = l_cx * l_dxy;
 
             // get initial values of the setup
@@ -242,8 +276,10 @@ int main(int i_argc,
     std::cout << "entering time loop" << std::endl;
 
     // iterate over time
-    while (l_simTime < l_endTime) {
-        if (l_timeStep % 25 == 0) {
+    while (l_simTime < l_endTime)
+    {
+        if (l_timeStep % 25 == 0)
+        {
             std::cout << "  simulation time / #time steps: "
                       << l_simTime << " / " << l_timeStep << std::endl;
 
