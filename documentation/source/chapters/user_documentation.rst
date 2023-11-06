@@ -87,6 +87,7 @@ To compile the project, navigate to the project's root directory and run the fol
 To compile with a specific mode, use the mode flag as follows:
 
 .. code-block::
+ 
     scons mode=release
 
 .. _ch:Running_the_project:
