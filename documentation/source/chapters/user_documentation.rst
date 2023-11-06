@@ -1,16 +1,21 @@
 .. _User_Documentation:
+
 User Documentation
 ==================
 
 .. _ch:introduction:
+
 introduction
 ------------
+
 Welcome to the Tsunami Lab Project! This user documentation will guide you through the process of downloading the project's source code from GitHub 
 and compiling it so that you can start working with the software.
 
 .. _ch:Getting_Started:
+
 Getting Started
 ---------------
+
 Prerequisites
 ^^^^^^^^^^^^^
 Before you can begin, ensure that you have the following prerequisites installed on your system:
