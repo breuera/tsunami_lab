@@ -79,9 +79,13 @@ You can use one of the following modes:
 #. debug+san: Debug mode with sanitizers.
 
 To compile the project, navigate to the project's root directory and run the following command:
+
 .. code-block::
+
     scons
+
 To compile with a specific mode, use the mode flag as follows:
+
 .. code-block::
     scons mode=release
 
@@ -91,8 +95,9 @@ Running the project
 -------------------
 
 To execute the test files, use the following command:
-.
-. code-block::
+
+.. code-block::
+
     ./build/tests
 
 To execute the project, use the following command with the appropriate flags:
