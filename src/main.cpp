@@ -156,6 +156,9 @@ int main(int i_argc,
                         return EXIT_FAILURE;
                     }
 
+                    // delete vector and free space
+                    tokens.clear();
+                    tokens.shrink_to_fit();
                 } else {
                     // if input doesn't follow the regulations "<name> <arg1> <arg2>"
                     std::cerr
