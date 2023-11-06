@@ -2,14 +2,18 @@
 
 Report Week 1
 ==============
-.. _ch:Contribution:
+
+.. _ch:Contribution_:
+
 Contribution
 ------------
+
 Bohdan Babii and Phillip Rothenbeck both made equal and significant contributions to 
 Assignment 1 at the Tsunami Lab. Their collaboration and dedication to the project were 
 evident throughout the process. 
 
 .. _ch:User_Documentation:
+
 User Documentation
 ------------------
 The submitted code has not yet been integrated into the main application, so it cannot be 
@@ -18,6 +22,7 @@ its functionality. The integration of this code into the main application is pla
 be implemented in the next assignment.
 
 .. _ch:Mathematics:
+
 Mathematics
 -----------
 

@@ -1,16 +1,21 @@
 .. _User_Documentation:
+
 User Documentation
 ==================
 
 .. _ch:introduction:
+
 introduction
 ------------
+
 Welcome to the Tsunami Lab Project! This user documentation will guide you through the process of downloading the project's source code from GitHub 
 and compiling it so that you can start working with the software.
 
 .. _ch:Getting_Started:
+
 Getting Started
 ---------------
+
 Prerequisites
 ^^^^^^^^^^^^^
 Before you can begin, ensure that you have the following prerequisites installed on your system:
@@ -44,10 +49,13 @@ Downloading the Code
         git submodules update.
 
 .. _ch:Compiling_the_Code:
+
 Compiling the code
 ------------------
+
 Compiling Doxygen
 ^^^^^^^^^^^^^^^^^
+
 #. Open your terminal or command prompt.
 
 #. Navigate to the project's root directory where the Doxygen configuration file (Doxyfile.in) is located.
@@ -79,21 +87,32 @@ You can use one of the following modes:
 #. debug+san: Debug mode with sanitizers.
 
 To compile the project, navigate to the project's root directory and run the following command:
+
 .. code-block::
+
     scons
+
 To compile with a specific mode, use the mode flag as follows:
+
 .. code-block::
+ 
     scons mode=release
 
 .. _ch:Running_the_project:
+
 Running the project
 -------------------
+
 To execute the test files, use the following command:
+
 .. code-block::
+
     ./build/tests
 
 To execute the project, use the following command with the appropriate flags:
+
 .. code-block::
+
     ./build/tsunami_lab [flags]
 
 #. first flag setup option:
@@ -112,7 +131,9 @@ To execute the project, use the following command with the appropriate flags:
         -r for Roe Solver
 
 Example command to execute the project with flags:
+
 .. code-block::
+
     ./build/tsunami_lab DamBreak Sanatizer 100 -f
 
 This will run the Tsunami Lab Project with the DamBreak setup, in sanitizer mode, using 100 cells, and the F-WaveSolver.
@@ -120,12 +141,15 @@ This will run the Tsunami Lab Project with the DamBreak setup, in sanitizer mode
 You can customize the flags according to your requirements.
 
 .. _ch:Troubleshooting:
+
 Troubleshooting
 ---------------
+
 If you encounter any issues while working with the Tsunami Lab Project, please refer to the following common issues and contact information for assistance.
 
 Common issues
 ^^^^^^^^^^^^^
+
 * Compilation Errors:
     If you encounter compilation errors, ensure that you have all the necessary prerequisites installed, as mentioned in the Prerequisites section. Verify that you have the correct versions of Python, C++, SCons, CMake, and Doxygen.
 
@@ -140,6 +164,7 @@ Common issues
 
 Contact Information
 ^^^^^^^^^^^^^^^^^^^
+
 If you are unable to resolve your issue or face any other difficulties not mentioned here, please feel free to contact the Tsunami Lab Project maintainers for assistance. You can reach out to us at the following email addresses:
 
 * Bohdan Babii: bohdan.babii@uni-jena.de
