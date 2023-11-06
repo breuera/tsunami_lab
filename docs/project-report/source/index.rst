@@ -10,4 +10,5 @@ Welcome to Tsunami WS23's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   1_Rieman-solver
+   1_Riemann-solver
+   2_Finite-Volume-Discretization
