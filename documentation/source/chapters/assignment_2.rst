@@ -348,8 +348,7 @@ Shock and Rarefaction Waves
     #. Play
        around with different sets of initial water heights :math:`h_l` and
        particles velocities :math:`u_l`. What do you observe? Is there a
-       connection to the wave speeds :math:`\lambda_{1/2} = u \mp \sqrt{gh}`
-       in :numref:`ch:fwave`?
+       connection to the wave speeds :math:`\lambda_{1/2} = u \mp \sqrt{gh}`?
 
 Implemntation of Shock-Shock setups
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
