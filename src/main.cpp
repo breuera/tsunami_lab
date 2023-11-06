@@ -137,7 +137,6 @@ int main(int i_argc,
             // ensure that segmentation fault is not caused
             if (tokens.size() == 3)
             {
-                delete l_setup;
                 // convert to t_real
                 double l_arg1, l_arg2;
                 try
@@ -153,6 +152,7 @@ int main(int i_argc,
                         << "be sure to only type numbers after the solver-name" << std::endl;
                     return EXIT_FAILURE;
                 }
+                delete l_setup;
 
                 if (tokens[0] == "dambreak")
                 {
@@ -184,6 +184,10 @@ int main(int i_argc,
                         << "be sure to only type in lower-case" << std::endl;
                     return EXIT_FAILURE;
                 }
+
+                // delete vector and free space
+                tokens.clear();
+                tokens.shrink_to_fit();
             }
             else
             {
