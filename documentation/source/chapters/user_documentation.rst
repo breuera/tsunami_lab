@@ -50,7 +50,6 @@ Downloading the Code
 
 .. _ch:Compiling_the_Code:
 
-
 Compiling the code
 ------------------
 
