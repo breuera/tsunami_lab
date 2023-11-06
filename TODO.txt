@@ -18,3 +18,22 @@ Sphinx:
 Developerdoku: Doxygen; Userdoku: sphinx
 
 - navier-stokes gleichungen recherchieren
+
+GMT:
+    - apt-get install gmt
+    - Documantation -> pscoast
+    - gtm grdinfo
+    - gmt pscoast   -R37/38/140/141 (koordinaten)
+                    -JM25c
+                    -Ggray (color)
+                    -Dfull (resolution) 
+                    -N1 (national boundries)
+                    -K (extra plot, keine ahnung)> 01_map_01.ps
+
+    - gmt grdcut -R138/147/35/39 gebco-ditter.nc -Goutput-gitter.nc
+    - gmt grdtrack  -Ginput.nc
+                    -E141/37.31/146/37.31+i250e+d
+                    -Ar (resample equidistant)
+                    -V (verbose)> dem.csv
+    - cat data.csv| tr -s '[:blank:]' ',' > real.csv
+Gebco netCDF download
