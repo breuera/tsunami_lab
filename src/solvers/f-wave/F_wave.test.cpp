@@ -9,8 +9,7 @@
 #include "F_wave.h"
 #undef public
 
-TEST_CASE("Test the derivation of the FWave speeds.", "[FWaveSpeeds]")
-{
+TEST_CASE("Test the derivation of the FWave speeds.", "[FWaveSpeeds]") {
     /*
      * Test case:
      *  h: 10 | 9
@@ -35,8 +34,7 @@ TEST_CASE("Test the derivation of the FWave speeds.", "[FWaveSpeeds]")
     REQUIRE(l_waveSpeedR == Approx(9.5731051658991654));
 }
 
-TEST_CASE("Test the derivation of the FWave wave strength.", "[FWaveStrengths]")
-{
+TEST_CASE("Test the derivation of the FWave wave strength.", "[FWaveStrengths]") {
     /*
      * Test case:
      *  h:   10 | 9
@@ -75,6 +73,8 @@ TEST_CASE("Test the derivation of the FWave wave strength.", "[FWaveStrengths]")
                                                9,
                                                -30,
                                                27,
+                                               0,
+                                               0,
                                                -9.7311093998375095,
                                                9.5731051658991654,
                                                l_strengthL,
@@ -84,8 +84,7 @@ TEST_CASE("Test the derivation of the FWave wave strength.", "[FWaveStrengths]")
     REQUIRE(l_strengthR == Approx(23.441));
 }
 
-TEST_CASE("Test the derivation of the FWave net-updates.", "[FWaveUpdates]")
-{
+TEST_CASE("Test the derivation of the FWave net-updates.", "[FWaveUpdates]") {
     /*
      * Test case:
      *
@@ -113,6 +112,8 @@ TEST_CASE("Test the derivation of the FWave net-updates.", "[FWaveUpdates]")
                                             9,
                                             -30,
                                             27,
+                                            0,
+                                            0,
                                             l_netUpdatesL,
                                             l_netUpdatesR);
 
@@ -162,6 +163,8 @@ TEST_CASE("Test the derivation of the FWave net-updates.", "[FWaveUpdates]")
                                             8,
                                             0,
                                             0,
+                                            0,
+                                            0,
                                             l_netUpdatesL,
                                             l_netUpdatesR);
 
@@ -180,6 +183,8 @@ TEST_CASE("Test the derivation of the FWave net-updates.", "[FWaveUpdates]")
      */
     tsunami_lab::solvers::FWave::netUpdates(10,
                                             10,
+                                            0,
+                                            0,
                                             0,
                                             0,
                                             l_netUpdatesL,
@@ -231,6 +236,8 @@ TEST_CASE("Test the derivation of the FWave net-updates.", "[FWaveUpdates]")
                                             1,
                                             100,
                                             10,
+                                            0,
+                                            0,
                                             l_netUpdatesL,
                                             l_netUpdatesR);
 
