@@ -37,6 +37,9 @@ TEST_CASE("Test the 1d wave propagation roe solver.", "[WaveProp1dRoe]")
     m_waveProp.setMomentumX(l_ce,
                             0,
                             0);
+    m_waveProp.setBathymetry(l_ce,
+                             0,
+                             0);
   }
   for (std::size_t l_ce = 50; l_ce < 100; l_ce++)
   {
@@ -46,6 +49,9 @@ TEST_CASE("Test the 1d wave propagation roe solver.", "[WaveProp1dRoe]")
     m_waveProp.setMomentumX(l_ce,
                             0,
                             0);
+    m_waveProp.setBathymetry(l_ce,
+                             0,
+                             0);
   }
 
   // set outflow boundary condition
@@ -106,6 +112,9 @@ TEST_CASE("Test the 1d wave propagation FWave solver.", "[WaveProp1dFWave]")
     m_waveProp.setMomentumX(l_ce,
                             0,
                             0);
+    m_waveProp.setBathymetry(l_ce,
+                             0,
+                             0);
   }
   for (std::size_t l_ce = 50; l_ce < 100; l_ce++)
   {
@@ -115,6 +124,9 @@ TEST_CASE("Test the 1d wave propagation FWave solver.", "[WaveProp1dFWave]")
     m_waveProp.setMomentumX(l_ce,
                             0,
                             0);
+    m_waveProp.setBathymetry(l_ce,
+                             0,
+                             0);
   }
 
   // set outflow boundary condition
@@ -169,6 +181,9 @@ TEST_CASE("Test the 1d wave propagation FWave solver shock-shock.", "[WaveProp1d
     m_waveProp.setMomentumX(l_ce,
                             0,
                             763.616897222239);
+    m_waveProp.setBathymetry(l_ce,
+                             0,
+                             0);
   }
   for (std::size_t l_ce = 50; l_ce < 100; l_ce++)
   {
@@ -178,6 +193,9 @@ TEST_CASE("Test the 1d wave propagation FWave solver shock-shock.", "[WaveProp1d
     m_waveProp.setMomentumX(l_ce,
                             0,
                             -763.616897222239);
+    m_waveProp.setBathymetry(l_ce,
+                             0,
+                             0);
   }
 
   // set outflow boundary condition
@@ -218,6 +236,9 @@ TEST_CASE("Test the 1d wave propagation FWave solver rare-rare.", "[WaveProp1dFW
     m_waveProp.setMomentumX(l_ce,
                             0,
                             -906.6229611756387);
+    m_waveProp.setBathymetry(l_ce,
+                             0,
+                             0);
   }
   for (std::size_t l_ce = 50; l_ce < 100; l_ce++)
   {
@@ -227,6 +248,9 @@ TEST_CASE("Test the 1d wave propagation FWave solver rare-rare.", "[WaveProp1dFW
     m_waveProp.setMomentumX(l_ce,
                             0,
                             906.6229611756387);
+    m_waveProp.setBathymetry(l_ce,
+                             0,
+                             0);
   }
 
   // set outflow boundary condition

@@ -41,10 +41,22 @@ void tsunami_lab::solvers::FWave::flux(t_real i_h,
     o_flux1 = i_hu * i_hu / i_h + t_real(0.5) * m_g * i_h * i_h;
 }
 
+void tsunami_lab::solvers::FWave::deltaXPsi(t_real i_bL,
+                                            t_real i_bR,
+                                            t_real i_hL,
+                                            t_real i_hR,
+                                            t_real &o_deltaXPsi)
+{
+    // compute deltaXPsi
+    o_deltaXPsi = -m_g * (i_bR - i_bL) * (i_hL + i_hR) / 2;
+}
+
 void tsunami_lab::solvers::FWave::waveStrengths(t_real i_hL,
                                                 t_real i_hR,
                                                 t_real i_huL,
                                                 t_real i_huR,
+                                                t_real i_bL,
+                                                t_real i_bR,
                                                 t_real i_waveSpeedL,
                                                 t_real i_waveSpeedR,
                                                 t_real &o_strengthL,
@@ -64,13 +76,15 @@ void tsunami_lab::solvers::FWave::waveStrengths(t_real i_hL,
     t_real l_flux1L = 0;
     t_real l_flux0R = 0;
     t_real l_flux1R = 0;
+    t_real l_deltaXPsi = 0;
 
     flux(i_hL, i_huL, l_flux0L, l_flux1L);
     flux(i_hR, i_huR, l_flux0R, l_flux1R);
+    deltaXPsi(i_bL, i_bR, i_hL, i_hR, l_deltaXPsi);
 
     // compute jump in fluxes
     t_real l_flux0Jump = l_flux0R - l_flux0L;
-    t_real l_flux1Jump = l_flux1R - l_flux1L;
+    t_real l_flux1Jump = l_flux1R - l_flux1L - l_deltaXPsi;
 
     // compute wave strengths
     o_strengthL = l_rInv[0][0] * l_flux0Jump;
@@ -84,6 +98,8 @@ void tsunami_lab::solvers::FWave::netUpdates(t_real i_hL,
                                              t_real i_hR,
                                              t_real i_huL,
                                              t_real i_huR,
+                                             t_real i_bL,
+                                             t_real i_bR,
                                              t_real o_netUpdateL[2],
                                              t_real o_netUpdateR[2])
 {
@@ -110,6 +126,8 @@ void tsunami_lab::solvers::FWave::netUpdates(t_real i_hL,
                   i_hR,
                   i_huL,
                   i_huR,
+                  i_bL,
+                  i_bR,
                   l_sL,
                   l_sR,
                   l_aL,

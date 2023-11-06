@@ -18,6 +18,7 @@ TEST_CASE("Test the derivation of the FWave speeds.", "[FWaveSpeeds]")
    * Test case:
    *  h: 10 | 9
    *  u: -3 | 3
+   *  b:  0 | 0
    *
    * FWave height: 9.5
    * FWave velocity: (sqrt(10) * -3 + 3 * 3) / ( sqrt(10) + sqrt(9) )
@@ -45,6 +46,7 @@ TEST_CASE("Test the derivation of the FWave wave strength.", "[FWaveStrengths]")
    *  h:   10 | 9
    *  u:   -3 | 3
    *  hu: -30 | 27
+   *  b:    0 | 0
    *
    * The derivation of the FWave speeds (s1, s2) is given above.
    *
@@ -78,6 +80,8 @@ TEST_CASE("Test the derivation of the FWave wave strength.", "[FWaveStrengths]")
                                              9,
                                              -30,
                                              27,
+                                             0,
+                                             0,
                                              -9.7311093998375095,
                                              9.5731051658991654,
                                              l_strengthL,
@@ -96,6 +100,7 @@ TEST_CASE("Test the derivation of the FWave net-updates.", "[FWaveUpdates]")
    *  h:    10 | 9
    *  u:    -3 | 3
    *  hu:  -30 | 27
+   *  b:     0 | 0
    *
    * The derivation of the FWave speeds (s1, s2) and wave strengths (a1, a1) is given above.
    *
@@ -116,6 +121,8 @@ TEST_CASE("Test the derivation of the FWave net-updates.", "[FWaveUpdates]")
                                           9,
                                           -30,
                                           27,
+                                          0,
+                                          0,
                                           l_netUpdatesL,
                                           l_netUpdatesR);
 
@@ -131,6 +138,7 @@ TEST_CASE("Test the derivation of the FWave net-updates.", "[FWaveUpdates]")
    *     left | right
    *   h:  10 | 8
    *   hu:  0 | 0
+   *   b:   0 | 0
    *
    * FWave speeds are given as:
    *
@@ -165,6 +173,8 @@ TEST_CASE("Test the derivation of the FWave net-updates.", "[FWaveUpdates]")
                                           8,
                                           0,
                                           0,
+                                          0,
+                                          0,
                                           l_netUpdatesL,
                                           l_netUpdatesR);
 
@@ -185,6 +195,8 @@ TEST_CASE("Test the derivation of the FWave net-updates.", "[FWaveUpdates]")
                                           10,
                                           0,
                                           0,
+                                          0,
+                                          0,
                                           l_netUpdatesL,
                                           l_netUpdatesR);
 
@@ -201,6 +213,7 @@ TEST_CASE("Test the derivation of the FWave net-updates.", "[FWaveUpdates]")
    *  h:   1   | 1
    *  u:   100 | 10
    *  hu:  100 | 10
+   *  b:   0   | 0
    *
    *  FWave speeds are given as:
    *
@@ -234,6 +247,8 @@ TEST_CASE("Test the derivation of the FWave net-updates.", "[FWaveUpdates]")
                                           1,
                                           100,
                                           10,
+                                          0,
+                                          0,
                                           l_netUpdatesL,
                                           l_netUpdatesR);
 

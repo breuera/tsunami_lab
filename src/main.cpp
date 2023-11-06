@@ -226,6 +226,7 @@ int main(int i_argc,
                                   1,
                                   l_waveProp->getHeight(),
                                   l_waveProp->getMomentumX(),
+                                  l_waveProp->getBathymetry(),
                                   nullptr,
                                   l_file);
       l_file.close();

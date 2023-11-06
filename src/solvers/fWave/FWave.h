@@ -51,6 +51,8 @@ private:
      * @param i_hR height of the right side.
      * @param i_huL momentum of the left side.
      * @param i_huR momentum of the right side.
+     * @param i_bl bathymetry of the left side.
+     * @param i_br bathymetry of the right side.
      * @param i_waveSpeedL speed of the wave propagating to the left.
      * @param i_waveSpeedR speed of the wave propagating to the right.
      * @param o_strengthL will be set to the strength of the wave propagating to the left.
@@ -60,6 +62,8 @@ private:
                               t_real i_hR,
                               t_real i_huL,
                               t_real i_huR,
+                              t_real i_bL,
+                              t_real i_bR,
                               t_real i_waveSpeedL,
                               t_real i_waveSpeedR,
                               t_real &o_strengthL,
@@ -78,6 +82,21 @@ private:
                      t_real &o_flux0,
                      t_real &o_flux1);
 
+    /**
+     * @brief calculates the difference in the source term
+     *
+     * @param i_bL left bathymetry
+     * @param i_bR right bathymetry
+     * @param i_hL left height
+     * @param i_hR right height
+     * @param o_deltaXPsi difference in the source term
+     */
+    static void deltaXPsi(t_real i_bL,
+                          t_real i_bR,
+                          t_real i_hL,
+                          t_real i_hR,
+                          t_real &o_deltaXPsi);
+
 public:
     /**
      * Computes the net-updates.
@@ -86,6 +105,8 @@ public:
      * @param i_hR height of the right side.
      * @param i_huL momentum of the left side.
      * @param i_huR momentum of the right side.
+     * @param i_bL left bathymetry
+     * @param i_bR right bathymetry
      * @param o_netUpdateL will be set to the net-updates for the left side; 0: height, 1: momentum.
      * @param o_netUpdateR will be set to the net-updates for the right side; 0: height, 1: momentum.
      **/
@@ -93,6 +114,8 @@ public:
                            t_real i_hR,
                            t_real i_huL,
                            t_real i_huR,
+                           t_real i_bL,
+                           t_real i_bR,
                            t_real o_netUpdateL[2],
                            t_real o_netUpdateR[2]);
 };
