@@ -4,11 +4,14 @@ Report Week 2
 =============
 
 .. _ch:Contribution:
+
 Contribution
 ------------
+
 Bohdan Babii and Phillip Rothenbeck both made equal and significant contributions to Assignment 1 at the Tsunami Lab. Their collaboration and dedication to the project were evident throughout the process.
 
 .. _ch:Finite_Volume_Discretization:
+
 Finite Volume Discretization
 ----------------------------
 
@@ -124,6 +127,7 @@ CustomSetup1d allows us to fill the array with custom values.
 **Csv.cpp**
 
 .. code-block::
+
   void tsunami_lab::io::Csv::read_middle_states(std::ifstream &io_stream,
                                               t_real *&o_heightsL,
                                               t_real *&o_momentumsL,
@@ -334,6 +338,7 @@ We added this code-block to the main. It reads the user-selected scenario, alloc
 The function of this code is determined by the input scenario specified by the user. If the selected scenario is "Sanitize1d," it reads and calculates middle states from a CSV file. For other scenarios such as "DamBreak," "ShockShock," "RareRare," or "CustomSetup," it initializes parameters for these scenarios and constructs a solver for the tsunami simulation without reading middle states. 
 
 .. _ch:Shock_and_Rarefaction_Waves:
+
 Shock and Rarefaction Waves 
 ---------------------------
 
