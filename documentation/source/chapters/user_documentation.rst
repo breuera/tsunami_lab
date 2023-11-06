@@ -86,14 +86,19 @@ To compile with a specific mode, use the mode flag as follows:
     scons mode=release
 
 .. _ch:Running_the_project:
+
 Running the project
 -------------------
+
 To execute the test files, use the following command:
-.. code-block::
+.
+. code-block::
     ./build/tests
 
 To execute the project, use the following command with the appropriate flags:
+
 .. code-block::
+
     ./build/tsunami_lab [flags]
 
 #. first flag setup option:
@@ -112,7 +117,9 @@ To execute the project, use the following command with the appropriate flags:
         -r for Roe Solver
 
 Example command to execute the project with flags:
+
 .. code-block::
+
     ./build/tsunami_lab DamBreak Sanatizer 100 -f
 
 This will run the Tsunami Lab Project with the DamBreak setup, in sanitizer mode, using 100 cells, and the F-WaveSolver.
@@ -120,12 +127,15 @@ This will run the Tsunami Lab Project with the DamBreak setup, in sanitizer mode
 You can customize the flags according to your requirements.
 
 .. _ch:Troubleshooting:
+
 Troubleshooting
 ---------------
+
 If you encounter any issues while working with the Tsunami Lab Project, please refer to the following common issues and contact information for assistance.
 
 Common issues
 ^^^^^^^^^^^^^
+
 * Compilation Errors:
     If you encounter compilation errors, ensure that you have all the necessary prerequisites installed, as mentioned in the Prerequisites section. Verify that you have the correct versions of Python, C++, SCons, CMake, and Doxygen.
 
@@ -140,6 +150,7 @@ Common issues
 
 Contact Information
 ^^^^^^^^^^^^^^^^^^^
+
 If you are unable to resolve your issue or face any other difficulties not mentioned here, please feel free to contact the Tsunami Lab Project maintainers for assistance. You can reach out to us at the following email addresses:
 
 * Bohdan Babii: bohdan.babii@uni-jena.de
