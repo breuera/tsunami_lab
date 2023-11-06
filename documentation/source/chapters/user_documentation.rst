@@ -49,10 +49,14 @@ Downloading the Code
         git submodules update.
 
 .. _ch:Compiling_the_Code:
+
+
 Compiling the code
 ------------------
+
 Compiling Doxygen
 ^^^^^^^^^^^^^^^^^
+
 #. Open your terminal or command prompt.
 
 #. Navigate to the project's root directory where the Doxygen configuration file (Doxyfile.in) is located.
