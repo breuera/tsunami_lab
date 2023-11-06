@@ -2,10 +2,12 @@
 
 Report Week 1
 ==============
-.. _ch:Contribution:
+
+.. _ch:Contribution_:
 
 Contribution
 ------------
+
 Bohdan Babii and Phillip Rothenbeck both made equal and significant contributions to 
 Assignment 1 at the Tsunami Lab. Their collaboration and dedication to the project were 
 evident throughout the process. 
