@@ -20,11 +20,11 @@ namespace tsunami_lab
 class tsunami_lab::patches::WavePropagation1d : public WavePropagation
 {
 private:
-  //! current step which indicates the active values in the arrays below
-  unsigned short m_step = 0;
-
   //! boolean that decides which solver is used
   bool m_use_roe_solver = 0;
+
+  //! current step which indicates the active values in the arrays below
+  unsigned short m_step = 0;
 
   //! number of cells discretizing the computational domain
   t_idx m_nCells = 0;
@@ -34,6 +34,9 @@ private:
 
   //! momenta for the current and next time step for all cells
   t_real *m_hu[2] = {nullptr, nullptr};
+
+  //! bathymetries for all cells
+  t_real *m_b = nullptr;
 
 public:
   /**
@@ -100,6 +103,16 @@ public:
   }
 
   /**
+   * Gets the cells bathymetries;
+   * 
+   * @return bathymetries.
+   */
+  t_real const *getBathymetry() 
+  {
+    return m_b + 1;
+  }
+
+  /**
    * Sets the height of the cell to the given value.
    *
    * @param i_ix id of the cell in x-direction.
@@ -131,6 +144,18 @@ public:
   void setMomentumY(t_idx,
                     t_idx,
                     t_real){};
+
+  /**
+   * Sets the bathymetry to the given value.
+   * 
+   * @param i_ix id of the cell in x-direction.
+   * @param i_b bathymetry.
+   **/
+  void setBathymetry( t_idx i_ix,
+                      t_real i_b) 
+  {
+    m_b[i_ix + 1] = i_b;
+  }
 };
 
 #endif
