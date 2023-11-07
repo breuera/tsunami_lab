@@ -10,6 +10,7 @@
 #include "setups/RareRare1d.h"
 #include "setups/CustomSetup1d.h"
 #include "io/Csv.h"
+
 #include <cstdlib>
 #include <iostream>
 #include <cmath>
@@ -100,14 +101,15 @@ int main(int i_argc,
   tsunami_lab::t_idx l_scenarioCount = 0;
   tsunami_lab::t_real l_locMiddle = 5;
 
-  if (l_scenario == "DamBreak") {
+  if (l_scenario == "DamBreak")
+  {
     // initialize dam break scenario
     l_scenarioCount = 1;
-    l_hL = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
-    l_hR = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
-    l_huL = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
-    l_huR = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
-    l_hStar = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
+    l_hL = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(tsunami_lab::t_real));
+    l_hR = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(tsunami_lab::t_real));
+    l_huL = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(tsunami_lab::t_real));
+    l_huR = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(tsunami_lab::t_real));
+    l_hStar = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(tsunami_lab::t_real));
 
     l_hL[0] = 10;
     l_hR[0] = 5;
@@ -115,15 +117,15 @@ int main(int i_argc,
     l_huR[0] = 0;
     l_hStar[0] = 0;
   }
-  else if (l_scenario == "ShockShock") 
+  else if (l_scenario == "ShockShock")
   {
     // initialize dam break scenario
     l_scenarioCount = 1;
-    l_hL = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
-    l_hR = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
-    l_huL = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
-    l_huR = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
-    l_hStar = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
+    l_hL = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(tsunami_lab::t_real));
+    l_hR = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(tsunami_lab::t_real));
+    l_huL = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(tsunami_lab::t_real));
+    l_huR = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(tsunami_lab::t_real));
+    l_hStar = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(tsunami_lab::t_real));
 
     l_hL[0] = 10;
     l_hR[0] = 10;
@@ -131,14 +133,14 @@ int main(int i_argc,
     l_huR[0] = 18;
     l_hStar[0] = 0;
   }
-  else if (l_scenario == "RareRare") 
+  else if (l_scenario == "RareRare")
   {
     l_scenarioCount = 1;
-    l_hL = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
-    l_hR = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
-    l_huL = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
-    l_huR = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
-    l_hStar = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
+    l_hL = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(tsunami_lab::t_real));
+    l_hR = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(tsunami_lab::t_real));
+    l_huL = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(tsunami_lab::t_real));
+    l_huR = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(tsunami_lab::t_real));
+    l_hStar = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(tsunami_lab::t_real));
 
     l_hL[0] = 10;
     l_hR[0] = 3;
@@ -146,23 +148,23 @@ int main(int i_argc,
     l_huR[0] = 3;
     l_hStar[0] = 0;
   }
-  else if (l_scenario == "CustomSetup") 
+  else if (l_scenario == "CustomSetup")
   {
     l_scenarioCount = 1;
-    l_hL = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
-    l_hR = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
-    l_huL = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
-    l_huR = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
-    l_hStar = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
+    l_hL = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(tsunami_lab::t_real));
+    l_hR = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(tsunami_lab::t_real));
+    l_huL = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(tsunami_lab::t_real));
+    l_huR = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(tsunami_lab::t_real));
+    l_hStar = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(tsunami_lab::t_real));
 
     l_locMiddle = tsunami_lab::t_real(0.004);
-    l_hL[0] = tsunami_lab::t_real(1.4);
-    l_hR[0] = tsunami_lab::t_real(0.35);
-    l_huL[0] = 0;
-    l_huR[0] = tsunami_lab::t_real(0.07);
+    l_hL[0] = tsunami_lab::t_real(10);
+    l_hR[0] = tsunami_lab::t_real(10);
+    l_huL[0] = 10;
+    l_huR[0] = 10;
     l_hStar[0] = 0;
   }
-  else if (l_scenario == "Sanitize1d") 
+  else if (l_scenario == "Sanitize1d")
   {
     // initialize middle state sanitization
     l_scenarioCount = 1000000;
@@ -172,7 +174,7 @@ int main(int i_argc,
     std::cout << "reading /res/middle_states.csv ..." << std::endl;
     l_stream.open("./res/middle_states.csv", std::fstream::in);
 
-    if(l_stream.fail()) 
+    if (l_stream.fail())
     {
       std::cout << "failed to read /res/middle_states.csv" << std::endl;
       l_stream.clear();
@@ -181,70 +183,87 @@ int main(int i_argc,
       std::cout << "reading /res/dummy_middle_states.csv ..." << std::endl;
       l_stream.open("./res/dummy_middle_states.csv", std::fstream::in);
       l_scenarioCount = 10;
-      if(l_stream.fail()) 
+      if (l_stream.fail())
       {
         std::cerr << "failed to read /res/dummy_middle_states.csv" << std::endl;
         return EXIT_FAILURE;
       }
       std::cout << "finished reading /res/dummy_middle_states.csv" << std::endl;
-    } 
-    else 
+    }
+    else
     {
       std::cout << "finished reading /res/middle_states.csv" << std::endl;
     }
 
-    tsunami_lab::io::Csv::read_middle_states( l_stream, 
-                                              l_hL, 
-                                              l_huL, 
-                                              l_hR, 
-                                              l_huR, 
-                                              l_hStar);
+    tsunami_lab::io::Csv::read_middle_states(l_stream,
+                                             l_hL,
+                                             l_huL,
+                                             l_hR,
+                                             l_huR,
+                                             l_hStar);
   }
   else
   {
     std::cerr << "entered SCENARIO_MODE is unknown" << std::endl;
     return EXIT_FAILURE;
   }
-  
-  for(tsunami_lab::t_idx l_idx = 0; l_idx < l_scenarioCount; l_idx++) 
+
+  tsunami_lab::t_real *l_bathy = (tsunami_lab::t_real *)malloc(l_nx * sizeof(tsunami_lab::t_real));
+  for (tsunami_lab::t_idx l_ce = 0; l_ce < l_nx; l_ce++)
+  {
+    if (l_ce < 0.5 * l_nx)
+    {
+      l_bathy[l_ce] = -3;
+    }
+    else if (l_ce < 0.75 * l_nx)
+    {
+      l_bathy[l_ce] = -1;
+    }
+    else
+    {
+      l_bathy[l_ce] = -3;
+    }
+  }
+
+  for (tsunami_lab::t_idx l_idx = 0; l_idx < l_scenarioCount; l_idx++)
   {
     std::cout << "enter scenario: " << l_idx << std::endl;
     tsunami_lab::setups::Setup *l_setup;
-    if(l_scenario == "DamBreak") 
+    if (l_scenario == "DamBreak")
     {
-      l_setup = new tsunami_lab::setups::DamBreak1d(  l_hL[l_idx],
-                                                      l_hR[l_idx],
+      l_setup = new tsunami_lab::setups::DamBreak1d(l_hL[l_idx],
+                                                    l_hR[l_idx],
+                                                    l_locMiddle);
+    }
+    else if (l_scenario == "ShockShock")
+    {
+      l_setup = new tsunami_lab::setups::ShockShock1d(l_hL[l_idx],
+                                                      l_huL[l_idx],
                                                       l_locMiddle);
     }
-    else if (l_scenario == "ShockShock") 
+    else if (l_scenario == "RareRare")
     {
-      l_setup = new tsunami_lab::setups::ShockShock1d( l_hL[l_idx],
+      l_setup = new tsunami_lab::setups::RareRare1d(l_hR[l_idx],
+                                                    l_huR[l_idx],
+                                                    l_locMiddle);
+    }
+    else if (l_scenario == "CustomSetup")
+    {
+      l_setup = new tsunami_lab::setups::CustomSetup1d(l_hL[l_idx],
+                                                       l_hR[l_idx],
                                                        l_huL[l_idx],
+                                                       l_huR[l_idx],
                                                        l_locMiddle);
     }
-    else if (l_scenario == "RareRare") 
+    else if (l_scenario == "Sanitize1d")
     {
-      l_setup = new tsunami_lab::setups::RareRare1d( l_hR[l_idx],
-                                                     l_huR[l_idx],
-                                                     l_locMiddle);
+      l_setup = new tsunami_lab::setups::CustomSetup1d(l_hL[l_idx],
+                                                       l_hR[l_idx],
+                                                       l_huL[l_idx],
+                                                       l_huR[l_idx],
+                                                       l_locMiddle);
     }
-    else if (l_scenario == "CustomSetup") 
-    {
-      l_setup = new tsunami_lab::setups::CustomSetup1d( l_hL[l_idx],
-                                                        l_hR[l_idx],
-                                                        l_huL[l_idx],
-                                                        l_huR[l_idx],
-                                                        l_locMiddle);
-    }
-    else if (l_scenario == "Sanitize1d") 
-    {
-      l_setup = new tsunami_lab::setups::CustomSetup1d( l_hL[l_idx],
-                                                        l_hR[l_idx],
-                                                        l_huL[l_idx],
-                                                        l_huR[l_idx],
-                                                        l_locMiddle);
-    } 
-    else 
+    else
     {
       std::cerr << "entered SCENARIO_MODE is unknown" << std::endl;
       return EXIT_FAILURE;
@@ -275,6 +294,7 @@ int main(int i_argc,
                                                          l_y);
         tsunami_lab::t_real l_hv = l_setup->getMomentumY(l_x,
                                                          l_y);
+        tsunami_lab::t_real l_b = l_bathy[l_cx];
 
         // set initial values in wave propagation solver
         l_waveProp->setHeight(l_cx,
@@ -288,6 +308,9 @@ int main(int i_argc,
         l_waveProp->setMomentumY(l_cx,
                                  l_cy,
                                  l_hv);
+
+        l_waveProp->setBathymetry(l_cx,
+                                  l_b);
       }
     }
 
@@ -306,7 +329,8 @@ int main(int i_argc,
     tsunami_lab::t_real l_simTime = 0;
 
     std::cout << "entering time loop" << std::endl;
-    if(!(l_scenario == "Sanitize1d")) {
+    if (!(l_scenario == "Sanitize1d"))
+    {
       tsunami_lab::t_idx l_timeStep = 0;
       // iterate over time
       while (l_simTime < l_endTime)
@@ -329,6 +353,7 @@ int main(int i_argc,
                                       l_waveProp->getHeight(),
                                       l_waveProp->getMomentumX(),
                                       nullptr,
+                                      l_waveProp->getBathymetry(),
                                       l_file);
           l_file.close();
           l_nOut++;
@@ -341,23 +366,26 @@ int main(int i_argc,
         l_simTime += l_dt;
       }
     }
-    else 
+    else
     {
       tsunami_lab::t_idx l_number_of_time_steps = 100;
       bool l_is_correct_middle_state = false;
-      for(tsunami_lab::t_idx l_timeStep = 0; l_timeStep < l_number_of_time_steps; l_timeStep++) {
+      for (tsunami_lab::t_idx l_timeStep = 0; l_timeStep < l_number_of_time_steps; l_timeStep++)
+      {
         l_waveProp->setGhostOutflow();
         l_waveProp->timeStep(l_scaling);
 
         tsunami_lab::t_real l_middle_state = l_waveProp->getHeight()[(tsunami_lab::t_idx)l_locMiddle];
-        if (abs(l_middle_state - l_hStar[l_idx]) < 4.20) {
+        if (abs(l_middle_state - l_hStar[l_idx]) < 4.20)
+        {
           l_is_correct_middle_state = true;
         }
       }
-      if (l_is_correct_middle_state) {
+      if (l_is_correct_middle_state)
+      {
         std::cout << "middle stated was calculated: true" << std::endl;
       }
-      else 
+      else
       {
         std::cout << "middle stated was calculated: false" << std::endl;
       }
@@ -375,6 +403,7 @@ int main(int i_argc,
   free(l_hR);
   free(l_huR);
   free(l_hStar);
+  free(l_bathy);
 
   std::cout << "finished, exiting" << std::endl;
   return EXIT_SUCCESS;

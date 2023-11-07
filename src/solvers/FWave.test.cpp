@@ -192,11 +192,12 @@ TEST_CASE("Test the derivation of the wave strengths.", "[FWaveStrength]")
    * R = |        |
    *     | s1  s2 |
    *
-   * Inversion yields:
    * F wave height height average :  0.5
    * F wave velocity : -0.079002116969172
    * F wave speed : s1 = -0.079002116969172 - sqrt(9.80665 * 0.5) = -2.29335
    * F wave speed : s2 = -0.079002116969172 + sqrt(9.80665 * 0.5) = 2.13534
+   * 
+   * Inversion yields:
    * wolframalpha.com query: invert {{1, 1}, {-2.29335, 2.13534}}
    *
    *           | 0.482161  -0.2258 |
@@ -221,7 +222,6 @@ TEST_CASE("Test the derivation of the wave strengths.", "[FWaveStrength]")
    *
    * Multiplication of Rinv with the flux function delta gives the wave strengths:
    *
-   *
    * wolframalpha.com query: {{0.482161, -0.2258}, {0.517839, 0.2258}} . {{57}, {-102.163}}
    *
    * | alpha_1 |         | 0.482161  -0.2258 |    |    57    |     |  50.5516 |
@@ -237,12 +237,85 @@ TEST_CASE("Test the derivation of the wave strengths.", "[FWaveStrength]")
                                               9,
                                               -30,
                                               27,
+                                              0,
+                                              0,
                                               l_waveSpeedL,
                                               l_waveSpeedR,
                                               l_strengthL,
                                               l_strengthR);
   REQUIRE(l_strengthL == Approx(50.5516));
   REQUIRE(l_strengthR == Approx(6.44842));
+}
+
+TEST_CASE("Test the derivation of the wave strengths with bathymetry.", "[FWaveStrength]") 
+{
+  /*
+   * Test case: 
+   * 
+   *      left | right
+   *  h:    16 | 9
+   *  u:    -3 | 5
+   *  hu:  -48 | 45
+   *  b:     1 | 5
+   * 
+   *  The derivation of the Roe speeds (s1, s2) is given above.
+   *   WaveSpeedLeft: s1 = -10.6432
+   *   WaveSpeedRight: s2 = 11.5003
+   * 
+   *  wolframalpha.com query: invert {{1, 1}, {-10.6432, 11.5003}}
+   *
+   *             | 0.519353  -0.04516 |
+   *   Rinv =    |                    |
+   *             | 0.480647  0.04516  |
+   *
+   *  Flux function vectors:
+   *
+   *            |   -48   |
+   *   f(q_l) = |         |
+   *            | 1399.25 |
+   *
+   *            |    45   |
+   *   f(q_r) = |         |
+   *            | 622.169 |
+   *
+   *  Flux function delta:
+   *
+   *             |    93     |
+   *   delta_f = |           |
+   *             | -777.081  |
+   *  
+   *  Compute bathymetry incluence:
+   *                 |              0                |   |     0     |
+   *   delta_x_psy = |                               | = |           |
+   *                 | -g * (5 - 1) * ((16 + 9) / 2) |   | -490.3325 |
+   * 
+   *  Multiplication of Rinv with the diffrence of the flux function delta and the bathymetry incluence 
+   *  gives the wave strengths:
+   * 
+   * wolframalpha.com query: {{0.519353, -0.04516}, {0.480647, 0.04516}} . ({{93}, {-777.081}} - {{0}, {-490.3325}})
+   *  
+   * | alpha_1 |         | 0.519353  -0.04516 |      |    93    |   |     0     |      | 61.2494 |
+   * |         |    =    |                    |  * ( |          | - |           | ) =  |         |
+   * | alpha_2 |         | 0.480647  0.04516  |      | -777.081 |   | -490.3325 |      | 31.7506 |
+   *
+   */
+  float l_strengthL = 0;
+  float l_strengthR = 0;
+
+  float l_waveSpeedL = -10.6432;
+  float l_waveSpeedR = 11.5003;
+  tsunami_lab::solvers::FWave::waveStrengths( 16,
+                                              9,
+                                              -48,
+                                              45,
+                                              1,
+                                              5,
+                                              l_waveSpeedL,
+                                              l_waveSpeedR,
+                                              l_strengthL,
+                                              l_strengthR);
+  REQUIRE(l_strengthL == Approx(61.2494));
+  REQUIRE(l_strengthR == Approx(31.7506));
 }
 
 TEST_CASE("Test the derivation of the F Wave net-updates.", "[FWaveUpdates]")
@@ -254,6 +327,7 @@ TEST_CASE("Test the derivation of the F Wave net-updates.", "[FWaveUpdates]")
    *  h:    16 | 9
    *  u:    -3 | 5
    *  hu:  -48 | 45
+   *  b:     0 | 0
    *
    * The derivation of the FWave speeds (s1, s2) and wave strengths (a1, a1) is given above.
    * The net-updates are given through the scaled eigenvectors.
@@ -278,12 +352,58 @@ TEST_CASE("Test the derivation of the F Wave net-updates.", "[FWaveUpdates]")
                                            9,
                                            -48,
                                            45,
+                                           0,
+                                           0,
                                            l_netUpdatesL,
                                            l_netUpdatesR);
   REQUIRE(l_netUpdatesL[0] == Approx(83.3928).margin(0.005));
   REQUIRE(l_netUpdatesL[1] == Approx(-887.556).margin(0.005));
   REQUIRE(l_netUpdatesR[0] == Approx(9.60719).margin(0.005));
   REQUIRE(l_netUpdatesR[1] == Approx(110.486).margin(0.005));
+}
+
+TEST_CASE("Test the derivation of the F Wave net-updates with bathymetry.", "[FWaveUpdates]")
+{
+  /*
+   * Test case:
+   *
+   *      left | right
+   *  h:    16 | 9
+   *  u:    -3 | 5
+   *  hu:  -48 | 45
+   *  b:     1 | 5
+   *
+   * The derivation of the FWave speeds (s1, s2) and wave strengths (a1, a1) is given above.
+   * The net-updates are given through the scaled eigenvectors.
+   *
+   * WaveSpeedLeft: s1 = -10.6432
+   * WaveSpeedRight: s2 = 11.5003
+   * WaveStrengthLeft: a1 = 61.2494
+   * WaveStrengthLeft: a2 = 31.7506
+   *
+   *                    |  1 |   | 61.2494   |
+   * update #1:  a1  *  |    | = |           |
+   *                    | s1 |   | -651.8896 |
+   *
+   *                    |  1 |   | 31.7506  |
+   * update #2:  a2  *  |    | = |          |
+   *                    | s2 |   | 365.1414 |
+   */
+  float l_netUpdatesL[2] = {0, 0};
+  float l_netUpdatesR[2] = {0, 0};
+
+  tsunami_lab::solvers::FWave::netUpdates( 16,
+                                           9,
+                                           -48,
+                                           45,
+                                           1,
+                                           5,
+                                           l_netUpdatesL,
+                                           l_netUpdatesR);
+  REQUIRE(l_netUpdatesL[0] == Approx(61.2494));
+  REQUIRE(l_netUpdatesL[1] == Approx(-651.8896));
+  REQUIRE(l_netUpdatesR[0] == Approx(31.7506));
+  REQUIRE(l_netUpdatesR[1] == Approx(365.1414));
 }
 
 TEST_CASE("Test net-updates with in case of steady states.", "[FWaveUpdates]")
@@ -294,6 +414,7 @@ TEST_CASE("Test net-updates with in case of steady states.", "[FWaveUpdates]")
    *     left | right
    *   h:  10 | 10
    *   hu:  0 |  0
+   *    b:  0 |  0
    *
    * Roe speeds are given as:
    *
@@ -332,6 +453,8 @@ TEST_CASE("Test net-updates with in case of steady states.", "[FWaveUpdates]")
                                            10,
                                            0,
                                            0,
+                                           0,
+                                           0,
                                            l_netUpdatesL,
                                            l_netUpdatesR);
   REQUIRE(l_netUpdatesL[0] == Approx(0));
@@ -349,6 +472,7 @@ TEST_CASE("Test net-updates for supersonic problems.", "[FWaveUpdates]")
    *   h:   1 | 1
    *   u:   3 | 5
    *   hu:  3 | 5
+   *    b:  0 | 0
    *
    * The derivation of the Wave speeds (s1, s2) is given above.
    * Matrix of right eigenvectors:
@@ -372,9 +496,9 @@ TEST_CASE("Test net-updates for supersonic problems.", "[FWaveUpdates]")
    *
    * wolframalpha.com query: {{1.13866, -0.159665}, {-0.13866, 0.159665}} . {{2}, {16}}
    *
-   *           |1.13866  -0.159665  |     | 2  |     | -0.27732 |
-   *           |                    |  *  |    |  =  |          |
-   *           |-0.13866  0.159665  |     | 16 |     | 2.27732  |
+   *           |1.13866  -0.159665  |      | 2  |   | 0 |      | -0.27732 |
+   *           |                    |  * ( |    | - |   | ) =  |          |
+   *           |-0.13866  0.159665  |      | 16 |   | 0 |      | 2.27732  |
    *
    * The derivation of the FWave speeds (s1, s2) and wave strengths (a1, a1) is given above.
    *
@@ -395,7 +519,7 @@ TEST_CASE("Test net-updates for supersonic problems.", "[FWaveUpdates]")
    *              | 0 |
    *
    *              | -0.27732   |   | 2.27732 |   | 2  |
-   * update #2:   |            | + |         | = |
+   * update #2:   |            | + |         | = |    |
    *              | -0.240837  |   | 16.2408 |   | 16 |
    *
    */
@@ -406,6 +530,8 @@ TEST_CASE("Test net-updates for supersonic problems.", "[FWaveUpdates]")
                                            1,
                                            3,
                                            5,
+                                           0,
+                                           0,
                                            l_netUpdatesL,
                                            l_netUpdatesR);
   REQUIRE(l_netUpdatesL[0] == Approx(0));
@@ -422,6 +548,7 @@ TEST_CASE("Test net-updates for dam break.", "[FWaveUpdates]") {
    *   h:  10 |  8
    *   u:   0 |  0
    *   hu:  0 |  0
+   *   b:   0 |  0
    * 
    * The derivation of the Wave speeds (s1, s2) is given above.
    * Matrix of right eigenvectors:
@@ -458,11 +585,12 @@ TEST_CASE("Test net-updates for dam break.", "[FWaveUpdates]") {
    * delta_f =  |           |
    *            | -176.5197 |
    * 
-   * Multiplicaton with the jump in quantities gives the wave strengths:
+   *  Multiplication of Rinv with the diffrence of the flux function delta and the bathymetry incluence 
+   *  gives the wave strengths:
    *
-   *        |     0     |   | 9.39475  |   | a1 |
-   * Rinv * |           | = |          | = |    |
-   *        | -176.5197 |   | -9.39475 |   | a2 |
+   *          |     0     |   | 0 |     | 9.39475  |   | a1 |
+   * Rinv * ( |           | - |   | ) = |          | = |    |
+   *          | -176.5197 |   | 0 |     | -9.39475 |   | a2 |
    * 
    * The net-updates are given through the scaled eigenvectors.
    * 
@@ -481,6 +609,8 @@ TEST_CASE("Test net-updates for dam break.", "[FWaveUpdates]") {
                                             8,
                                             0,
                                             0,
+                                            0,
+                                            0,
                                             l_netUpdatesL,
                                             l_netUpdatesR);
 
@@ -488,4 +618,89 @@ TEST_CASE("Test net-updates for dam break.", "[FWaveUpdates]") {
   REQUIRE(l_netUpdatesL[1] == Approx(-88.25991835));
   REQUIRE(l_netUpdatesR[0] == Approx(-9.39475));
   REQUIRE(l_netUpdatesR[1] == Approx(-88.25991835));
+}
+
+TEST_CASE("Test net-updates for dam break with bathymetry.", "[FWaveUpdates]") {
+  /*
+   * test case:
+   *
+   *     left | right
+   *   h:  10 |  8
+   *   u:   0 |  0
+   *   hu:  0 |  0
+   *   b:   5 |  0
+   * 
+   * The derivation of the Wave speeds (s1, s2) is given above.
+   * Matrix of right eigenvectors:
+   *
+   *     | 1   1  |
+   * R = |        |
+   *     | s1  s2 |
+   *
+   * Inversion yields:
+   * Roe height  :  9
+   * Roe particle velocity : 0
+   * F wave speed : s1 = 0 - sqrt(9.80665 * 9) = -9.3946
+   * F wave speed : s2 = 0 + sqrt(9.80665 * 9) = 9.3946
+   * 
+   * wolframalpha.com query: invert {{1, 1}, {-9.3946, 9.3946}}
+   * 
+   *           | 0.5  -0.0532221 |
+   * Rinv =    |                 |
+   *           | 0.5  0.0532221  |
+   * 
+   * Calculate the flux vectors:
+   * 
+   *          |   0       |
+   * f(q_L) = |           |
+   *          | 490.3325  |
+   * 
+   *          |   0      |
+   * f(q_R) = |          |
+   *          | 313.8128 |
+   * 
+   * Calculate delta in fluxes:
+   * 
+   *            |     0     |
+   * delta_f =  |           |
+   *            | -176.5197 |
+   * 
+   * Compute bathymetry incluence:
+   *                 |              0                |   |     0     |
+   *   delta_x_psy = |                               | = |           |
+   *                 | -g * (0 - 5) * ((10 + 8) / 2) |   | 441.29925 |
+   * 
+   *  Multiplication of Rinv with the diffrence of the flux function delta and the bathymetry incluence 
+   *  gives the wave strengths:
+   *
+   *          |     0     |   |     0      |     | 32.8816  |   | a1 |
+   * Rinv * ( |           | - |            | ) = |          | = |    |
+   *          | -176.5197 |   | 441.29925  |     | -32.8816 |   | a2 |
+   * 
+   * The net-updates are given through the scaled eigenvectors.
+   * 
+   *                 |  1 |   |   32.8816     |
+   * update #1: a1 * |    | = |               |
+   *                 | s1 |   | -308.90947936 |
+   *
+   *                 |  1 |   |  -32.8816     |
+   * update #2: a2 * |    | = |               |
+   *                 | s2 |   | -308.90947936 |
+   */
+  float l_netUpdatesL[2] = {0, 0};
+  float l_netUpdatesR[2] = {0, 0}; 
+
+  tsunami_lab::solvers::FWave::netUpdates(  10,
+                                            8,
+                                            0,
+                                            0,
+                                            5,
+                                            0,
+                                            l_netUpdatesL,
+                                            l_netUpdatesR);
+
+  REQUIRE(l_netUpdatesL[0] == Approx(32.8816));
+  REQUIRE(l_netUpdatesL[1] == Approx(-308.90947936));
+  REQUIRE(l_netUpdatesR[0] == Approx(-32.8816));
+  REQUIRE(l_netUpdatesR[1] == Approx(-308.90947936));
 }

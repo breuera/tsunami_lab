@@ -6,6 +6,7 @@
  **/
 #include <catch2/catch.hpp>
 #include "WavePropagation1d.h"
+#include <iostream>
 
 TEST_CASE("Test the 1d wave propagation solver (Roe).", "[WaveProp1d]")
 {
@@ -105,6 +106,8 @@ TEST_CASE("Test the 1d wave propagation solver (FWave).", "[WaveProp1d]") {
     m_waveProp.setMomentumX(l_ce,
                             0,
                             0);
+    m_waveProp.setBathymetry(l_ce,
+                             5);
   }
   for (std::size_t l_ce = 50; l_ce < 100; l_ce++)
   {
@@ -114,8 +117,10 @@ TEST_CASE("Test the 1d wave propagation solver (FWave).", "[WaveProp1d]") {
     m_waveProp.setMomentumX(l_ce,
                             0,
                             0);
+    m_waveProp.setBathymetry(l_ce,
+                             0);
   }
-  
+
   // set outflow boundary condition
   m_waveProp.setGhostOutflow();
 
@@ -127,19 +132,23 @@ TEST_CASE("Test the 1d wave propagation solver (FWave).", "[WaveProp1d]") {
   {
     REQUIRE(m_waveProp.getHeight()[l_ce] == Approx(10));
     REQUIRE(m_waveProp.getMomentumX()[l_ce] == Approx(0));
+    REQUIRE(m_waveProp.getBathymetry()[l_ce] == Approx(5));
   }
 
   // dam-break
-  REQUIRE(m_waveProp.getHeight()[49] == Approx(10 - 0.1 * 9.39475));
-  REQUIRE(m_waveProp.getMomentumX()[49] == Approx(0 + 0.1 * 88.25991835));
+  REQUIRE(m_waveProp.getHeight()[49] == Approx(10 - 0.1 * 32.8816));
+  REQUIRE(m_waveProp.getMomentumX()[49] == Approx(0 + 0.1 * 308.90947936));
+  REQUIRE(m_waveProp.getBathymetry()[49] == Approx(5));
 
-  REQUIRE(m_waveProp.getHeight()[50] == Approx(8 + 0.1 * 9.39475));
-  REQUIRE(m_waveProp.getMomentumX()[50] == Approx(0 + 0.1 * 88.25991835));
+  REQUIRE(m_waveProp.getHeight()[50] == Approx(8 + 0.1 * 32.8816));
+  REQUIRE(m_waveProp.getMomentumX()[50] == Approx(0 + 0.1 * 308.90947936));
+  REQUIRE(m_waveProp.getBathymetry()[50] == Approx(0));
 
   // steady state
   for (std::size_t l_ce = 51; l_ce < 100; l_ce++)
   {
     REQUIRE(m_waveProp.getHeight()[l_ce] == Approx(8));
     REQUIRE(m_waveProp.getMomentumX()[l_ce] == Approx(0));
+    REQUIRE(m_waveProp.getBathymetry()[l_ce] == Approx(0));
   }
 }
