@@ -88,12 +88,15 @@ void tsunami_lab::patches::WavePropagation1d::timeStep(t_real i_scaling, std::st
 void tsunami_lab::patches::WavePropagation1d::setGhostOutflow() {
     t_real *l_h = m_h[m_step];
     t_real *l_hu = m_hu[m_step];
+    t_real *l_b = m_b;
 
     // set left boundary
     l_h[0] = l_h[1];
     l_hu[0] = l_hu[1];
+    l_b[0] = l_b[1];
 
     // set right boundary
     l_h[m_nCells + 1] = l_h[m_nCells];
     l_hu[m_nCells + 1] = l_hu[m_nCells];
+    l_b[m_nCells + 1] = l_b[m_nCells];
 }
