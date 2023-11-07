@@ -29,6 +29,12 @@ private:
   //! bool if FWave solver is used
   bool m_useFWave = true;
 
+  //! left boundary
+  t_boundary m_boundaryLeft = t_boundary::OPEN;
+
+  //! right boundary
+  t_boundary m_boundaryRight = t_boundary::OPEN;
+
   //! water heights for the current and next time step for all cells
   t_real *m_h[2] = {nullptr, nullptr};
 
@@ -44,8 +50,10 @@ public:
    *
    * @param i_nCells number of cells.
    * @param i_useFWave bool: true if FWave solver should be used, false if Roe solver should be used.
+   * @param i_boundaryLeft left boundary condition.
+   * @param i_boundaryRight right boundary condition.
    **/
-  WavePropagation1d(t_idx i_nCells, bool i_useFWave);
+  WavePropagation1d(t_idx i_nCells, bool i_useFWave, t_boundary i_boundaryLeft, t_boundary i_boundaryRight);
 
   /**
    * Destructor which frees all allocated memory.

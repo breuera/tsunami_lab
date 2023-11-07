@@ -8,10 +8,15 @@
 #include "../solvers/roe/Roe.h"
 #include "../solvers/fWave/FWave.h"
 
-tsunami_lab::patches::WavePropagation1d::WavePropagation1d(t_idx i_nCells, bool i_useFWave)
+tsunami_lab::patches::WavePropagation1d::WavePropagation1d(t_idx i_nCells,
+                                                           bool i_useFWave,
+                                                           t_boundary i_boundaryLeft,
+                                                           t_boundary i_boundaryRight)
 {
   m_nCells = i_nCells;
   m_useFWave = i_useFWave;
+  m_boundaryLeft = i_boundaryLeft;
+  m_boundaryRight = i_boundaryRight;
 
   // allocate memory including a single ghost cell on each side
   for (unsigned short l_st = 0; l_st < 2; l_st++)
@@ -107,12 +112,40 @@ void tsunami_lab::patches::WavePropagation1d::setGhostOutflow()
   t_real *l_b = m_b;
 
   // set left boundary
-  l_h[0] = l_h[1];
-  l_hu[0] = l_hu[1];
+  switch (m_boundaryLeft)
+  {
+  case t_boundary::OPEN:
+  {
+    l_h[0] = l_h[1];
+    l_hu[0] = l_hu[1];
+    break;
+  }
+  case t_boundary::WALL:
+  {
+    l_h[0] = l_h[1];
+    l_hu[0] = -l_hu[1];
+    break;
+  }
+  }
+
   l_b[0] = l_b[1];
 
   // set right boundary
-  l_h[m_nCells + 1] = l_h[m_nCells];
-  l_hu[m_nCells + 1] = l_hu[m_nCells];
+  switch (m_boundaryRight)
+  {
+  case t_boundary::OPEN:
+  {
+    l_h[m_nCells + 1] = l_h[m_nCells];
+    l_hu[m_nCells + 1] = l_hu[m_nCells];
+    break;
+  }
+  case t_boundary::WALL:
+  {
+    l_h[m_nCells + 1] = l_h[m_nCells];
+    l_hu[m_nCells + 1] = -l_hu[m_nCells];
+    break;
+  }
+  }
+
   l_b[m_nCells + 1] = l_b[m_nCells];
 }

@@ -20,6 +20,24 @@
 #include <vector>
 #include <sstream>
 
+// converts a string to a boundary condition (tsunami_lab::t_boundary)
+void getBoundary(std::string name, tsunami_lab::t_boundary *boundary)
+{
+  if (name == "WALL")
+  {
+    *boundary = tsunami_lab::t_boundary::WALL;
+  }
+  else if (name == "OPEN")
+  {
+    *boundary = tsunami_lab::t_boundary::OPEN;
+  }
+  else
+  {
+    std::cerr << "unknown boundary condition " << name << std::endl;
+    exit(EXIT_FAILURE);
+  }
+}
+
 int main(int i_argc,
          char *i_argv[])
 {
@@ -65,8 +83,10 @@ int main(int i_argc,
   tsunami_lab::setups::Setup *l_setup = new tsunami_lab::setups::DamBreak1d(10,
                                                                             5,
                                                                             5);
+  tsunami_lab::t_boundary l_boundaryL = tsunami_lab::t_boundary::OPEN;
+  tsunami_lab::t_boundary l_boundaryR = tsunami_lab::t_boundary::OPEN;
 
-  while ((opt = getopt(i_argc, i_argv, "u:s:")) != -1)
+  while ((opt = getopt(i_argc, i_argv, "u:s:b:")) != -1)
   {
     switch (opt)
     {
@@ -134,6 +154,26 @@ int main(int i_argc,
       }
       break;
     }
+    // boundary
+    case 'b':
+    {
+      std::string l_arg(optarg);
+
+      // convert to upper case
+      std::transform(l_arg.begin(), l_arg.end(), l_arg.begin(), ::toupper);
+
+      // split string by space
+      std::stringstream l_stream(l_arg);
+      std::string l_boundaryLName, l_boundaryRName;
+      l_stream >> l_boundaryLName >> l_boundaryRName;
+
+      std::cout << "using boundary conditions " << l_boundaryLName << " " << l_boundaryRName << std::endl;
+
+      // convert to t_boundary
+      getBoundary(l_boundaryLName, &l_boundaryL);
+      getBoundary(l_boundaryRName, &l_boundaryR);
+      break;
+    }
     // unknown option
     case '?':
     {
@@ -150,7 +190,7 @@ int main(int i_argc,
 
   // construct solver
   tsunami_lab::patches::WavePropagation *l_waveProp;
-  l_waveProp = new tsunami_lab::patches::WavePropagation1d(l_nx, l_useFwave);
+  l_waveProp = new tsunami_lab::patches::WavePropagation1d(l_nx, l_useFwave, l_boundaryL, l_boundaryR);
 
   // maximum observed height in the setup
   tsunami_lab::t_real l_hMax = std::numeric_limits<tsunami_lab::t_real>::lowest();
@@ -226,8 +266,8 @@ int main(int i_argc,
                                   1,
                                   l_waveProp->getHeight(),
                                   l_waveProp->getMomentumX(),
-                                  l_waveProp->getBathymetry(),
                                   nullptr,
+                                  l_waveProp->getBathymetry(),
                                   l_file);
       l_file.close();
       l_nOut++;

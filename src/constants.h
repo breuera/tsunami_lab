@@ -9,12 +9,21 @@
 
 #include <cstddef>
 
-namespace tsunami_lab {
+namespace tsunami_lab
+{
   //! integral type for cell-ids, pointer arithmetic, etc.
   typedef std::size_t t_idx;
 
   //! floating point type
   typedef float t_real;
+
+  //! boundary conditions
+  enum class t_boundary
+  {
+    WALL,
+    OPEN,
+  };
+
 }
 
 #endif
