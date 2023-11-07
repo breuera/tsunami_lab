@@ -1,8 +1,10 @@
-/**
- * @author Alexander Breuer (alex.breuer AT uni-jena.de)
+/**ShockShock1d
+ * @author Justus Dreßler (justus.dressler AT uni-jena.de)
+ * @author Thorsten Kröhl (thorsten.kroehl AT uni-jena.de)
+ * @author Julius Halank (julius.halank AT uni-jena.de)
  *
  * @section DESCRIPTION
- * Tests the rarefaction rarefaction wave setup.
+ * Tests the rarefaction rarefaction setup.
  **/
 #include <catch2/catch.hpp>
 #include "RareRare1d.h"

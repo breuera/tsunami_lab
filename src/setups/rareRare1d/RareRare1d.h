@@ -1,5 +1,7 @@
 /**
- * @author Alexander Breuer (alex.breuer AT uni-jena.de)
+ * @author Justus Dreßler (justus.dressler AT uni-jena.de)
+ * @author Thorsten Kröhl (thorsten.kroehl AT uni-jena.de)
+ * @author Julius Halank (julius.halank AT uni-jena.de)
  *
  * @section DESCRIPTION
  * One-dimensional rarefaction rarefaction wave problem.

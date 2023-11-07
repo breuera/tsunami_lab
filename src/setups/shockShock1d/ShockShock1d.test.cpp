@@ -4,7 +4,7 @@
  * @author Julius Halank (julius.halank AT uni-jena.de)
  *
  * @section DESCRIPTION
- * Tests the dam break setup.
+ * Tests the shock shock setup.
  **/
 #include <catch2/catch.hpp>
 #include "ShockShock1d.h"

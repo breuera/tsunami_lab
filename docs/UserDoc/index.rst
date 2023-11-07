@@ -36,5 +36,5 @@ Command Line Parameters
 
 | :code:`number of cells` = number of cells the simulation gets broken up in.
 | :code:`[-s solver]` = choose between :code:`roe` and :code:`fWave` solver, default is :code:`fWave`
-| :code:`[-u "setup arg1 arg2"]` = choose between :code:`'DamBreak1d h_l h_r'`, :code:`'ShockShock1d h hu'` and :code:`'RareRare1d h hu'`, default is :code:`'DamBreak1d 10 5'`, args are to be input as floats
+| :code:`[-u setup]` = choose between :code:`'DamBreak1d h_l h_r'`, :code:`'ShockShock1d h hu'`, :code:`'RareRare1d h hu'`, :code:`Custom1d h_l h_r hu_l hu_r middle`, default is :code:`'DamBreak1d 10 5'`, args are to be input as floats
 | :code:`[-b "boundary_left boundary_right"]` = choose each boundary between :code:`wall`, :code:`open`, default is :code:`'open open'`

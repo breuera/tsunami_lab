@@ -8,6 +8,7 @@
 #include "setups/damBreak1d/DamBreak1d.h"
 #include "setups/rareRare1d/RareRare1d.h"
 #include "setups/shockShock1d/ShockShock1d.h"
+#include "setups/custom1d/Custom1d.h"
 #include "io/Csv.h"
 #include "constants.h"
 #include <cstdlib>
@@ -119,8 +120,8 @@ int main(int i_argc,
 
       // split string by space
       std::stringstream l_stream(l_arg);
-      std::string l_setupName, l_arg1Str, l_arg2Str;
-      l_stream >> l_setupName >> l_arg1Str >> l_arg2Str;
+      std::string l_setupName, l_arg1Str, l_arg2Str, l_arg3Str, l_arg4Str, l_arg5Str;
+      l_stream >> l_setupName >> l_arg1Str >> l_arg2Str >> l_arg3Str >> l_arg4Str >> l_arg5Str;
 
       // convert to upper case and t_real
       std::transform(l_setupName.begin(), l_setupName.end(), l_setupName.begin(), ::toupper);
@@ -146,6 +147,18 @@ int main(int i_argc,
         l_setup = new tsunami_lab::setups::ShockShock1d(l_arg1,
                                                         l_arg2,
                                                         5);
+      }
+      else if (l_setupName == "CUSTOM1D")
+      {
+        double l_arg3 = std::stof(l_arg3Str);
+        double l_arg4 = std::stof(l_arg4Str);
+        double l_arg5 = std::stof(l_arg5Str);
+        std::cout << "using Custom1d(" << l_arg1 << "," << l_arg2 << "," << l_arg3 << "," << l_arg4 << "," << l_arg5 << ") setup" << std::endl;
+        l_setup = new tsunami_lab::setups::Custom1d(l_arg1,
+                                                    l_arg2,
+                                                    l_arg3,
+                                                    l_arg4,
+                                                    l_arg5);
       }
       else
       {
