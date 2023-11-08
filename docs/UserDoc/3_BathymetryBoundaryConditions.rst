@@ -20,8 +20,32 @@ Julius Halank:
 3.1 Non-zero Source Term
 ------------------------
 
-3.1.1 Extend FWave  Solver with Bathemetry
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+3.1.1 Extend FWave Solver with Bathemetry
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Now calculating the :math:`\Delta x \Psi _{i-1/2}` term
+
+.. code:: cpp
+
+  void tsunami_lab::solvers::FWave::deltaXPsi(t_real i_bL,
+                                            t_real i_bR,
+                                            t_real i_hL,
+                                            t_real i_hR,
+                                            t_real &o_deltaXPsi)
+  {
+    // compute deltaXPsi
+    o_deltaXPsi = -m_g * (i_bR - i_bL) * (i_hL + i_hR) / 2;
+  }
+
+and subtracting it from the flux jump.
+
+.. code:: cpp
+
+  deltaXPsi(i_bL, i_bR, i_hL, i_hR, l_deltaXPsi);
+
+    // compute jump in fluxes
+    t_real l_flux0Jump = l_flux0R - l_flux0L;
+    t_real l_flux1Jump = l_flux1R - l_flux1L - l_deltaXPsi;
 
 3.1.2 Implent an example which illistrates the effect of bathemetry
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -32,8 +56,114 @@ Julius Halank:
 3.2.1 Implement the reflecting boundary conditions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Added boundary conditions to the command line parameters as :code:`-b 'WALL OPEN'`
+
+.. code:: cpp
+
+  // boundary
+    case 'b':
+    {
+      std::string l_arg(optarg);
+
+      // convert to upper case
+      std::transform(l_arg.begin(), l_arg.end(), l_arg.begin(), ::toupper);
+
+      // split string by space
+      std::stringstream l_stream(l_arg);
+      std::string l_boundaryLName, l_boundaryRName;
+      l_stream >> l_boundaryLName >> l_boundaryRName;
+
+      std::cout << "using boundary conditions " << l_boundaryLName << " " << l_boundaryRName << std::endl;
+
+      // convert to t_boundary
+      getBoundary(l_boundaryLName, &l_boundaryL);
+      getBoundary(l_boundaryRName, &l_boundaryR);
+      break;
+    }
+
+with a helper function that translates strings to t_boundary enum members
+
+.. code:: cpp
+
+  // converts a string to a boundary condition (tsunami_lab::t_boundary)
+  void getBoundary(std::string i_name, tsunami_lab::t_boundary *o_boundary)
+  {
+  if (i_name == "WALL")
+  {
+    *o_boundary = tsunami_lab::t_boundary::WALL;
+  }
+  else if (i_name == "OPEN")
+  {
+    *o_boundary = tsunami_lab::t_boundary::OPEN;
+  }
+  else
+  {
+    std::cerr << "unknown boundary condition " << i_name << std::endl;
+    exit(EXIT_FAILURE);
+  }
+  }
+
+and switches the ghost cells depending on the boundary conditions.
+
+.. code:: cpp
+
+  // set left boundary
+  switch (m_boundaryLeft)
+  {
+  case t_boundary::OPEN:
+  {
+    l_h[0] = l_h[1];
+    l_hu[0] = l_hu[1];
+    break;
+  }
+  case t_boundary::WALL:
+  {
+    l_h[0] = l_h[1];
+    l_hu[0] = -l_hu[1];
+    break;
+  }
+  }
+
+
+
+
 3.2.2 Show the implementation with the shock shock setup
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Added new setup to easier simulate tasks (with user controlled h_l h_r hu_l hu_r and middle position)
+
+.. code:: cpp
+
+  else if (l_setupName == "CUSTOM1D")
+      {
+        double l_arg3 = std::stof(l_arg3Str);
+        double l_arg4 = std::stof(l_arg4Str);
+        double l_arg5 = std::stof(l_arg5Str);
+        std::cout << "using Custom1d(" << l_arg1 << "," << l_arg2 << "," << l_arg3 << "," << l_arg4 << "," << l_arg5 << ") setup" << std::endl;
+        l_setup = new tsunami_lab::setups::Custom1d(l_arg1,
+                                                    l_arg2,
+                                                    l_arg3,
+                                                    l_arg4,
+                                                    l_arg5);
+      }
+
+.. video:: _static/WallBoundary.mp4
+  :width: 700
+  :autoplay:
+  :loop:
+  :nocontrols:
+  :muted:
+
+reflecting right boundary condition with open left boundary condition, h=10 and u=10
+
+.. video:: _static/ShockShock1d_10_100.mp4
+  :width: 700
+  :autoplay:
+  :loop:
+  :nocontrols:
+  :muted:
+
+Shock-Shock problem with h=10 and u=10
 
 3.3 Hydraulic Jumps
 -------------------

@@ -13,6 +13,7 @@ l_sources = [ 'solvers/roe/Roe.cpp',
               'setups/shockShock1d/ShockShock1d.cpp',
               'setups/damBreak1d/DamBreak1d.cpp',
               'setups/rareRare1d/RareRare1d.cpp',
+              'setups/custom1d/Custom1d.cpp',
               'io/Csv.cpp' ]
 
 for l_so in l_sources:
@@ -28,6 +29,7 @@ l_tests = [ 'tests.cpp',
             'setups/shockShock1d/ShockShock1d.test.cpp',
             'setups/damBreak1d/DamBreak1d.test.cpp',
             'setups/rareRare1d/RareRare1d.test.cpp',
+            'setups/custom1d/Custom1d.test.cpp',
             'io/Csv.test.cpp' ]
 
 for l_te in l_tests:

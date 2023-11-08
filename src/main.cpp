@@ -22,19 +22,19 @@
 #include <sstream>
 
 // converts a string to a boundary condition (tsunami_lab::t_boundary)
-void getBoundary(std::string name, tsunami_lab::t_boundary *boundary)
+void getBoundary(std::string i_name, tsunami_lab::t_boundary *o_boundary)
 {
-  if (name == "WALL")
+  if (i_name == "WALL")
   {
-    *boundary = tsunami_lab::t_boundary::WALL;
+    *o_boundary = tsunami_lab::t_boundary::WALL;
   }
-  else if (name == "OPEN")
+  else if (i_name == "OPEN")
   {
-    *boundary = tsunami_lab::t_boundary::OPEN;
+    *o_boundary = tsunami_lab::t_boundary::OPEN;
   }
   else
   {
-    std::cerr << "unknown boundary condition " << name << std::endl;
+    std::cerr << "unknown boundary condition " << i_name << std::endl;
     exit(EXIT_FAILURE);
   }
 }
@@ -226,6 +226,8 @@ int main(int i_argc,
                                                        l_y);
       tsunami_lab::t_real l_hv = l_setup->getMomentumY(l_x,
                                                        l_y);
+      tsunami_lab::t_real l_b = l_setup->getBathymetry(l_x,
+                                                       l_y);
 
       // set initial values in wave propagation solver
       l_waveProp->setHeight(l_cx,
@@ -239,6 +241,10 @@ int main(int i_argc,
       l_waveProp->setMomentumY(l_cx,
                                l_cy,
                                l_hv);
+
+      l_waveProp->setBathymetry(l_cx,
+                                l_cy,
+                                l_b);
     }
   }
 

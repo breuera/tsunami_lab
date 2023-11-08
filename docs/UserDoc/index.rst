@@ -10,6 +10,7 @@
    self
    1_RiemannSolver
    2_FiniteVolumeDiscretization
+   3_BathymetryBoundaryConditions
    doxygen
 
   
