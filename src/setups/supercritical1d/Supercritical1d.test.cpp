@@ -11,35 +11,32 @@
 
 TEST_CASE("Test the one-dimensional supercritical setup.", "[Supercritical1d]")
 {
-  tsunami_lab::setups::Supercritical1d l_supercritical(25,
-                                                 55,
-                                                 3);
+  tsunami_lab::setups::Supercritical1d l_supercritical;
   // x = 2
-  REQUIRE(l_supercritical.getHeight(2, 0) == 0.33);
+  REQUIRE(l_supercritical.getHeight(2, 0) == 0.33f);
 
-  REQUIRE(l_supercritical.getMomentumX(2, 0) == 0.18);
+  REQUIRE(l_supercritical.getMomentumX(2, 0) == 0.18f);
 
   REQUIRE(l_supercritical.getMomentumY(2, 0) == 0);
 
-  REQUIRE(l_supercritical.getBathymetry(2, 0) == -0.33);
-
+  REQUIRE(l_supercritical.getBathymetry(2, 0) == -0.33f);
 
   // x element of 8-12
-  REQUIRE(l_supercritical.getHeight(10, 0) == 0.13);
+  REQUIRE(l_supercritical.getHeight(10, 0) == 0.13f);
 
-  REQUIRE(l_supercritical.getMomentumX(10, 0) == 0.18);
+  REQUIRE(l_supercritical.getMomentumX(10, 0) == 0.18f);
 
   REQUIRE(l_supercritical.getMomentumY(4, 0) == 0);
 
-  REQUIRE(l_supercritical.getBathymetry(10, 0) == -0.13);
+  REQUIRE(l_supercritical.getBathymetry(10, 0) == -0.13f);
 
   // x element over 25
 
-  REQUIRE(l_supercritical.getHeight(30, 0) == 25);
+  REQUIRE(l_supercritical.getHeight(30, 0) == 0);
 
-  REQUIRE(l_supercritical.getMomentumX(30, 0) == 55);
+  REQUIRE(l_supercritical.getMomentumX(30, 0) == 0);
 
   REQUIRE(l_supercritical.getMomentumY(30, 0) == 0);
 
-  REQUIRE(l_supercritical.getBathymetry(30, 0) == -0.33);
+  REQUIRE(l_supercritical.getBathymetry(30, 0) == -0.33f);
 }

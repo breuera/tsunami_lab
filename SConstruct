@@ -37,7 +37,7 @@ env = Environment( variables = vars )
 Help( vars.GenerateHelpText( env ) )
 
 # add default flags
-env.Append( CXXFLAGS = [ '-std=c++11',
+env.Append( CXXFLAGS = [ '-std=c++17',
                          '-Wall',
                          '-Wextra',
                          '-Wpedantic',

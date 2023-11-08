@@ -25,7 +25,7 @@ void tsunami_lab::io::Csv::write(t_real i_dxy,
   if (i_hv != nullptr)
     io_stream << ",momentum_y";
   if (i_b != nullptr)
-    io_stream << ", bathymetry";
+    io_stream << ",bathymetry";
   io_stream << "\n";
 
   // iterate over all cells

@@ -9,6 +9,8 @@
 #include "setups/rareRare1d/RareRare1d.h"
 #include "setups/shockShock1d/ShockShock1d.h"
 #include "setups/custom1d/Custom1d.h"
+#include "setups/supercritical1d/Supercritical1d.h"
+#include "setups/subcritical1d/Subcritical1d.h"
 #include "io/Csv.h"
 #include "constants.h"
 #include <cstdlib>
@@ -20,6 +22,7 @@
 #include <unistd.h>
 #include <vector>
 #include <sstream>
+#include <filesystem>
 
 // converts a string to a boundary condition (tsunami_lab::t_boundary)
 void getBoundary(std::string i_name, tsunami_lab::t_boundary *o_boundary)
@@ -86,6 +89,7 @@ int main(int i_argc,
                                                                             5);
   tsunami_lab::t_boundary l_boundaryL = tsunami_lab::t_boundary::OPEN;
   tsunami_lab::t_boundary l_boundaryR = tsunami_lab::t_boundary::OPEN;
+  tsunami_lab::t_real l_endTime = 1.25;
 
   while ((opt = getopt(i_argc, i_argv, "u:s:b:")) != -1)
   {
@@ -123,42 +127,68 @@ int main(int i_argc,
       std::string l_setupName, l_arg1Str, l_arg2Str, l_arg3Str, l_arg4Str, l_arg5Str;
       l_stream >> l_setupName >> l_arg1Str >> l_arg2Str >> l_arg3Str >> l_arg4Str >> l_arg5Str;
 
-      // convert to upper case and t_real
+      // convert to upper case
       std::transform(l_setupName.begin(), l_setupName.end(), l_setupName.begin(), ::toupper);
-      double l_arg1 = std::stof(l_arg1Str);
-      double l_arg2 = std::stof(l_arg2Str);
       if (l_setupName == "DAMBREAK1D")
       {
+        double l_arg1 = std::stof(l_arg1Str);
+        double l_arg2 = std::stof(l_arg2Str);
         std::cout << "using DamBreak1d(" << l_arg1 << "," << l_arg2 << ",5) setup" << std::endl;
+        delete l_setup;
         l_setup = new tsunami_lab::setups::DamBreak1d(l_arg1,
                                                       l_arg2,
                                                       5);
       }
       else if (l_setupName == "RARERARE1D")
       {
+        double l_arg1 = std::stof(l_arg1Str);
+        double l_arg2 = std::stof(l_arg2Str);
         std::cout << "using RareRare1d(" << l_arg1 << "," << l_arg2 << ",5) setup" << std::endl;
+        delete l_setup;
         l_setup = new tsunami_lab::setups::RareRare1d(l_arg1,
                                                       l_arg2,
                                                       5);
       }
       else if (l_setupName == "SHOCKSHOCK1D")
       {
+        double l_arg1 = std::stof(l_arg1Str);
+        double l_arg2 = std::stof(l_arg2Str);
         std::cout << "using ShockShock1d(" << l_arg1 << "," << l_arg2 << ",5) setup" << std::endl;
+        delete l_setup;
         l_setup = new tsunami_lab::setups::ShockShock1d(l_arg1,
                                                         l_arg2,
                                                         5);
       }
       else if (l_setupName == "CUSTOM1D")
       {
+        double l_arg1 = std::stof(l_arg1Str);
+        double l_arg2 = std::stof(l_arg2Str);
         double l_arg3 = std::stof(l_arg3Str);
         double l_arg4 = std::stof(l_arg4Str);
         double l_arg5 = std::stof(l_arg5Str);
         std::cout << "using Custom1d(" << l_arg1 << "," << l_arg2 << "," << l_arg3 << "," << l_arg4 << "," << l_arg5 << ") setup" << std::endl;
+        delete l_setup;
         l_setup = new tsunami_lab::setups::Custom1d(l_arg1,
                                                     l_arg2,
                                                     l_arg3,
                                                     l_arg4,
                                                     l_arg5);
+      }
+      else if (l_setupName == "SUPERCRIT1D")
+      {
+        l_dxy = 25.0 / l_nx; // 25 m domain
+        l_endTime = 200;     // 200 s simulation time
+        std::cout << "using Supercritical1d() setup" << std::endl;
+        delete l_setup;
+        l_setup = new tsunami_lab::setups::Supercritical1d();
+      }
+      else if (l_setupName == "SUBCRIT1D")
+      {
+        l_dxy = 25.0 / l_nx; // 25 m domain
+        l_endTime = 200;     // 200 s simulation time
+        std::cout << "using Subcritical1d() setup" << std::endl;
+        delete l_setup;
+        l_setup = new tsunami_lab::setups::Subcritical1d();
       }
       else
       {
@@ -260,12 +290,19 @@ int main(int i_argc,
   // set up time and print control
   tsunami_lab::t_idx l_timeStep = 0;
   tsunami_lab::t_idx l_nOut = 0;
-  tsunami_lab::t_real l_endTime = 1.25;
   tsunami_lab::t_real l_simTime = 0;
 
   std::cout << "entering time loop" << std::endl;
 
   // iterate over time
+
+  // delete old solutions
+  if (std::filesystem::exists("solutions"))
+  {
+    std::filesystem::remove_all("solutions");
+  }
+  std::filesystem::create_directory("solutions");
+
   while (l_simTime < l_endTime)
   {
     if (l_timeStep % 25 == 0)
