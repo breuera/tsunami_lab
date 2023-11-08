@@ -158,112 +158,71 @@ TEST_CASE("Test the 1d wave propagation FWave solver.", "[WaveProp1dFWave]")
   }
 }
 
-TEST_CASE("Test the 1d wave propagation FWave solver shock-shock.", "[WaveProp1dFWaveShockShock]")
+TEST_CASE("Test the 1d wave propagation FWave solver middleStates.csv .", "[WaveProp1dFWavemiddleStatesCsv]")
 {
   /**
    * @brief test steady state from middle_states.csv in the Shock-Shock Problem
    * (Riemann Solutions obtained by Alexander Breuer)
    *
-   * h_l = 9894.065328676988
-   * h_r = 9894.065328676988
-   * hu_l = 763.616897222239
-   * hu_r = -763.616897222239
-   * h* = 9896.516538751875
+   * testing first 10 lines of middle_states.csv
    */
 
   // construct solver and setup a shock-shock problem
-  tsunami_lab::patches::WavePropagation1d m_waveProp(100, true, tsunami_lab::t_boundary::OPEN, tsunami_lab::t_boundary::OPEN);
+  float testCases[10][5] = {
+      {8899.326826472694, 8899.326826472694, 122.0337839252433, -122.0337839252433, 8899.739847378269},
+      {9894.065328676988, 9894.065328676988, 763.616897222239, -763.616897222239, 9896.516538751875},
+      {1387.176994373967, 1387.176994373967, -101.9619713277172, 101.9619713277172, 1386.303079031417},
+      {9976.904476606509, 9976.904476606509, -906.6229611756387, 906.6229611756387, 9974.006714260977},
+      {6907.360046520149, 6907.360046520149, -180.6064611678331, 180.6064611678331, 6906.666250464617},
+      {1065.53384380855, 1065.53384380855, 64.19327065348772, -64.19327065348772, 1066.161808657808},
+      {3042.136044684769, 3042.136044684769, -27.52440428024561, 27.52440428024561, 3041.976718035753},
+      {5973.686834276039, 5973.686834276039, 417.2334213893989, -417.2334213893989, 5975.410506492273},
+      {10458.94716344883, 10458.94716344883, -366.1438461063776, 366.1438461063776, 10457.80412356421},
+      {10539.5774699817, 10539.5774699817, -988.5578370907829, 988.5578370907829, 10536.50332526859}};
 
-  for (std::size_t l_ce = 0; l_ce < 50; l_ce++)
+  for (int i = 0; i < 10; ++i)
   {
-    m_waveProp.setHeight(l_ce,
-                         0,
-                         9894.065328676988);
-    m_waveProp.setMomentumX(l_ce,
-                            0,
-                            763.616897222239);
-    m_waveProp.setBathymetry(l_ce,
-                             0,
-                             0);
+    tsunami_lab::patches::WavePropagation1d m_waveProp(100, true, tsunami_lab::t_boundary::OPEN, tsunami_lab::t_boundary::OPEN);
+
+    for (std::size_t l_ce = 0; l_ce < 50; ++l_ce)
+    {
+      m_waveProp.setHeight(l_ce,
+                           0,
+                           testCases[i][0]);
+      m_waveProp.setMomentumX(l_ce,
+                              0,
+                              testCases[i][2]);
+      m_waveProp.setBathymetry(l_ce,
+                               0,
+                               0);
+    }
+    for (std::size_t l_ce = 50; l_ce < 100; l_ce++)
+    {
+      m_waveProp.setHeight(l_ce,
+                           0,
+                           testCases[i][1]);
+      m_waveProp.setMomentumX(l_ce,
+                              0,
+                              testCases[i][3]);
+      m_waveProp.setBathymetry(l_ce,
+                               0,
+                               0);
+    }
+
+    // set outflow boundary condition
+    m_waveProp.setGhostOutflow();
+
+    // perform a time step
+    for (int i = 0; i < 100; i++)
+    {
+      // set outflow boundary condition
+      m_waveProp.setGhostOutflow();
+
+      m_waveProp.timeStep(0.001);
+    }
+
+    // test for h*
+    REQUIRE(m_waveProp.getHeight()[49] == Approx(testCases[i][4]));
+    REQUIRE(m_waveProp.getHeight()[50] == Approx(testCases[i][4]));
   }
-  for (std::size_t l_ce = 50; l_ce < 100; l_ce++)
-  {
-    m_waveProp.setHeight(l_ce,
-                         0,
-                         9894.065328676988);
-    m_waveProp.setMomentumX(l_ce,
-                            0,
-                            -763.616897222239);
-    m_waveProp.setBathymetry(l_ce,
-                             0,
-                             0);
-  }
-
-  // set outflow boundary condition
-  m_waveProp.setGhostOutflow();
-
-  // perform a time step
-  for (int i = 0; i < 30; i++)
-  {
-    m_waveProp.timeStep(0.001);
-  }
-
-  // test for h*
-  REQUIRE(m_waveProp.getHeight()[49] == Approx(9896.516538751875));
-  REQUIRE(m_waveProp.getHeight()[50] == Approx(9896.516538751875));
-}
-
-TEST_CASE("Test the 1d wave propagation FWave solver rare-rare.", "[WaveProp1dFWaveRareRare]")
-{
-  /**
-   * @brief test steady state from middle_states.csv in the Shock-Shock Problem
-   * (Riemann Solutions obtained by Alexander Breuer)
-   *
-   * h_l = 9976.904476606509
-   * h_r = 9976.904476606509
-   * hu_l = -906.6229611756387
-   * hu_r = 906.6229611756387
-   * h* = 9974.006714260977
-   */
-
-  // construct solver and setup a shock-shock problem
-  tsunami_lab::patches::WavePropagation1d m_waveProp(100, true, tsunami_lab::t_boundary::OPEN, tsunami_lab::t_boundary::OPEN);
-
-  for (std::size_t l_ce = 0; l_ce < 50; l_ce++)
-  {
-    m_waveProp.setHeight(l_ce,
-                         0,
-                         9976.904476606509);
-    m_waveProp.setMomentumX(l_ce,
-                            0,
-                            -906.6229611756387);
-    m_waveProp.setBathymetry(l_ce,
-                             0,
-                             0);
-  }
-  for (std::size_t l_ce = 50; l_ce < 100; l_ce++)
-  {
-    m_waveProp.setHeight(l_ce,
-                         0,
-                         9976.904476606509);
-    m_waveProp.setMomentumX(l_ce,
-                            0,
-                            906.6229611756387);
-    m_waveProp.setBathymetry(l_ce,
-                             0,
-                             0);
-  }
-
-  // set outflow boundary condition
-  m_waveProp.setGhostOutflow();
-
-  // perform a time step
-  for (int i = 0; i < 30; i++)
-  {
-    m_waveProp.timeStep(0.001);
-  }
-
-  // test for h*
-  REQUIRE(m_waveProp.getHeight()[49] == Approx(9974.006714260977));
-  REQUIRE(m_waveProp.getHeight()[50] == Approx(9974.006714260977));
 }

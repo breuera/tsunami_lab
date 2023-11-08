@@ -69,14 +69,12 @@ int main(int i_argc,
   }
 
   // set cell size
-  tsunami_lab::t_real l_dxy = 1;
   l_nx = atoi(i_argv[i_argc - 1]);
   if (l_nx < 1)
   {
     std::cerr << "invalid number of cells" << std::endl;
     return EXIT_FAILURE;
   }
-  l_dxy = 10.0 / l_nx;
 
   // get command line arguments
   opterr = 0; // disable error messages of getopt
@@ -84,12 +82,15 @@ int main(int i_argc,
 
   // defaults
   bool l_useFwave = true;
-  tsunami_lab::setups::Setup *l_setup = new tsunami_lab::setups::DamBreak1d(10,
-                                                                            5,
-                                                                            5);
+  tsunami_lab::setups::Setup *l_setup;
   tsunami_lab::t_boundary l_boundaryL = tsunami_lab::t_boundary::OPEN;
   tsunami_lab::t_boundary l_boundaryR = tsunami_lab::t_boundary::OPEN;
   tsunami_lab::t_real l_endTime = 1.25;
+  tsunami_lab::t_real l_width = 10.0;
+
+  std::cout << "runtime configuration" << std::endl;
+  std::cout << "  number of cells in x-direction: " << l_nx << std::endl;
+  std::cout << "  number of cells in y-direction: " << l_ny << std::endl;
 
   while ((opt = getopt(i_argc, i_argv, "u:s:b:")) != -1)
   {
@@ -102,12 +103,10 @@ int main(int i_argc,
       std::transform(l_arg.begin(), l_arg.end(), l_arg.begin(), ::toupper);
       if (l_arg == "ROE")
       {
-        std::cout << "using Roe solver" << std::endl;
         l_useFwave = false;
       }
       else if (l_arg == "FWAVE")
       {
-        std::cout << "using FWave solver" << std::endl;
         l_useFwave = true;
       }
       else
@@ -133,8 +132,7 @@ int main(int i_argc,
       {
         double l_arg1 = std::stof(l_arg1Str);
         double l_arg2 = std::stof(l_arg2Str);
-        std::cout << "using DamBreak1d(" << l_arg1 << "," << l_arg2 << ",5) setup" << std::endl;
-        delete l_setup;
+        std::cout << "  using DamBreak1d(" << l_arg1 << "," << l_arg2 << ",5) setup" << std::endl;
         l_setup = new tsunami_lab::setups::DamBreak1d(l_arg1,
                                                       l_arg2,
                                                       5);
@@ -143,8 +141,7 @@ int main(int i_argc,
       {
         double l_arg1 = std::stof(l_arg1Str);
         double l_arg2 = std::stof(l_arg2Str);
-        std::cout << "using RareRare1d(" << l_arg1 << "," << l_arg2 << ",5) setup" << std::endl;
-        delete l_setup;
+        std::cout << "  using RareRare1d(" << l_arg1 << "," << l_arg2 << ",5) setup" << std::endl;
         l_setup = new tsunami_lab::setups::RareRare1d(l_arg1,
                                                       l_arg2,
                                                       5);
@@ -153,8 +150,7 @@ int main(int i_argc,
       {
         double l_arg1 = std::stof(l_arg1Str);
         double l_arg2 = std::stof(l_arg2Str);
-        std::cout << "using ShockShock1d(" << l_arg1 << "," << l_arg2 << ",5) setup" << std::endl;
-        delete l_setup;
+        std::cout << "  using ShockShock1d(" << l_arg1 << "," << l_arg2 << ",5) setup" << std::endl;
         l_setup = new tsunami_lab::setups::ShockShock1d(l_arg1,
                                                         l_arg2,
                                                         5);
@@ -166,8 +162,7 @@ int main(int i_argc,
         double l_arg3 = std::stof(l_arg3Str);
         double l_arg4 = std::stof(l_arg4Str);
         double l_arg5 = std::stof(l_arg5Str);
-        std::cout << "using Custom1d(" << l_arg1 << "," << l_arg2 << "," << l_arg3 << "," << l_arg4 << "," << l_arg5 << ") setup" << std::endl;
-        delete l_setup;
+        std::cout << "  using Custom1d(" << l_arg1 << "," << l_arg2 << "," << l_arg3 << "," << l_arg4 << "," << l_arg5 << ") setup" << std::endl;
         l_setup = new tsunami_lab::setups::Custom1d(l_arg1,
                                                     l_arg2,
                                                     l_arg3,
@@ -176,18 +171,16 @@ int main(int i_argc,
       }
       else if (l_setupName == "SUPERCRIT1D")
       {
-        l_dxy = 25.0 / l_nx; // 25 m domain
-        l_endTime = 200;     // 200 s simulation time
-        std::cout << "using Supercritical1d() setup" << std::endl;
-        delete l_setup;
+        l_width = 25.0;  // 25 m domain
+        l_endTime = 200; // 200 s simulation time
+        std::cout << "  using Supercritical1d() setup" << std::endl;
         l_setup = new tsunami_lab::setups::Supercritical1d();
       }
       else if (l_setupName == "SUBCRIT1D")
       {
-        l_dxy = 25.0 / l_nx; // 25 m domain
-        l_endTime = 200;     // 200 s simulation time
-        std::cout << "using Subcritical1d() setup" << std::endl;
-        delete l_setup;
+        l_width = 25.0;  // 25 m domain
+        l_endTime = 200; // 200 s simulation time
+        std::cout << "  using Subcritical1d() setup" << std::endl;
         l_setup = new tsunami_lab::setups::Subcritical1d();
       }
       else
@@ -210,7 +203,7 @@ int main(int i_argc,
       std::string l_boundaryLName, l_boundaryRName;
       l_stream >> l_boundaryLName >> l_boundaryRName;
 
-      std::cout << "using boundary conditions " << l_boundaryLName << " " << l_boundaryRName << std::endl;
+      std::cout << "  using boundary conditions " << l_boundaryLName << " " << l_boundaryRName << std::endl;
 
       // convert to t_boundary
       getBoundary(l_boundaryLName, &l_boundaryL);
@@ -226,10 +219,28 @@ int main(int i_argc,
     }
   }
 
-  std::cout << "runtime configuration" << std::endl;
-  std::cout << "  number of cells in x-direction: " << l_nx << std::endl;
-  std::cout << "  number of cells in y-direction: " << l_ny << std::endl;
-  std::cout << "  cell size:                      " << l_dxy << std::endl;
+  // command line prints
+
+  if (l_setup == nullptr)
+  {
+    std::cout << "  using DamBreak1d(10,5,5) setup" << std::endl;
+    l_setup = new tsunami_lab::setups::DamBreak1d(10,
+                                                  5,
+                                                  5);
+  }
+  if (l_useFwave == false)
+  {
+    std::cout << "  using Roe solver" << std::endl;
+  }
+  else
+  {
+    std::cout << "  using FWave solver" << std::endl;
+  }
+  // calculate cell size
+  tsunami_lab::t_real l_dxy = l_width / l_nx;
+  std::cout << "  cell size:       " << l_dxy << " m" << std::endl;
+  std::cout << "  width simulated: " << l_width << " m" << std::endl;
+  std::cout << "  time simulated:  " << l_endTime << " s" << std::endl;
 
   // construct solver
   tsunami_lab::patches::WavePropagation *l_waveProp;
