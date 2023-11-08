@@ -24,11 +24,15 @@ TEST_CASE("Test the one-dimensional custom wave setup.", "[Custom1d]")
 
     REQUIRE(l_custom.getMomentumY(2, 0) == 0);
 
+    REQUIRE(l_custom.getBathymetry(2, 0) == 0);
+
     REQUIRE(l_custom.getHeight(2, 5) == 25);
 
     REQUIRE(l_custom.getMomentumX(2, 5) == 3);
 
     REQUIRE(l_custom.getMomentumY(2, 2) == 0);
+
+    REQUIRE(l_custom.getBathymetry(2, 2) == 0);
 
     // right side
     REQUIRE(l_custom.getHeight(4, 0) == 55);
@@ -37,9 +41,13 @@ TEST_CASE("Test the one-dimensional custom wave setup.", "[Custom1d]")
 
     REQUIRE(l_custom.getMomentumY(4, 0) == 0);
 
+    REQUIRE(l_custom.getBathymetry(4, 0) == 0);
+
     REQUIRE(l_custom.getHeight(4, 5) == 55);
 
     REQUIRE(l_custom.getMomentumX(4, 5) == 4);
 
     REQUIRE(l_custom.getMomentumY(4, 2) == 0);
+
+    REQUIRE(l_custom.getBathymetry(4, 2) == 0);
 }

@@ -19,11 +19,15 @@ TEST_CASE( "Test the one-dimensional dam break setup.", "[DamBreak1d]" ) {
 
   REQUIRE( l_damBreak.getMomentumY( 2, 0 ) == 0 );
 
+  REQUIRE( l_damBreak.getBathymetry( 2, 0 ) == 0 );
+
   REQUIRE( l_damBreak.getHeight( 2, 5 ) == 25 );
 
   REQUIRE( l_damBreak.getMomentumX( 2, 5 ) == 0 );
 
   REQUIRE( l_damBreak.getMomentumY( 2, 2 ) == 0 );
+
+  REQUIRE( l_damBreak.getBathymetry( 2, 2 ) == 0 );
 
   // right side
   REQUIRE( l_damBreak.getHeight( 4, 0 ) == 55 );
@@ -32,9 +36,13 @@ TEST_CASE( "Test the one-dimensional dam break setup.", "[DamBreak1d]" ) {
 
   REQUIRE( l_damBreak.getMomentumY( 4, 0 ) == 0 );
 
+  REQUIRE( l_damBreak.getBathymetry( 4, 0 ) == 0 );
+
   REQUIRE( l_damBreak.getHeight( 4, 5 ) == 55 );
 
   REQUIRE( l_damBreak.getMomentumX( 4, 5 ) == 0 );
 
-  REQUIRE( l_damBreak.getMomentumY( 4, 2 ) == 0 );  
+  REQUIRE( l_damBreak.getMomentumY( 4, 2 ) == 0 ); 
+
+  REQUIRE( l_damBreak.getBathymetry( 4, 2 ) == 0 ); 
 }
