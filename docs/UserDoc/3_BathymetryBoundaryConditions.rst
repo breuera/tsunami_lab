@@ -50,6 +50,24 @@ and subtracting it from the flux jump.
 3.1.2 Implent an example which illistrates the effect of bathemetry
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+.. video:: _static/DamBreak1d_10_2_bathymetry.mp4
+  :width: 700
+  :autoplay:
+  :loop:
+  :nocontrols:
+  :muted:
+
+Dam break with h_l=10 and h_r=2 and a bathymetry that increases from -2 to -1 and goes back to -2 at x=0, x=5 and x=10 respectively.
+
+.. video:: _static/DamBreak1d_10_2.mp4
+  :width: 700
+  :autoplay:
+  :loop:
+  :nocontrols:
+  :muted:
+
+Dam break with h_l=10 and h_r=2 as reference.
+
 3.2 Reflecting boundary conditions
 ----------------------------------
 

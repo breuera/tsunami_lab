@@ -82,7 +82,7 @@ int main(int i_argc,
 
   // defaults
   bool l_useFwave = true;
-  tsunami_lab::setups::Setup *l_setup;
+  tsunami_lab::setups::Setup *l_setup = nullptr;
   tsunami_lab::t_boundary l_boundaryL = tsunami_lab::t_boundary::OPEN;
   tsunami_lab::t_boundary l_boundaryR = tsunami_lab::t_boundary::OPEN;
   tsunami_lab::t_real l_endTime = 1.25;
