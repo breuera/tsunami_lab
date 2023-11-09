@@ -37,7 +37,7 @@ jobs:
         run: |
           scons mode=debug+san
           ./build/tests
-          ./build/tsunami_lab 25
+          ./build/tsunami_lab -u "DamBreak1d 10 2" -s "FWave" -b "OPEN WALL" 25
           scons mode=release+san
           ./build/tests
           ./build/tsunami_lab 500
@@ -46,7 +46,7 @@ jobs:
         run: |
           scons mode=debug
           valgrind ./build/tests
-          valgrind ./build/tsunami_lab 25
+          valgrind ./build/tsunami_lab -u "DamBreak1d 10 2" -s "FWave" -b "OPEN WALL" 25
 
       - name: Release
         run: |

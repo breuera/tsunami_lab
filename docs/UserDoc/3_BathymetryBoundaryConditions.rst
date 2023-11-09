@@ -11,11 +11,11 @@ Links
 Individual Contributions
 ------------------------
 
-Justus Dreßler: 
+Justus Dreßler: Implemented Bathymetry and some project documentation
 
-Thorsten Kröhl: 
+Thorsten Kröhl: Implemented CSV reader and DEM
 
-Julius Halank: 
+Julius Halank: Implemented DEM
 
 3.1 Non-zero Source Term
 ------------------------
@@ -189,11 +189,73 @@ Shock-Shock problem with h=10 and u=10
 3.3.1 Compute the location and value of the maximum Froude number
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+In :math:`x \in [0,25]` the maximum Froude number is given by
+
+.. math::
+
+  F(x) &= \frac{u(x)}{\sqrt{g h(x)}} \\
+  \\
+  h_{sub}(x) &= -b_{sub}(x) = 
+      \begin{cases}
+        1.8 + 0.05 (x-10)^2 \quad   &\text{if } x \in (8,12) \\
+        2 \quad &\text{else}
+      \end{cases}\\
+  u_{sub}(x) &= \frac{4.42}{h_{sub}(x)} \\
+  F_{sub}(x) &= \frac{u_{sub}(x)}{\sqrt{g h_{sub}(x)}} = \frac{4.42}{\sqrt{g}\cdot h_{sub}(x)^{3/2}} \\
+  x_{max(F_{sub}(x))} &= x_{min(h_{sub}(x))} = 10 \\
+  F_{sub}(10) &= \frac{4.42}{\sqrt{g}\cdot h_{sub}(10)^{3/2}} = \frac{4.42}{\sqrt{g}\cdot 1.8^{3/2}} = 0.58446 \\
+  \\
+  h_{super}(x) &= -b_{super}(x) = 
+      \begin{cases}
+        0.13 + 0.05 (x-10)^2 \quad   &\text{if } x \in (8,12) \\
+        0.33 \quad &\text{else}
+      \end{cases}\\
+  u_{super}(x) &= \frac{0.18}{h_{super}(x)} \\
+  x_{max(F_{super}(x))} &= x_{min(h_{super}(x))} = 10 \\
+  F_{super}(x) &= \frac{0.18}{\sqrt{g}\cdot h_{sub}(10)^{3/2}} = \frac{0.18}{\sqrt{g}\cdot 0.18^{3/2}} = 30.1125 \\
+
 3.3.2 Implement both cases through the base class setup
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Implemented both setups and changed their endtime in the main function.
+
+.. code:: cpp
+
+  tsunami_lab::t_real tsunami_lab::setups::Supercritical1d::getBathymetry(t_real i_x,
+                                                                        t_real) const
+  {
+  if (8 < i_x && i_x < 12)
+  {
+    return -0.13 - 0.05 * (i_x - 10) * (i_x - 10);
+  }
+  else
+  {
+    return -0.33;
+  }
+  }
+
+.. code:: cpp
+
+  else if (l_setupName == "SUPERCRIT1D")
+      {
+        l_width = 25.0;  // 25 m domain
+        l_endTime = 200; // 200 s simulation time
+        std::cout << "  using Supercritical1d() setup" << std::endl;
+        l_setup = new tsunami_lab::setups::Supercritical1d();
+      }
+
 3.3.3 Determine the position of the hydraulic jump
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The hydraulic jump occurs between :math:`x_{id}=45` and :math:`x_{id}=47`, which would represent :math:`x=0.45 \cdot 25 = 11.25` and :math:`x=0.47 \cdot 25 = 11.75` respectively.
+You can see a distinct spike in momentum around :math:`x_{id}=46` which is the failure of our f-wave solver to converge to the constant momentum.
+
+.. video:: _static/SuperCrit1d.mp4
+  :width: 700
+  :autoplay:
+  :loop:
+  :nocontrols:
+  :muted:
 
 3.4 Tsunami simulation
 ----------------------
@@ -207,7 +269,7 @@ Is a simple csv reader that you can include by just adding the header file to yo
 
 Usage:
 
-.. code:: csv
+.. code:: cpp
 
   Date,Open,High,Low,Close,Volume,Adj Close
   2017-02-24,64.529999,64.800003,64.139999,64.620003,21705200,64.620003
