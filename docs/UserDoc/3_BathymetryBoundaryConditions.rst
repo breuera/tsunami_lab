@@ -198,12 +198,16 @@ Shock-Shock problem with h=10 and u=10
 3.4 Tsunami simulation
 ----------------------
 
+..
+  todo: einordnen in den allgemeinen Aufbau
+
 We will use for our csv reader a already existing one.
 https://github.com/d99kris/rapidcsv
 Is a simple csv reader that you can include by just adding the header file to your project.
 
 Usage:
-.. :code: csv
+
+.. code:: csv
 
   Date,Open,High,Low,Close,Volume,Adj Close
   2017-02-24,64.529999,64.800003,64.139999,64.620003,21705200,64.620003
@@ -212,7 +216,7 @@ Usage:
   2017-02-21,64.610001,64.949997,64.449997,64.489998,19384900,64.489998
   2017-02-17,64.470001,64.690002,64.300003,64.620003,21234600,64.620003
 
-.. :code: cpp
+.. code:: cpp
 
   #include <iostream>
   #include <vector>
@@ -229,7 +233,20 @@ Usage:
     std::cout << "Volume " << volume << " on 2017-02-22." << std::endl;
   }
 
-3.4.1
+3.4.1 Extract bathymetry data with 250m sampling
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+3.4.2 Extend CSV class with reader for bathymetry data
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+3.4.3 Implement a setup that initializes 1d tsunamis
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+3.4.4 Visualize the tsunami setup
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+3.4.5 Impact of different initial displacements
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
 
