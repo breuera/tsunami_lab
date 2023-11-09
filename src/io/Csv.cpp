@@ -42,21 +42,13 @@ void tsunami_lab::io::Csv::write(t_real i_dxy,
       // write data
       io_stream << l_posX << "," << l_posY;
       if (i_h != nullptr)
-      {
         io_stream << "," << i_h[l_id];
-      }
       if (i_hu != nullptr)
-      {
         io_stream << "," << i_hu[l_id];
-      }
       if (i_hv != nullptr)
-      {
         io_stream << "," << i_hv[l_id];
-      }
       if (i_b != nullptr)
-      {
         io_stream << "," << i_b[l_id];
-      }
       io_stream << "\n";
     }
   }

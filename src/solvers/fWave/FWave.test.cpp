@@ -151,7 +151,7 @@ TEST_CASE("Test the derivation of the FWave net-updates.", "[FWaveUpdates]")
    *
    *          | 0.5 -0.0532217 |
    *   Rinv = |                |
-   *          | 0.5 -0.0532217 |
+   *          | 0.5 0.0532217 |
    *
    * Multiplicaton with the jump in fluxes gives the wave strengths:
    *
@@ -183,6 +183,58 @@ TEST_CASE("Test the derivation of the FWave net-updates.", "[FWaveUpdates]")
 
   REQUIRE(l_netUpdatesR[0] == Approx(-9.39468));
   REQUIRE(l_netUpdatesR[1] == Approx(-88.2599));
+
+  /*
+   * Test case (dam break with bathymetry):
+   *
+   *     left | right
+   *   h:  10 | 8
+   *   hu:  0 | 0
+   *   b: -15 | -8
+   *
+   * FWave speeds are given as:
+   *
+   *   s1 = -sqrt(9.80665 * 9)
+   *   s2 =  sqrt(9.80665 * 9)
+   *
+   * Inversion of the matrix of right Eigenvectors:
+   *
+   *   wolframalpha.com query: invert {{1, 1}, {-sqrt(9.80665 * 9), sqrt(9.80665 * 9)}}
+   *
+   *          | 0.5 -0.0532217 |
+   *   Rinv = |                |
+   *          | 0.5 0.0532217 |
+   *
+   * Multiplicaton with the jump in fluxes gives the wave strengths:
+   *
+   *        |  0 - 0                                                     |   | -23.4867 |   | a1 |
+   * Rinv * |                                                            | = |          | = |    |
+   *        | 1/2*9.80665*8^2-1/2*9.80665*10^2 +9.80665*(-8+15)*(10+8)/2 |   |  23.4867 |   | a2 |
+   *
+   * The net-updates are given through the scaled eigenvectors.
+   *
+   *                      |  1 |   | -23.4867      |
+   * update #1:      a1 * |    | = |               |
+   *                      | s1 |   | 220.650       |
+   *
+   *                      |  1 |   |  23.4867      |
+   * update #2:      a2 * |    | = |               |
+   *                      | s2 |   | 220.650       |
+   */
+  tsunami_lab::solvers::FWave::netUpdates(10,
+                                          8,
+                                          0,
+                                          0,
+                                          -15,
+                                          -8,
+                                          l_netUpdatesL,
+                                          l_netUpdatesR);
+
+  REQUIRE(l_netUpdatesL[0] == Approx(-23.4867));
+  REQUIRE(l_netUpdatesL[1] == Approx(220.650));
+
+  REQUIRE(l_netUpdatesR[0] == Approx(23.4867));
+  REQUIRE(l_netUpdatesR[1] == Approx(220.650));
 
   /*
    * Test case (trivial steady state):
