@@ -213,15 +213,15 @@ int main(int i_argc,
   {
     if (l_ce < 0.5 * l_nx)
     {
-      l_bathy[l_ce] = -3;
+      l_bathy[l_ce] = -4;
     }
     else if (l_ce < 0.75 * l_nx)
     {
-      l_bathy[l_ce] = -1;
+      l_bathy[l_ce] = -3.75;
     }
     else
     {
-      l_bathy[l_ce] = -3;
+      l_bathy[l_ce] = -4;
     }
   }
 
