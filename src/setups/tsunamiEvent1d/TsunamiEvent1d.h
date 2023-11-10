@@ -4,42 +4,57 @@
  * @author Julius Halank (julius.halank AT uni-jena.de)
  *
  * @section DESCRIPTION
- * One-dimensional supercritical problem.
+ * One-dimensional TSUNAMIEVENT problem.
  **/
-#ifndef TSUNAMI_LAB_SETUPS_SUPERCRITICAL_1D_H
-#define TSUNAMI_LAB_SETUPS_SUPERCRITICAL_1D_H
+#ifndef TSUNAMI_LAB_SETUPS_TSUNAMIEVENT_1D_H
+#define TSUNAMI_LAB_SETUPS_TSUNAMIEVENT_1D_H
 
 #include "../Setup.h"
+#include <cmath>
+#include <algorithm>
+#include "../../io/Csv.h"
+#include "../../io/rapidcsv.h"
 
 namespace tsunami_lab
 {
   namespace setups
   {
-    class Supercritical1d;
+    class TsunamiEvent1d;
   }
 }
 
 /**
- * 1d supercritical setup.
+ * 1d TSUNAMIEVENT setup.
  **/
-class tsunami_lab::setups::Supercritical1d : public Setup
+class tsunami_lab::setups::TsunamiEvent1d : public Setup
 {
+private:
+  rapidcsv::Document doc;
+  t_real rowCount;
 public:
+
+  TsunamiEvent1d(const std::string& i_filePath) {
+      try {
+          io::Csv::openCSV(i_filePath, this->doc, this->rowCount);
+      } catch (const std::exception& e) {
+          std::cerr << "Error: " << e.what() << std::endl;
+          throw;
+      }
+  }
   /**
    * Gets the water height at a given point.
-   *
+  * @param i_x x-coordinate of the queried point.
    * @return height at the given point.
    **/
-  t_real getHeight(t_real,
+  t_real getHeight(t_real i_x,
                    t_real) const;
 
   /**
    * Gets the momentum in x-direction.
    *
-   * @param i_x x-coordinate of the queried point.
    * @return momentum in x-direction.
    **/
-  t_real getMomentumX(t_real i_x,
+  t_real getMomentumX(t_real,
                       t_real) const;
 
   /**
@@ -57,6 +72,12 @@ public:
    */
   t_real getBathymetry(t_real i_x,
                        t_real) const;
+
+  t_real getDisplacement(t_real i_x) const;
+
+  t_real getBathymetryBin(t_real i_x) const;
+
+
 };
 
 #endif

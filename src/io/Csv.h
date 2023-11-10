@@ -9,7 +9,11 @@
 
 #include "../constants.h"
 #include <cstring>
+#include <string>
 #include <iostream>
+#include <vector>
+#include "rapidcsv.h"
+#include "../constants.h"
 
 namespace tsunami_lab
 {
@@ -44,6 +48,10 @@ public:
                     t_real const *i_hv,
                     t_real const *i_b,
                     std::ostream &io_stream);
+
+  static void openCSV(const std::string& i_filePath, rapidcsv::Document &o_doc, size_t o_rowCount);
+
+  static tsunami_lab::t_real readLine(rapidcsv::Document &i_doc, size_t i_row);
 };
 
 #endif
