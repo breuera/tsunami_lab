@@ -69,6 +69,14 @@ public:
    **/
   t_real getMomentumY(t_real,
                       t_real) const;
+
+  /**
+   * @brief Gets the bathymetry
+   *
+   * @return bathymetry value
+   */
+  t_real getBathymetry(t_real,
+                       t_real) const;
 };
 
 #endif
