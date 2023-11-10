@@ -55,22 +55,15 @@ void tsunami_lab::io::Csv::write(t_real i_dxy,
   io_stream << std::flush;
 }
 
-void openCSV(const std::string& i_filePath, rapidcsv::Document& o_doc, tsunami_lab::t_real o_rowCount) {
-  try {
-    o_doc = rapidcsv::Document (i_filePath, rapidcsv::LabelParams(0, 0));
-    o_rowCount = o_doc.GetRowCount();    
-  } catch (const std::exception& e) {
-    std::cerr << "Error: " << e.what() << std::endl;
-    throw;
-  }
+void tsunami_lab::io::Csv::openCSV(const std::string &i_filePath, rapidcsv::Document &o_doc, size_t &o_rowCount)
+{
+  // assume headless csv
+  o_doc = rapidcsv::Document(i_filePath, rapidcsv::LabelParams(-1, -1));
+  o_rowCount = o_doc.GetRowCount();
 }
 
-tsunami_lab::t_real readLine(const rapidcsv::Document& i_doc, size_t i_lineNumber) {
-    try {
-      std::string o_row = i_doc.GetRow<std::string>(i_lineNumber)[3];
-      return std::stof(o_row) ;
-    } catch (const std::exception& e) {
-      std::cerr << "Error: " << e.what() << std::endl;
-      throw;
-    }
+tsunami_lab::t_real tsunami_lab::io::Csv::readLine(const rapidcsv::Document &i_doc, size_t i_row)
+{
+  float o_row = i_doc.GetRow<float>(i_row)[3];
+  return o_row;
 }

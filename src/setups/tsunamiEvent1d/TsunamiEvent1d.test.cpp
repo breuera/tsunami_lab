@@ -8,10 +8,17 @@
  **/
 #include <catch2/catch.hpp>
 #include "TsunamiEvent1d.h"
+#include "../../io/Csv.h"
 
 TEST_CASE("Test the one-dimensional tsunamievent setup.", "[TsunamiEvent1d]")
 {
-  tsunami_lab::setups::TsunamiEvent1d l_tsunamievent("../../../test/data/tsunamievent1d.csv");
+  // todo: FIX THIS TEST
+  // get rapidcsv::Document and row count from CSV file
+  rapidcsv::Document l_doc;
+  size_t l_rowCount;
+  tsunami_lab::io::Csv::openCSV("../../data/data.csv", l_doc, l_rowCount);
+
+  tsunami_lab::setups::TsunamiEvent1d l_tsunamievent(l_doc, l_rowCount);
   // x = 2
   REQUIRE(l_tsunamievent.getHeight(2, 0) == 0.33f);
 

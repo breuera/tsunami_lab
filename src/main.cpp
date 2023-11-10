@@ -11,6 +11,7 @@
 #include "setups/custom1d/Custom1d.h"
 #include "setups/supercritical1d/Supercritical1d.h"
 #include "setups/subcritical1d/Subcritical1d.h"
+#include "setups/tsunamiEvent1d/TsunamiEvent1d.h"
 #include "io/Csv.h"
 #include "constants.h"
 #include <cstdlib>
@@ -128,6 +129,8 @@ int main(int i_argc,
 
       // convert to upper case
       std::transform(l_setupName.begin(), l_setupName.end(), l_setupName.begin(), ::toupper);
+
+      // 'Dambreak1d h_l h_r' setup
       if (l_setupName == "DAMBREAK1D")
       {
         double l_arg1 = std::stof(l_arg1Str);
@@ -137,6 +140,7 @@ int main(int i_argc,
                                                       l_arg2,
                                                       5);
       }
+      // 'RareRare1d h hu' setup
       else if (l_setupName == "RARERARE1D")
       {
         double l_arg1 = std::stof(l_arg1Str);
@@ -146,6 +150,7 @@ int main(int i_argc,
                                                       l_arg2,
                                                       5);
       }
+      // 'ShockShock1d h hu' setup
       else if (l_setupName == "SHOCKSHOCK1D")
       {
         double l_arg1 = std::stof(l_arg1Str);
@@ -155,6 +160,7 @@ int main(int i_argc,
                                                         l_arg2,
                                                         5);
       }
+      // 'Custom1d h_l h_r hu_l hu_r middle' setup
       else if (l_setupName == "CUSTOM1D")
       {
         double l_arg1 = std::stof(l_arg1Str);
@@ -169,6 +175,7 @@ int main(int i_argc,
                                                     l_arg4,
                                                     l_arg5);
       }
+      // 'Supercrit1d' setup
       else if (l_setupName == "SUPERCRIT1D")
       {
         l_width = 25.0;  // 25 m domain
@@ -176,12 +183,27 @@ int main(int i_argc,
         std::cout << "  using Supercritical1d() setup" << std::endl;
         l_setup = new tsunami_lab::setups::Supercritical1d();
       }
+      // 'Subcrit1d' setup
       else if (l_setupName == "SUBCRIT1D")
       {
         l_width = 25.0;  // 25 m domain
         l_endTime = 200; // 200 s simulation time
         std::cout << "  using Subcritical1d() setup" << std::endl;
         l_setup = new tsunami_lab::setups::Subcritical1d();
+      }
+      // 'Tsunami1d pathToCsv time' setup
+      else if (l_setupName == "TSUNAMI1D")
+      {
+        // assumptions: headerless csv, 4 columns, 3rd being length along path and 4th being height
+        std::string i_filePath = l_arg1Str;
+        rapidcsv::Document l_doc;
+        size_t l_rowCount;
+
+        tsunami_lab::io::Csv::openCSV(i_filePath, l_doc, l_rowCount);
+
+        l_setup = new tsunami_lab::setups::TsunamiEvent1d(l_doc, l_rowCount);
+        l_width = 250 * l_rowCount;
+        l_endTime = stof(l_arg2Str);
       }
       else
       {

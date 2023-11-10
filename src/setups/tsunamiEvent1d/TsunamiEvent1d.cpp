@@ -8,46 +8,73 @@
  **/
 #include "TsunamiEvent1d.h"
 
-tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent1d::getHeight(t_real i_x,
-                                                                    t_real) const
+tsunami_lab::setups::TsunamiEvent1d::TsunamiEvent1d(rapidcsv::Document i_doc, size_t i_rowCount)
 {
-  int bin = getBathymetryBin(i_x);
-  if(bin < 0){
-    return std::min(-bin, 20);
+  m_doc = i_doc;
+  m_rowCount = i_rowCount;
+}
+
+tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent1d::getHeight(t_real i_x,
+                                                                   t_real) const
+{
+  t_real l_bin = getBathymetryBin(i_x);
+  if (l_bin < 0)
+  {
+    // max(-bin, delta)
+    if (-l_bin > m_delta)
+      return -l_bin;
+    else
+      return m_delta;
   }
   return 0;
 }
 
 tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent1d::getMomentumX(t_real,
-                                                                       t_real) const
+                                                                      t_real) const
 {
-  return 0; 
+  return 0;
 }
 
 tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent1d::getMomentumY(t_real,
-                                                                       t_real) const
+                                                                      t_real) const
 {
   return 0;
 }
 
 tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent1d::getBathymetry(t_real i_x,
-                                                                        t_real) const
+                                                                       t_real) const
 {
-  int bin = getBathymetryBin(i_x);
-  if(bin < 0){
-    return std::min(bin, -20) + getDisplacement(i_x);
+  t_real l_bin = getBathymetryBin(i_x);
+  if (l_bin < 0)
+  {
+    // min(bin, -delta) + d
+    if (l_bin < -m_delta)
+      return l_bin + getDisplacement(i_x);
+    else
+      return -m_delta + getDisplacement(i_x);
   }
-  return std::max(bin, 20) + getDisplacement(i_x);
+  // max(bin, delta) + d
+  if (l_bin > m_delta)
+    return l_bin + getDisplacement(i_x);
+  else
+    return m_delta + getDisplacement(i_x);
 }
 
-tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent1d::getDisplacement(t_real i_x)const{
-  if(17500 < i_x && i_x < 22500){
-    return 10*std::sin(M_PI*(i_x-17500)/37500 + M_PI);
-  }else{
+tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent1d::getDisplacement(t_real i_x) const
+{
+  if (175000 < i_x && i_x < 225000)
+  {
+    return 10 * std::sin(M_PI * (i_x - 175000) / 37500 + M_PI);
+  }
+  else
+  {
     return 0;
   }
 }
 
-tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent1d::getBathymetryBin(t_real i_x)const{
-  return io::Csv::readLine(this->doc, i_x);
+tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent1d::getBathymetryBin(t_real i_x) const
+{
+  // convert i_x to cell index (assuming 250m cells)
+  int l_row = i_x / 250;
+  return io::Csv::readLine(m_doc, l_row);
 }
