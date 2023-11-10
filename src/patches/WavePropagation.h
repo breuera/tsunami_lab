@@ -1,5 +1,5 @@
 /**
- * @author Alexander Breuer (alex.breuer AT uni-jena.de)
+ * @author Bohdan Babii 
  *
  * @section DESCRIPTION
  * Base class of the wave propagation patches.
@@ -36,6 +36,21 @@ public:
    * Sets the values of the ghost cells according to outflow boundary conditions.
    **/
   virtual void setGhostOutflow() = 0;
+
+  /**
+   * Sets the values of the ghost cells according to reflect boundary conditions.
+   **/
+  virtual void setGhostReflectingBoundaryConditions() = 0;
+  
+  /**
+   * Sets the left value of the ghost cells according to reflect boundary condition and the right value to outflow boundary condition.
+   **/
+  virtual void setGhostLeftReflectingBoundaryCondition() = 0;
+  
+  /**
+   * Sets the right value of the ghost cells according to reflect boundary condition and the left value to outflow boundary condition.
+   **/
+  virtual void setGhostRightReflectingBoundaryCondition() = 0;
 
   /**
    * Gets the stride in y-direction. x-direction is stride-1.
