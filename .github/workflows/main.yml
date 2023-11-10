@@ -7,9 +7,9 @@ name: Tsunami Lab
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
   schedule:
     - cron: 0 0 * * *
 
@@ -30,12 +30,10 @@ jobs:
           git submodule update
 
       - name: Static Code Analysis
-        run:
-          cppcheck src/ --template=gcc --force --error-exitcode=1
+        run: cppcheck src/ --template=gcc --force --error-exitcode=1
 
       - name: Static Code Analysis
-        run:
-          cppcheck src/ --template=gcc --force --error-exitcode=1
+        run: cppcheck src/ --template=gcc --force --error-exitcode=1
 
       - name: Sanitize
         run: |
@@ -69,3 +67,5 @@ jobs:
           ./build/tsunami_lab RareRare 500 -f
           ./build/tsunami_lab CustomSetup 500 -r
           ./build/tsunami_lab CustomSetup 500 -f
+          ./build/tsunami_lab SubcriticalFlow1d 250 -f
+          ./build/tsunami_lab SupercriticalFlow1d 250 -f
