@@ -48,8 +48,8 @@ class tsunami_lab::solvers::FWave {
      * @param i_hR height of the right side.
      * @param i_huL momentum of the left side.
      * @param i_huR momentum of the right side.
-     * @param i_bL bathometry of the left side.
-     * @param i_bR bathometry of the left right.
+     * @param i_bL bathymetry of the left side.
+     * @param i_bR bathymetry of the left right.
      * @param i_waveSpeedL speed of the wave propagating to the left.
      * @param i_waveSpeedR speed of the wave propagating to the right.
      * @param o_strengthL will be set to the strength of the wave propagating to
@@ -86,9 +86,9 @@ class tsunami_lab::solvers::FWave {
      *
      * @param i_hl Height of the water in the left cell
      * @param i_hr Height of the water in the right cell
-     * @param i_bL bathometry of the left side.
+     * @param i_bL bathymetry of the left side.
      * @param i_bR batohmetry of the left right.
-     * @param o_deltaXPhi resutling bathometry-change
+     * @param o_deltaXPhi resutling bathymetry-change
      */
 
     static void deltaXPhi(t_real i_hl,
@@ -105,8 +105,8 @@ class tsunami_lab::solvers::FWave {
      * @param i_hR height of the right side.
      * @param i_huL momentum of the left side.
      * @param i_huR momentum of the right side.
-     * @param i_bL bathometry of the left side.
-     * @param i_bR bathometry of the left right.
+     * @param i_bL bathymetry of the left side.
+     * @param i_bR bathymetry of the left right.
      * @param o_netUpdateL will be set to the net-updates for the left side; 0:
      *height, 1: momentum.
      * @param o_netUpdateR will be set to the net-updates for the right side; 0:
