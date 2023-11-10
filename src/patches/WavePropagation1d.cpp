@@ -124,6 +124,7 @@ void tsunami_lab::patches::WavePropagation1d::setGhostOutflow()
   {
     l_h[0] = l_h[1];
     l_hu[0] = -l_hu[1];
+    l_b[m_nCells + 1] = 20;
     break;
   }
   }
@@ -143,6 +144,7 @@ void tsunami_lab::patches::WavePropagation1d::setGhostOutflow()
   {
     l_h[m_nCells + 1] = l_h[m_nCells];
     l_hu[m_nCells + 1] = -l_hu[m_nCells];
+    l_b[m_nCells + 1] = 20;
     break;
   }
   }

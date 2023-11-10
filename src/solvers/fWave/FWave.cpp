@@ -103,6 +103,29 @@ void tsunami_lab::solvers::FWave::netUpdates(t_real i_hL,
                                              t_real o_netUpdateL[2],
                                              t_real o_netUpdateR[2])
 {
+    // todo check viability
+    // if both dry do nothing
+    if (i_bL >= 0 && i_bR >= 0)
+    {
+        o_netUpdateL[0] = 0;
+        o_netUpdateL[1] = 0;
+        o_netUpdateR[0] = 0;
+        o_netUpdateR[1] = 0;
+        return;
+    } // if only left side is dry, apply reflecting boundary condition
+    else if (i_bL >= 0)
+    {
+        i_hL = i_hR;
+        i_huL = -i_huR;
+        i_bL = i_bR;
+    } // if only right side is dry, apply reflecting boundary condition
+    else if (i_bR >= 0)
+    {
+        i_hR = i_hL;
+        i_huR = -i_huL;
+        i_bR = i_bL;
+    }
+
     // compute particle velocities
     t_real l_uL = i_huL / i_hL;
     t_real l_uR = i_huR / i_hR;
