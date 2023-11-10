@@ -8,7 +8,7 @@
 #ifndef TSUNAMI_LAB_SETUPS_CUSTOM_SETUP_1D_H
 #define TSUNAMI_LAB_SETUPS_CUSTOM_SETUP_1D_H
 
-#include "Setup.h"
+#include "../Setup.h"
 
 namespace tsunami_lab {
   namespace setups {
@@ -78,6 +78,14 @@ class tsunami_lab::setups::CustomSetup1d: public Setup {
     t_real getMomentumY( t_real,
                          t_real ) const;
 
+    /**
+     * Gets the bathymetry at given point.
+     * 
+     * @param i_x x-coordinate of the queried point.
+     * @return bathymetry.
+    */
+    t_real getBathymetry( t_real i_x,
+                          t_real ) const;
 };
 
 #endif
