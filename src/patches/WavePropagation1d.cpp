@@ -118,18 +118,17 @@ void tsunami_lab::patches::WavePropagation1d::setGhostOutflow()
   {
     l_h[0] = l_h[1];
     l_hu[0] = l_hu[1];
+    l_b[0] = l_b[1];
     break;
   }
   case t_boundary::WALL:
   {
-    l_h[0] = l_h[1];
-    l_hu[0] = -l_hu[1];
+    l_h[0] = 0;
+    l_hu[0] = 0;
     l_b[m_nCells + 1] = 20;
     break;
   }
   }
-
-  l_b[0] = l_b[1];
 
   // set right boundary
   switch (m_boundaryRight)
@@ -138,16 +137,15 @@ void tsunami_lab::patches::WavePropagation1d::setGhostOutflow()
   {
     l_h[m_nCells + 1] = l_h[m_nCells];
     l_hu[m_nCells + 1] = l_hu[m_nCells];
+    l_b[m_nCells + 1] = l_b[m_nCells];
     break;
   }
   case t_boundary::WALL:
   {
-    l_h[m_nCells + 1] = l_h[m_nCells];
-    l_hu[m_nCells + 1] = -l_hu[m_nCells];
+    l_h[m_nCells + 1] = 0;
+    l_hu[m_nCells + 1] = 0;
     l_b[m_nCells + 1] = 20;
     break;
   }
   }
-
-  l_b[m_nCells + 1] = l_b[m_nCells];
 }

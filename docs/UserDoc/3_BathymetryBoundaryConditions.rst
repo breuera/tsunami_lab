@@ -74,7 +74,39 @@ Dam break with h_l=10 and h_r=2 as reference.
 3.2.1 Implement the reflecting boundary conditions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Added boundary conditions to the command line parameters as :code:`-b 'WALL OPEN'`
+Implemented a reflecting boundary on a wet dry interface in the :code:`FWave` Solver.
+
+.. code:: cpp
+
+    bool updateL = true;
+    bool updateR = true;
+    // if both dry do nothing
+    if (i_hL <= 0 && i_hR <= 0)
+    {
+        o_netUpdateL[0] = 0;
+        o_netUpdateL[1] = 0;
+        o_netUpdateR[0] = 0;
+        o_netUpdateR[1] = 0;
+        return;
+    } // if only left side is dry, apply reflecting boundary condition
+    else if (i_hL <= 0)
+    {
+        i_hL = i_hR;
+        i_huL = -i_huR;
+        i_bL = i_bR;
+        updateL = false;
+    } // if only right side is dry, apply reflecting boundary condition
+    else if (i_hR <= 0)
+    {
+        i_hR = i_hL;
+        i_huR = -i_huL;
+        i_bR = i_bL;
+        updateR = false;
+    }
+  
+:code:`updateL` and :code:`updateR` are used to determine if the cells should be updated or not (dry cells don't change).
+
+Added boundary conditions to the command line parameters as :code:`-b 'WALL OPEN'` in the :code:`main` function.
 
 .. code:: cpp
 
@@ -99,7 +131,7 @@ Added boundary conditions to the command line parameters as :code:`-b 'WALL OPEN
       break;
     }
 
-with a helper function that translates strings to t_boundary enum members
+with a helper function that translates strings to :code:`t_boundary` enum members
 
 .. code:: cpp
 
@@ -121,7 +153,7 @@ with a helper function that translates strings to t_boundary enum members
   }
   }
 
-and switches the ghost cells depending on the boundary conditions.
+and switches the ghost cells depending on the boundary conditions in :code:`WavePropagation1d`.
 
 .. code:: cpp
 
@@ -132,18 +164,17 @@ and switches the ghost cells depending on the boundary conditions.
   {
     l_h[0] = l_h[1];
     l_hu[0] = l_hu[1];
+    l_b[0] = l_b[1];
     break;
   }
   case t_boundary::WALL:
   {
-    l_h[0] = l_h[1];
-    l_hu[0] = -l_hu[1];
+    l_h[0] = 0;
+    l_hu[0] = 0;
+    l_b[m_nCells + 1] = 20;
     break;
   }
   }
-
-
-
 
 3.2.2 Show the implementation with the shock shock setup
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

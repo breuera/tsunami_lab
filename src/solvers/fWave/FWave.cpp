@@ -103,9 +103,10 @@ void tsunami_lab::solvers::FWave::netUpdates(t_real i_hL,
                                              t_real o_netUpdateL[2],
                                              t_real o_netUpdateR[2])
 {
-    // todo check viability
+    bool updateL = true;
+    bool updateR = true;
     // if both dry do nothing
-    if (i_bL >= 0 && i_bR >= 0)
+    if (i_hL <= 0 && i_hR <= 0)
     {
         o_netUpdateL[0] = 0;
         o_netUpdateL[1] = 0;
@@ -113,17 +114,19 @@ void tsunami_lab::solvers::FWave::netUpdates(t_real i_hL,
         o_netUpdateR[1] = 0;
         return;
     } // if only left side is dry, apply reflecting boundary condition
-    else if (i_bL >= 0)
+    else if (i_hL <= 0)
     {
         i_hL = i_hR;
         i_huL = -i_huR;
         i_bL = i_bR;
+        updateL = false;
     } // if only right side is dry, apply reflecting boundary condition
-    else if (i_bR >= 0)
+    else if (i_hR <= 0)
     {
         i_hR = i_hL;
         i_huR = -i_huL;
         i_bR = i_bL;
+        updateR = false;
     }
 
     // compute particle velocities
@@ -174,21 +177,21 @@ void tsunami_lab::solvers::FWave::netUpdates(t_real i_hL,
         o_netUpdateR[l_qt] = 0;
 
         // 1st wave
-        if (l_sL < 0)
+        if (l_sL < 0 && updateL)
         {
             o_netUpdateL[l_qt] += l_waveL[l_qt];
         }
-        else
+        else if (l_sL >= 0 && updateR)
         {
             o_netUpdateR[l_qt] += l_waveL[l_qt];
         }
 
         // 2nd wave
-        if (l_sR > 0)
+        if (l_sR > 0 && updateR)
         {
             o_netUpdateR[l_qt] += l_waveR[l_qt];
         }
-        else
+        else if (l_sR >= 0 && updateL)
         {
             o_netUpdateL[l_qt] += l_waveR[l_qt];
         }

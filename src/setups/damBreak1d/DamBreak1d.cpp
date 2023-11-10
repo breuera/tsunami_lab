@@ -43,5 +43,5 @@ tsunami_lab::t_real tsunami_lab::setups::DamBreak1d::getMomentumY(t_real,
 tsunami_lab::t_real tsunami_lab::setups::DamBreak1d::getBathymetry(t_real,
                                                                    t_real) const
 {
-  return -20;
+  return 0;
 }
