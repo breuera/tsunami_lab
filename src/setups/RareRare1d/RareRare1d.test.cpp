@@ -25,6 +25,10 @@ TEST_CASE( "Test the one-dimensional rare-rare setup.", "[RareRare1d]" ) {
     REQUIRE( l_rareRare.getMomentumY( 2.5, 0 ) == 0 );
     REQUIRE( l_rareRare.getMomentumY( 3, 0 ) == 0 );
 
+    REQUIRE( l_rareRare.getBathymetry( 1, 0 ) == 0 );
+    REQUIRE( l_rareRare.getBathymetry( 2.5, 0 ) == 0 );
+    REQUIRE( l_rareRare.getBathymetry( 3, 0 ) == 0 );
+
   // right side
     REQUIRE( l_rareRare.getHeight( 4, 0 ) == 25 );
     REQUIRE( l_rareRare.getHeight( 7.5, 0 ) == 25 );
@@ -37,4 +41,8 @@ TEST_CASE( "Test the one-dimensional rare-rare setup.", "[RareRare1d]" ) {
     REQUIRE( l_rareRare.getMomentumY( 12, 0 ) == 0 );
     REQUIRE( l_rareRare.getMomentumY( 12.5, 0 ) == 0 );
     REQUIRE( l_rareRare.getMomentumY( 23, 0 ) == 0 );  
+
+    REQUIRE( l_rareRare.getBathymetry( 4, 0 ) == 0 );
+    REQUIRE( l_rareRare.getBathymetry( 12.5, 0 ) == 0 );
+    REQUIRE( l_rareRare.getBathymetry( 13, 0 ) == 0 );
 }
