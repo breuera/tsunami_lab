@@ -30,6 +30,7 @@ int main(int i_argc,
   // set solver
   bool l_use_roe_solver = false;
   std::string l_scenario = "DamBreak";
+  std::string l_boundary_conditions = "-oo";
 
   std::cout << "####################################" << std::endl;
   std::cout << "### Tsunami Lab                  ###" << std::endl;
@@ -66,6 +67,55 @@ int main(int i_argc,
       return EXIT_FAILURE;
     }
 
+    l_use_roe_solver = (strcmp(i_argv[3], "-r") == 0);
+    if (l_use_roe_solver)
+    {
+      std::cout << "solver was set to the roe solver" << std::endl;
+    }
+    else
+    {
+      std::cout << "solver was set to the f-wave solver" << std::endl;
+    }
+  }
+    else if (i_argc == 5)
+  {
+    l_scenario = i_argv[1];
+    l_nx = atoi(i_argv[2]);
+    if (l_nx < 1)
+    {
+      std::cerr << "invalid number of cells" << std::endl;
+      return EXIT_FAILURE;
+    }
+    l_dxy = 10.0 / l_nx;
+
+    if (!(strcmp(i_argv[3], "-f") == 0 || strcmp(i_argv[3], "-r") == 0))
+    {
+      std::cerr << "invalid third argument(needs to be '-r' or '-f')" << std::endl;
+      return EXIT_FAILURE;
+    }
+
+    l_boundary_conditions = i_argv[4];
+    if (!(strcmp(i_argv[4], "-oo") == 0 || strcmp(i_argv[4], "-rr") || strcmp(i_argv[4], "-or") || strcmp(i_argv[4], "-ro") == 0))
+    {
+      std::cerr << "invalid fourth argument(needs to be '-rr', '-oo', '-or' or '-ro')" << std::endl;
+      return EXIT_FAILURE;
+    }
+    if (strcmp(i_argv[4], "-rr") == 0)
+    {
+      std::cout << "Boundery condition of both ghost cells were set to reflecting condition" << std::endl;
+    }
+    else if (strcmp(i_argv[4], "-oo") == 0)
+    {
+      std::cout << "Boundery condition of both ghost cells were set to outflow condition" << std::endl;
+    }
+    else if (strcmp(i_argv[4], "-or") == 0)
+    {
+      std::cout << "Left boundery condition was set to outflow condition and right boundery condition to reflecting condition" << std::endl;
+    }
+    else if (strcmp(i_argv[4], "-ro") == 0)
+    {
+      std::cout << "Right boundery condition was set to outflow condition and left boundery condition to reflecting condition" << std::endl;
+    }
     l_use_roe_solver = (strcmp(i_argv[3], "-r") == 0);
     if (l_use_roe_solver)
     {

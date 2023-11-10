@@ -64,6 +64,22 @@ public:
    **/
   void setGhostOutflow();
 
+
+  /**
+   * Sets the values of the ghost cells according to reflecting boundary conditions.
+   **/
+  void setGhostReflectingBoundaryConditions();
+
+  /**
+   * Sets the values of the left ghost cell according to reflecting boundary conditions and the right cell to outflow boundary condition.
+   **/
+  void setGhostLeftReflectingBoundaryCondition();
+
+  /**
+   * Sets the values of the right ghost cell according to reflecting boundary conditions and the left cell to outflow boundary condition.
+   **/
+  void setGhostRightReflectingBoundaryCondition();
+
   /**
    * Gets the stride in y-direction. x-direction is stride-1.
    *

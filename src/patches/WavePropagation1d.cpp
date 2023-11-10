@@ -116,3 +116,45 @@ void tsunami_lab::patches::WavePropagation1d::setGhostOutflow()
   l_hu[m_nCells + 1] = l_hu[m_nCells];
   m_b[m_nCells + 1] = m_b[m_nCells];
 }
+
+void tsunami_lab::patches::WavePropagation1d::setGhostReflectingBoundaryConditions()
+{
+  t_real *l_h = m_h[m_step];
+  t_real *l_hu = m_hu[m_step];
+
+  // set left boundary
+  l_h[0] = l_h[1];
+  l_hu[0] = -l_hu[1];
+
+  // set right boundary
+  l_h[m_nCells + 1] = l_h[m_nCells];
+  l_hu[m_nCells + 1] = -l_hu[m_nCells];
+}
+
+void tsunami_lab::patches::WavePropagation1d::setGhostLeftReflectingBoundaryCondition()
+{
+  t_real *l_h = m_h[m_step];
+  t_real *l_hu = m_hu[m_step];
+
+  // set left boundary
+  l_h[0] = l_h[1];
+  l_hu[0] = -l_hu[1];
+
+  // set right boundary
+  l_h[m_nCells + 1] = l_h[m_nCells];
+  l_hu[m_nCells + 1] = l_hu[m_nCells];
+}
+
+void tsunami_lab::patches::WavePropagation1d::setGhostRightReflectingBoundaryCondition()
+{
+  t_real *l_h = m_h[m_step];
+  t_real *l_hu = m_hu[m_step];
+
+  // set left boundary
+  l_h[0] = l_h[1];
+  l_hu[0] = l_hu[1];
+
+  // set right boundary
+  l_h[m_nCells + 1] = l_h[m_nCells];
+  l_hu[m_nCells + 1] = -l_hu[m_nCells];
+}

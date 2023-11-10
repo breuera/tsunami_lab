@@ -152,3 +152,132 @@ TEST_CASE("Test the 1d wave propagation solver (FWave).", "[WaveProp1d]") {
     REQUIRE(m_waveProp.getBathymetry()[l_ce] == Approx(0));
   }
 }
+
+TEST_CASE("Test Reflecting Boundary Condition.", "[ReflectingBoundaryConditions]") {
+   /*
+   * Test case:
+   *
+   *   Single dam break problem between cell 49 and 50.
+   *     left | right
+   *       10 | 8
+   *        3 | 4
+   */
+
+  // construct solver (F_Wave) and setup a dambreak problem
+  tsunami_lab::patches::WavePropagation1d m_waveProp(100, 0);
+
+  for (std::size_t l_ce = 0; l_ce < 50; l_ce++)
+  {
+    m_waveProp.setHeight(l_ce,
+                         0,
+                         10);
+    m_waveProp.setMomentumX(l_ce,
+                            0,
+                            3);
+  }
+  for (std::size_t l_ce = 50; l_ce < 100; l_ce++)
+  {
+    m_waveProp.setHeight(l_ce,
+                         0,
+                         8);
+    m_waveProp.setMomentumX(l_ce,
+                            0,
+                            4);
+  }
+  
+  // set outflow boundary condition
+  m_waveProp.setGhostReflectingBoundaryConditions();
+
+  // Ghost Reflecting Boundary condition
+  REQUIRE(m_waveProp.getHeight()[-1] == Approx(10));
+  REQUIRE(m_waveProp.getMomentumX()[-1] == Approx(-3)); 
+
+  REQUIRE(m_waveProp.getHeight()[100] == Approx(8)); 
+  REQUIRE(m_waveProp.getMomentumX()[100] == Approx(-4)); 
+}
+
+TEST_CASE("Test Left Reflecting Boundary Condition.", "[LeftReflectingBoundaryConditions]") {
+   /*
+   * Test case:
+   *
+   *   Single dam break problem between cell 49 and 50.
+   *     left | right
+   *       10 | 8
+   *        3 | 4
+   */
+
+  // construct solver (F_Wave) and setup a dambreak problem
+  tsunami_lab::patches::WavePropagation1d m_waveProp(100, 0);
+
+  for (std::size_t l_ce = 0; l_ce < 50; l_ce++)
+  {
+    m_waveProp.setHeight(l_ce,
+                         0,
+                         10);
+    m_waveProp.setMomentumX(l_ce,
+                            0,
+                            3);
+  }
+  for (std::size_t l_ce = 50; l_ce < 100; l_ce++)
+  {
+    m_waveProp.setHeight(l_ce,
+                         0,
+                         8);
+    m_waveProp.setMomentumX(l_ce,
+                            0,
+                            4);
+  }
+  
+  // set outflow boundary condition
+  m_waveProp.setGhostLeftReflectingBoundaryCondition();
+
+  // Ghost Reflecting Boundary condition
+  REQUIRE(m_waveProp.getHeight()[-1] == Approx(10)); 
+  REQUIRE(m_waveProp.getMomentumX()[-1] == Approx(-3)); 
+
+  REQUIRE(m_waveProp.getHeight()[100] == Approx(8)); 
+  REQUIRE(m_waveProp.getMomentumX()[100] == Approx(4)); 
+}
+
+TEST_CASE("Test Right Reflecting Boundary Condition.", "[RightReflectingBoundaryConditions]") {
+   /*
+   * Test case:
+   *
+   *   Single dam break problem between cell 49 and 50.
+   *     left | right
+   *       10 | 8
+   *        3 | 4
+   */
+
+  // construct solver (F_Wave) and setup a dambreak problem
+  tsunami_lab::patches::WavePropagation1d m_waveProp(100, 0);
+
+  for (std::size_t l_ce = 0; l_ce < 50; l_ce++)
+  {
+    m_waveProp.setHeight(l_ce,
+                         0,
+                         10);
+    m_waveProp.setMomentumX(l_ce,
+                            0,
+                            3);
+  }
+  for (std::size_t l_ce = 50; l_ce < 100; l_ce++)
+  {
+    m_waveProp.setHeight(l_ce,
+                         0,
+                         8);
+    m_waveProp.setMomentumX(l_ce,
+                            0,
+                            4);
+  }
+  
+  // set outflow boundary condition
+  m_waveProp.setGhostRightReflectingBoundaryCondition();
+
+  // Ghost Reflecting Boundary condition
+  REQUIRE(m_waveProp.getHeight()[-1] == Approx(10)); 
+  REQUIRE(m_waveProp.getMomentumX()[-1] == Approx(3)); 
+
+  REQUIRE(m_waveProp.getHeight()[100] == Approx(8)); 
+  REQUIRE(m_waveProp.getMomentumX()[100] == Approx(-4)); 
+}
