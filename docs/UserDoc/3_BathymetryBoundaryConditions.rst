@@ -11,11 +11,11 @@ Links
 Individual Contributions
 ------------------------
 
-Justus Dreßler: 
+Justus Dreßler: Implemented Bathymetry and some project documentation
 
-Thorsten Kröhl: 
+Thorsten Kröhl: Implemented CSV reader and DEM
 
-Julius Halank: 
+Julius Halank: Implemented DEM
 
 3.1 Non-zero Source Term
 ------------------------
@@ -74,7 +74,39 @@ Dam break with h_l=10 and h_r=2 as reference.
 3.2.1 Implement the reflecting boundary conditions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Added boundary conditions to the command line parameters as :code:`-b 'WALL OPEN'`
+Implemented a reflecting boundary on a wet dry interface in the :code:`FWave` Solver.
+
+.. code:: cpp
+
+    bool updateL = true;
+    bool updateR = true;
+    // if both dry do nothing
+    if (i_hL <= 0 && i_hR <= 0)
+    {
+        o_netUpdateL[0] = 0;
+        o_netUpdateL[1] = 0;
+        o_netUpdateR[0] = 0;
+        o_netUpdateR[1] = 0;
+        return;
+    } // if only left side is dry, apply reflecting boundary condition
+    else if (i_hL <= 0)
+    {
+        i_hL = i_hR;
+        i_huL = -i_huR;
+        i_bL = i_bR;
+        updateL = false;
+    } // if only right side is dry, apply reflecting boundary condition
+    else if (i_hR <= 0)
+    {
+        i_hR = i_hL;
+        i_huR = -i_huL;
+        i_bR = i_bL;
+        updateR = false;
+    }
+  
+:code:`updateL` and :code:`updateR` are used to determine if the cells should be updated or not (dry cells don't change).
+
+Added boundary conditions to the command line parameters as :code:`-b 'WALL OPEN'` in the :code:`main` function.
 
 .. code:: cpp
 
@@ -99,7 +131,7 @@ Added boundary conditions to the command line parameters as :code:`-b 'WALL OPEN
       break;
     }
 
-with a helper function that translates strings to t_boundary enum members
+with a helper function that translates strings to :code:`t_boundary` enum members
 
 .. code:: cpp
 
@@ -121,7 +153,7 @@ with a helper function that translates strings to t_boundary enum members
   }
   }
 
-and switches the ghost cells depending on the boundary conditions.
+and switches the ghost cells depending on the boundary conditions in :code:`WavePropagation1d`.
 
 .. code:: cpp
 
@@ -132,18 +164,17 @@ and switches the ghost cells depending on the boundary conditions.
   {
     l_h[0] = l_h[1];
     l_hu[0] = l_hu[1];
+    l_b[0] = l_b[1];
     break;
   }
   case t_boundary::WALL:
   {
-    l_h[0] = l_h[1];
-    l_hu[0] = -l_hu[1];
+    l_h[0] = 0;
+    l_hu[0] = 0;
+    l_b[m_nCells + 1] = 20;
     break;
   }
   }
-
-
-
 
 3.2.2 Show the implementation with the shock shock setup
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -189,11 +220,73 @@ Shock-Shock problem with h=10 and u=10
 3.3.1 Compute the location and value of the maximum Froude number
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+In :math:`x \in [0,25]` the maximum Froude number is given by
+
+.. math::
+
+  F(x) &= \frac{u(x)}{\sqrt{g h(x)}} \\
+  \\
+  h_{sub}(x) &= -b_{sub}(x) = 
+      \begin{cases}
+        1.8 + 0.05 (x-10)^2 \quad   &\text{if } x \in (8,12) \\
+        2 \quad &\text{else}
+      \end{cases}\\
+  u_{sub}(x) &= \frac{4.42}{h_{sub}(x)} \\
+  F_{sub}(x) &= \frac{u_{sub}(x)}{\sqrt{g h_{sub}(x)}} = \frac{4.42}{\sqrt{g}\cdot h_{sub}(x)^{3/2}} \\
+  x_{max(F_{sub}(x))} &= x_{min(h_{sub}(x))} = 10 \\
+  F_{sub}(10) &= \frac{4.42}{\sqrt{g}\cdot h_{sub}(10)^{3/2}} = \frac{4.42}{\sqrt{g}\cdot 1.8^{3/2}} = 0.58446 \\
+  \\
+  h_{super}(x) &= -b_{super}(x) = 
+      \begin{cases}
+        0.13 + 0.05 (x-10)^2 \quad   &\text{if } x \in (8,12) \\
+        0.33 \quad &\text{else}
+      \end{cases}\\
+  u_{super}(x) &= \frac{0.18}{h_{super}(x)} \\
+  x_{max(F_{super}(x))} &= x_{min(h_{super}(x))} = 10 \\
+  F_{super}(x) &= \frac{0.18}{\sqrt{g}\cdot h_{sub}(10)^{3/2}} = \frac{0.18}{\sqrt{g}\cdot 0.18^{3/2}} = 30.1125 \\
+
 3.3.2 Implement both cases through the base class setup
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Implemented both setups and changed their endtime in the main function.
+
+.. code:: cpp
+
+  tsunami_lab::t_real tsunami_lab::setups::Supercritical1d::getBathymetry(t_real i_x,
+                                                                        t_real) const
+  {
+  if (8 < i_x && i_x < 12)
+  {
+    return -0.13 - 0.05 * (i_x - 10) * (i_x - 10);
+  }
+  else
+  {
+    return -0.33;
+  }
+  }
+
+.. code:: cpp
+
+  else if (l_setupName == "SUPERCRIT1D")
+      {
+        l_width = 25.0;  // 25 m domain
+        l_endTime = 200; // 200 s simulation time
+        std::cout << "  using Supercritical1d() setup" << std::endl;
+        l_setup = new tsunami_lab::setups::Supercritical1d();
+      }
+
 3.3.3 Determine the position of the hydraulic jump
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The hydraulic jump occurs between :math:`x_{id}=45` and :math:`x_{id}=47`, which would represent :math:`x=0.45 \cdot 25 = 11.25` and :math:`x=0.47 \cdot 25 = 11.75` respectively.
+You can see a distinct spike in momentum around :math:`x_{id}=46` which is the failure of our f-wave solver to converge to the constant momentum.
+
+.. video:: _static/SuperCrit1d.mp4
+  :width: 700
+  :autoplay:
+  :loop:
+  :nocontrols:
+  :muted:
 
 3.4 Tsunami simulation
 ----------------------

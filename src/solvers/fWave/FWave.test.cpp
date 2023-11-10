@@ -203,7 +203,7 @@ TEST_CASE("Test the derivation of the FWave net-updates.", "[FWaveUpdates]")
    *
    *          | 0.5 -0.0532217 |
    *   Rinv = |                |
-   *          | 0.5 0.0532217 |
+   *          | 0.5 0.0532217  |
    *
    * Multiplicaton with the jump in fluxes gives the wave strengths:
    *
@@ -309,4 +309,74 @@ TEST_CASE("Test the derivation of the FWave net-updates.", "[FWaveUpdates]")
 
   REQUIRE(l_netUpdatesR[0] == Approx(-90));
   REQUIRE(l_netUpdatesR[1] == Approx(-9900.002044988));
+}
+
+TEST_CASE("Test the derivation of the FWave net-updates with dry Cells.", "[FWaveUpdatesDryCells]")
+{
+  /*
+   * Test case (dry dry interface):
+   *
+   *     left | right
+   *   h:   0 | 0
+   *  hu:   0 | 0
+   *   b:  14 | 3
+   *
+   *  expecting no change
+   */
+  float l_netUpdatesL[2] = {-5, 3};
+  float l_netUpdatesR[2] = {4, 7};
+
+  tsunami_lab::solvers::FWave::netUpdates(0,
+                                          0,
+                                          0,
+                                          0,
+                                          14,
+                                          3,
+                                          l_netUpdatesL,
+                                          l_netUpdatesR);
+
+  REQUIRE(l_netUpdatesL[0] == 0);
+  REQUIRE(l_netUpdatesL[1] == 0);
+
+  REQUIRE(l_netUpdatesR[0] == 0);
+  REQUIRE(l_netUpdatesR[1] == 0);
+
+  /*
+   * Test case (dry wet interface):
+   *
+   *     left | right
+   *   h:   0 |  10
+   *  hu:   0 | -10
+   *   b:  10 |  -10
+   *
+   *  expecting reflecting condition:
+   *
+   *  left:  h = 10, hu = 10, b = -10
+   */
+  float l_netUpdatesL2[2] = {-5, 3};
+  float l_netUpdatesR2[2] = {4, 7};
+
+  tsunami_lab::solvers::FWave::netUpdates(0,
+                                          10,
+                                          0,
+                                          -10,
+                                          10,
+                                          -10,
+                                          l_netUpdatesL,
+                                          l_netUpdatesR);
+
+  tsunami_lab::solvers::FWave::netUpdates(10,
+                                          10,
+                                          10,
+                                          -10,
+                                          -10,
+                                          -10,
+                                          l_netUpdatesL2,
+                                          l_netUpdatesR2);
+
+  REQUIRE(l_netUpdatesL[0] == 0);
+  REQUIRE(l_netUpdatesL[1] == 0);
+
+  REQUIRE(l_netUpdatesR[0] == Approx(l_netUpdatesR2[0]));
+  REQUIRE(l_netUpdatesR[1] == Approx(l_netUpdatesR2[1]));
 }
