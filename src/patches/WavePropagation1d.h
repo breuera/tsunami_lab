@@ -11,14 +11,17 @@
 
 #include "WavePropagation.h"
 
-namespace tsunami_lab {
-namespace patches {
-class WavePropagation1d;
-}
-}  // namespace tsunami_lab
+namespace tsunami_lab
+{
+    namespace patches
+    {
+        class WavePropagation1d;
+    }
+} // namespace tsunami_lab
 
-class tsunami_lab::patches::WavePropagation1d : public WavePropagation {
-   private:
+class tsunami_lab::patches::WavePropagation1d : public WavePropagation
+{
+private:
     //! current step which indicates the active values in the arrays below
     unsigned short m_step = 0;
 
@@ -31,10 +34,10 @@ class tsunami_lab::patches::WavePropagation1d : public WavePropagation {
     //! momenta for the current and next time step for all cells
     t_real *m_hu[2] = {nullptr, nullptr};
 
-    //! bathometry for all cells
+    //! bathymetry for all cells
     t_real *m_b = nullptr;
 
-   public:
+public:
     /**
      * Constructs the 1d wave propagation solver.
      *
@@ -51,9 +54,9 @@ class tsunami_lab::patches::WavePropagation1d : public WavePropagation {
      * Performs a time step.
      *
      * @param i_scaling scaling of the time step (dt / dx).
-     * @param solver_choice type std::string, defines the choice of solver. Possible values: "roe" and "fwave".
+     * @param solver_choice type int, defines the choice of solver. Possible values: "roe" and "fwave".
      **/
-    void timeStep(t_real i_scaling, std::string solver_choice);
+    void timeStep(t_real i_scaling, int solver_choice);
 
     /**
      * Sets the values of the ghost cells according to outflow boundary conditions.
@@ -65,7 +68,8 @@ class tsunami_lab::patches::WavePropagation1d : public WavePropagation {
      *
      * @return stride in y-direction.
      **/
-    t_idx getStride() {
+    t_idx getStride()
+    {
         return m_nCells + 2;
     }
 
@@ -74,7 +78,8 @@ class tsunami_lab::patches::WavePropagation1d : public WavePropagation {
      *
      * @return water heights.
      */
-    t_real const *getHeight() {
+    t_real const *getHeight()
+    {
         return m_h[m_step] + 1;
     }
 
@@ -83,15 +88,27 @@ class tsunami_lab::patches::WavePropagation1d : public WavePropagation {
      *
      * @return momenta in x-direction.
      **/
-    t_real const *getMomentumX() {
+    t_real const *getMomentumX()
+    {
         return m_hu[m_step] + 1;
     }
 
     /**
      * Dummy function which returns a nullptr.
      **/
-    t_real const *getMomentumY() {
+    t_real const *getMomentumY()
+    {
         return nullptr;
+    }
+
+    /**
+     * Gets the cells' bathymetry.
+     *
+     * @return bathymetry.
+     **/
+    t_real const *getBathymetry()
+    {
+        return m_b + 1;
     }
 
     /**
@@ -102,7 +119,8 @@ class tsunami_lab::patches::WavePropagation1d : public WavePropagation {
      **/
     void setHeight(t_idx i_ix,
                    t_idx,
-                   t_real i_h) {
+                   t_real i_h)
+    {
         m_h[m_step][i_ix + 1] = i_h;
     }
 
@@ -114,7 +132,8 @@ class tsunami_lab::patches::WavePropagation1d : public WavePropagation {
      **/
     void setMomentumX(t_idx i_ix,
                       t_idx,
-                      t_real i_hu) {
+                      t_real i_hu)
+    {
         m_hu[m_step][i_ix + 1] = i_hu;
     }
 
@@ -124,6 +143,19 @@ class tsunami_lab::patches::WavePropagation1d : public WavePropagation {
     void setMomentumY(t_idx,
                       t_idx,
                       t_real){};
+
+    /**
+     * @brief Set the bathymetry
+     *
+     * @param i_ix id of the cell in x-direction.
+     * @param i_b bathymetry
+     */
+    void setBathymetry(t_idx i_ix,
+                       t_idx,
+                       t_real i_b)
+    {
+        m_b[i_ix + 1] = i_b;
+    }
 };
 
 #endif

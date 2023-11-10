@@ -8,7 +8,8 @@
 
 #include <catch2/catch.hpp>
 
-TEST_CASE("Test the 1d wave propagation roe-solver.", "[WaveProp1dRoe]") {
+TEST_CASE("Test the 1d wave propagation roe-solver.", "[WaveProp1dRoe]")
+{
     /*
      * Test case:
      *
@@ -29,50 +30,65 @@ TEST_CASE("Test the 1d wave propagation roe-solver.", "[WaveProp1dRoe]") {
     // construct solver and setup a dambreak problem
     tsunami_lab::patches::WavePropagation1d m_waveProp(100);
 
-    for (std::size_t l_ce = 0; l_ce < 50; l_ce++) {
+    for (std::size_t l_ce = 0; l_ce < 50; l_ce++)
+    {
         m_waveProp.setHeight(l_ce,
                              0,
                              10);
         m_waveProp.setMomentumX(l_ce,
                                 0,
                                 0);
+        m_waveProp.setBathymetry(l_ce,
+                                 0,
+                                 0);
     }
-    for (std::size_t l_ce = 50; l_ce < 100; l_ce++) {
+    for (std::size_t l_ce = 50; l_ce < 100; l_ce++)
+    {
         m_waveProp.setHeight(l_ce,
                              0,
                              8);
         m_waveProp.setMomentumX(l_ce,
                                 0,
                                 0);
+        m_waveProp.setBathymetry(l_ce,
+                                 0,
+                                 0);
     }
 
     // set outflow boundary condition
     m_waveProp.setGhostOutflow();
 
     // perform a time step
-    m_waveProp.timeStep(0.1, "roe");
+    m_waveProp.timeStep(0.1, 0);
 
     // steady state
-    for (std::size_t l_ce = 0; l_ce < 49; l_ce++) {
+    for (std::size_t l_ce = 0; l_ce < 49; l_ce++)
+    {
         REQUIRE(m_waveProp.getHeight()[l_ce] == Approx(10));
         REQUIRE(m_waveProp.getMomentumX()[l_ce] == Approx(0));
+        REQUIRE(m_waveProp.getBathymetry()[l_ce] == Approx(0));
     }
 
     // dam-break
     REQUIRE(m_waveProp.getHeight()[49] == Approx(10 - 0.1 * 9.394671362));
     REQUIRE(m_waveProp.getMomentumX()[49] == Approx(0 + 0.1 * 88.25985));
+    REQUIRE(m_waveProp.getBathymetry()[49] == Approx(0));
 
     REQUIRE(m_waveProp.getHeight()[50] == Approx(8 + 0.1 * 9.394671362));
     REQUIRE(m_waveProp.getMomentumX()[50] == Approx(0 + 0.1 * 88.25985));
+    REQUIRE(m_waveProp.getBathymetry()[50] == Approx(0));
 
     // steady state
-    for (std::size_t l_ce = 51; l_ce < 100; l_ce++) {
+    for (std::size_t l_ce = 51; l_ce < 100; l_ce++)
+    {
         REQUIRE(m_waveProp.getHeight()[l_ce] == Approx(8));
         REQUIRE(m_waveProp.getMomentumX()[l_ce] == Approx(0));
+        REQUIRE(m_waveProp.getBathymetry()[l_ce] == Approx(0));
     }
 }
 
-TEST_CASE("Test the 1d wave propagation fwave-solver.", "[WaveProp1dFWave]") {
+TEST_CASE("Test the 1d wave propagation fwave-solver.", "[WaveProp1dFWave]")
+{
     /*
      * Test case:
      *
@@ -93,15 +109,24 @@ TEST_CASE("Test the 1d wave propagation fwave-solver.", "[WaveProp1dFWave]") {
     // construct solver and setup a dambreak problem
     tsunami_lab::patches::WavePropagation1d m_waveProp(100);
 
-    for (std::size_t l_ce = 0; l_ce < 50; l_ce++) {
+    for (std::size_t l_ce = 0; l_ce < 50; l_ce++)
+    {
         m_waveProp.setHeight(l_ce,
                              0,
                              10);
         m_waveProp.setMomentumX(l_ce,
                                 0,
                                 0);
+        m_waveProp.setBathymetry(l_ce,
+                                 0,
+                                 0);
     }
-    for (std::size_t l_ce = 50; l_ce < 100; l_ce++) {
+    for (std::size_t l_ce = 50; l_ce < 100; l_ce++)
+    {
+
+        m_waveProp.setBathymetry(l_ce,
+                                 0,
+                                 0);
         m_waveProp.setHeight(l_ce,
                              0,
                              8);
@@ -114,29 +139,36 @@ TEST_CASE("Test the 1d wave propagation fwave-solver.", "[WaveProp1dFWave]") {
     m_waveProp.setGhostOutflow();
 
     // perform a time step
-    m_waveProp.timeStep(0.1, "fwave");
+    m_waveProp.timeStep(0.1, 1);
 
     // steady state
-    for (std::size_t l_ce = 0; l_ce < 49; l_ce++) {
+    for (std::size_t l_ce = 0; l_ce < 49; l_ce++)
+    {
         REQUIRE(m_waveProp.getHeight()[l_ce] == Approx(10));
         REQUIRE(m_waveProp.getMomentumX()[l_ce] == Approx(0));
+        REQUIRE(m_waveProp.getBathymetry()[l_ce] == Approx(0));
     }
 
     // dam-break
     REQUIRE(m_waveProp.getHeight()[49] == Approx(10 - 0.1 * 9.39468));
     REQUIRE(m_waveProp.getMomentumX()[49] == Approx(0 + 0.1 * 88.2599));
+    REQUIRE(m_waveProp.getBathymetry()[49] == Approx(0));
 
     REQUIRE(m_waveProp.getHeight()[50] == Approx(8 + 0.1 * 9.39468));
     REQUIRE(m_waveProp.getMomentumX()[50] == Approx(0 + 0.1 * 88.2599));
+    REQUIRE(m_waveProp.getBathymetry()[50] == Approx(0));
 
     // steady state
-    for (std::size_t l_ce = 51; l_ce < 100; l_ce++) {
+    for (std::size_t l_ce = 51; l_ce < 100; l_ce++)
+    {
         REQUIRE(m_waveProp.getHeight()[l_ce] == Approx(8));
         REQUIRE(m_waveProp.getMomentumX()[l_ce] == Approx(0));
+        REQUIRE(m_waveProp.getBathymetry()[l_ce] == Approx(0));
     }
 }
 
-TEST_CASE("Test the 1d wave propagation fwave-solver shock-shock.", "[WaveProp1dFWaveShockShock]") {
+TEST_CASE("Test the 1d wave propagation fwave-solver shock-shock.", "[WaveProp1dFWaveShockShock]")
+{
     /**
      * @brief test steady state from middle_states.csv in the Shock-Shock Problem
      * (Riemann Solutions obtained by Alexander Breuer)
@@ -151,7 +183,8 @@ TEST_CASE("Test the 1d wave propagation fwave-solver shock-shock.", "[WaveProp1d
     // construct solver and setup a shock-shock problem
     tsunami_lab::patches::WavePropagation1d m_waveProp(100);
 
-    for (std::size_t l_ce = 0; l_ce < 50; l_ce++) {
+    for (std::size_t l_ce = 0; l_ce < 50; l_ce++)
+    {
         m_waveProp.setHeight(l_ce,
                              0,
                              8899.326826472694);
@@ -159,7 +192,8 @@ TEST_CASE("Test the 1d wave propagation fwave-solver shock-shock.", "[WaveProp1d
                                 0,
                                 122.0337839252433);
     }
-    for (std::size_t l_ce = 50; l_ce < 100; l_ce++) {
+    for (std::size_t l_ce = 50; l_ce < 100; l_ce++)
+    {
         m_waveProp.setHeight(l_ce,
                              0,
                              8899.326826472694);
@@ -172,8 +206,9 @@ TEST_CASE("Test the 1d wave propagation fwave-solver shock-shock.", "[WaveProp1d
     m_waveProp.setGhostOutflow();
 
     // perform a time step
-    for (int i = 0; i < 30; i++) {
-        m_waveProp.timeStep(0.001, "fwave");
+    for (int i = 0; i < 30; i++)
+    {
+        m_waveProp.timeStep(0.001, 1);
     }
 
     // test for hStar
@@ -181,7 +216,8 @@ TEST_CASE("Test the 1d wave propagation fwave-solver shock-shock.", "[WaveProp1d
     REQUIRE(m_waveProp.getHeight()[50] == Approx(8899.739847378269));
 }
 
-TEST_CASE("Test the 1d wave propagation FWave solver rare-rare.", "[WaveProp1dFWaveRareRare]") {
+TEST_CASE("Test the 1d wave propagation FWave solver rare-rare.", "[WaveProp1dFWaveRareRare]")
+{
     /**
      * @brief test steady state from middle_states.csv in the Shock-Shock Problem
      * (Riemann Solutions obtained by Alexander Breuer)
@@ -196,7 +232,8 @@ TEST_CASE("Test the 1d wave propagation FWave solver rare-rare.", "[WaveProp1dFW
     // construct solver and setup a shock-shock problem
     tsunami_lab::patches::WavePropagation1d m_waveProp(100);
 
-    for (std::size_t l_ce = 0; l_ce < 50; l_ce++) {
+    for (std::size_t l_ce = 0; l_ce < 50; l_ce++)
+    {
         m_waveProp.setHeight(l_ce,
                              0,
                              9976.904476606509);
@@ -204,7 +241,8 @@ TEST_CASE("Test the 1d wave propagation FWave solver rare-rare.", "[WaveProp1dFW
                                 0,
                                 -906.6229611756387);
     }
-    for (std::size_t l_ce = 50; l_ce < 100; l_ce++) {
+    for (std::size_t l_ce = 50; l_ce < 100; l_ce++)
+    {
         m_waveProp.setHeight(l_ce,
                              0,
                              9976.904476606509);
@@ -217,8 +255,9 @@ TEST_CASE("Test the 1d wave propagation FWave solver rare-rare.", "[WaveProp1dFW
     m_waveProp.setGhostOutflow();
 
     // perform a time step
-    for (int i = 0; i < 30; i++) {
-        m_waveProp.timeStep(0.001, "fwave");
+    for (int i = 0; i < 30; i++)
+    {
+        m_waveProp.timeStep(0.001, 1);
     }
 
     // test for h*

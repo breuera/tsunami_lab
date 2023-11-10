@@ -35,7 +35,7 @@ tsunami_lab::patches::WavePropagation1d::~WavePropagation1d()
     delete[] m_b;
 }
 
-void tsunami_lab::patches::WavePropagation1d::timeStep(t_real i_scaling, std::string solver_choice)
+void tsunami_lab::patches::WavePropagation1d::timeStep(t_real i_scaling, int solver_choice)
 {
     // pointers to old and new data
     t_real *l_hOld = m_h[m_step];
@@ -64,7 +64,7 @@ void tsunami_lab::patches::WavePropagation1d::timeStep(t_real i_scaling, std::st
         // compute net-updates
         t_real l_netUpdates[2][2];
 
-        if (solver_choice == "roe")
+        if (solver_choice == 1)
         {
             solvers::Roe::netUpdates(l_hOld[l_ceL],
                                      l_hOld[l_ceR],
@@ -73,7 +73,7 @@ void tsunami_lab::patches::WavePropagation1d::timeStep(t_real i_scaling, std::st
                                      l_netUpdates[0],
                                      l_netUpdates[1]);
         }
-        else if (solver_choice == "fwave")
+        else if (solver_choice == 0)
         {
             solvers::FWave::netUpdates(l_hOld[l_ceL],
                                        l_hOld[l_ceR],

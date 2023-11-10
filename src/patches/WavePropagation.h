@@ -31,9 +31,9 @@ public:
    * Performs a time step.
    *
    * @param i_scaling scaling of the time step.
-   * @param solver_choice type std::string, defines the choice of solver. Possible values: "roe" and "fwave".
+   * @param solver_choice type int, defines the choice of solver. Possible values: "roe" and "fwave".
    **/
-  virtual void timeStep(t_real i_scaling, std::string solver_choice) = 0;
+  virtual void timeStep(t_real i_scaling, int solver_choice) = 0;
 
   /**
    * Sets the values of the ghost cells according to outflow boundary conditions.
@@ -69,6 +69,13 @@ public:
   virtual t_real const *getMomentumY() = 0;
 
   /**
+   * Gets the cells' bathymetry.
+   *
+   * @return bathymetry.
+   **/
+  virtual t_real const *getBathymetry() = 0;
+
+  /**
    * Sets the height of the cell to the given value.
    *
    * @param i_ix id of the cell in x-direction.
@@ -100,6 +107,17 @@ public:
   virtual void setMomentumY(t_idx i_ix,
                             t_idx i_iy,
                             t_real i_hv) = 0;
+
+  /**
+   * @brief Set the Bathymetry
+   *
+   * @param i_ix id of the cell in x-direction.
+   * @param i_iy id of the cell in y-direction.
+   * @param i_b bathymetry
+   */
+  virtual void setBathymetry(t_idx i_ix,
+                             t_idx i_iy,
+                             t_real i_b) = 0;
 };
 
 #endif
