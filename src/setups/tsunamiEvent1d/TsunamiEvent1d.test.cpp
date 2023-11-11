@@ -12,8 +12,6 @@
 
 TEST_CASE("Test the one-dimensional tsunamievent setup.", "[TsunamiEvent1d]")
 {
-  // todo: FIX THIS TEST
-  // get rapidcsv::Document and row count from CSV file
   rapidcsv::Document l_doc;
   size_t l_rowCount;
   tsunami_lab::io::Csv::openCSV("src/data/test.csv", l_doc, l_rowCount);
@@ -53,21 +51,18 @@ TEST_CASE("Test the one-dimensional tsunamievent setup.", "[TsunamiEvent1d]")
 
   REQUIRE(l_tsunamievent.getMomentumY(b_in_ltz_ltd, 0) == 0);
 
-  //d = 9.1354551276011
   REQUIRE(l_tsunamievent.getBathymetry(b_in_ltz_ltd, 0) == -20.0f);
 
-  // b_in > 0
+  // b_in = 1.0
   REQUIRE(l_tsunamievent.getHeight(b_in_gtz, 0) == 0);
 
   REQUIRE(l_tsunamievent.getMomentumX(b_in_gtz, 0) == 0);
 
   REQUIRE(l_tsunamievent.getMomentumY(b_in_gtz, 0) == 0);
 
-  //d = 9.2977609298701
   REQUIRE(l_tsunamievent.getBathymetry(b_in_gtz, 0) == 20.0f);
 
-  // b_in > 20
-
+  // b_in = 25.0
   REQUIRE(l_tsunamievent.getHeight(b_in_gtz_htd, 0) == 0);
 
   REQUIRE(l_tsunamievent.getMomentumX(b_in_gtz_htd, 0) == 0);
