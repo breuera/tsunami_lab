@@ -101,6 +101,36 @@ void tsunami_lab::solvers::FWave::netUpdates(t_real i_hL,
                                              t_real o_netUpdateL[2],
                                              t_real o_netUpdateR[2])
 {
+    // both sides are dry -> exit 0
+    if (i_hL <= 0 && i_hR <= 0)
+    {
+        o_netUpdateL[0] = 0;
+        o_netUpdateL[1] = 0;
+        o_netUpdateR[0] = 0;
+        o_netUpdateR[1] = 0;
+        return;
+    }
+
+    bool do_update_left = true;
+    bool do_update_right = true;
+
+    // left side dry -> reflect to right
+    if (i_hL <= 0)
+    {
+        i_hL = i_hR;
+        i_huL = -i_huR;
+        i_bL = i_bR;
+        do_update_left = false;
+    }
+    // right side dry -> reflect to left
+    else if (i_hR <= 0)
+    {
+        i_hR = i_hL;
+        i_huR = -i_huL;
+        i_bR = i_bL;
+        do_update_right = false;
+    }
+
     // compute particle velocities
     t_real l_uL = i_huL / i_hL;
     t_real l_uR = i_huR / i_hR;
@@ -135,7 +165,7 @@ void tsunami_lab::solvers::FWave::netUpdates(t_real i_hL,
         o_netUpdateR[l_qt] = 0;
 
         // 1st wave
-        if (l_sL < 0)
+        if (l_sL < 0 && do_update_left)
         {
             o_netUpdateL[l_qt] += l_waveL[l_qt];
         }
@@ -145,7 +175,7 @@ void tsunami_lab::solvers::FWave::netUpdates(t_real i_hL,
         }
 
         // 2nd wave
-        if (l_sR > 0)
+        if (l_sR > 0 && do_update_right)
         {
             o_netUpdateR[l_qt] += l_waveR[l_qt];
         }
