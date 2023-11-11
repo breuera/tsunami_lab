@@ -11,11 +11,11 @@ Links
 Individual Contributions
 ------------------------
 
-Justus Dreßler: Implemented Bathymetry and some project documentation
+Justus Dreßler: all members contributed equally
 
-Thorsten Kröhl: Implemented CSV reader and DEM
+Thorsten Kröhl: all members contributed equally
 
-Julius Halank: Implemented DEM
+Julius Halank: all members contributed equally
 
 3.1 Non-zero Source Term
 ------------------------
@@ -291,45 +291,19 @@ You can see a distinct spike in momentum around :math:`x_{id}=46` which is the f
 3.4 Tsunami simulation
 ----------------------
 
-..
-  todo: einordnen in den allgemeinen Aufbau
+We will use a csvReader library `rapidcsv <https://github.com/d99kris/rapidcsv>`_ in our reader.
+Is a header only library that you can include by just adding the header file to your project.
 
-We will use for our csv reader a already existing one.
-https://github.com/d99kris/rapidcsv
-Is a simple csv reader that you can include by just adding the header file to your project.
-
-Usage:
-
-.. code:: cpp
-
-  Date,Open,High,Low,Close,Volume,Adj Close
-  2017-02-24,64.529999,64.800003,64.139999,64.620003,21705200,64.620003
-  2017-02-23,64.419998,64.730003,64.190002,64.620003,20235200,64.620003
-  2017-02-22,64.330002,64.389999,64.050003,64.360001,19259700,64.360001
-  2017-02-21,64.610001,64.949997,64.449997,64.489998,19384900,64.489998
-  2017-02-17,64.470001,64.690002,64.300003,64.620003,21234600,64.620003
-
-.. code:: cpp
-
-  #include <iostream>
-  #include <vector>
-  #include "rapidcsv.h"
-
-  int main()
-  {
-    rapidcsv::Document doc("examples/colrowhdr.csv", rapidcsv::LabelParams(0, 0));
-
-    std::vector<float> close = doc.GetRow<float>("2017-02-22");
-    std::cout << "Read " << close.size() << " values." << std::endl;
-
-    long long volume = doc.GetCell<long long>("Volume", "2017-02-22");
-    std::cout << "Volume " << volume << " on 2017-02-22." << std::endl;
-  }
 
 3.4.1 Extract bathymetry data with 250m sampling
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Looks like this ..:
+after applying the following commands to the cut bathymetry grid we get the following csv (only excerpt shown)
+
+.. code:: console
+
+  gmt grdtrack -GGeco.nc -E141.024949/37.316569/146.0/37.316569+i250e+d -Ar > data.csv
+  cat data.csv | tr -s '[:blank:]'' ',' > data.csv
 
 .. code:: cpp
   141.024949,37.316569,0,-8.39972685779
@@ -349,17 +323,125 @@ Looks like this ..:
 3.4.2 Extend CSV class with reader for bathymetry data
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Use rapidcsv to read the csv file and access the fourth column of it.
+The param :code:`rapidcsv::LabelParams(-1, -1)` is used to tell the reader that the csv file has no header and no index column.
 
+.. code:: cpp
+
+  void tsunami_lab::io::Csv::openCSV(const std::string &i_filePath, rapidcsv::Document &o_doc, size_t &o_rowCount)
+  {
+  // assume headless csv
+  o_doc = rapidcsv::Document(i_filePath, rapidcsv::LabelParams(-1, -1));
+  o_rowCount = o_doc.GetRowCount();
+  }
+
+  tsunami_lab::t_real tsunami_lab::io::Csv::readLine(const rapidcsv::Document &i_doc, size_t i_row)
+  {
+  float o_row = i_doc.GetRow<float>(i_row)[3];
+  return o_row;
+  }
 
 3.4.3 Implement a setup that initializes 1d tsunamis
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Added a TsunamiEvent1d setup that uses a :code:`rapidcsv::document` csv file to read the bathymetry data and a function to calculate the displacement.
+
+.. code:: cpp
+
+  tsunami_lab::setups::TsunamiEvent1d::TsunamiEvent1d(rapidcsv::Document i_doc, size_t i_rowCount)
+  {
+  m_doc = i_doc;
+  m_rowCount = i_rowCount;
+  }
+
+The displacement function is just a simple sine function between 175km and 225km.
+
+.. code:: cpp
+
+  tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent1d::getDisplacement(t_real i_x) const
+  {
+  if (175000 < i_x && i_x < 225000)
+  {
+    return 10 * std::sin(M_PI * (i_x - 175000) / 37500 + M_PI);
+  }
+  else
+  {
+    return 0;
+  }
+  }
+
+And the bathymetry gets read of the csv file and the displacement is added to it.
+A :math:`\delta` (minimum offset from 0m height) of 20m is used so we don't run into numeric problems with cells wetting and drying.
+
+.. code:: cpp
+
+  tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent1d::getBathymetry(t_real i_x,
+                                                                       t_real) const
+  {
+  t_real l_bin = getBathymetryBin(i_x);
+  if (l_bin < 0)
+  {
+    // min(bin, -delta) + d
+    if (l_bin < -m_delta)
+      return l_bin + getDisplacement(i_x);
+    else
+      return -m_delta + getDisplacement(i_x);
+  }
+  // max(bin, delta) + d
+  if (l_bin > m_delta)
+    return l_bin + getDisplacement(i_x);
+  else
+    return m_delta + getDisplacement(i_x);
+  }
+
+  tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent1d::getBathymetryBin(t_real i_x) const
+  {
+  // convert i_x to cell index (assuming 250m cells)
+  int l_row = i_x / 250;
+  return io::Csv::readLine(m_doc, l_row);
+  }
+
 3.4.4 Visualize the tsunami setup
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. video:: _static/Tsunami1d.mp4
+  :width: 700
+  :autoplay:
+  :loop:
+  :nocontrols:
+  :muted:
+
+The Tsunami Setup simulated over an hour of time.
 
 3.4.5 Impact of different initial displacements
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+.. video:: _static/Tsunami1d_2.mp4
+  :width: 700
+  :autoplay:
+  :loop:
+  :nocontrols:
+  :muted:
 
+A version with twice the initial displacement.
+(instead of :math:`10 \sin(\frac{(x - 175000)}{37500}\pi+ \pi)` we used :math:`20 \sin(\frac{(x - 175000)}{37500}\pi  + \pi)`).
+The momentum traveling to both sides of the simulations are roughly twice as high. 
+Maybe a linear relationship between the initial displacement and the momentum is present?
 
+.. video:: _static/Tsunami1d_20.mp4
+  :width: 700
+  :autoplay:
+  :loop:
+  :nocontrols:
+  :muted:
 
+.. video:: _static/Tsunami1d_20_onlyHeight.mp4
+  :width: 700
+  :autoplay:
+  :loop:
+  :nocontrols:
+  :muted:
+
+A version with a static 20 meter displacement in between 175km and 225km and a left reflective boundary.
+It seems to travel as a single big wave towards japan mainland hitting it with roughly 15m height and getting reflected to roughly half the height.
+The lower video is just the height of the water without the momentum and bathymetry.
