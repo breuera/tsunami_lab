@@ -28,7 +28,7 @@ TEST_CASE("Test the 1d wave propagation roe-solver.", "[WaveProp1dRoe]")
      */
 
     // construct solver and setup a dambreak problem
-    tsunami_lab::patches::WavePropagation1d m_waveProp(100);
+    tsunami_lab::patches::WavePropagation1d m_waveProp(100, 0, 0, 0);
 
     for (std::size_t l_ce = 0; l_ce < 50; l_ce++)
     {
@@ -59,7 +59,7 @@ TEST_CASE("Test the 1d wave propagation roe-solver.", "[WaveProp1dRoe]")
     m_waveProp.setGhostOutflow();
 
     // perform a time step
-    m_waveProp.timeStep(0.1, 0);
+    m_waveProp.timeStep(0.1);
 
     // steady state
     for (std::size_t l_ce = 0; l_ce < 49; l_ce++)
@@ -107,7 +107,7 @@ TEST_CASE("Test the 1d wave propagation fwave-solver.", "[WaveProp1dFWave]")
      */
 
     // construct solver and setup a dambreak problem
-    tsunami_lab::patches::WavePropagation1d m_waveProp(100);
+    tsunami_lab::patches::WavePropagation1d m_waveProp(100, 1, 0, 0);
 
     for (std::size_t l_ce = 0; l_ce < 50; l_ce++)
     {
@@ -139,7 +139,7 @@ TEST_CASE("Test the 1d wave propagation fwave-solver.", "[WaveProp1dFWave]")
     m_waveProp.setGhostOutflow();
 
     // perform a time step
-    m_waveProp.timeStep(0.1, 1);
+    m_waveProp.timeStep(0.1);
 
     // steady state
     for (std::size_t l_ce = 0; l_ce < 49; l_ce++)
@@ -181,7 +181,7 @@ TEST_CASE("Test the 1d wave propagation fwave-solver shock-shock.", "[WaveProp1d
      */
 
     // construct solver and setup a shock-shock problem
-    tsunami_lab::patches::WavePropagation1d m_waveProp(100);
+    tsunami_lab::patches::WavePropagation1d m_waveProp(100, 1, 0, 0);
 
     for (std::size_t l_ce = 0; l_ce < 50; l_ce++)
     {
@@ -208,7 +208,7 @@ TEST_CASE("Test the 1d wave propagation fwave-solver shock-shock.", "[WaveProp1d
     // perform a time step
     for (int i = 0; i < 30; i++)
     {
-        m_waveProp.timeStep(0.001, 1);
+        m_waveProp.timeStep(0.001);
     }
 
     // test for hStar
@@ -230,7 +230,7 @@ TEST_CASE("Test the 1d wave propagation FWave solver rare-rare.", "[WaveProp1dFW
      */
 
     // construct solver and setup a shock-shock problem
-    tsunami_lab::patches::WavePropagation1d m_waveProp(100);
+    tsunami_lab::patches::WavePropagation1d m_waveProp(100, 1, 0, 0);
 
     for (std::size_t l_ce = 0; l_ce < 50; l_ce++)
     {
@@ -257,7 +257,7 @@ TEST_CASE("Test the 1d wave propagation FWave solver rare-rare.", "[WaveProp1dFW
     // perform a time step
     for (int i = 0; i < 30; i++)
     {
-        m_waveProp.timeStep(0.001, 1);
+        m_waveProp.timeStep(0.001);
     }
 
     // test for h*

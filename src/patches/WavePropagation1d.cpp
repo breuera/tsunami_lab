@@ -13,9 +13,15 @@
 #include "../solvers/f-wave/F_wave.h"
 #include "../solvers/roe/Roe.h"
 
-tsunami_lab::patches::WavePropagation1d::WavePropagation1d(t_idx i_nCells)
+tsunami_lab::patches::WavePropagation1d::WavePropagation1d(t_idx i_nCells,
+                                                           int solver_choice,
+                                                           int state_boundary_left,
+                                                           int state_boundary_right)
 {
     m_nCells = i_nCells;
+    m_solver_choice = solver_choice;
+    m_state_boundary_left = state_boundary_left;
+    m_state_boundary_right = state_boundary_right;
     // allocate memory including a single ghost cell on each side and initializing with 0
     for (unsigned short l_st = 0; l_st < 2; l_st++)
     {
@@ -35,7 +41,7 @@ tsunami_lab::patches::WavePropagation1d::~WavePropagation1d()
     delete[] m_b;
 }
 
-void tsunami_lab::patches::WavePropagation1d::timeStep(t_real i_scaling, int solver_choice)
+void tsunami_lab::patches::WavePropagation1d::timeStep(t_real i_scaling)
 {
     // pointers to old and new data
     t_real *l_hOld = m_h[m_step];
@@ -64,7 +70,7 @@ void tsunami_lab::patches::WavePropagation1d::timeStep(t_real i_scaling, int sol
         // compute net-updates
         t_real l_netUpdates[2][2];
 
-        if (solver_choice == 1)
+        if (m_solver_choice == 1)
         {
             solvers::Roe::netUpdates(l_hOld[l_ceL],
                                      l_hOld[l_ceR],
@@ -73,7 +79,7 @@ void tsunami_lab::patches::WavePropagation1d::timeStep(t_real i_scaling, int sol
                                      l_netUpdates[0],
                                      l_netUpdates[1]);
         }
-        else if (solver_choice == 0)
+        else if (m_solver_choice == 0)
         {
             solvers::FWave::netUpdates(l_hOld[l_ceL],
                                        l_hOld[l_ceR],
@@ -105,12 +111,42 @@ void tsunami_lab::patches::WavePropagation1d::setGhostOutflow()
     t_real *l_b = m_b;
 
     // set left boundary
-    l_h[0] = l_h[1];
-    l_hu[0] = l_hu[1];
-    l_b[0] = l_b[1];
+    switch (m_state_boundary_left)
+    {
+    // open
+    case 0:
+        l_h[0] = l_h[1];
+        l_hu[0] = l_hu[1];
+        l_b[0] = l_b[1];
+        break;
+    // closed
+    case 1:
+        l_h[0] = l_h[1];
+        l_hu[0] = -l_hu[1];
+        l_b[0] = l_b[1];
+        break;
+
+    default:
+        break;
+    }
 
     // set right boundary
-    l_h[m_nCells + 1] = l_h[m_nCells];
-    l_hu[m_nCells + 1] = l_hu[m_nCells];
-    l_b[m_nCells + 1] = l_b[m_nCells];
+    switch (m_state_boundary_right)
+    {
+    // open
+    case 0:
+        l_h[m_nCells + 1] = l_h[m_nCells];
+        l_hu[m_nCells + 1] = l_hu[m_nCells];
+        l_b[m_nCells + 1] = l_b[m_nCells];
+        break;
+    // closed
+    case 1:
+        l_h[m_nCells + 1] = l_h[m_nCells];
+        l_hu[m_nCells + 1] = -l_hu[m_nCells];
+        l_b[m_nCells + 1] = l_b[m_nCells];
+        break;
+
+    default:
+        break;
+    }
 }

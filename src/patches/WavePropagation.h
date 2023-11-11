@@ -31,9 +31,8 @@ public:
    * Performs a time step.
    *
    * @param i_scaling scaling of the time step.
-   * @param solver_choice type int, defines the choice of solver. Possible values: "roe" and "fwave".
    **/
-  virtual void timeStep(t_real i_scaling, int solver_choice) = 0;
+  virtual void timeStep(t_real i_scaling) = 0;
 
   /**
    * Sets the values of the ghost cells according to outflow boundary conditions.

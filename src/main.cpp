@@ -27,6 +27,8 @@
 
 // declaration of variables
 int solver_choice = 0;
+int state_boundary_left = 0;
+int state_boundary_right = 0;
 
 int main(int i_argc,
          char *i_argv[])
@@ -64,10 +66,12 @@ int main(int i_argc,
     if ((i_argc < 2) || (i_argv[i_argc - 1][0] == '-'))
     {
         std::cerr << "invalid number of arguments OR wrong order, usage:" << std::endl;
-        std::cerr << "  ./build/tsunami_lab [-v SOLVER] [-s SETUP] N_CELLS_X" << std::endl;
+        std::cerr << "  ./build/tsunami_lab [-v SOLVER] [-s SETUP] [-l STATE_LEFT] [-r STATE_RIGHT] N_CELLS_X" << std::endl;
         std::cerr << "where N_CELLS_X is the number of cells in x-direction." << std::endl;
         std::cerr << "-v SOLVER = 'roe','fwave', default is 'fwave'" << std::endl;
         std::cerr << "-s SETUP  = 'dambreak h_l h_r','rarerare h hu','shockshock h hu', default is 'dambreak 15 7'" << std::endl;
+        std::cerr << "-l STATE_LEFT = 'open','closed', default is 'open'" << std::endl;
+        std::cerr << "-r STATE_RIGHT = 'open','closed', default is 'open'" << std::endl;
         return EXIT_FAILURE;
     }
     else
@@ -195,6 +199,52 @@ int main(int i_argc,
             }
             break;
         }
+        case 'l':
+        {
+            if (std::string(optarg) == "open")
+            {
+                std::cout << "left-boundary open" << std::endl;
+                state_boundary_left = 0;
+            }
+            else if (std::string(optarg) == "close")
+            {
+                std::cout << "left-boundary closed" << std::endl;
+                state_boundary_left = 1;
+            }
+            else
+            {
+                std::cerr
+                    << "unknown state "
+                    << std::string(optarg) << std::endl
+                    << "possible options are: 'open' or 'closed'" << std::endl
+                    << "be sure to only type in lower-case" << std::endl;
+                return EXIT_FAILURE;
+            }
+            break;
+        }
+        case 'r':
+        {
+            if (std::string(optarg) == "open")
+            {
+                std::cout << "right-boundary open" << std::endl;
+                state_boundary_right = 0;
+            }
+            else if (std::string(optarg) == "close")
+            {
+                std::cout << "right-boundary closed" << std::endl;
+                state_boundary_right = 1;
+            }
+            else
+            {
+                std::cerr
+                    << "unknown state "
+                    << std::string(optarg) << std::endl
+                    << "possible options are: 'open' or 'closed'" << std::endl
+                    << "be sure to only type in lower-case" << std::endl;
+                return EXIT_FAILURE;
+            }
+            break;
+        }
         // unknown option
         case '?':
         {
@@ -215,7 +265,10 @@ int main(int i_argc,
 
     // construct solver
     tsunami_lab::patches::WavePropagation *l_waveProp;
-    l_waveProp = new tsunami_lab::patches::WavePropagation1d(l_nx);
+    l_waveProp = new tsunami_lab::patches::WavePropagation1d(l_nx,
+                                                             solver_choice,
+                                                             state_boundary_left,
+                                                             state_boundary_right);
 
     // maximum observed height in the setup
     tsunami_lab::t_real l_hMax = std::numeric_limits<tsunami_lab::t_real>::lowest();
@@ -298,7 +351,7 @@ int main(int i_argc,
         }
 
         l_waveProp->setGhostOutflow();
-        l_waveProp->timeStep(l_scaling, solver_choice);
+        l_waveProp->timeStep(l_scaling);
 
         l_timeStep++;
         l_simTime += l_dt;
