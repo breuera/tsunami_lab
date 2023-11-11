@@ -246,7 +246,7 @@ Observations:
 The higher the momenta the higher the middlestate height is. But it doesn't affect the wavespeeds whatsoever.
 The higher the initial heights are, the higher the middlestate is and the faster the wavespeeds are.
 
-.. video:: _static/ShockShock1d_10_50.mp4
+.. video:: _static/2_ShockShock1d_10_50.mp4
   :width: 700
   :autoplay:
   :loop:
@@ -255,7 +255,7 @@ The higher the initial heights are, the higher the middlestate is and the faster
 
 Shock-Shock problem with h=10 and u=5
 
-.. video:: _static/ShockShock1d_10_100.mp4
+.. video:: _static/2_ShockShock1d_10_100.mp4
   :width: 700
   :autoplay:
   :loop:
@@ -264,7 +264,7 @@ Shock-Shock problem with h=10 and u=5
 
 Shock-Shock problem with h=10 and u=10
 
-.. video:: _static/ShockShock1d_40_200.mp4
+.. video:: _static/2_ShockShock1d_40_200.mp4
   :width: 700
   :autoplay:
   :loop:
@@ -273,7 +273,7 @@ Shock-Shock problem with h=10 and u=10
 
 Shock-Shock problem with h=40 and u=5
 
-.. video:: _static/RareRare1d_10_25.mp4
+.. video:: _static/2_RareRare1d_10_25.mp4
   :width: 700
   :autoplay:
   :loop:
@@ -282,7 +282,7 @@ Shock-Shock problem with h=40 and u=5
 
 Rare-Rare problem with h=10 and u=2.5
 
-.. video:: _static/RareRare1d_10_50.mp4
+.. video:: _static/2_RareRare1d_10_50.mp4
   :width: 700
   :autoplay:
   :loop:
@@ -291,7 +291,7 @@ Rare-Rare problem with h=10 and u=2.5
 
 Rare-Rare problem with h=10 and u=5
 
-.. video:: _static/RareRare1d_40_200.mp4
+.. video:: _static/2_RareRare1d_40_200.mp4
   :width: 700
   :autoplay:
   :loop:
@@ -324,7 +324,7 @@ The wavespeed of the shock wave is seemingly unaffected by the right height whil
 The wavespeed of the shock wave seems to be proportional to the square root of the left height.
 The wavespeed of the shockwave does get faster the higher the initial momentum on the right side is, but it seems to be an overall minor impact.
 
-.. video:: _static/DamBreak1d_10_2.mp4
+.. video:: _static/3_2_DamBreak1d_10_2.mp4
   :width: 700
   :autoplay:
   :loop:
@@ -333,7 +333,7 @@ The wavespeed of the shockwave does get faster the higher the initial momentum o
 
 Dam-Break problem with h_l=10 and h_r=2 and hu = 0
 
-.. video:: _static/DamBreak1d_10_6.mp4
+.. video:: _static/2_DamBreak1d_10_6.mp4
   :width: 700
   :autoplay:
   :loop:
@@ -342,7 +342,7 @@ Dam-Break problem with h_l=10 and h_r=2 and hu = 0
 
 Dam-Break problem with h_l=10 and h_r=6 and hu = 0
 
-.. video:: _static/DamBreak1d_40_8.mp4
+.. video:: _static/2_DamBreak1d_40_8.mp4
   :width: 700
   :autoplay:
   :loop:
@@ -351,7 +351,7 @@ Dam-Break problem with h_l=10 and h_r=6 and hu = 0
 
 Dam-Break problem with h_l=40 and h_r=8 and hu = 0
 
-.. video:: _static/DamBreak1d_40_32.mp4
+.. video:: _static/2_DamBreak1d_40_32.mp4
   :width: 700
   :autoplay:
   :loop:
@@ -360,7 +360,7 @@ Dam-Break problem with h_l=40 and h_r=8 and hu = 0
 
 Dam-Break problem with h_l=40 and h_r=32 and hu = 0
 
-.. video:: _static/DamBreak1d_14_3.5_0_0.7.mp4
+.. video:: _static/2_DamBreak1d_14_3.5_0_0.7.mp4
   :width: 700
   :autoplay:
   :loop:
@@ -370,7 +370,7 @@ Dam-Break problem with h_l=40 and h_r=32 and hu = 0
 
 Dam-Break problem with h_l=14 and h_r=3.5 and hu_l = 0 and hu_r = 0.7
 
-.. video:: _static/DamBreak1d_14_3.5_0_4.mp4
+.. video:: _static/2_DamBreak1d_14_3.5_0_4.mp4
   :width: 700
   :autoplay:
   :loop:

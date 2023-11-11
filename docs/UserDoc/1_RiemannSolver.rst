@@ -22,17 +22,17 @@ Julius Halank: Assisted Code and wrote Project Report
 
 Created the doxygen Documentation with :code:`doxygen Doxyfile`
 
-.. image:: _static/doxygen.png
+.. image:: _static/1_doxygen.png
   :width: 700
 
 Initial Unittests are successful and the results are visualized as:
 
-.. video:: _static/height.mp4
+.. video:: _static/1_height.mp4
    :width: 700
 
 Height over Time after Dambreak
 
-.. video:: _static/momentum.mp4
+.. video:: _static/1_momentum.mp4
    :width: 700
 
 Momentum over Time after Dambreak

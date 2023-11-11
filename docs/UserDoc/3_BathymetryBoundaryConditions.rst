@@ -50,7 +50,7 @@ and subtracting it from the flux jump.
 3.1.2 Implent an example which illistrates the effect of bathemetry
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. video:: _static/DamBreak1d_10_2_bathymetry.mp4
+.. video:: _static/3_DamBreak1d_10_2_bathymetry.mp4
   :width: 700
   :autoplay:
   :loop:
@@ -59,7 +59,7 @@ and subtracting it from the flux jump.
 
 Dam break with h_l=10 and h_r=2 and a bathymetry that increases from -2 to -1 and goes back to -2 at x=0, x=5 and x=10 respectively.
 
-.. video:: _static/DamBreak1d_10_2.mp4
+.. video:: _static/3_2_DamBreak1d_10_2.mp4
   :width: 700
   :autoplay:
   :loop:
@@ -196,7 +196,7 @@ Added new setup to easier simulate tasks (with user controlled h_l h_r hu_l hu_r
                                                     l_arg5);
       }
 
-.. video:: _static/WallBoundary.mp4
+.. video:: _static/3_WallBoundary.mp4
   :width: 700
   :autoplay:
   :loop:
@@ -205,7 +205,7 @@ Added new setup to easier simulate tasks (with user controlled h_l h_r hu_l hu_r
 
 reflecting right boundary condition with open left boundary condition, h=10 and u=10
 
-.. video:: _static/ShockShock1d_10_100.mp4
+.. video:: _static/3_ShockShock1d_10_100.mp4
   :width: 700
   :autoplay:
   :loop:
@@ -281,7 +281,7 @@ Implemented both setups and changed their endtime in the main function.
 The hydraulic jump occurs between :math:`x_{id}=45` and :math:`x_{id}=47`, which would represent :math:`x=0.45 \cdot 25 = 11.25` and :math:`x=0.47 \cdot 25 = 11.75` respectively.
 You can see a distinct spike in momentum around :math:`x_{id}=46` which is the failure of our f-wave solver to converge to the constant momentum.
 
-.. video:: _static/SuperCrit1d.mp4
+.. video:: _static/3_SuperCrit1d.mp4
   :width: 700
   :autoplay:
   :loop:
@@ -404,7 +404,14 @@ A :math:`\delta` (minimum offset from 0m height) of 20m is used so we don't run 
 3.4.4 Visualize the tsunami setup
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. video:: _static/Tsunami1d.mp4
+.. video:: _static/3_Tsunami1d.mp4
+  :width: 700
+  :autoplay:
+  :loop:
+  :nocontrols:
+  :muted:
+
+.. video:: _static/3_Tsunami1d_onlyHeight.mp4
   :width: 700
   :autoplay:
   :loop:
@@ -416,7 +423,7 @@ The Tsunami Setup simulated over an hour of time.
 3.4.5 Impact of different initial displacements
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. video:: _static/Tsunami1d_2.mp4
+.. video:: _static/3_Tsunami1d_2.mp4
   :width: 700
   :autoplay:
   :loop:
@@ -428,14 +435,14 @@ A version with twice the initial displacement.
 The momentum traveling to both sides of the simulations are roughly twice as high. 
 Maybe a linear relationship between the initial displacement and the momentum is present?
 
-.. video:: _static/Tsunami1d_20.mp4
+.. video:: _static/3_Tsunami1d_20.mp4
   :width: 700
   :autoplay:
   :loop:
   :nocontrols:
   :muted:
 
-.. video:: _static/Tsunami1d_20_onlyHeight.mp4
+.. video:: _static/3_Tsunami1d_20_onlyHeight.mp4
   :width: 700
   :autoplay:
   :loop:
@@ -444,4 +451,5 @@ Maybe a linear relationship between the initial displacement and the momentum is
 
 A version with a static 20 meter displacement in between 175km and 225km and a left reflective boundary.
 It seems to travel as a single big wave towards japan mainland hitting it with roughly 15m height and getting reflected to roughly half the height.
+This is basically our dambreak problem in 2 directions without an infinite water source
 The lower video is just the height of the water without the momentum and bathymetry.
