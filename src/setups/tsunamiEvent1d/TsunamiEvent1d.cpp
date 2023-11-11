@@ -62,9 +62,9 @@ tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent1d::getBathymetry(t_real i_
 
 tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent1d::getDisplacement(t_real i_x) const
 {
-  if (175000 < i_x && i_x < 225000)
+  if (175000 < i_x && i_x < 250000)
   {
-    return 10 * std::sin(M_PI * (i_x - 175000) / 37500 + M_PI);
+    return 10 * std::sin(M_PI * ((i_x - 175000) / 37500) + M_PI);
   }
   else
   {
