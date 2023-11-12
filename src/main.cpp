@@ -291,6 +291,8 @@ int main(int i_argc,
                                                              l_y);
             tsunami_lab::t_real l_hv = l_setup->getMomentumY(l_x,
                                                              l_y);
+            tsunami_lab::t_real l_b = l_setup->getBathymetry(l_x,
+                                                             l_y);
 
             // set initial values in wave propagation solver
             l_waveProp->setHeight(l_cx,
@@ -304,6 +306,10 @@ int main(int i_argc,
             l_waveProp->setMomentumY(l_cx,
                                      l_cy,
                                      l_hv);
+
+            l_waveProp->setBathymetry(l_cx,
+                                      l_cy,
+                                      l_b);
         }
     }
 
@@ -323,6 +329,15 @@ int main(int i_argc,
     tsunami_lab::t_real l_simTime = 0;
 
     std::cout << "entering time loop" << std::endl;
+
+    // clear csv_dump
+    if (std::filesystem::exists("csv_dump"))
+    {
+        std::filesystem::remove_all("csv_dump");
+    }
+
+    // create csv_dump folder
+    std::filesystem::create_directory("csv_dump");
 
     // iterate over time
     while (l_simTime < l_endTime)
@@ -345,6 +360,7 @@ int main(int i_argc,
                                         l_waveProp->getHeight(),
                                         l_waveProp->getMomentumX(),
                                         nullptr,
+                                        l_waveProp->getBathymetry(),
                                         l_file);
             l_file.close();
             l_nOut++;
