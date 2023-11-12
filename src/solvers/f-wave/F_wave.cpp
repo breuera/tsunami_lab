@@ -39,7 +39,7 @@ void tsunami_lab::solvers::FWave::flux(t_real i_h,
     o_flux[1] = i_hu * i_hu / i_h + m_g * (0.5f * i_h * i_h);
 }
 
-void tsunami_lab::solvers::FWave::deltaXPhi(t_real i_hL,
+void tsunami_lab::solvers::FWave::deltaXPsi(t_real i_hL,
                                             t_real i_hR,
                                             t_real i_bL,
                                             t_real i_bR,
@@ -75,14 +75,14 @@ void tsunami_lab::solvers::FWave::waveStrengths(t_real i_hL,
     flux(i_hL, i_huL, l_fluxL);
     flux(i_hR, i_huR, l_fluxR);
 
-    t_real l_deltaXPhi[2] = {0};
+    t_real l_deltaXPsi[2] = {0};
 
-    deltaXPhi(i_hL, i_hR, i_bL, i_bR, l_deltaXPhi);
+    deltaXPsi(i_hL, i_hR, i_bL, i_bR, l_deltaXPsi);
 
     t_real l_fluxJump[2];
 
-    l_fluxJump[0] = l_fluxR[0] - l_fluxL[0] - l_deltaXPhi[0];
-    l_fluxJump[1] = l_fluxR[1] - l_fluxL[1] - l_deltaXPhi[1];
+    l_fluxJump[0] = l_fluxR[0] - l_fluxL[0] - l_deltaXPsi[0];
+    l_fluxJump[1] = l_fluxR[1] - l_fluxL[1] - l_deltaXPsi[1];
 
     // compute wave strengths
     o_strengthL = l_rInv[0][0] * l_fluxJump[0];
