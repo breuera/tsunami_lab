@@ -111,6 +111,7 @@ void tsunami_lab::solvers::FWave::netUpdates(t_real i_hL,
         return;
     }
 
+    // if dry, then no need to update
     bool do_update_left = true;
     bool do_update_right = true;
 
