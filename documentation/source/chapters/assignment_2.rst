@@ -439,25 +439,25 @@ only depend on the hight and the gravitational constant
 Visualization
 ^^^^^^^^^^^^^
 
-.. figure:: ../_static/video_folder/RareRare_10_5_mom.mp4
+.. figure:: ../_static/video_folder/assignment_2/RareRare_10_5_mom.mp4
   :width: 600px
 
-.. figure:: ../_static/video_folder/RareRare_10_18.mp4
+.. figure:: ../_static/video_folder/assignment_2/RareRare_10_18.mp4
   :width: 600px
   
-.. figure:: ../_static/video_folder/RareRare_10_5.mp4
+.. figure:: ../_static/video_folder/assignment_2/RareRare_10_5.mp4
   :width: 600px
 
-.. figure:: ../_static/video_folder/RareRare_20_5.mp4
+.. figure:: ../_static/video_folder/assignment_2/RareRare_20_5.mp4
   :width: 600px
 
-.. figure:: ../_static/video_folder/ShockShock_10_18.mp4
+.. figure:: ../_static/video_folder/assignment_2/ShockShock_10_18.mp4
   :width: 600px
 
-.. figure:: ../_static/video_folder/ShockShock_10_5.mp4
+.. figure:: ../_static/video_folder/assignment_2/ShockShock_10_5.mp4
   :width: 600px
 
-.. figure:: ../_static/video_folder/ShockShock_20_5.mp4
+.. figure:: ../_static/video_folder/assignment_2/ShockShock_20_5.mp4
   :width: 600px
 
 Dam-Break
@@ -487,19 +487,19 @@ If the wave travels on with the same speed, it reaches the village after 5227 se
 the village. 
 
 
-.. figure:: ../_static/video_folder/DamBreak_10_0_3_3_mom.mp4
+.. figure:: ../_static/video_folder/assignment_2/DamBreak_10_0_3_3_mom.mp4
   :width: 600px
 
-.. figure:: ../_static/video_folder/DamBreak_10_0_3_3.mp4
+.. figure:: ../_static/video_folder/assignment_2/DamBreak_10_0_3_3.mp4
   :width: 600px
 
-.. figure:: ../_static/video_folder/db_10_0_3_15.mp4
+.. figure:: ../_static/video_folder/assignment_2/db_10_0_3_15.mp4
   :width: 600px
 
 
 
-.. figure:: ../_static/video_folder/Dam_and_river_mom.mp4
+.. figure:: ../_static/video_folder/assignment_2/Dam_and_river_mom.mp4
   :width: 600px
 
-.. figure:: ../_static/video_folder/Dam_and_river.mp4
+.. figure:: ../_static/video_folder/assignment_2/Dam_and_river.mp4
   :width: 600px
