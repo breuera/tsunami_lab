@@ -24,6 +24,8 @@
 #include "setups/dambreak1d/DamBreak1d.h"
 #include "setups/rarerare1d/RareRare1d.h"
 #include "setups/shockshock1d/ShockShock1d.h"
+#include "setups/subcritical1d/Subcritical1d.h"
+#include "setups/supercritical1d/Supercritical1d.h"
 
 // declaration of variables
 int solver_choice = 0;
@@ -82,8 +84,10 @@ int main(int i_argc,
             std::cerr << "invalid number of cells" << std::endl;
             return EXIT_FAILURE;
         }
-        l_dxy = 10.0 / l_nx;
     }
+
+    tsunami_lab::t_real l_endTime = 1.25;
+    tsunami_lab::t_real l_width = 10.0;
 
     // construct setup with default value
     tsunami_lab::setups::Setup *l_setup;
@@ -95,7 +99,7 @@ int main(int i_argc,
     opterr = 0; // disable error messages of getopt
     int opt;
 
-    while ((opt = getopt(i_argc, i_argv, "s:v:")) != -1)
+    while ((opt = getopt(i_argc, i_argv, "s:v:l:r:")) != -1)
     {
         switch (opt)
         {
@@ -139,7 +143,7 @@ int main(int i_argc,
             }
 
             // ensure that segmentation fault is not caused
-            if (tokens.size() == 3)
+            if (((tokens[0] == "dambreak" || tokens[0] == "shockshock" || tokens[0] == "rarerare") && tokens.size() == 3))
             {
                 // convert to t_real
                 double l_arg1, l_arg2;
@@ -188,6 +192,20 @@ int main(int i_argc,
                         << "be sure to only type in lower-case" << std::endl;
                     return EXIT_FAILURE;
                 }
+            }
+            else if (tokens[0] == "subcritical")
+            {
+                l_width = 25;
+                l_endTime = 200;
+                std::cout << "using Subcritical() setup" << std::endl;
+                l_setup = new tsunami_lab::setups::Subcritical1d();
+            }
+            else if (tokens[0] == "supercritical")
+            {
+                l_width = 25;
+                l_endTime = 200;
+                std::cout << "using Supercritical() setup" << std::endl;
+                l_setup = new tsunami_lab::setups::Supercritical1d();
             }
             else
             {
@@ -252,11 +270,15 @@ int main(int i_argc,
                 << "Undefinded option: " << char(optopt) << std::endl
                 << "possible options are:" << std::endl
                 << "  -v SOLVER = 'roe','fwave', default is 'fwave'" << std::endl
-                << "  -s SETUP  = 'dambreak h_l h_r','rarerare h hu','shockshock h hu', default is 'dambreak 15 7'" << std::endl;
+                << "  -s SETUP  = 'dambreak h_l h_r','rarerare h hu','shockshock h hu', default is 'dambreak 15 7'" << std::endl
+                << "-l STATE_LEFT = 'open','closed', default is 'open'" << std::endl
+                << "-r STATE_RIGHT = 'open','closed', default is 'open'" << std::endl;
             break;
         }
         }
     }
+
+    l_dxy = l_width / l_nx;
 
     std::cout << "runtime configuration" << std::endl;
     std::cout << "  number of cells in x-direction: " << l_nx << std::endl;
@@ -325,7 +347,6 @@ int main(int i_argc,
     // set up time and print control
     tsunami_lab::t_idx l_timeStep = 0;
     tsunami_lab::t_idx l_nOut = 0;
-    tsunami_lab::t_real l_endTime = 1.25;
     tsunami_lab::t_real l_simTime = 0;
 
     std::cout << "entering time loop" << std::endl;
