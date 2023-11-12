@@ -127,6 +127,8 @@ void tsunami_lab::patches::WavePropagation1d::setGhostOutflow()
         break;
 
     default:
+        std::cerr << "undefined state for left boundary" << std::endl;
+        exit(EXIT_FAILURE);
         break;
     }
 
@@ -147,6 +149,8 @@ void tsunami_lab::patches::WavePropagation1d::setGhostOutflow()
         break;
 
     default:
+        std::cerr << "undefined state for right boundary" << std::endl;
+        exit(EXIT_FAILURE);
         break;
     }
 }
