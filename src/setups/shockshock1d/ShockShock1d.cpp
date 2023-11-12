@@ -41,8 +41,15 @@ tsunami_lab::t_real tsunami_lab::setups::ShockShock1d::getMomentumY(t_real,
   return 0;
 }
 
-tsunami_lab::t_real tsunami_lab::setups::ShockShock1d::getBathymetry(t_real,
+tsunami_lab::t_real tsunami_lab::setups::ShockShock1d::getBathymetry(t_real i_x,
                                                                      t_real) const
 {
-  return 0;
+  if (i_x < m_locationCenter - 1)
+  {
+    return 10;
+  }
+  else
+  {
+    return 5;
+  }
 }

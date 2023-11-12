@@ -75,7 +75,7 @@ public:
    *
    * @return bathymetry value
    */
-  t_real getBathymetry(t_real,
+  t_real getBathymetry(t_real i_x,
                        t_real) const;
 };
 
