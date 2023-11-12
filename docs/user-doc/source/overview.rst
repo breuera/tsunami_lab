@@ -32,5 +32,6 @@ Installing the project is very simple. All you need to do is:
       * :code:`'rarerare [height] [momentum]'`
       * :code:`'subcritical'`
       * :code:`'supercritical'`
+      * :code:`'tsunami'`
    #. possible inputs for :code:`STATE_LEFT` are "open" or "closed"
    #. possible inputs for :code:`STATE_RIGHT` are "open" or "closed"

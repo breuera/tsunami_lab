@@ -276,11 +276,115 @@ Task 3.4:
 3.4.1 Data-Extraction
 ^^^^^^^^^^^^^^^^^^^^^
 
+Data was extracted with the commands shown in the lecture.
+
 3.4.2 Csv-In
 ^^^^^^^^^^^^
+
+For reading the CSV-file, a very simple method was used, where we go through each line and write the 4th column into a vector.
+
+This vector ist then given to the setup so that it can extract the needed bathymetry value.
+
+.. code:: c++
+
+    void tsunami_lab::io::Csv::read(std::string i_filename,
+                                std::vector<t_real> &o_depths)
+    {
+
+        std::ifstream file(i_filename);
+        std::string line, cell;
+
+        while (std::getline(file, line))
+        {
+            std::stringstream lineStream(line);
+
+            // Skip the first three values in the line
+            for (int i = 0; i < 3; ++i)
+            {
+            std::getline(lineStream, cell, ',');
+            }
+
+            // Extract and store the fourth value
+            std::getline(lineStream, cell, ',');
+
+            o_depths.push_back(std::stof(cell));
+        }
+    }
 
 3.4.3 Tsunami-Setup
 ^^^^^^^^^^^^^^^^^^^^^
 
+The setup was crafted with the mentioned vector in mind. This way there is no need to always iterate through
+the data-file and we can rapidly extract the needed values:
+
+.. code:: c++
+
+    tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent1d::getBathymetryFromCSV(t_real i_x) const
+    {
+        int index = i_x / 250; // 250m steps
+
+        return m_b_in[index];
+    }
+
+With the following functions being special:
+
+.. code:: c++
+
+    tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent1d::getHeight(t_real i_x,
+                                                                    t_real) const
+    {
+        t_real l_b_in = getBathymetryFromCSV(i_x);
+        if (l_b_in < 0)
+        {
+            return std::max(-l_b_in, m_delta);
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+    tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent1d::getBathymetry(t_real i_x,
+                                                                        t_real) const
+    {
+        t_real l_b_in = getBathymetryFromCSV(i_x);
+
+        if (l_b_in < 0)
+        {
+            return std::min(l_b_in, -m_delta) + getDisplacement(i_x);
+        }
+        else
+        {
+            return std::max(l_b_in, m_delta) + getDisplacement(i_x);
+        }
+    }
+
+    tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent1d::getDisplacement(t_real i_x) const
+    {
+        if (250000 > i_x && i_x > 175000)
+        {
+            return 10 * sin(((i_x - 175000) / 37500) * M_PI + M_PI);
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
 3.4.4 Tsunami-Visualisation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+In the pictures below its visible that the extraction of the bathymetry worked well and that the wave
+is being simulated properly. In this case, the simulation is hard-coded to one hour.
+
+|pic7| |pic8|
+
+.. |pic7| image:: _static/content/images/week3/tsunami1.png
+   :width: 45%
+
+.. |pic8| image:: _static/content/images/week3/tsunami2.png
+   :width: 45%
+
+Zooming in shows that, while small, there is a 2m tall wave comming towards the shore.
+This wave is getting "deleted" when hitting the land though, because the simulation
+can't handle the calculations for that.

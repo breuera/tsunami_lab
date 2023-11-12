@@ -15,6 +15,7 @@ l_sources = [ 'solvers/roe/Roe.cpp',
               'setups/rarerare1d/RareRare1d.cpp',
               'setups/subcritical1d/Subcritical1d.cpp',
               'setups/supercritical1d/Supercritical1d.cpp',
+              'setups/tsunamievent1d/TsunamiEvent1d.cpp',
               'io/Csv.cpp' ]
 
 for l_so in l_sources:
@@ -31,6 +32,7 @@ l_tests = [ 'tests.cpp',
             'setups/shockshock1d/ShockShock1d.test.cpp',
             'setups/rarerare1d/RareRare1d.test.cpp',
             'setups/supercritical1d/Supercritical1d.test.cpp',
+            'setups/tsunamievent1d/TsunamiEvent1d.test.cpp',
             'io/Csv.test.cpp' ]
 
 for l_te in l_tests:

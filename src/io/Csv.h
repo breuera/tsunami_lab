@@ -10,6 +10,7 @@
 #include "../constants.h"
 #include <cstring>
 #include <iostream>
+#include <vector>
 
 namespace tsunami_lab
 {
@@ -46,7 +47,7 @@ public:
                     std::ostream &io_stream);
 
   static void read(std::string i_filename,
-                   std::vector<t_real> o_depths);
+                   std::vector<t_real> &o_depths);
 };
 
 #endif

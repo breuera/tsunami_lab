@@ -6,6 +6,7 @@
  **/
 #include "Csv.h"
 #include <sstream>
+#include <iostream>
 #include <vector>
 #include <fstream>
 #include <string>
@@ -61,8 +62,9 @@ void tsunami_lab::io::Csv::write(t_real i_dxy,
 }
 
 void tsunami_lab::io::Csv::read(std::string i_filename,
-                                std::vector<t_real> o_depths)
+                                std::vector<t_real> &o_depths)
 {
+
   std::ifstream file(i_filename);
   std::string line, cell;
 
@@ -78,6 +80,7 @@ void tsunami_lab::io::Csv::read(std::string i_filename,
 
     // Extract and store the fourth value
     std::getline(lineStream, cell, ',');
-    o_depths.push_back(std::stod(cell));
+
+    o_depths.push_back(std::stof(cell));
   }
 }

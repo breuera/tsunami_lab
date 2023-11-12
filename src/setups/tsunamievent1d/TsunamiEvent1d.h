@@ -9,6 +9,7 @@
 #define TSUNAMI_LAB_SETUPS_TSUNAMIEVENT_1D_H
 
 #include "./../Setup.h"
+#include <vector>
 
 namespace tsunami_lab
 {

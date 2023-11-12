@@ -8,13 +8,14 @@
 #include "TsunamiEvent1d.h"
 #include <string>
 #include <algorithm>
+#include <iostream>
 #include <cmath>
-#include "io/Csv.h"
+#include <vector>
+#include "../../io/Csv.h"
 
 tsunami_lab::setups::TsunamiEvent1d::TsunamiEvent1d(std::vector<t_real> i_b_in)
 {
   m_b_in = i_b_in;
-  tsunami_lab::io::Csv::read(std::string("test"), m_b_in);
 }
 
 tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent1d::getHeight(t_real i_x,
@@ -23,7 +24,7 @@ tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent1d::getHeight(t_real i_x,
   t_real l_b_in = getBathymetryFromCSV(i_x);
   if (l_b_in < 0)
   {
-    return std::max(l_b_in, m_delta);
+    return std::max(-l_b_in, m_delta);
   }
   else
   {
@@ -31,7 +32,7 @@ tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent1d::getHeight(t_real i_x,
   }
 }
 
-tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent1d::getMomentumX(t_real i_x,
+tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent1d::getMomentumX(t_real,
                                                                       t_real) const
 {
   return 0;
@@ -47,6 +48,7 @@ tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent1d::getBathymetry(t_real i_
                                                                        t_real) const
 {
   t_real l_b_in = getBathymetryFromCSV(i_x);
+
   if (l_b_in < 0)
   {
     return std::min(l_b_in, -m_delta) + getDisplacement(i_x);
@@ -71,8 +73,7 @@ tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent1d::getDisplacement(t_real 
 
 tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent1d::getBathymetryFromCSV(t_real i_x) const
 {
-  int line = i_x / 250; // 250m steps
-  std::string test;
-  test = "hallo";
-  return 0;
+  int index = i_x / 250; // 250m steps
+
+  return m_b_in[index];
 }

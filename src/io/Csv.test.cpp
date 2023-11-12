@@ -82,3 +82,13 @@ TEST_CASE("Test the CSV-writer for 2D settings.", "[CsvWrite2d]")
   REQUIRE(l_stream1.str().size() == l_ref1.size());
   REQUIRE(l_stream1.str() == l_ref1);
 }
+
+TEST_CASE("Test the CSV-reader for 1D settings.", "[CsvReader1d]")
+{
+  std::vector<tsunami_lab::t_real> m_b_in;
+  tsunami_lab::io::Csv::read("data/real.csv", m_b_in);
+
+  // First and last line of the exported CSV
+  REQUIRE(m_b_in[0] == Approx(-8.39972685779));
+  REQUIRE(m_b_in[m_b_in.size() - 1] == Approx(-5533.77099898));
+}

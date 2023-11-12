@@ -89,6 +89,7 @@ int main(int i_argc,
 
     tsunami_lab::t_real l_endTime = 1.25;
     tsunami_lab::t_real l_width = 10.0;
+    std::vector<tsunami_lab::t_real> m_b_in;
 
     // construct setup with default value
     tsunami_lab::setups::Setup *l_setup;
@@ -210,8 +211,12 @@ int main(int i_argc,
             }
             else if (tokens[0] == "tsunami")
             {
+                tsunami_lab::io::Csv::read("data/real.csv", m_b_in);
 
-                // TODO: Implement Tsunami-Setup with CSV File
+                l_width = 250 * m_b_in.size();
+                l_endTime = 3600;
+
+                l_setup = new tsunami_lab::setups::TsunamiEvent1d(m_b_in);
             }
             else
             {
