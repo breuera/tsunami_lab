@@ -92,3 +92,51 @@ from 50% to 75% where it has a value of -3.75. This had the following result:
 .. figure:: ../_static/video_folder/assignment_3/only_hill.mp4
   :width: 600px
 
+Hydraulic Jumps
+***************
+
+.. admonition:: Tasks
+
+    #. Compute the location and value of the maximum Froude number for the subcritical setting given in Eq. 3.3.1 and the supercritical setting given in Eq. 3.3.2 at the initial time :math:`t = 0`.
+
+    #. Implement both cases through the base class ``setup::Setup.h``. :math:`t \in [0, 200]` is a reasonable time window for your simulation.
+
+    #. Determine the position of the hydraulic jump (stationary discontinuity) in your supercritical solution and show that our f-wave solver fails to converge to the analytically expected constant momentum over the entire domain.
+
+Maximum Froude value
+====================
+
+First we look upon the equation to calculate the Froude number:
+
+.. math::
+
+    F = \frac{(\frac{hu}{h})}{\sqrt{g \cdot h}} = \frac{hu}{h} \cdot \frac{1}{\sqrt{g \cdot h}} = \frac{hu}{\sqrt{g} \cdot \sqrt{h}^3}
+
+Since for both cases :math:`hu` and :math:`g` are constant we only need to look at the height. :math:`F` will be the highest, when :math:`h` is the lowest.
+
+Subcritical Flow:
+^^^^^^^^^^^^^^^^^
+
+For the height function:
+
+.. math::
+
+    h(x, 0) = 1.8 + 0.05(10 - x)^2
+
+exists one minimum at :math:`x = 10`, which was derived from the first derivation. Concluding in a Froude number of ::math:`F = \frac{(\frac{hu}{h})}{\sqrt{g \cdot h}} = 0.59`
+
+Supercritical Flow:
+^^^^^^^^^^^^^^^^^^^
+
+For the height function:
+
+.. math::
+
+    h(x, 0) = 0.13 + 0.05(10 - x)^2
+
+also exists a minimum at :math:`x = 10`. This concludes in the Froude number: ::math:`F = \frac{(\frac{hu}{h})}{\sqrt{g \cdot h}} = 1.22`
+
+Implementing the setups
+=======================
+
+..
