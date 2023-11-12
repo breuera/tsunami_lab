@@ -21,7 +21,7 @@ TEST_CASE("Test the one-dimensional Shock-Shock setup.", "[ShockShock1d]")
 
   REQUIRE(l_shockShock.getMomentumY(2, 0) == 0);
 
-  REQUIRE(l_shockShock.getBathymetry(2, 0) == 5);
+  REQUIRE(l_shockShock.getBathymetry(2, 0) == -2.0f);
 
   REQUIRE(l_shockShock.getHeight(2, 5) == 25);
 
@@ -29,7 +29,7 @@ TEST_CASE("Test the one-dimensional Shock-Shock setup.", "[ShockShock1d]")
 
   REQUIRE(l_shockShock.getMomentumY(2, 2) == 0);
 
-  REQUIRE(l_shockShock.getBathymetry(2, 2) == 5);
+  REQUIRE(l_shockShock.getBathymetry(2, 2) == -2.0f);
 
   // right side
   REQUIRE(l_shockShock.getHeight(4, 0) == 25);
@@ -38,7 +38,7 @@ TEST_CASE("Test the one-dimensional Shock-Shock setup.", "[ShockShock1d]")
 
   REQUIRE(l_shockShock.getMomentumY(4, 0) == 0);
 
-  REQUIRE(l_shockShock.getBathymetry(4, 0) == 5);
+  REQUIRE(l_shockShock.getBathymetry(4, 0) == -1.0f);
 
   REQUIRE(l_shockShock.getHeight(4, 5) == 25);
 
@@ -46,5 +46,5 @@ TEST_CASE("Test the one-dimensional Shock-Shock setup.", "[ShockShock1d]")
 
   REQUIRE(l_shockShock.getMomentumY(4, 2) == 0);
 
-  REQUIRE(l_shockShock.getBathymetry(4, 2) == 5);
+  REQUIRE(l_shockShock.getBathymetry(4, 2) == -1.0f);
 }
