@@ -139,4 +139,91 @@ also exists a minimum at :math:`x = 10`. This concludes in the Froude number: ::
 Implementing the setups
 =======================
 
-..
+For the subcritical case we implemented a class ``setups::SubcriticalFlow1d`` that inherits from the class in the file ``setup::Setup.h``. The constructor has only one parameter ``i_hu``, that is suposed
+to hold the momentum value used in the setup. The other function are implementing the class just like Eq. 3.3.1 dictates them to be.
+
+.. code-block::
+
+    tsunami_lab::setups::SubcriticalFlow1d::SubcriticalFlow1d(t_real i_hu) {
+    m_hu = i_hu;
+    }
+
+    tsunami_lab::t_real tsunami_lab::setups::SubcriticalFlow1d::getHeight(t_real i_x,
+                                                                          t_real) const {
+        return -tsunami_lab::setups::SubcriticalFlow1d::getBathymetry(i_x, 0);
+    }
+
+    tsunami_lab::t_real tsunami_lab::setups::SubcriticalFlow1d::getMomentumX(t_real,
+                                                                             t_real) const {
+        return m_hu;
+    }
+
+    tsunami_lab::t_real tsunami_lab::setups::SubcriticalFlow1d::getMomentumY(t_real,
+                                                                             t_real) const {
+        return 0;
+    }
+
+    tsunami_lab::t_real tsunami_lab::setups::SubcriticalFlow1d::getBathymetry(t_real i_x,
+                                                                              t_real) const {
+        if ((i_x > 8) & (i_x < 12)) {
+            return -1.8 - 0.05 * pow((i_x - 10), 2);
+        } else {
+            return -2;
+        }
+    }
+
+Similar to this the class ``setup::SupercriticalFlow1d`` was implemented. 
+
+.. code-block::
+
+    tsunami_lab::setups::SupercriticalFlow1d::SupercriticalFlow1d(t_real i_hu) {
+    m_hu = i_hu;
+    }
+
+    tsunami_lab::t_real tsunami_lab::setups::SupercriticalFlow1d::getHeight(t_real i_x,
+                                                                            t_real) const {
+        return -tsunami_lab::setups::SupercriticalFlow1d::getBathymetry(i_x, 0);
+    }
+
+    tsunami_lab::t_real tsunami_lab::setups::SupercriticalFlow1d::getMomentumX(t_real,
+                                                                               t_real) const {
+        return m_hu;
+    }
+
+    tsunami_lab::t_real tsunami_lab::setups::SupercriticalFlow1d::getMomentumY(t_real,
+                                                                               t_real) const {
+        return 0;
+    }
+
+    tsunami_lab::t_real tsunami_lab::setups::SupercriticalFlow1d::getBathymetry(t_real i_x,
+                                                                                t_real) const {
+        if ((i_x > 8) & (i_x < 12)) {
+            return -0.13 - 0.05 * pow((i_x - 10), 2);
+        } else {
+            return -0.33;
+        }
+    }
+
+When simulating these setups for 200 timesteps on 25 meters we got the following results.
+
+Subcritical Flow:
+
+.. figure:: ../_static/video_folder/assignment_3/subcritical_flow.mp4
+  :width: 600px
+
+Supercritical Flow:
+
+.. figure:: ../_static/video_folder/assignment_3/supercritical_flow.mp4
+  :width: 600px
+
+Supercritical Flow momentum:
+
+.. figure:: ../_static/video_folder/assignment_3/supercritical_flow_mom.mp4
+  :width: 600px
+
+Stationary Discontinuity
+========================
+
+The stationary discontinuity is located in the 115 cell or in at 11.5 meters. 
+At the end all cells have a momentum around 0.12, but the 115-th cell has a 
+momentum of 0.14. This makes shows, that the momentum does not converge to a constant. 
