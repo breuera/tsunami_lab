@@ -1,4 +1,94 @@
 .. _ch:Task_3_phillip:
 
 Report Phillip
-==============
+##############
+
+Adding bathymetry support
+*************************
+
+.. admonition:: Tasks
+
+    #. Extend the f-wave solver with support for bathymetry according to Eq. 3.1.1 and Eq. 3.1.2.
+
+    #. Implement an example which illustrates the effect of bathymetry in your extended solver. 
+       **Note:** You have to add bathymetry to the respective patches implementing the abstract class ``patches::WavePropagation`` as well. 
+       Also, ghost cells require a valid value for the bathymetry, i.e., :math:`b_0 := b_1` set and :math:`b_{n+1} := b_n`.
+
+Implementation in F-Wave solver
+===============================
+
+Adding the implementation for bathymetry in the f-wave solver comes down to changing the computation of the wave strengths from:
+
+.. math::
+    
+    \begin{bmatrix} \alpha_1 \\ \alpha_2 \end{bmatrix} = \begin{bmatrix} 1 & 1 \\ \lambda_1 & \lambda_2 \end{bmatrix} \cdot \Delta f 
+
+to the following, which was taken from Eq. 3.1.2:
+
+.. math::
+
+    \begin{bmatrix} \alpha_1 \\ \alpha_2 \end{bmatrix} = \begin{bmatrix} 1 & 1 \\ \lambda_1 & \lambda_2 \end{bmatrix} \cdot (\Delta f  - \Delta x \Psi_{i + 1/2})
+
+In the code this meant, that we only made changes in ``solvers::FWave::waveStrengths``:
+
+.. code-block::
+
+    ...
+
+    t_real l_delta_x_psi[2];
+    l_delta_x_psi[0] = 0;
+    l_delta_x_psi[1] = (-tsunami_lab::solvers::FWave::c_g) * (i_bR - i_bL) * ((i_hL + i_hR) / 2);
+
+    t_real l_decomposition_flux[2];
+    l_decomposition_flux[0] = l_delta_flux[0] - l_delta_x_psi[0];
+    l_decomposition_flux[1] = l_delta_flux[1] - l_delta_x_psi[1];
+
+    // calculate reversed determinant
+    t_real l_rev_det = 1 / (i_waveSpeedR - i_waveSpeedL);
+
+    // calculate the inverse of the matrix R
+    t_real l_R_inv[2][2] = {0};
+    l_R_inv[0][0] = l_rev_det * i_waveSpeedR;
+    l_R_inv[0][1] = -l_rev_det;
+    l_R_inv[1][0] = -l_rev_det * i_waveSpeedL;
+    l_R_inv[1][1] = l_rev_det;
+
+    // calculate wave strengths
+    o_strengthL = l_R_inv[0][0] * l_decomposition_flux[0];
+    o_strengthL += l_R_inv[0][1] * l_decomposition_flux[1];
+    o_strengthR = l_R_inv[1][0] * l_decomposition_flux[0];
+    o_strengthR += l_R_inv[1][1] * l_decomposition_flux[1];
+
+We added the variable ``l_delta_x_psi`` that holds the vector :math:`\Delta x \Psi_{i + 1/2}` and ``l_decomposition_flux``
+holding :math:`\Delta f - \Delta x \Psi_{i + 1/2}`.
+
+Implementation in WavePropagation1d
+===================================
+
+We added an array as a ``m_b`` private member variable, since the bathymetry needs to be stored for every cell. In addition, 
+we needed the getter function ``patches::WavePropagation::getBathymetry`` to be able to access the bathymetry of each cell.
+
+.. code-block::
+
+   ...
+
+   /**
+   * Sets the bathymetry to the given value.
+   * 
+   * @param i_ix id of the cell in x-direction.
+   * @param i_b bathymetry.
+   **/
+  void setBathymetry( t_idx i_ix,
+                      t_real i_b) 
+  {
+    m_b[i_ix + 1] = i_b;
+  }
+
+  ...
+
+For demonstration, we constructed a created a DamBreak setup, that has bathymetry of 0 in all cells but 
+from 50% to 75% where it has a value of -3.75. This had the following result:
+
+.. figure:: ../_static/video_folder/assignment_3/only_hill.mp4
+  :width: 600px
+
