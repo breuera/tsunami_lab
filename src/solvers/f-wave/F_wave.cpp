@@ -43,10 +43,10 @@ void tsunami_lab::solvers::FWave::deltaXPsi(t_real i_hL,
                                             t_real i_hR,
                                             t_real i_bL,
                                             t_real i_bR,
-                                            t_real *o_deltaXPhi)
+                                            t_real *o_deltaXPsi)
 {
-    o_deltaXPhi[0] = 0;
-    o_deltaXPhi[1] = -1 * m_g * (i_bR - i_bL) * (i_hL + i_hR) * 0.5;
+    o_deltaXPsi[0] = 0;
+    o_deltaXPsi[1] = -1 * m_g * (i_bR - i_bL) * (i_hL + i_hR) * 0.5;
 }
 
 void tsunami_lab::solvers::FWave::waveStrengths(t_real i_hL,

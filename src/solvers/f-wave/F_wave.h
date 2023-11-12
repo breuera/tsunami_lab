@@ -91,7 +91,7 @@ private:
     * @param i_hr Height of the water in the right cell
     * @param i_bL bathymetry of the left side.
     * @param i_bR batohmetry of the left right.
-    * @param o_deltaXPhi resutling bathymetry-change
+    * @param o_deltaXPsi resutling bathymetry-change
     */
 
    static void deltaXPsi(t_real i_hl,
