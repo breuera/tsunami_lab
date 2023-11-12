@@ -76,7 +76,7 @@ int main(int i_argc,
             std::cerr << "invalid number of cells" << std::endl;
             return EXIT_FAILURE;
         }
-        l_dxy = 10.0 / l_nx;
+        l_dxy = 440500 / l_nx;
 
         if (!(strcmp(i_argv[3], "-f") == 0 || strcmp(i_argv[3], "-r") == 0)) {
             std::cerr << "invalid third argument(needs to be '-r' or '-f')" << std::endl;
@@ -129,7 +129,7 @@ int main(int i_argc,
     float *l_y;
 
     tsunami_lab::t_idx l_scenarioCount = 0;
-    tsunami_lab::t_real l_locMiddle = 5;
+    tsunami_lab::t_real l_locMiddle = 220250;
 
     if (l_scenario == "DamBreak") {
         // initialize dam break scenario

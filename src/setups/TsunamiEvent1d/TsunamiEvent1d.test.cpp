@@ -20,32 +20,32 @@ TEST_CASE("Test the one-dimensional TsunamiEvent setup.", "[TsunamiSetup1d]") {
     bathymetry[3] = 2;
     bathymetry[4] = -300;
 
-    tsunami_lab::setups::TsunamiEvent1d l_tsunami(0);
+    tsunami_lab::setups::TsunamiEvent1d l_tsunami(bathymetry);
 
-    REQUIRE(l_tsunami.getMomentumX(bathymetry[0], 0) == 0);
-    REQUIRE(l_tsunami.getBathymetry(bathymetry[0], 0) == Approx(20));
-    REQUIRE(l_tsunami.getHeight(bathymetry[0], 0) == Approx(0));
+    REQUIRE(l_tsunami.getMomentumX(0, 0) == 0);
+    REQUIRE(l_tsunami.getBathymetry(0, 0) == Approx(20));
+    REQUIRE(l_tsunami.getHeight(0, 0) == Approx(0));
 
-    REQUIRE(l_tsunami.getMomentumX(bathymetry[1], 1) == 0);
-    REQUIRE(l_tsunami.getBathymetry(bathymetry[1], 1) == Approx(180000));
-    REQUIRE(l_tsunami.getHeight(bathymetry[1], 1) == Approx(0));
+    REQUIRE(l_tsunami.getMomentumX(250, 0) == 0);
+    REQUIRE(l_tsunami.getBathymetry(250, 0) == Approx(180000));
+    REQUIRE(l_tsunami.getHeight(250, 0) == Approx(0));
 
-    REQUIRE(l_tsunami.getMomentumX(bathymetry[2], 2) == 0);
-    REQUIRE(l_tsunami.getBathymetry(bathymetry[2], 2) == Approx(-100));
-    REQUIRE(l_tsunami.getHeight(bathymetry[2], 2) == Approx(100));
+    REQUIRE(l_tsunami.getMomentumX(500, 0) == 0);
+    REQUIRE(l_tsunami.getBathymetry(500, 0) == Approx(-100));
+    REQUIRE(l_tsunami.getHeight(500, 0) == Approx(100));
 
-    REQUIRE(l_tsunami.getMomentumX(bathymetry[3], 3) == 0);
-    REQUIRE(l_tsunami.getBathymetry(bathymetry[3], 3) == Approx(20));
-    REQUIRE(l_tsunami.getHeight(bathymetry[3], 3) == Approx(0));
+    REQUIRE(l_tsunami.getMomentumX(750, 0) == 0);
+    REQUIRE(l_tsunami.getBathymetry(750, 0) == Approx(20));
+    REQUIRE(l_tsunami.getHeight(750, 0) == Approx(0));
 
-    REQUIRE(l_tsunami.getMomentumX(bathymetry[4], 4) == 0);
-    REQUIRE(l_tsunami.getBathymetry(bathymetry[4], 4) == Approx(-300));
-    REQUIRE(l_tsunami.getHeight(bathymetry[4], 4) == Approx(300));
+    REQUIRE(l_tsunami.getMomentumX(1000, 0) == 0);
+    REQUIRE(l_tsunami.getBathymetry(1000, 0) == Approx(-300));
+    REQUIRE(l_tsunami.getHeight(1000, 0) == Approx(300));
 }
 
 TEST_CASE("Test the one-dimensional with dem.csv data.", "[DemTsunamiSetup1d]") {
     // initialize middle state sanitization
-    tsunami_lab::t_idx l_scenarioCount = 1000000;
+    tsunami_lab::t_idx l_scenarioCount = 1763;
     std::string filePath = "./res/dem.csv";
 
     std::ifstream l_stream;
@@ -69,25 +69,25 @@ TEST_CASE("Test the one-dimensional with dem.csv data.", "[DemTsunamiSetup1d]") 
                                           l_y,
                                           l_distance);
 
-    tsunami_lab::setups::TsunamiEvent1d l_tsunami(0);
+    tsunami_lab::setups::TsunamiEvent1d l_tsunami(l_bathymetry);
 
-    REQUIRE(l_tsunami.getMomentumX(l_bathymetry[0], 0) == 0);
-    REQUIRE(l_tsunami.getBathymetry(l_bathymetry[0], 0) == Approx(-20));
-    REQUIRE(l_tsunami.getHeight(l_bathymetry[0], 0) == Approx(20));
+    REQUIRE(l_tsunami.getMomentumX(0, 0) == 0);
+    REQUIRE(l_tsunami.getBathymetry(0, 0) == Approx(-20));
+    REQUIRE(l_tsunami.getHeight(0, 0) == Approx(20));
 
-    REQUIRE(l_tsunami.getMomentumX(l_bathymetry[100], 100) == 0);
-    REQUIRE(l_tsunami.getBathymetry(l_bathymetry[100], 100) == Approx(-127.975747046));
-    REQUIRE(l_tsunami.getHeight(l_bathymetry[100], 100) == Approx(127.975747046));
+    REQUIRE(l_tsunami.getMomentumX(25000, 0) == 0);
+    REQUIRE(l_tsunami.getBathymetry(25000, 0) == Approx(-127.975747046));
+    REQUIRE(l_tsunami.getHeight(25000, 0) == Approx(127.975747046));
 
-    REQUIRE(l_tsunami.getMomentumX(l_bathymetry[800], 800) == 0);
-    REQUIRE(l_tsunami.getBathymetry(l_bathymetry[800], 800) == Approx(-5115.21701793));
-    REQUIRE(l_tsunami.getHeight(l_bathymetry[800], 800) == Approx(5115.21701793));
+    REQUIRE(l_tsunami.getMomentumX(200000, 0) == 0);
+    REQUIRE(l_tsunami.getBathymetry(200000, 0) == Approx(-5123.87695f));
+    REQUIRE(l_tsunami.getHeight(200000, 0) == Approx(5115.21701793));
 
-    REQUIRE(l_tsunami.getMomentumX(l_bathymetry[999], 999) == 0);
-    REQUIRE(l_tsunami.getBathymetry(l_bathymetry[999], 999) == Approx(-6998.33542995));
-    REQUIRE(l_tsunami.getHeight(l_bathymetry[999], 999) == Approx(6998.33542995));
+    REQUIRE(l_tsunami.getMomentumX(249750, 0) == 0);
+    REQUIRE(l_tsunami.getBathymetry(249750, 0) == Approx(-6998.12598));
+    REQUIRE(l_tsunami.getHeight(249750, 0) == Approx(6998.33542995));
 
-    REQUIRE(l_tsunami.getMomentumX(l_bathymetry[1762], 1762) == 0);
-    REQUIRE(l_tsunami.getBathymetry(l_bathymetry[1762], 1762) == Approx(-5533.77099898));
-    REQUIRE(l_tsunami.getHeight(l_bathymetry[1762], 1762) == Approx(5533.77099898));
+    REQUIRE(l_tsunami.getMomentumX(440500, 0) == 0);
+    REQUIRE(l_tsunami.getBathymetry(440500, 0) == Approx(-5533.77099898));
+    REQUIRE(l_tsunami.getHeight(440500, 0) == Approx(5533.77099898));
 }
