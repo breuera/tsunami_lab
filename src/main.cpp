@@ -26,6 +26,7 @@
 #include "setups/shockshock1d/ShockShock1d.h"
 #include "setups/subcritical1d/Subcritical1d.h"
 #include "setups/supercritical1d/Supercritical1d.h"
+#include "setups/tsunamievent1d/TsunamiEvent1d.h"
 
 // declaration of variables
 int solver_choice = 0;
@@ -71,7 +72,7 @@ int main(int i_argc,
         std::cerr << "  ./build/tsunami_lab [-v SOLVER] [-s SETUP] [-l STATE_LEFT] [-r STATE_RIGHT] N_CELLS_X" << std::endl;
         std::cerr << "where N_CELLS_X is the number of cells in x-direction." << std::endl;
         std::cerr << "-v SOLVER = 'roe','fwave', default is 'fwave'" << std::endl;
-        std::cerr << "-s SETUP  = 'dambreak h_l h_r','rarerare h hu','shockshock h hu', default is 'dambreak 15 7'" << std::endl;
+        std::cerr << "-s SETUP  = 'dambreak h_l h_r','rarerare h hu','shockshock h hu', 'supercritical', 'subcritical', 'tsunami', default is 'dambreak 15 7'" << std::endl;
         std::cerr << "-l STATE_LEFT = 'open','closed', default is 'open'" << std::endl;
         std::cerr << "-r STATE_RIGHT = 'open','closed', default is 'open'" << std::endl;
         return EXIT_FAILURE;
@@ -206,6 +207,11 @@ int main(int i_argc,
                 l_endTime = 200;
                 std::cout << "using Supercritical() setup" << std::endl;
                 l_setup = new tsunami_lab::setups::Supercritical1d();
+            }
+            else if (tokens[0] == "tsunami")
+            {
+
+                // TODO: Implement Tsunami-Setup with CSV File
             }
             else
             {
