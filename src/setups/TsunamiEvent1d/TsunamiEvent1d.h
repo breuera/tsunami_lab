@@ -24,20 +24,8 @@ class tsunami_lab::setups::TsunamiEvent1d : public Setup {
     //! bathymetry on the left side
     t_real *m_bathymetry;
 
-    //! momentum on the left side
-    t_real m_x = 0;
-
-    //! height on the right side
-    t_real m_y = 0;
-
     //! momentum on the right side
     t_real m_distance = 0;
-
-    //! location of the middle
-    t_real m_locattionMis = 0;
-
-    //! height on a given loaction
-    t_real m_height = 0;
 
    public:
     /**

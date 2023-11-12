@@ -16,10 +16,9 @@ tsunami_lab::setups::TsunamiEvent1d::TsunamiEvent1d(t_real *i_bathymetry) {
 
 tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent1d::getHeight(t_real i_x,
                                                                    t_real) const {
-    if (m_bathymetry[(t_idx)std::floor(i_x / 250)] < 0) {
-        return (-m_bathymetry[(t_idx)std::floor(i_x / 250)] < 20) ? 20 : -m_bathymetry[(t_idx)std::floor(i_x / 250)];
+    if (m_bathymetry[(t_idx)i_x] < 0) {
+        return (-m_bathymetry[(t_idx)i_x] < 20) ? 20 : -m_bathymetry[(t_idx)i_x];
     }
-    std::cout << "value :" << (tsunami_lab::t_idx)std::floor(i_x / 250) << std::endl;
 
     return 0;
 }
@@ -43,8 +42,8 @@ tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent1d::getBathymetry(t_real i_
     }
 
     if (m_bathymetry[(t_idx)i_x] < 0) {
-        return !(m_bathymetry[(t_idx)std::floor(i_x / 250)] < -20) ? -20 + d : m_bathymetry[(t_idx)std::floor(i_x / 250)] + d;
+        return !(m_bathymetry[(t_idx)i_x] < -20) ? -20 + d : m_bathymetry[(t_idx)i_x] + d;
     } else {
-        return (m_bathymetry[(t_idx)std::floor(i_x / 250)] < 20) ? 20 + d : m_bathymetry[(t_idx)std::floor(i_x / 250)] + d;
+        return (m_bathymetry[(t_idx)i_x] < 20) ? 20 + d : m_bathymetry[(t_idx)i_x] + d;
     }
 }
