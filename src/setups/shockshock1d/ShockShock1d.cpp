@@ -46,10 +46,10 @@ tsunami_lab::t_real tsunami_lab::setups::ShockShock1d::getBathymetry(t_real i_x,
 {
   if (i_x < m_locationCenter - 1)
   {
-    return 10;
+    return -i_x * 0.5;
   }
   else
   {
-    return 5;
+    return i_x * 0.5 - 3;
   }
 }
