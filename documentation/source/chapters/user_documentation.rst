@@ -116,19 +116,29 @@ To execute the project, use the following command with the appropriate flags:
     ./build/tsunami_lab [flags]
 
 #. first flag setup option:
-    Choose from DamBreak, RareRare, or ShockShock.
+    Choose from DamBreak, RareRare, or ShockShock, CustomSetup, CustomSetup, Sanitize1d, SubcriticalFlow1d, SupercriticalFlow1d.
+
+    Use Sanatize1d to sanitize with the middle_states.csv
+    Default version will use dummie_middle_states.csv file, otherwise, make sure middle_states.csv file is in the tsunami_lab/res/ folder.
 
 #. second flag:
-    Use Sanatizer to enable sanitizer mode.
-    Default version will use dummie_middle_states file, otherwise, make sure Middle_states file is in the res folder.
-
-#. third flag:
     Specify the number of cells as an integer.
 
-#. fourth flag:
+#. fourth flag (optional):
     Choose the type of solver:
         -f for F-WaveSolver
         -r for Roe Solver
+    
+    Defaults to -f.
+
+#. fifth flag (optional):
+    Choose the type of boundary conditions:
+        -oo for both sides outflow
+        -ro for left reflection and right outflow
+        -or for left outflow and right reflection
+        -rr for both sides reflection
+    
+    Defaults to -oo.
 
 Example command to execute the project with flags:
 
