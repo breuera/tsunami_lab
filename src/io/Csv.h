@@ -74,17 +74,7 @@ class tsunami_lab::io::Csv {
                                 t_real*& o_bathymetry,
                                 t_real*& o_x,
                                 t_real*& o_y,
-                                t_real*& o_distance,
-                                t_real& o_hStar);
-
-    /**
-     * Gets the number of lines of a given Csv file
-     *
-     * @param filename name of the csv file
-     * @param numberOfLinesInCsv number of lines of csv file
-     **/
-    static void getNumberOfLinesInCsv(std::string& i_filename,
-                                      t_idx& o_numberOfLinesInCsv);
+                                t_real*& o_distance);
 };
 
 #endif

@@ -105,8 +105,7 @@ void tsunami_lab::io::Csv::read_gmt_states(std::ifstream &io_stream,
                                            t_real *&o_bathymetry,
                                            t_real *&o_x,
                                            t_real *&o_y,
-                                           t_real *&o_distance,
-                                           t_real &o_hStar) {
+                                           t_real *&o_distance) {
     tsunami_lab::t_idx l_length = 1763;
     std::string l_line;
     std::stringstream l_lineStream;
@@ -139,9 +138,6 @@ void tsunami_lab::io::Csv::read_gmt_states(std::ifstream &io_stream,
         std::getline(l_lineStream, l_cell, ',');
         o_bathymetry[i] = std::stof(l_cell);
 
-        // load hstar
-        o_hStar = o_bathymetry[i];
-        // std::cout << "Row " << i + 1 << ": x=" << o_x[i] << ", y=" << o_y[i] << ", distance=" << o_distance[i] << ", bathymetry=" << o_bathymetry[i] << std::endl;
         l_lineStream.clear();
     }
 }

@@ -142,14 +142,12 @@ TEST_CASE("Test the CSV gmt reader.", "[GMTRead]") {
     float *l_x;
     float *l_y;
     float *l_distance;
-    float l_hStar = 0;
 
     tsunami_lab::io::Csv::read_gmt_states(l_stream,
                                           l_bathymetry,
                                           l_x,
                                           l_y,
-                                          l_distance,
-                                          l_hStar);
+                                          l_distance);
 
     REQUIRE(l_bathymetry[754] == Approx(-4550.49));
     REQUIRE(l_x[768] == Approx(143.193));
