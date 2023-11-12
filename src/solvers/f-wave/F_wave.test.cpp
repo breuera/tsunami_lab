@@ -9,7 +9,8 @@
 #include "F_wave.h"
 #undef public
 
-TEST_CASE("Test the derivation of the FWave speeds.", "[FWaveSpeeds]") {
+TEST_CASE("Test the derivation of the FWave speeds.", "[FWaveSpeeds]")
+{
     /*
      * Test case:
      *  h: 10 | 9
@@ -34,7 +35,8 @@ TEST_CASE("Test the derivation of the FWave speeds.", "[FWaveSpeeds]") {
     REQUIRE(l_waveSpeedR == Approx(9.5731051658991654));
 }
 
-TEST_CASE("Test the derivation of the FWave wave strength.", "[FWaveStrengths]") {
+TEST_CASE("Test the derivation of the FWave wave strength.", "[FWaveStrengths]")
+{
     /*
      * Test case:
      *  h:   10 | 9
@@ -84,7 +86,8 @@ TEST_CASE("Test the derivation of the FWave wave strength.", "[FWaveStrengths]")
     REQUIRE(l_strengthR == Approx(23.441));
 }
 
-TEST_CASE("Test the derivation of the FWave net-updates.", "[FWaveUpdates]") {
+TEST_CASE("Test the derivation of the FWave net-updates.", "[FWaveUpdates]")
+{
     /*
      * Test case:
      *
@@ -246,4 +249,39 @@ TEST_CASE("Test the derivation of the FWave net-updates.", "[FWaveUpdates]") {
 
     REQUIRE(l_netUpdatesR[0] == Approx(-90));
     REQUIRE(l_netUpdatesR[1] == Approx(-9900.002044988));
+}
+
+TEST_CASE("Test the derivation of the FWave net-updates dry-to-wet edge-case.", "[FWaveUpdatesWetDry]")
+{
+    float l_netUpdatesL_dry_to_wet[2] = {-5, 3};
+    float l_netUpdatesR_dry_to_wet[2] = {4, 7};
+    float l_netUpdatesL_shock_shock[2] = {-5, 3};
+    float l_netUpdatesR_shock_shock[2] = {4, 7};
+
+    // Simulate wave against wall right to left
+    tsunami_lab::solvers::FWave::netUpdates(0,
+                                            15,
+                                            0,
+                                            -10,
+                                            15,
+                                            -15,
+                                            l_netUpdatesL_dry_to_wet,
+                                            l_netUpdatesR_dry_to_wet);
+
+    // Simulate shock-shock wave
+    tsunami_lab::solvers::FWave::netUpdates(15,
+                                            15,
+                                            10,
+                                            -10,
+                                            -15,
+                                            -15,
+                                            l_netUpdatesL_shock_shock,
+                                            l_netUpdatesR_shock_shock);
+
+    REQUIRE(l_netUpdatesL_dry_to_wet[0] == 0);
+    REQUIRE(l_netUpdatesL_dry_to_wet[1] == 0);
+
+    // Proof, that same effect as shock-shock happens
+    REQUIRE(l_netUpdatesR_dry_to_wet[0] == Approx(l_netUpdatesR_shock_shock[0]));
+    REQUIRE(l_netUpdatesR_dry_to_wet[1] == -Approx(l_netUpdatesL_shock_shock[1]));
 }
