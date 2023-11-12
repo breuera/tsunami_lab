@@ -44,6 +44,9 @@ public:
                     t_real const *i_hv,
                     t_real const *i_b,
                     std::ostream &io_stream);
+
+  static void read(std::string i_filename,
+                   std::vector<t_real> o_depths);
 };
 
 #endif

@@ -27,6 +27,8 @@ private:
   //! wall heigth
   t_real m_delta = 20;
 
+  std::vector<t_real> m_b_in;
+
   /**
    * @brief Get initial displacement
    *
@@ -48,7 +50,7 @@ public:
    * @brief Construct a new TsunamiEvent1d object
    *
    */
-  TsunamiEvent1d();
+  TsunamiEvent1d(std::vector<t_real> i_b_in);
 
   /**
    * Gets the water height.

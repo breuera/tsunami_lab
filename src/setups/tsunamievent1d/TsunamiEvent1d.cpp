@@ -6,11 +6,15 @@
  * One-dimensional tsunamievent problem.
  **/
 #include "TsunamiEvent1d.h"
+#include <string>
 #include <algorithm>
 #include <cmath>
+#include "io/Csv.h"
 
-tsunami_lab::setups::TsunamiEvent1d::TsunamiEvent1d()
+tsunami_lab::setups::TsunamiEvent1d::TsunamiEvent1d(std::vector<t_real> i_b_in)
 {
+  m_b_in = i_b_in;
+  tsunami_lab::io::Csv::read(std::string("test"), m_b_in);
 }
 
 tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent1d::getHeight(t_real i_x,
@@ -68,5 +72,7 @@ tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent1d::getDisplacement(t_real 
 tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent1d::getBathymetryFromCSV(t_real i_x) const
 {
   int line = i_x / 250; // 250m steps
+  std::string test;
+  test = "hallo";
   return 0;
 }
