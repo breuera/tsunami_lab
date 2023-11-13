@@ -9,6 +9,7 @@
 #define TSUNAMI_LAB_PATCHES_WAVE_PROPAGATION_2D
 
 #include <string>
+#include <vector>
 
 #include "../WavePropagation.h"
 
@@ -34,6 +35,12 @@ class tsunami_lab::patches::WavePropagation2d : public WavePropagation {
 
     //! state of right boundary, 0 = open, 1 = closed
     int m_state_boundary_right = 0;
+
+    //! state of top boundary, 0 = open, 1 = closed
+    int m_state_boundary_top = 0;
+
+    //! state of bottom boundary, 0 = open, 1 = closed
+    int m_state_boundary_bottom = 0;
 
     //! water heights for the current and next time step for all cells
     t_real *m_h[2] = {nullptr, nullptr};
