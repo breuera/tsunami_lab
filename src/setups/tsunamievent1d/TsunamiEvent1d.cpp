@@ -11,7 +11,7 @@
 #include <iostream>
 #include <cmath>
 #include <vector>
-#include "../../io/Csv.h"
+#include "../../io/csv/Csv.h"
 
 tsunami_lab::setups::TsunamiEvent1d::TsunamiEvent1d(std::vector<t_real> i_b_in)
 {
