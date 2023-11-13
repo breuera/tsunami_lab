@@ -8,7 +8,7 @@
 #define TSUNAMI_LAB_IO_STATIONS
 
 #include "../../constants.h"
-#include "../../../plugins/json.hpp"
+#include "../../plugins/json.hpp"
 #include <cstring>
 #include <iostream>
 #include <vector>
@@ -40,11 +40,11 @@ private:
     std::vector<Station_struct> m_stations;
 
 public:
-     void addStation(const std::string i_name, t_real i_x, t_real i_y);
+    void addStation(const std::string i_name, t_real i_x, t_real i_y);
 
-     void writeStationOutput();
+    void writeStationOutput();
 
-     void loadStationsFromJSON(const std::string &filename);
+    void loadStationsFromJSON(const std::string &filename);
 
     Stations(const std::string &configFilePath);
 };
