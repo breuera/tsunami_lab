@@ -388,7 +388,7 @@ Supercritical Flow momentum:
   :width: 600px
 
 Stationary Discontinuity
-========================
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 The stationary discontinuity is located in the 115 cell or in at 11.5 meters. 
 At the end all cells have a momentum around 0.12, but the 115-th cell has a 
