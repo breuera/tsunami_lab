@@ -3,3 +3,6 @@
 /.idea/
 /out/
 *.dblite
+/documentation/build/
+/.vscode/
+/res/middle_states.csv
