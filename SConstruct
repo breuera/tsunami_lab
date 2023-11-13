@@ -32,8 +32,8 @@ if vars.UnknownVariables():
 
 # create environment
 env = Environment( variables = vars )
-#env['CXX'] = '/opt/homebrew/bin/g++-13'
-#env['CC'] = '/opt/homebrew/bin/gcc-13'
+env['CXX'] = '/opt/homebrew/bin/g++-13'
+env['CC'] = '/opt/homebrew/bin/gcc-13'
 
 # generate help message
 Help( vars.GenerateHelpText( env ) )
