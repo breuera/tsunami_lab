@@ -10,6 +10,7 @@
 #include <iostream>
 #include <limits>
 
+#include "configs/SimConfig.h"
 #include "io/Csv.h"
 #include "patches/WavePropagation1d.h"
 #include "setups/CustomSetup1d/CustomSetup1d.h"
@@ -19,20 +20,21 @@
 #include "setups/SubcriticalFlow1d/SubcriticalFlow1d.h"
 #include "setups/SupercriticalFlow1d/SupercriticalFlow1d.h"
 #include "setups/TsunamiEvent1d/TsunamiEvent1d.h"
+// #include "simulator/Simulator.h"
 
-int main(int i_argc,
-         char *i_argv[]) {
-    // number of cells in x- and y-direction
-    tsunami_lab::t_idx l_nx = 0;
-    tsunami_lab::t_idx l_ny = 1;
+int main() {
+    /*
+// number of cells in x- and y-direction
+tsunami_lab::t_idx l_nx = 0;
+tsunami_lab::t_idx l_ny = 1;
 
-    // set cell size
-    tsunami_lab::t_real l_dxy = 1;
+// set cell size
+tsunami_lab::t_real l_dxy = 1;
 
-    // set solver
-    bool l_use_roe_solver = false;
-    std::string l_scenario = "DamBreak";
-    std::string l_boundary_conditions = "-oo";
+// set solver
+bool l_use_roe_solver = false;
+std::string l_scenario = "DamBreak";
+std::string l_boundary_conditions = "-oo";*/
 
     std::cout << "####################################" << std::endl;
     std::cout << "### Tsunami Lab                  ###" << std::endl;
@@ -40,7 +42,35 @@ int main(int i_argc,
     std::cout << "### https://scalable.uni-jena.de ###" << std::endl;
     std::cout << "####################################" << std::endl;
 
-    if (i_argc == 3) {
+    tsunami_lab::t_real *l_setups = nullptr;
+    tsunami_lab::t_real *l_hStar = nullptr;
+    tsunami_lab::configs::SimConfig l_simConfig = tsunami_lab::configs::SimConfig();
+
+    // load parameters from runtimeConfig.json
+    // tsunami_lab::io::JsonParameterReader::loadConfig(l_setups, l_hStar, l_simConfig);
+
+    // start simulation from config
+    /*for (tsunami_lab::t_idx i = 0; i < l_simConfig.getSetupCount(); i++) {
+        if (l_hStar != nullptr) {
+            // run sanitization tests
+            tsunami_lab::simulator::runSimulation(l_setups[i], l_hStar[i], l_simConfig);
+        } else {
+            // run any other setup
+            tsunami_lab::simulator::runSimulation(l_setups[i], -1, l_simConfig);
+        }
+    }*/
+
+    delete[] l_setups;
+    if (l_hStar != nullptr) {
+        delete[] l_hStar;
+    } else {
+        delete l_hStar;
+    }
+
+    std::cout << "finished, exiting" << std::endl;
+    return EXIT_SUCCESS;
+
+    /*if (i_argc == 3) {
         l_scenario = i_argv[1];
         l_nx = atoi(i_argv[2]);
         if (l_nx < 1) {
@@ -464,7 +494,5 @@ int main(int i_argc,
     free(l_hR);
     free(l_huR);
     free(l_hStar);
-
-    std::cout << "finished, exiting" << std::endl;
-    return EXIT_SUCCESS;
+*/
 }
