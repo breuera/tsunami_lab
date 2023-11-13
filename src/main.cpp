@@ -20,7 +20,7 @@
 #include "setups/SubcriticalFlow1d/SubcriticalFlow1d.h"
 #include "setups/SupercriticalFlow1d/SupercriticalFlow1d.h"
 #include "setups/TsunamiEvent1d/TsunamiEvent1d.h"
-// #include "simulator/Simulator.h"
+#include "simulator/Simulator.h"
 
 int main() {
     /*
@@ -42,18 +42,18 @@ std::string l_boundary_conditions = "-oo";*/
     std::cout << "### https://scalable.uni-jena.de ###" << std::endl;
     std::cout << "####################################" << std::endl;
 
-    tsunami_lab::t_real *l_setups = nullptr;
+    tsunami_lab::setups::Setup *l_setups = nullptr;
     tsunami_lab::t_real *l_hStar = nullptr;
     tsunami_lab::configs::SimConfig l_simConfig = tsunami_lab::configs::SimConfig();
 
     // load parameters from runtimeConfig.json
-    // tsunami_lab::io::JsonParameterReader::loadConfig(l_setups, l_hStar, l_simConfig);
+    // tsunami_lab::io::JsonParameterReader::loadConfig(l_setups, l_hStar, &l_simConfig);
 
     // start simulation from config
     /*for (tsunami_lab::t_idx i = 0; i < l_simConfig.getSetupCount(); i++) {
         if (l_hStar != nullptr) {
             // run sanitization tests
-            tsunami_lab::simulator::runSimulation(l_setups[i], l_hStar[i], l_simConfig);
+            tsunami_lab::simulator::runSimulation(l_setups[i], l_hStar[i], &l_simConfig);
         } else {
             // run any other setup
             tsunami_lab::simulator::runSimulation(l_setups[i], -1, l_simConfig);
