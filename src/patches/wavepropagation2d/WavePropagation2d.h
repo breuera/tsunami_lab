@@ -1,27 +1,25 @@
 /**
- * @author Alexander Breuer (alex.breuer AT uni-jena.de)
+ * @author Maurice Herold (maurice.herold AT uni-jena.de)
+ * @author Mher Mnatsakanyan (mher.mnatsakanyan AT uni-jena.de)
  *
  * @section DESCRIPTION
- * One-dimensional wave propagation patch.
+ * Two-dimensional wave propagation patch.
  **/
-#ifndef TSUNAMI_LAB_PATCHES_WAVE_PROPAGATION_1D
-#define TSUNAMI_LAB_PATCHES_WAVE_PROPAGATION_1D
+#ifndef TSUNAMI_LAB_PATCHES_WAVE_PROPAGATION_2D
+#define TSUNAMI_LAB_PATCHES_WAVE_PROPAGATION_2D
 
 #include <string>
 
-#include "WavePropagation.h"
+#include "../WavePropagation.h"
 
-namespace tsunami_lab
-{
-    namespace patches
-    {
-        class WavePropagation1d;
-    }
-} // namespace tsunami_lab
+namespace tsunami_lab {
+namespace patches {
+class WavePropagation2d;
+}
+}  // namespace tsunami_lab
 
-class tsunami_lab::patches::WavePropagation1d : public WavePropagation
-{
-private:
+class tsunami_lab::patches::WavePropagation2d : public WavePropagation {
+   private:
     //! current step which indicates the active values in the arrays below
     unsigned short m_step = 0;
 
@@ -46,19 +44,19 @@ private:
     //! bathymetry for all cells
     t_real *m_b = nullptr;
 
-public:
+   public:
     /**
      * Constructs the 1d wave propagation solver.
      *
      * @param i_nCells number of cells.
      * @param solver_choice type int, defines the choice of solver. Possible values: "roe" and "fwave".
      **/
-    WavePropagation1d(t_idx i_nCells, int solver_choice, int state_boundary_left, int state_boundary_right);
+    WavePropagation2d(t_idx i_nCells, int solver_choice, int state_boundary_left, int state_boundary_right);
 
     /**
      * Destructor which frees all allocated memory.
      **/
-    ~WavePropagation1d();
+    ~WavePropagation2d();
 
     /**
      * Performs a time step.
@@ -77,8 +75,7 @@ public:
      *
      * @return stride in y-direction.
      **/
-    t_idx getStride()
-    {
+    t_idx getStride() {
         return m_nCells + 2;
     }
 
@@ -87,8 +84,7 @@ public:
      *
      * @return water heights.
      */
-    t_real const *getHeight()
-    {
+    t_real const *getHeight() {
         return m_h[m_step] + 1;
     }
 
@@ -97,16 +93,14 @@ public:
      *
      * @return momenta in x-direction.
      **/
-    t_real const *getMomentumX()
-    {
+    t_real const *getMomentumX() {
         return m_hu[m_step] + 1;
     }
 
     /**
      * Dummy function which returns a nullptr.
      **/
-    t_real const *getMomentumY()
-    {
+    t_real const *getMomentumY() {
         return nullptr;
     }
 
@@ -115,8 +109,7 @@ public:
      *
      * @return bathymetry.
      **/
-    t_real const *getBathymetry()
-    {
+    t_real const *getBathymetry() {
         return m_b + 1;
     }
 
@@ -128,8 +121,7 @@ public:
      **/
     void setHeight(t_idx i_ix,
                    t_idx,
-                   t_real i_h)
-    {
+                   t_real i_h) {
         m_h[m_step][i_ix + 1] = i_h;
     }
 
@@ -141,8 +133,7 @@ public:
      **/
     void setMomentumX(t_idx i_ix,
                       t_idx,
-                      t_real i_hu)
-    {
+                      t_real i_hu) {
         m_hu[m_step][i_ix + 1] = i_hu;
     }
 
@@ -161,8 +152,7 @@ public:
      */
     void setBathymetry(t_idx i_ix,
                        t_idx,
-                       t_real i_b)
-    {
+                       t_real i_b) {
         m_b[i_ix + 1] = i_b;
     }
 };

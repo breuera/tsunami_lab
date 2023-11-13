@@ -7,35 +7,37 @@
 Import('env')
 
 # gather sources
-l_sources = [ 'solvers/roe/Roe.cpp',
-              'solvers/f-wave/F_wave.cpp',
-              'patches/WavePropagation1d.cpp',
-              'setups/dambreak1d/DamBreak1d.cpp',
-              'setups/shockshock1d/ShockShock1d.cpp',
-              'setups/rarerare1d/RareRare1d.cpp',
-              'setups/subcritical1d/Subcritical1d.cpp',
-              'setups/supercritical1d/Supercritical1d.cpp',
-              'setups/tsunamievent1d/TsunamiEvent1d.cpp',
-              'io/Csv.cpp' ]
+l_sources = ['solvers/roe/Roe.cpp',
+             'solvers/f-wave/F_wave.cpp',
+             'patches/wavepropagation1d/WavePropagation1d.cpp',
+             'patches/wavepropagation2d/WavePropagation2d.cpp',
+             'setups/dambreak1d/DamBreak1d.cpp',
+             'setups/shockshock1d/ShockShock1d.cpp',
+             'setups/rarerare1d/RareRare1d.cpp',
+             'setups/subcritical1d/Subcritical1d.cpp',
+             'setups/supercritical1d/Supercritical1d.cpp',
+             'setups/tsunamievent1d/TsunamiEvent1d.cpp',
+             'io/Csv.cpp']
 
 for l_so in l_sources:
-  env.sources.append( env.Object( l_so ) )
+    env.sources.append(env.Object(l_so))
 
-env.standalone = env.Object( "main.cpp" )
+env.standalone = env.Object("main.cpp")
 
 # gather unit tests
-l_tests = [ 'tests.cpp',
-            'solvers/roe/Roe.test.cpp',
-            'solvers/f-wave/F_wave.test.cpp',
-            'patches/WavePropagation1d.test.cpp',
-            'setups/dambreak1d/DamBreak1d.test.cpp',
-            'setups/shockshock1d/ShockShock1d.test.cpp',
-            'setups/rarerare1d/RareRare1d.test.cpp',
-            'setups/supercritical1d/Supercritical1d.test.cpp',
-            'setups/tsunamievent1d/TsunamiEvent1d.test.cpp',
-            'io/Csv.test.cpp' ]
+l_tests = ['tests.cpp',
+           'solvers/roe/Roe.test.cpp',
+           'solvers/f-wave/F_wave.test.cpp',
+           'patches/wavepropagation1d/WavePropagation1d.test.cpp',
+           'patches/wavepropagation2d/WavePropagation2d.test.cpp',
+           'setups/dambreak1d/DamBreak1d.test.cpp',
+           'setups/shockshock1d/ShockShock1d.test.cpp',
+           'setups/rarerare1d/RareRare1d.test.cpp',
+           'setups/supercritical1d/Supercritical1d.test.cpp',
+           'setups/tsunamievent1d/TsunamiEvent1d.test.cpp',
+           'io/Csv.test.cpp']
 
 for l_te in l_tests:
-  env.tests.append( env.Object( l_te ) )
+    env.tests.append(env.Object(l_te))
 
 Export('env')
