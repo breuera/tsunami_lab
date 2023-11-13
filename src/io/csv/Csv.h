@@ -7,7 +7,7 @@
 #ifndef TSUNAMI_LAB_IO_CSV
 #define TSUNAMI_LAB_IO_CSV
 
-#include "../constants.h"
+#include "../../constants.h"
 #include <cstring>
 #include <iostream>
 #include <vector>
