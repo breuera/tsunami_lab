@@ -30,7 +30,7 @@ jobs:
                   git submodule update
 
             - name: Static Code Analysis
-              run: cppcheck -isrc/plugins src/ --std=c++17 --template=gcc --force --error-exitcode=1
+              run: cppcheck src/ -i src/io/stations/Stations.cpp --std=c++17 --template=gcc --force --error-exitcode=1
 
             - name: Sanitize
               run: |
