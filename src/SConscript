@@ -14,9 +14,9 @@ l_sources = [ 'solvers/Roe.cpp',
               'setups/DamBreak1d/DamBreak1d.cpp',
               'setups/RareRare1d/RareRare1d.cpp',
               'setups/ShockShock1d/ShockShock1d.cpp',
-              'setups/TsunamiEvent1d/TsunamiEvent1d.cpp',
               'setups/SubcriticalFlow1d/SubcriticalFlow1d.cpp',
               'setups/SupercriticalFlow1d/SupercriticalFlow1d.cpp',
+              'configs/SimConfig.cpp',
               'io/Csv.cpp' ]
 
 for l_so in l_sources:
@@ -33,9 +33,9 @@ l_tests = [ 'tests.cpp',
             'setups/DamBreak1d/DamBreak1d.test.cpp',
             'setups/ShockShock1d/ShockShock1d.test.cpp',
             'setups/RareRare1d/RareRare1d.test.cpp',
-            'setups/TsunamiEvent1d/TsunamiEvent1d.test.cpp',
             'setups/SubcriticalFlow1d/SubcriticalFlow1d.test.cpp',
             'setups/SupercriticalFlow1d/SupercriticalFlow1d.test.cpp',
+            'configs/SimConfig.test.cpp',
             'io/Csv.test.cpp']
 
 for l_te in l_tests:
