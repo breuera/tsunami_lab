@@ -17,7 +17,8 @@ l_sources = [ 'solvers/Roe.cpp',
               'setups/SubcriticalFlow1d/SubcriticalFlow1d.cpp',
               'setups/SupercriticalFlow1d/SupercriticalFlow1d.cpp',
               'configs/SimConfig.cpp',
-              'io/Csv.cpp' ]
+              'io/Csv/Csv.cpp',
+              'io/JsonParameterReader/JsonParameterReader.cpp']
 
 for l_so in l_sources:
   env.sources.append( env.Object( l_so ) )
@@ -36,7 +37,8 @@ l_tests = [ 'tests.cpp',
             'setups/SubcriticalFlow1d/SubcriticalFlow1d.test.cpp',
             'setups/SupercriticalFlow1d/SupercriticalFlow1d.test.cpp',
             'configs/SimConfig.test.cpp',
-            'io/Csv.test.cpp']
+            'io/Csv/Csv.test.cpp',
+            'io/JsonParameterReader/JsonParameterReader.test.cpp']
 
 for l_te in l_tests:
   env.tests.append( env.Object( l_te ) )
