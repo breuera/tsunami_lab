@@ -47,16 +47,16 @@ std::string l_boundary_conditions = "-oo";*/
     tsunami_lab::configs::SimConfig l_simConfig = tsunami_lab::configs::SimConfig();
 
     // load parameters from runtimeConfig.json
-    // tsunami_lab::io::JsonParameterReader::loadConfig(l_setups, l_hStar, &l_simConfig);
+    // tsunami_lab::io::JsonParameterReader::loadConfig(l_setups, l_hStar, l_simConfig);
 
     // start simulation from config
     /*for (tsunami_lab::t_idx i = 0; i < l_simConfig.getSetupCount(); i++) {
         if (l_hStar != nullptr) {
             // run sanitization tests
-            tsunami_lab::simulator::runSimulation(l_setups[i], l_hStar[i], &l_simConfig);
+            tsunami_lab::simulator::runSimulation(&l_setups[i], l_hStar[i], l_simConfig);
         } else {
             // run any other setup
-            tsunami_lab::simulator::runSimulation(l_setups[i], -1, l_simConfig);
+            tsunami_lab::simulator::runSimulation(&l_setups[i], -1, l_simConfig);
         }
     }*/
 
