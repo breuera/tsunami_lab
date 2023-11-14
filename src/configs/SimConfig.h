@@ -4,8 +4,8 @@
  * @section DESCRIPTION
  * Configuration that holds all information for one simulation.
  **/
-#ifndef TSUNAMI_LAB_PATCHES_WAVE_PROPAGATION_1D
-#define TSUNAMI_LAB_PATCHES_WAVE_PROPAGATION_1D
+#ifndef TSUNAMI_LAB_CONFIGS_SIM_CONFIG
+#define TSUNAMI_LAB_CONFIGS_SIM_CONFIG
 
 #include <cstdlib>
 #include <string>
@@ -35,6 +35,12 @@ class tsunami_lab::configs::SimConfig {
     //! length of the simulation in y-direction
     tsunami_lab::t_real m_yLen = tsunami_lab::t_real(10.0);
 
+    //! location of the middle location in x-direction (where for example the dam is located)
+    tsunami_lab::t_real m_thresholdX = tsunami_lab::t_real(5.0);
+
+    //! location of the middle location in y-direction (where for example the dam is located)
+    tsunami_lab::t_real m_thresholdY = tsunami_lab::t_real(5.0);
+
     //! time of the simulation.
     tsunami_lab::t_real m_simTime = tsunami_lab::t_real(1.25);
 
@@ -61,6 +67,8 @@ class tsunami_lab::configs::SimConfig {
      * @param i_ny number of cells in y-direction.
      * @param i_xLen length of the simulation in x-direction in meters.
      * @param i_yLen length of the simulation in y-direction in meters.
+     * @param i_thresholdX position of the point in x-direction, where the conditions change.
+     * @param i_thresholdY position of the point in y-direction, where the conditions change.
      * @param i_simTime time of the simulation in seconds.
      * @param i_boundaryCondition string that determents the chosen boundary conditions.
      * @param i_setupCount number of setups chosen.
@@ -71,6 +79,8 @@ class tsunami_lab::configs::SimConfig {
               tsunami_lab::t_idx i_ny,
               tsunami_lab::t_real i_xLen,
               tsunami_lab::t_real i_yLen,
+              tsunami_lab::t_real i_thresholdX,
+              tsunami_lab::t_real i_thresholdY,
               tsunami_lab::t_real i_simTime,
               std::string i_boundaryCondition,
               tsunami_lab::t_idx i_setupCount,
@@ -126,6 +136,24 @@ class tsunami_lab::configs::SimConfig {
     }
 
     /**
+     * Gets the threshold in x-direction.
+     *
+     * @return threshold.
+     */
+    tsunami_lab::t_real getThresholdX() {
+        return m_thresholdX;
+    }
+
+    /**
+     * Gets the threshold in y-direction.
+     *
+     * @return threshold.
+     */
+    tsunami_lab::t_real getThresholdY() {
+        return m_thresholdY;
+    }
+
+    /**
      * Gets the time length of the simulation in seconds.
      *
      * @return time length of the simulation in seconds.
@@ -152,6 +180,11 @@ class tsunami_lab::configs::SimConfig {
         return m_setupCount;
     }
 
+    /**
+     * Gets boolean value, that shows if the roe solver is to be used.
+     *
+     * @return number of setups to be calculated.
+     */
     bool isRoeSolver() {
         return m_isRoeSolver;
     }

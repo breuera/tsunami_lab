@@ -19,6 +19,8 @@ TEST_CASE("Test the SimConfig data-structure.", "[SimConfig]") {
     tsunami_lab::t_idx l_ny = 540;
     tsunami_lab::t_real l_xLen = tsunami_lab::t_real(1200);
     tsunami_lab::t_real l_yLen = tsunami_lab::t_real(2400);
+    tsunami_lab::t_real l_thresholdX = tsunami_lab::t_real(1600);
+    tsunami_lab::t_real l_thresholdY = tsunami_lab::t_real(1600);
     tsunami_lab::t_real l_simTime = tsunami_lab::t_real(200.0);
     std::string l_boundaryCondition = "-or";
     tsunami_lab::t_idx l_setupCount = 1000;
@@ -29,6 +31,8 @@ TEST_CASE("Test the SimConfig data-structure.", "[SimConfig]") {
                                                                                l_ny,
                                                                                l_xLen,
                                                                                l_yLen,
+                                                                               l_thresholdX,
+                                                                               l_thresholdY,
                                                                                l_simTime,
                                                                                l_boundaryCondition,
                                                                                l_setupCount,
@@ -39,6 +43,8 @@ TEST_CASE("Test the SimConfig data-structure.", "[SimConfig]") {
     REQUIRE(l_ny == l_config.getYCells());
     REQUIRE(l_xLen == l_config.getXLength());
     REQUIRE(l_yLen == l_config.getYLength());
+    REQUIRE(l_thresholdX == l_config.getThresholdX());
+    REQUIRE(l_thresholdY == l_config.getThresholdY());
     REQUIRE(l_simTime == l_config.getSimTime());
     REQUIRE(l_boundaryCondition == l_config.getBoundaryCondition());
     REQUIRE(l_setupCount == l_config.getSetupCount());

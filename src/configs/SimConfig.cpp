@@ -15,6 +15,8 @@ tsunami_lab::configs::SimConfig::SimConfig(tsunami_lab::t_idx i_dimension,
                                            tsunami_lab::t_idx i_ny,
                                            tsunami_lab::t_real i_xLen,
                                            tsunami_lab::t_real i_yLen,
+                                           tsunami_lab::t_real i_thresholdX,
+                                           tsunami_lab::t_real i_thresholdY,
                                            tsunami_lab::t_real i_simTime,
                                            std::string i_boundaryCondition,
                                            tsunami_lab::t_idx i_setupCount,
@@ -24,6 +26,8 @@ tsunami_lab::configs::SimConfig::SimConfig(tsunami_lab::t_idx i_dimension,
     m_ny = i_ny;
     m_xLen = i_xLen;
     m_yLen = i_yLen;
+    m_thresholdX = i_thresholdX;
+    m_thresholdY = i_thresholdY;
     m_simTime = i_simTime;
     m_boundaryCondition = i_boundaryCondition;
     m_setupCount = i_setupCount;
