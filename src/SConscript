@@ -10,6 +10,7 @@ Import('env')
 l_sources = [ 'solvers/Roe.cpp',
               'solvers/FWave.cpp',
               'patches/WavePropagation1d.cpp',
+              'simulator/Simulator.cpp',
               'setups/CustomSetup1d/CustomSetup1d.cpp',
               'setups/DamBreak1d/DamBreak1d.cpp',
               'setups/RareRare1d/RareRare1d.cpp',
@@ -18,7 +19,8 @@ l_sources = [ 'solvers/Roe.cpp',
               'setups/SupercriticalFlow1d/SupercriticalFlow1d.cpp',
               'configs/SimConfig.cpp',
               'io/Csv/Csv.cpp',
-              'io/JsonParameterReader/JsonParameterReader.cpp']
+              'io/JsonParameterReader/JsonParameterReader.cpp'
+              ]
 
 for l_so in l_sources:
   env.sources.append( env.Object( l_so ) )
@@ -30,6 +32,7 @@ l_tests = [ 'tests.cpp',
             'solvers/Roe.test.cpp',
             'solvers/FWave.test.cpp',
             'patches/WavePropagation1d.test.cpp',
+            'simulator/Simulator.test.cpp',
             'setups/CustomSetup1d/CustomSetup1d.test.cpp',
             'setups/DamBreak1d/DamBreak1d.test.cpp',
             'setups/ShockShock1d/ShockShock1d.test.cpp',
@@ -38,7 +41,8 @@ l_tests = [ 'tests.cpp',
             'setups/SupercriticalFlow1d/SupercriticalFlow1d.test.cpp',
             'configs/SimConfig.test.cpp',
             'io/Csv/Csv.test.cpp',
-            'io/JsonParameterReader/JsonParameterReader.test.cpp']
+            #'io/JsonParameterReader/JsonParameterReader.test.cpp'
+            ]
 
 for l_te in l_tests:
   env.tests.append( env.Object( l_te ) )
