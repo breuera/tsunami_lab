@@ -17,17 +17,29 @@
 tsunami_lab::patches::WavePropagation2d::WavePropagation2d(t_idx i_nCells,
                                                            int solver_choice,
                                                            int state_boundary_left,
-                                                           int state_boundary_right) {
+                                                           int state_boundary_right,
+                                                           int state_boundary_top,
+                                                           int state_boundary_bottom) {
     m_nCells = i_nCells;
     m_solver_choice = solver_choice;
     m_state_boundary_left = state_boundary_left;
     m_state_boundary_right = state_boundary_right;
+    m_state_boundary_top = state_boundary_top;
+    m_state_boundary_bottom = state_boundary_bottom;
     // allocate memory including a single ghost cell on each side and initializing with 0
-    for (unsigned short l_st = 0; l_st < 2; l_st++) {
-        m_h[l_st] = new t_real[m_nCells + 2]{0};
-        m_hu[l_st] = new t_real[m_nCells + 2]{0};
+    for (int i = 0; i < 2; i++) {
+        m_h[i] = new t_real *[m_nCells + 2];
+        m_hu[i] = new t_real *[m_nCells + 2];
+        for (int j = 0; j < m_nCells + 2; j++) {
+            m_h[i][j] = new t_real[m_nCells + 2]{0};
+            m_hu[i][j] = new t_real[m_nCells + 2]{0};
+        }
     }
-    m_b = new t_real[m_nCells + 2]{0};
+
+    m_b = new t_real *[m_nCells + 2];
+    for (int j = 0; j < m_nCells + 2; j++) {
+        m_b[j] = new t_real[m_nCells + 2]{0};
+    }
 }
 
 tsunami_lab::patches::WavePropagation2d::~WavePropagation2d() {

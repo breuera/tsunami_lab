@@ -43,22 +43,32 @@ class tsunami_lab::patches::WavePropagation2d : public WavePropagation {
     int m_state_boundary_bottom = 0;
 
     //! water heights for the current and next time step for all cells
-    t_real *m_h[2] = {nullptr, nullptr};
-
+    // t_real *m_h[2] = {nullptr, nullptr};
+    t_real **m_h[2];
     //! momenta for the current and next time step for all cells
-    t_real *m_hu[2] = {nullptr, nullptr};
+    t_real **m_hu[2];
 
     //! bathymetry for all cells
-    t_real *m_b = nullptr;
+    t_real **m_b;
 
    public:
     /**
+     *
      * Constructs the 1d wave propagation solver.
      *
      * @param i_nCells number of cells.
-     * @param solver_choice type int, defines the choice of solver. Possible values: "roe" and "fwave".
+     * @param solver_choice type int, defines the choice of solver. Possible values: 0 for "roe" and 1 for "fwave".
+     * @param state_boundary_left type int, defines the state of the left boundary. Possible values: 0 = "open" and 1 = "closed".
+     * @param state_boundary_right type int, defines the state of the right boundary. Possible values: 0 = "open" and 1 = "closed".
+     * @param state_boundary_top type int, defines the state of the top boundary. Possible values: 0 = "open" and 1 = "closed".
+     * @param state_boundary_bottom type int, defines the state of the bottom boundary. Possible values: 0 = "open" and 1 = "closed".
      **/
-    WavePropagation2d(t_idx i_nCells, int solver_choice, int state_boundary_left, int state_boundary_right);
+    WavePropagation2d(t_idx i_nCells,
+                      int solver_choice,
+                      int state_boundary_left,
+                      int state_boundary_right,
+                      int state_boundary_top,
+                      int state_boundary_bottom);
 
     /**
      * Destructor which frees all allocated memory.
