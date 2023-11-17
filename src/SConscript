@@ -18,8 +18,7 @@ l_sources = [ 'solvers/Roe.cpp',
               'setups/SubcriticalFlow1d/SubcriticalFlow1d.cpp',
               'setups/SupercriticalFlow1d/SupercriticalFlow1d.cpp',
               'configs/SimConfig.cpp',
-              'io/Csv/Csv.cpp',
-              'io/JsonParameterReader/JsonParameterReader.cpp'
+              'io/Csv/Csv.cpp'
               ]
 
 for l_so in l_sources:
@@ -41,7 +40,6 @@ l_tests = [ 'tests.cpp',
             'setups/SupercriticalFlow1d/SupercriticalFlow1d.test.cpp',
             'configs/SimConfig.test.cpp',
             'io/Csv/Csv.test.cpp',
-            #'io/JsonParameterReader/JsonParameterReader.test.cpp'
             ]
 
 for l_te in l_tests:
