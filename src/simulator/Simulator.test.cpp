@@ -27,7 +27,6 @@ TEST_CASE("Test the simulation running method.", "[Simulator]") {
                                                                                1,
                                                                                1.25,
                                                                                "-oo",
-                                                                               1,
                                                                                false);
     tsunami_lab::setups::Setup *l_setup = new tsunami_lab::setups::DamBreak1d(10, 5, 5);
 
@@ -70,7 +69,7 @@ TEST_CASE("Test the simulation running method.", "[Simulator]") {
 
     for (tsunami_lab::t_idx l_idx = 0; l_idx < 5; l_idx++) {
         std::string path = "./out/solution_" + std::to_string(l_idx) + ".csv";
-        tsunami_lab::t_idx err = remove(path.c_str());
+        int err = remove(path.c_str());
         if (err == -1) l_deletedAll = false;
     }
     REQUIRE(l_deletedAll);

@@ -79,20 +79,22 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
     // choose l_dxy as l_dx if it is smaller or l_dy if it is smaller
     tsunami_lab::t_real l_dxy = l_dx * l_isXStepSmaller + l_dy * !l_isXStepSmaller;
 
+    std::cout << "runtime configuration" << std::endl;
+    std::cout << "  number of cells in x-direction: " << l_nx << std::endl;
+    std::cout << "  number of cells in y-direction: " << l_ny << std::endl;
+    std::cout << "  cell size:                      " << l_dxy << std::endl;
+
     // derive constant time step; changes at simulation time are ignored
     tsunami_lab::t_real l_dt = 0.5 * l_dxy / l_speedMax;
 
     // derive scaling for a time step
     tsunami_lab::t_real l_scaling = l_dt / l_dxy;
 
-    std::cout << l_dxy << "/" << l_dx << "/" << l_dy << "/" << l_dt << "/" << l_scaling << std::endl;
-
     // set up time and print control
     tsunami_lab::t_idx l_nOut = 0;
     tsunami_lab::t_real l_endTime = i_simConfig.getSimTime();
     tsunami_lab::t_real l_simTime = 0;
 
-    std::cout << l_endTime << std::endl;
     if (i_hStar == -1) {
         tsunami_lab::t_idx l_timeStep = 0;
         // iterate over time
@@ -119,16 +121,15 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
                 l_file.close();
                 l_nOut++;
             }
-            if (i_simConfig.getBoundaryCondition() == "-rr") {
-                l_waveProp->setGhostReflectingBoundaryConditions();
-            } else if (i_simConfig.getBoundaryCondition() == "-or") {
-                l_waveProp->setGhostRightReflectingBoundaryCondition();
-            } else if (i_simConfig.getBoundaryCondition() == "-ro") {
-                l_waveProp->setGhostLeftReflectingBoundaryCondition();
+            if (i_simConfig.getBoundaryCondition() == "RR") {
+                l_waveProp->setGhostReflecting();
+            } else if (i_simConfig.getBoundaryCondition() == "OR") {
+                l_waveProp->setGhostRightReflecting();
+            } else if (i_simConfig.getBoundaryCondition() == "RO") {
+                l_waveProp->setGhostLeftReflecting();
             } else {
                 l_waveProp->setGhostOutflow();
             }
-
             l_waveProp->timeStep(l_scaling);
 
             l_timeStep++;
