@@ -154,8 +154,8 @@ TEST_CASE("Test the CSV gmt reader.", "[GMTRead]") {
     REQUIRE(l_y[756] == Approx(37.3421));
     REQUIRE(l_distance[1762] == Approx(440500));
 
-    free(l_bathymetry);
-    free(l_x);
-    free(l_y);
-    free(l_distance);
+    delete[] l_bathymetry;
+    delete[] l_x;
+    delete[] l_y;
+    delete[] l_distance;
 }

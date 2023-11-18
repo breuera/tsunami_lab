@@ -109,10 +109,10 @@ void tsunami_lab::io::Csv::read_gmt_states(std::ifstream &io_stream,
     std::string l_line;
     std::stringstream l_lineStream;
 
-    o_bathymetry = (t_real *)malloc(l_length * sizeof(t_real));
-    o_x = (t_real *)malloc(l_length * sizeof(t_real));
-    o_y = (t_real *)malloc(l_length * sizeof(t_real));
-    o_distance = (t_real *)malloc(l_length * sizeof(t_real));
+    o_bathymetry = new t_real[l_length];
+    o_x = new t_real[l_length];
+    o_y = new t_real[l_length];
+    o_distance = new t_real[l_length];
 
     for (t_idx i = 0; i < l_length; i++) {
         // read next line

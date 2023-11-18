@@ -9,7 +9,7 @@
 #include <catch2/catch.hpp>
 #include <fstream>
 
-#include "../../io/Csv.h"
+#include "../../io/Csv/Csv.h"
 
 TEST_CASE("Test the one-dimensional TsunamiEvent setup.", "[TsunamiSetup1d]") {
     tsunami_lab::t_real bathymetry[5];
@@ -44,24 +44,18 @@ TEST_CASE("Test the one-dimensional TsunamiEvent setup.", "[TsunamiSetup1d]") {
 }
 
 TEST_CASE("Test the one-dimensional with dem.csv data.", "[DemTsunamiSetup1d]") {
-    // initialize middle state sanitization
-    tsunami_lab::t_idx l_scenarioCount = 1763;
     std::string filePath = "./res/dem.csv";
 
     std::ifstream l_stream;
-    // try to read middle states original file
+    // read bathymetry original file
     std::cout << "reading /res/dem.csv ..." << std::endl;
     l_stream.open(filePath, std::fstream::in);
+    REQUIRE(!l_stream.fail());
 
-    float *l_distance;
-    float *l_bathymetry;
-    float *l_x;
-    float *l_y;
-
-    l_distance = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
-    l_bathymetry = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
-    l_x = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
-    l_y = (tsunami_lab::t_real *)malloc(l_scenarioCount * sizeof(l_scenarioCount));
+    float *l_distance = nullptr;
+    float *l_bathymetry = nullptr;
+    float *l_x = nullptr;
+    float *l_y = nullptr;
 
     tsunami_lab::io::Csv::read_gmt_states(l_stream,
                                           l_bathymetry,
@@ -90,4 +84,9 @@ TEST_CASE("Test the one-dimensional with dem.csv data.", "[DemTsunamiSetup1d]") 
     REQUIRE(l_tsunami.getMomentumX(440500, 0) == 0);
     REQUIRE(l_tsunami.getBathymetry(440500, 0) == Approx(-5533.77099898));
     REQUIRE(l_tsunami.getHeight(440500, 0) == Approx(5533.77099898));
+
+    delete[] l_bathymetry;
+    delete[] l_distance;
+    delete[] l_x;
+    delete[] l_y;
 }
