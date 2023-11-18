@@ -49,15 +49,28 @@ private:
     int m_state_boundary_bottom = 0;
 
     //! water heights for the current and next time step for all cells
-    // t_real *m_h[2] = {nullptr, nullptr};
-    t_real **m_h[2];
+    t_real *m_h[2] = {nullptr, nullptr};
     //! momenta for the current and next time step for all cells in x-direction
-    t_real **m_hu[2];
+    t_real *m_hu[2] = {nullptr, nullptr};
     //! momenta for the current and next time step for all cells in y-direction
-    t_real **m_hv[2];
+    t_real *m_hv[2] = {nullptr, nullptr};
 
     //! bathymetry for all cells
-    t_real **m_b;
+    t_real *m_b = nullptr;
+
+    /**
+     * @brief Get the 2d Coordinates of the 1d array (x-y grid is being made flat into one line)
+     *
+     * @param i_x x-coordinate
+     * @param i_y y-coordinate
+     * @return t_idx index in 1d-array
+     */
+    t_idx getCoordinates(t_idx i_x, t_idx i_y)
+    {
+        // when trying to move on a flattend 2d plane, for each y-coordinate
+        // we need to "jump" one x-axis worth of a distance in the 1d-array
+        return i_x + i_y * getStride();
+    };
 
 public:
     /**
@@ -104,7 +117,7 @@ public:
      **/
     t_idx getStride()
     {
-        return m_nCells_y + 2;
+        return m_nCells_x + 2;
     }
 
     /**
@@ -114,7 +127,7 @@ public:
      */
     t_real const *getHeight()
     {
-        return m_h[m_step] + 1;
+        return m_h[m_step];
     }
 
     /**
@@ -124,15 +137,17 @@ public:
      **/
     t_real const *getMomentumX()
     {
-        return m_hu[m_step] + 1;
+        return m_hu[m_step];
     }
 
     /**
-     * Dummy function which returns a nullptr.
+     * Gets the cells' momenta in y-direction.
+     *
+     * @return momenta in y-direction.
      **/
     t_real const *getMomentumY()
     {
-        return m_hv[m_step] + 1;
+        return m_hv[m_step];
     }
 
     /**
@@ -142,7 +157,7 @@ public:
      **/
     t_real const *getBathymetry()
     {
-        return m_b + 1;
+        return m_b;
     }
 
     /**
@@ -156,7 +171,7 @@ public:
                    t_idx i_iy,
                    t_real i_h)
     {
-        m_h[m_step][i_ix + 1][i_iy + 1] = i_h;
+        m_h[m_step][getCoordinates(i_ix + 1, i_iy + 1)] = i_h;
     }
 
     /**
@@ -170,17 +185,21 @@ public:
                       t_idx i_iy,
                       t_real i_hu)
     {
-        m_hu[m_step][i_ix + 1][i_iy + 1] = i_hu;
+        m_hu[m_step][getCoordinates(i_ix + 1, i_iy + 1)] = i_hu;
     }
 
     /**
-     * Dummy function since there is no y-momentum in the 1d solver.
+     * Sets the momentum in y-direction to the given value.
+     *
+     * @param i_ix id of the cell in x-direction.
+     * @param i_iy id of the cell in y-direction.
+     * @param i_hu momentum in y-direction.
      **/
     void setMomentumY(t_idx i_ix,
                       t_idx i_iy,
                       t_real i_hv)
     {
-        m_hv[m_step][i_ix + 1][i_iy + 1] = i_hv;
+        m_hv[m_step][getCoordinates(i_ix + 1, i_iy + 1)] = i_hv;
     }
 
     /**
@@ -194,7 +213,7 @@ public:
                        t_idx i_iy,
                        t_real i_b)
     {
-        m_b[i_ix + 1][i_iy + 1] = i_b;
+        m_b[getCoordinates(i_ix + 1, i_iy + 1)] = i_b;
     }
 };
 
