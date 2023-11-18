@@ -14,18 +14,24 @@
 #include "io/Json/ConfigLoader.h"
 #include "simulator/Simulator.h"
 
-int main() {
+int main(int i_argc, char *i_argv[]) {
     std::cout << "####################################" << std::endl;
     std::cout << "### Tsunami Lab                  ###" << std::endl;
     std::cout << "###                              ###" << std::endl;
     std::cout << "### https://scalable.uni-jena.de ###" << std::endl;
     std::cout << "####################################" << std::endl;
 
+    if (i_argc != 2) {
+        std::cerr << "invalid number of program parameter" << std::endl;
+        std::cerr << "  ./build/tsunami_lab CONFIG_FILE_NAME.json" << std::endl;
+        return EXIT_FAILURE;
+    }
+
+    std::string l_path = "./res/" + std::string(i_argv[1]);
+
     tsunami_lab::setups::Setup *l_setups = nullptr;
     tsunami_lab::t_real l_hStar = -1;
     tsunami_lab::configs::SimConfig l_simConfig = tsunami_lab::configs::SimConfig();
-
-    std::string l_path = "./res/tsunami_config.json";
 
     // load parameters from runtimeConfig.json
     tsunami_lab::t_idx err = tsunami_lab::io::ConfigLoader::loadConfig(l_path,
