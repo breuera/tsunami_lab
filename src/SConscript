@@ -10,14 +10,18 @@ Import('env')
 l_sources = [ 'solvers/Roe.cpp',
               'solvers/FWave.cpp',
               'patches/WavePropagation1d.cpp',
+              'simulator/Simulator.cpp',
               'setups/CustomSetup1d/CustomSetup1d.cpp',
               'setups/DamBreak1d/DamBreak1d.cpp',
               'setups/RareRare1d/RareRare1d.cpp',
               'setups/ShockShock1d/ShockShock1d.cpp',
-              'setups/TsunamiEvent1d/TsunamiEvent1d.cpp',
               'setups/SubcriticalFlow1d/SubcriticalFlow1d.cpp',
               'setups/SupercriticalFlow1d/SupercriticalFlow1d.cpp',
-              'io/Csv.cpp' ]
+              'setups/TsunamiEvent1d/TsunamiEvent1d.cpp',
+              'configs/SimConfig.cpp',
+              'io/Json/ConfigLoader.cpp',
+              'io/Csv/Csv.cpp'
+              ]
 
 for l_so in l_sources:
   env.sources.append( env.Object( l_so ) )
@@ -29,14 +33,17 @@ l_tests = [ 'tests.cpp',
             'solvers/Roe.test.cpp',
             'solvers/FWave.test.cpp',
             'patches/WavePropagation1d.test.cpp',
+            'simulator/Simulator.test.cpp',
             'setups/CustomSetup1d/CustomSetup1d.test.cpp',
             'setups/DamBreak1d/DamBreak1d.test.cpp',
             'setups/ShockShock1d/ShockShock1d.test.cpp',
             'setups/RareRare1d/RareRare1d.test.cpp',
-            'setups/TsunamiEvent1d/TsunamiEvent1d.test.cpp',
             'setups/SubcriticalFlow1d/SubcriticalFlow1d.test.cpp',
             'setups/SupercriticalFlow1d/SupercriticalFlow1d.test.cpp',
-            'io/Csv.test.cpp']
+            'configs/SimConfig.test.cpp',
+            'io/Json/ConfigLoader.test.cpp',
+            'io/Csv/Csv.test.cpp',
+            ]
 
 for l_te in l_tests:
   env.tests.append( env.Object( l_te ) )

@@ -11,7 +11,7 @@
 #include <fstream>
 #include <iostream>
 
-#include "../constants.h"
+#include "../../constants.h"
 
 namespace tsunami_lab {
     namespace io {

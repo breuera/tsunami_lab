@@ -1,0 +1,13 @@
+{
+    "dimension": 2,
+    "nx": 500,
+    "ny": 500,
+    "xLen": 100.0,
+    "yLen": 500.0,
+    "thresholdX": 50.0,
+    "thresholdY": 250.0,
+    "simTime": 5.0,
+    "boundaryCond": "OR",
+    "solver": "Roe",
+    "setup": "DamBreak"
+}

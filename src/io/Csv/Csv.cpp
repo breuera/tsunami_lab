@@ -74,7 +74,6 @@ void tsunami_lab::io::Csv::read_middle_states(std::ifstream &io_stream,
     for (t_idx i = 0; i < l_length; i++) {
         // read next line
         std::getline(io_stream, l_line);
-        // std::cout << i << " : " << l_line << std::endl;
         l_lineStream << l_line;
         std::string l_cell;
 
