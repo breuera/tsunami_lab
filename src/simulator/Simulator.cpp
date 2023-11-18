@@ -13,7 +13,7 @@
 #include <limits>
 
 #include "../io/Csv/Csv.h"
-#include "../patches/WavePropagation1d.h"
+#include "../patches/1d/WavePropagation1d.h"
 
 void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
                                            tsunami_lab::t_real i_hStar,

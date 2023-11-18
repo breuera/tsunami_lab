@@ -9,7 +9,7 @@ Import('env')
 # gather sources
 l_sources = [ 'solvers/Roe.cpp',
               'solvers/FWave.cpp',
-              'patches/WavePropagation1d.cpp',
+              'patches/1d/WavePropagation1d.cpp',
               'simulator/Simulator.cpp',
               'setups/CustomSetup1d/CustomSetup1d.cpp',
               'setups/DamBreak1d/DamBreak1d.cpp',
@@ -32,7 +32,7 @@ env.standalone = env.Object( "main.cpp" )
 l_tests = [ 'tests.cpp',
             'solvers/Roe.test.cpp',
             'solvers/FWave.test.cpp',
-            'patches/WavePropagation1d.test.cpp',
+            'patches/1d/WavePropagation1d.test.cpp',
             'simulator/Simulator.test.cpp',
             'setups/CustomSetup1d/CustomSetup1d.test.cpp',
             'setups/DamBreak1d/DamBreak1d.test.cpp',

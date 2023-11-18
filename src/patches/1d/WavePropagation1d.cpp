@@ -6,8 +6,8 @@
  **/
 #include "WavePropagation1d.h"
 
-#include "../solvers/FWave.h"
-#include "../solvers/Roe.h"
+#include "../../solvers/FWave.h"
+#include "../../solvers/Roe.h"
 
 tsunami_lab::patches::WavePropagation1d::WavePropagation1d(t_idx i_nCells, bool i_use_roe_solver) {
     m_nCells = i_nCells;

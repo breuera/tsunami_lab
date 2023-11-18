@@ -7,7 +7,7 @@
 #ifndef TSUNAMI_LAB_PATCHES_WAVE_PROPAGATION_1D
 #define TSUNAMI_LAB_PATCHES_WAVE_PROPAGATION_1D
 
-#include "WavePropagation.h"
+#include "../WavePropagation.h"
 
 namespace tsunami_lab {
     namespace patches {
