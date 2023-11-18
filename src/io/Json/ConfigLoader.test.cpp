@@ -11,7 +11,7 @@
 #undef public
 
 TEST_CASE("Test reading a config JSON file.", "[ConfigLoader]") {
-    std::string l_path = "./res/demo_config.json";
+    std::string l_path = "./res/configs/demo_config.json";
     tsunami_lab::setups::Setup *l_setups = nullptr;
     tsunami_lab::t_real l_hStar = -1;
     tsunami_lab::configs::SimConfig l_simConfig = tsunami_lab::configs::SimConfig();

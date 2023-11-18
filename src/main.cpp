@@ -27,7 +27,7 @@ int main(int i_argc, char *i_argv[]) {
         return EXIT_FAILURE;
     }
 
-    std::string l_path = "./res/" + std::string(i_argv[1]);
+    std::string l_path = "./res/configs/" + std::string(i_argv[1]);
 
     tsunami_lab::setups::Setup *l_setups = nullptr;
     tsunami_lab::t_real l_hStar = -1;
