@@ -47,6 +47,7 @@ int main(int i_argc, char *i_argv[]) {
     // start simulation from config
     tsunami_lab::simulator::runSimulation(l_setups, l_hStar, l_simConfig);
 
+    delete l_setups;
     std::cout << "finished, exiting" << std::endl;
     return EXIT_SUCCESS;
 }
