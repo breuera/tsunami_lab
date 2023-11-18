@@ -65,6 +65,9 @@ if 'san' in  env['mode']:
 # add Catch2
 env.Append( CXXFLAGS = [ '-isystem', 'submodules/Catch2/single_include' ] )
 
+# add nlohmann/json
+env.Append( CXXFLAGS = [ '-isystem', 'submodules/json/single_include' ] )
+
 # get source files
 VariantDir( variant_dir = 'build/src',
             src_dir     = 'src' )

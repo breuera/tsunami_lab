@@ -17,7 +17,9 @@ l_sources = [ 'solvers/Roe.cpp',
               'setups/ShockShock1d/ShockShock1d.cpp',
               'setups/SubcriticalFlow1d/SubcriticalFlow1d.cpp',
               'setups/SupercriticalFlow1d/SupercriticalFlow1d.cpp',
+              'setups/TsunamiEvent1d/TsunamiEvent1d.cpp',
               'configs/SimConfig.cpp',
+              'io/Json/ConfigLoader.cpp',
               'io/Csv/Csv.cpp'
               ]
 
@@ -39,6 +41,7 @@ l_tests = [ 'tests.cpp',
             'setups/SubcriticalFlow1d/SubcriticalFlow1d.test.cpp',
             'setups/SupercriticalFlow1d/SupercriticalFlow1d.test.cpp',
             'configs/SimConfig.test.cpp',
+            'io/Json/ConfigLoader.test.cpp',
             'io/Csv/Csv.test.cpp',
             ]
 
