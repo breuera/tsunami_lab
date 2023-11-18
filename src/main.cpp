@@ -23,6 +23,7 @@
 #include "patches/wavepropagation1d/WavePropagation1d.h"
 #include "patches/wavepropagation2d/WavePropagation2d.h"
 #include "setups/dambreak1d/DamBreak1d.h"
+#include "setups/dambreak2d/DamBreak2d.h"
 #include "setups/rarerare1d/RareRare1d.h"
 #include "setups/shockshock1d/ShockShock1d.h"
 #include "setups/subcritical1d/Subcritical1d.h"
@@ -31,8 +32,10 @@
 
 // declaration of variables
 int solver_choice = 0;
+int state_boundary_top = 0;
+int state_boundary_bottom = 1;
 int state_boundary_left = 0;
-int state_boundary_right = 0;
+int state_boundary_right = 1;
 
 int main(int i_argc,
          char *i_argv[])
@@ -56,7 +59,7 @@ int main(int i_argc,
 
     // number of cells in x- and y-direction
     tsunami_lab::t_idx l_nx = 0;
-    tsunami_lab::t_idx l_ny = 1;
+    tsunami_lab::t_idx l_ny = 0;
 
     // set cell size
     tsunami_lab::t_real l_dxy = 1;
@@ -81,6 +84,7 @@ int main(int i_argc,
     else
     {
         l_nx = atoi(i_argv[i_argc - 1]);
+        l_ny = l_nx;
         if (l_nx < 1)
         {
             std::cerr << "invalid number of cells" << std::endl;
@@ -88,15 +92,13 @@ int main(int i_argc,
         }
     }
 
-    tsunami_lab::t_real l_endTime = 1.25;
-    tsunami_lab::t_real l_width = 10.0;
+    tsunami_lab::t_real l_endTime = 15;
+    tsunami_lab::t_real l_width = 100.0;
     std::vector<tsunami_lab::t_real> m_b_in;
 
     // construct setup with default value
     tsunami_lab::setups::Setup *l_setup;
-    l_setup = new tsunami_lab::setups::DamBreak1d(15,
-                                                  7,
-                                                  5);
+    l_setup = new tsunami_lab::setups::DamBreak2d();
 
     // get command line arguments
     opterr = 0; // disable error messages of getopt
@@ -236,7 +238,7 @@ int main(int i_argc,
                 std::cout << "left-boundary open" << std::endl;
                 state_boundary_left = 0;
             }
-            else if (std::string(optarg) == "close")
+            else if (std::string(optarg) == "closed")
             {
                 std::cout << "left-boundary closed" << std::endl;
                 state_boundary_left = 1;
@@ -259,7 +261,7 @@ int main(int i_argc,
                 std::cout << "right-boundary open" << std::endl;
                 state_boundary_right = 0;
             }
-            else if (std::string(optarg) == "close")
+            else if (std::string(optarg) == "closed")
             {
                 std::cout << "right-boundary closed" << std::endl;
                 state_boundary_right = 1;
@@ -299,10 +301,13 @@ int main(int i_argc,
 
     // construct solver
     tsunami_lab::patches::WavePropagation *l_waveProp;
-    l_waveProp = new tsunami_lab::patches::WavePropagation1d(l_nx,
+    l_waveProp = new tsunami_lab::patches::WavePropagation2d(l_nx,
+                                                             l_ny,
                                                              solver_choice,
                                                              state_boundary_left,
-                                                             state_boundary_right);
+                                                             state_boundary_right,
+                                                             state_boundary_top,
+                                                             state_boundary_bottom);
 
     // maximum observed height in the setup
     tsunami_lab::t_real l_hMax = std::numeric_limits<tsunami_lab::t_real>::lowest();
@@ -388,18 +393,17 @@ int main(int i_argc,
 
             tsunami_lab::io::Csv::write(l_dxy,
                                         l_nx,
-                                        1,
-                                        1,
+                                        l_ny,
+                                        l_waveProp->getStride(),
                                         l_waveProp->getHeight(),
                                         l_waveProp->getMomentumX(),
-                                        nullptr,
+                                        l_waveProp->getMomentumY(),
                                         l_waveProp->getBathymetry(),
                                         l_file);
             l_file.close();
             l_nOut++;
         }
 
-        l_waveProp->setGhostOutflow();
         l_waveProp->timeStep(l_scaling);
 
         l_timeStep++;
