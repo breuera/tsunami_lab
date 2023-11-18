@@ -7,8 +7,6 @@
 #ifndef TSUNAMI_LAB_PATCHES_WAVE_PROPAGATION_1D
 #define TSUNAMI_LAB_PATCHES_WAVE_PROPAGATION_1D
 
-#include <string>
-
 #include "../WavePropagation.h"
 
 namespace tsunami_lab {
@@ -146,6 +144,7 @@ class tsunami_lab::patches::WavePropagation1d : public WavePropagation {
      * @param i_b bathymetry.
      **/
     void setBathymetry(t_idx i_ix,
+                       t_idx,
                        t_real i_b) {
         m_b[i_ix + 1] = i_b;
     }

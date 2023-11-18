@@ -7,6 +7,8 @@
 #ifndef TSUNAMI_LAB_PATCHES_WAVE_PROPAGATION
 #define TSUNAMI_LAB_PATCHES_WAVE_PROPAGATION
 
+#include <string>
+
 #include "../constants.h"
 
 namespace tsunami_lab {
@@ -108,9 +110,11 @@ class tsunami_lab::patches::WavePropagation {
      * Sets the bathymetry to the given value.
      *
      * @param i_ix id of the cell in x-direction.
+     * @param i_ix id of the cell in y-direction.
      * @param i_b bathymetry.
      **/
     virtual void setBathymetry(t_idx i_ix,
+                               t_idx i_iy,
                                t_real i_b) = 0;
 };
 

@@ -66,6 +66,7 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
                                      l_hv);
 
             l_waveProp->setBathymetry(l_cx,
+                                      0,
                                       l_b);
         }
     }
