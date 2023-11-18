@@ -48,7 +48,7 @@ TEST_CASE("Test the 1d wave propagation solver (Roe).", "[WaveProp1d]") {
     }
 
     // set outflow boundary condition
-    m_waveProp.setGhostOutflow();
+    m_waveProp.setGhostCells("OO");
 
     // perform a time step
     m_waveProp.timeStep(0.1);
@@ -116,7 +116,7 @@ TEST_CASE("Test the 1d wave propagation solver (FWave).", "[WaveProp1d]") {
     }
 
     // set outflow boundary condition
-    m_waveProp.setGhostOutflow();
+    m_waveProp.setGhostCells("OO");
 
     // perform a time step
     m_waveProp.timeStep(0.1);
@@ -175,8 +175,8 @@ TEST_CASE("Test Reflecting Boundary Condition.", "[ReflectingBoundaryConditions]
                                 4);
     }
 
-    // set outflow boundary condition
-    m_waveProp.setGhostReflecting();
+    // set reflecting boundary condition
+    m_waveProp.setGhostCells("RR");
 
     // Ghost Reflecting Boundary condition
     REQUIRE(m_waveProp.getHeight()[-1] == Approx(10));
@@ -216,8 +216,8 @@ TEST_CASE("Test Left Reflecting Boundary Condition.", "[LeftReflectingBoundaryCo
                                 4);
     }
 
-    // set outflow boundary condition
-    m_waveProp.setGhostLeftReflecting();
+    // set left reflecting and right outflow boundary conditions
+    m_waveProp.setGhostCells("RO");
 
     // Ghost Reflecting Boundary condition
     REQUIRE(m_waveProp.getHeight()[-1] == Approx(10));
@@ -257,8 +257,8 @@ TEST_CASE("Test Right Reflecting Boundary Condition.", "[RightReflectingBoundary
                                 4);
     }
 
-    // set outflow boundary condition
-    m_waveProp.setGhostRightReflecting();
+    // set right reflecting and left outflow boundary conditions
+    m_waveProp.setGhostCells("OR");
 
     // Ghost Reflecting Boundary condition
     REQUIRE(m_waveProp.getHeight()[-1] == Approx(10));

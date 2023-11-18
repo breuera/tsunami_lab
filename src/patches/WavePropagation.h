@@ -30,24 +30,11 @@ class tsunami_lab::patches::WavePropagation {
     virtual void timeStep(t_real i_scaling) = 0;
 
     /**
-     * Sets the values of the ghost cells according to outflow boundary conditions.
+     * Sets the values of the ghost cells according to entered outflow boundary conditions.
+     *
+     * @param i_setting defines the boundary condition.
      **/
-    virtual void setGhostOutflow() = 0;
-
-    /**
-     * Sets the values of the ghost cells according to reflect boundary conditions.
-     **/
-    virtual void setGhostReflecting() = 0;
-
-    /**
-     * Sets the left value of the ghost cells according to reflect boundary condition and the right value to outflow boundary condition.
-     **/
-    virtual void setGhostLeftReflecting() = 0;
-
-    /**
-     * Sets the right value of the ghost cells according to reflect boundary condition and the left value to outflow boundary condition.
-     **/
-    virtual void setGhostRightReflecting() = 0;
+    virtual void setGhostCells(std::string i_setting) = 0;
 
     /**
      * Gets the stride in y-direction. x-direction is stride-1.

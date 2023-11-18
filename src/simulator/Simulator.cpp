@@ -121,15 +121,8 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
                 l_file.close();
                 l_nOut++;
             }
-            if (i_simConfig.getBoundaryCondition() == "RR") {
-                l_waveProp->setGhostReflecting();
-            } else if (i_simConfig.getBoundaryCondition() == "OR") {
-                l_waveProp->setGhostRightReflecting();
-            } else if (i_simConfig.getBoundaryCondition() == "RO") {
-                l_waveProp->setGhostLeftReflecting();
-            } else {
-                l_waveProp->setGhostOutflow();
-            }
+
+            l_waveProp->setGhostCells(i_simConfig.getBoundaryCondition());
             l_waveProp->timeStep(l_scaling);
 
             l_timeStep++;
@@ -139,7 +132,7 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
         tsunami_lab::t_idx l_number_of_time_steps = 100;
         bool l_is_correct_middle_state = false;
         for (tsunami_lab::t_idx l_timeStep = 0; l_timeStep < l_number_of_time_steps; l_timeStep++) {
-            l_waveProp->setGhostOutflow();
+            l_waveProp->setGhostCells("OO");
             l_waveProp->timeStep(l_scaling);
 
             tsunami_lab::t_real l_middle_state = l_waveProp->getHeight()[(tsunami_lab::t_idx)i_simConfig.getThresholdX()];
