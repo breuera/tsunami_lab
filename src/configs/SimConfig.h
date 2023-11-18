@@ -47,9 +47,6 @@ class tsunami_lab::configs::SimConfig {
     //! boolean that shows which boundary condition is to be used.
     std::string m_boundaryCondition = "-oo";
 
-    //! number of setups to be simulated.
-    tsunami_lab::t_idx m_setupCount = 0;
-
     //! boolean that shows if the Roe Solver is to be used.
     bool m_isRoeSolver = false;
 
@@ -71,7 +68,6 @@ class tsunami_lab::configs::SimConfig {
      * @param i_thresholdY position of the point in y-direction, where the conditions change.
      * @param i_simTime time of the simulation in seconds.
      * @param i_boundaryCondition string that determents the chosen boundary conditions.
-     * @param i_setupCount number of setups chosen.
      * @param i_isRoeSolver boolean that shows if the roe solver is to be used (false -> f-wave solver).
      */
     SimConfig(tsunami_lab::t_idx i_dimension,
@@ -83,7 +79,6 @@ class tsunami_lab::configs::SimConfig {
               tsunami_lab::t_real i_thresholdY,
               tsunami_lab::t_real i_simTime,
               std::string i_boundaryCondition,
-              tsunami_lab::t_idx i_setupCount,
               bool i_isRoeSolver);
     /**
      * Destructor which frees all allocated memory.
@@ -169,15 +164,6 @@ class tsunami_lab::configs::SimConfig {
      */
     std::string getBoundaryCondition() {
         return m_boundaryCondition;
-    }
-
-    /**
-     * Gets the number of setups to be calculated.
-     *
-     * @return number of setups to be calculated.
-     */
-    tsunami_lab::t_idx getSetupCount() {
-        return m_setupCount;
     }
 
     /**

@@ -22,8 +22,7 @@ TEST_CASE("Test the SimConfig data-structure.", "[SimConfig]") {
     tsunami_lab::t_real l_thresholdX = tsunami_lab::t_real(1600);
     tsunami_lab::t_real l_thresholdY = tsunami_lab::t_real(1600);
     tsunami_lab::t_real l_simTime = tsunami_lab::t_real(200.0);
-    std::string l_boundaryCondition = "-or";
-    tsunami_lab::t_idx l_setupCount = 1000;
+    std::string l_boundaryCondition = "OO";
     bool l_isRoeSolver = true;
 
     tsunami_lab::configs::SimConfig l_config = tsunami_lab::configs::SimConfig(l_dimension,
@@ -35,7 +34,6 @@ TEST_CASE("Test the SimConfig data-structure.", "[SimConfig]") {
                                                                                l_thresholdY,
                                                                                l_simTime,
                                                                                l_boundaryCondition,
-                                                                               l_setupCount,
                                                                                l_isRoeSolver);
 
     REQUIRE(l_dimension == l_config.getDimension());
@@ -47,6 +45,5 @@ TEST_CASE("Test the SimConfig data-structure.", "[SimConfig]") {
     REQUIRE(l_thresholdY == l_config.getThresholdY());
     REQUIRE(l_simTime == l_config.getSimTime());
     REQUIRE(l_boundaryCondition == l_config.getBoundaryCondition());
-    REQUIRE(l_setupCount == l_config.getSetupCount());
     REQUIRE(l_isRoeSolver == l_config.isRoeSolver());
 }
