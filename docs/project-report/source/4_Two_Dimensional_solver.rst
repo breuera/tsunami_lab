@@ -174,9 +174,10 @@ Here is the graphical illustration:
 
 
 Task 4.2: Implementing the tsunami_lab::io::Stations Class
+----------------------------------------------------------
 
-    4.2.1 & 4.2.2 Creation of the tsunami_lab::io::Stations Class
-
+4.2.1 & 4.2.2 Creation of the tsunami_lab::io::Stations Class
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 It's designed to manage and process data for a collection of observation stations, each uniquely identified and positioned in the simulation space.
 
@@ -185,6 +186,7 @@ Loading Stations from a JSON File
 The configuration and initialization of these stations are handled through a JSON file, providing a structured and flexible way to define station attributes. The loadStationsFromJSON method, automatically called during the class's construction, parses this file to set up each station.
 
 .. code:: c++
+    
     void tsunami_lab::io::Stations::loadStationsFromJSON(const std::string &filePath)
     {
         std::ifstream file(filePath);
@@ -209,6 +211,7 @@ Data Recording via writeStationOutput
 One of the core functionalities of this class is the writeStationOutput method. It's responsible for writing simulation data for each station into individual CSV files, provided the station lies within the simulation area's bounds. This method is crucial for gathering and storing simulation results in an organized and accessible format.
 
 .. code:: c++
+
     void tsunami_lab::io::Stations::writeStationOutput(t_real i_dxy,
                                                     t_idx i_nx,
                                                     t_idx i_ny,
