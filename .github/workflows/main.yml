@@ -6,49 +6,61 @@
 name: Tsunami Lab
 
 on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
-  schedule:
-    - cron: 0 0 * * *
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
+    schedule:
+        - cron: 0 0 * * *
 
 jobs:
-  CI:
-    runs-on: ubuntu-latest
+    CI:
+        runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v4
+        steps:
+            - uses: actions/checkout@v4
 
-      - name: Dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install scons
-          sudo apt-get install valgrind
-          sudo apt-get install cppcheck
-          git submodule init
-          git submodule update
+            - name: Dependencies
+              run: |
+                  sudo apt-get update
+                  sudo apt-get install scons
+                  sudo apt-get install valgrind
+                  sudo apt-get install cppcheck
+                  git submodule init
+                  git submodule update
 
-      - name: Static Code Analysis
-        run: cppcheck src/ -i src/io/stations/Stations.cpp --std=c++17 --template=gcc --force --error-exitcode=1
+            - name: Static Code Analysis
+              run: cppcheck src/ -i src/io/stations/Stations.cpp --std=c++17 --template=gcc --force --error-exitcode=1
 
-      - name: Sanitize
-        run: |
-          scons mode=debug+san
-          ./build/tests
-          ./build/tsunami_lab -v roe -s "shockshock 55 25" 500
-          scons mode=release+san
-          ./build/tests
-          ./build/tsunami_lab -v fwave 500
+            - name: Sanitize 1D
+              run: |
+                  scons mode=debug+san
+                  ./build/tests
+                  ./build/tsunami_lab -d 1d -v roe -s "shockshock1d 55 25" 500
+                  scons mode=release+san
+                  ./build/tests
+                  ./build/tsunami_lab -d 1d -v fwave -s "tsunami1d" 500
 
-      - name: Valgrind
-        run: |
-          scons mode=debug
-          valgrind ./build/tests
-          valgrind ./build/tsunami_lab -v roe 25
+            - name: Sanitize 2D
+              run: |
+                  scons mode=debug+san
+                  ./build/tests
+                  ./build/tsunami_lab -d 2d -s "dambreak2d" 500
 
-      - name: Release
-        run: |
-          scons
-          ./build/tests
-          ./build/tsunami_lab -v fwave 500
+            - name: Valgrind 1D
+              run: |
+                  scons mode=debug
+                  valgrind ./build/tests
+                  valgrind ./build/tsunami_lab -d 1d -v roe -s "dambreak1d 15 7" 25
+
+            - name: Valgrind 2D
+              run: |
+                  scons mode=debug
+                  valgrind ./build/tests
+                  valgrind ./build/tsunami_lab -d 2d -s "dambreak2d" 25
+
+            - name: Release
+              run: |
+                  scons
+                  ./build/tests
+                  ./build/tsunami_lab -d 2d -s "dambreak2d" 500
