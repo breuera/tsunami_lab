@@ -5,8 +5,6 @@ Week Report 3
 
 .. _ch:Task_3_1:
 
-
-
 Adding bathymetry support
 -------------------------
 
@@ -300,10 +298,10 @@ For the height function:
 
     h(x, 0) = 0.13 + 0.05(10 - x)^2
 
-Implementation
-^^^^^^^^^^^^^^
-
 also exists a minimum at :math:`x = 10`. This concludes in the Froude number: ::math:`F = \frac{(\frac{hu}{h})}{\sqrt{g \cdot h}} = 1.22`
+
+Implementing the setups
+^^^^^^^^^^^^^^^^^^^^^^^
 
 For the subcritical case we implemented a class ``setups::SubcriticalFlow1d`` that inherits from the class in the file ``setup::Setup.h``. The constructor has only one parameter ``i_hu``, that is suposed
 to hold the momentum value used in the setup. The other function are implementing the class just like Eq. 3.3.1 dictates them to be.

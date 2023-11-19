@@ -1,10 +1,10 @@
 #directories
 /cmake-build-default/
 /build/
-/.idea/
-/out/
-/documentation/build/
 /.vscode/
+/.idea/
+/documentation/build/
+/out/
 
 # files
 *.dblite

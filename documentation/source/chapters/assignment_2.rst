@@ -119,7 +119,7 @@ Middle state check
 * getMomentumY function:
     Always returns a constant value of 0, indicating that the y-momentum is zero in this problem regardless of the location.
 
-.. literalinclude:: ../../../src/setups/CustomSetup1d.cpp
+.. literalinclude:: ../../../src/setups/CustomSetup1d/CustomSetup1d.cpp
     :language: c++
 
 CustomSetup1d allows us to fill the array with custom values.
@@ -361,7 +361,7 @@ Implemntation of Shock-Shock setups
 
 #. getMomentumY: This function is used to retrieve the y-momentum value at a specific location (i_x, i_y). In this specific problem, the y-momentum is always constant and equal to 0.
 
-.. literalinclude:: ../../../src/setups/RareRare1d.cpp
+.. literalinclude:: ../../../src/setups/RareRare1d/RareRare1d.cpp
     :language: c++
 
 In this one-dimensional rare-rare problem represented by the RareRare1d class, the behavior of the wave is described by the distribution of momentum. Specifically, on the left side of the discontinuity point (m_dis), the x-momentum is positive, indicating that the wave is moving to the right. Conversely, on the right side of the discontinuity, the x-momentum is negative, signifying that the wave is moving to the left. These opposing momenta result in the two wave components colliding at the "smash position," which is the location of the discontinuity. 
@@ -378,7 +378,7 @@ Implemntation of rare-rare setups
 #. getMomentumY: This function is used to retrieve the y-momentum value at a specific location (i_x, i_y). In this specific problem, the y-momentum is always constant and equal to 0.
 
 
-.. literalinclude:: ../../../src/setups/ShockShock1d.cpp
+.. literalinclude:: ../../../src/setups/ShockShock1d/ShockShock1d.cpp
     :language: c++
 
 In the rare-rare problem represented by the RareRare1d class, the wave behavior is distinct from the previous example. Here, the wave components are moving apart from each other on either side of the discontinuity point (m_dis). On the left side, the x-momentum is positive, indicating that the wave is traveling to the right, while on the right side, the x-momentum is also positive, signifying a rightward motion. This results in the wave components moving away from the m_dis point, rather than colliding. 
@@ -439,25 +439,25 @@ only depend on the hight and the gravitational constant
 Visualization
 ^^^^^^^^^^^^^
 
-.. figure:: ../_static/video_folder/RareRare_10_5_mom.mp4
+.. figure:: ../_static/video_folder/assignment_2/RareRare_10_5_mom.mp4
   :width: 600px
 
-.. figure:: ../_static/video_folder/RareRare_10_18.mp4
+.. figure:: ../_static/video_folder/assignment_2/RareRare_10_18.mp4
   :width: 600px
   
-.. figure:: ../_static/video_folder/RareRare_10_5.mp4
+.. figure:: ../_static/video_folder/assignment_2/RareRare_10_5.mp4
   :width: 600px
 
-.. figure:: ../_static/video_folder/RareRare_20_5.mp4
+.. figure:: ../_static/video_folder/assignment_2/RareRare_20_5.mp4
   :width: 600px
 
-.. figure:: ../_static/video_folder/ShockShock_10_18.mp4
+.. figure:: ../_static/video_folder/assignment_2/ShockShock_10_18.mp4
   :width: 600px
 
-.. figure:: ../_static/video_folder/ShockShock_10_5.mp4
+.. figure:: ../_static/video_folder/assignment_2/ShockShock_10_5.mp4
   :width: 600px
 
-.. figure:: ../_static/video_folder/ShockShock_20_5.mp4
+.. figure:: ../_static/video_folder/assignment_2/ShockShock_20_5.mp4
   :width: 600px
 
 Dam-Break
@@ -487,19 +487,19 @@ If the wave travels on with the same speed, it reaches the village after 5227 se
 the village. 
 
 
-.. figure:: ../_static/video_folder/DamBreak_10_0_3_3_mom.mp4
+.. figure:: ../_static/video_folder/assignment_2/DamBreak_10_0_3_3_mom.mp4
   :width: 600px
 
-.. figure:: ../_static/video_folder/DamBreak_10_0_3_3.mp4
+.. figure:: ../_static/video_folder/assignment_2/DamBreak_10_0_3_3.mp4
   :width: 600px
 
-.. figure:: ../_static/video_folder/db_10_0_3_15.mp4
+.. figure:: ../_static/video_folder/assignment_2/db_10_0_3_15.mp4
   :width: 600px
 
 
 
-.. figure:: ../_static/video_folder/Dam_and_river_mom.mp4
+.. figure:: ../_static/video_folder/assignment_2/Dam_and_river_mom.mp4
   :width: 600px
 
-.. figure:: ../_static/video_folder/Dam_and_river.mp4
+.. figure:: ../_static/video_folder/assignment_2/Dam_and_river.mp4
   :width: 600px
