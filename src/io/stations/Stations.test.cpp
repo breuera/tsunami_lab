@@ -3,7 +3,7 @@
  * @author Maurice Herold (maurice.herold AT uni-jena.de)
  *
  * @section DESCRIPTION
- * Two-dimensional dam break problem.
+ * Test-cases for stations.
  **/
 
 #include <catch2/catch.hpp>

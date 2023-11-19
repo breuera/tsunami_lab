@@ -3,7 +3,7 @@
  * @author Maurice Herold (maurice.herold AT uni-jena.de)
  *
  * @section DESCRIPTION
- * Two-dimensional dam break problem.
+ * Implementation of stations.
  **/
 #ifndef TSUNAMI_LAB_IO_STATIONS
 #define TSUNAMI_LAB_IO_STATIONS

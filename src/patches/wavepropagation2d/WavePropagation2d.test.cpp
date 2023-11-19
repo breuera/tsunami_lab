@@ -1,3 +1,11 @@
+/**
+ * @author Mher Mnatsakanyan (mher.mnatsakanyan AT uni-jena.de)
+ * @author Maurice Herold (maurice.herold AT uni-jena.de)
+ *
+ * @section DESCRIPTION
+ * Unit tests for the two-dimensional wave propagation patch.
+ **/
+
 #include <catch2/catch.hpp>
 #include "WavePropagation2d.h"
 #include "../../constants.h"
