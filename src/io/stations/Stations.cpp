@@ -1,3 +1,11 @@
+/**
+ * @author Mher Mnatsakanyan (mher.mnatsakanyan AT uni-jena.de)
+ * @author Maurice Herold (maurice.herold AT uni-jena.de)
+ *
+ * @section DESCRIPTION
+ * Two-dimensional dam break problem.
+ **/
+
 #include "Stations.h"
 #include <vector>
 #include <string>
@@ -11,6 +19,11 @@ void tsunami_lab::io::Stations::addStation(const std::string i_name, t_real i_x,
 int tsunami_lab::io::Stations::getOutputFrequency()
 {
     return m_outputFrequency;
+}
+
+std::vector<Station_struct> tsunami_lab::io::Stations::getStations()
+{
+    return m_stations;
 }
 
 void tsunami_lab::io::Stations::writeStationOutput(t_real i_dxy,
