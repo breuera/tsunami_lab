@@ -5,7 +5,6 @@ Week Report 3
 
 .. _ch:Task_3_1:
 
-
 Adding bathymetry support
 -------------------------
 

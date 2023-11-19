@@ -1,0 +1,12 @@
+{
+    "dimension": 1,
+    "nx": 500,
+    "ny": 1,
+    "xLen": 25.0,
+    "yLen": 500.0,
+    "thresholdX": 5.0,
+    "thresholdY": 1.0,
+    "simTime": 5.0,
+    "boundaryCond": "OO",
+    "setup": "SubcriticalFlow"
+}

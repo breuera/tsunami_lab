@@ -1,0 +1,12 @@
+{
+    "dimension": 2,
+    "nx": 500,
+    "ny": 500,
+    "xLen": 100.0,
+    "yLen": 100.0,
+    "thresholdX": 5.0,
+    "thresholdY": 1.0,
+    "simTime": 10.0,
+    "boundaryCond": "OO",
+    "setup": "DamBreak"
+}

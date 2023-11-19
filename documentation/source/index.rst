@@ -10,7 +10,7 @@
    chapters/assignment_2.rst
    
    chapters/assignment_3.rst
-
+   
    chapters/assignment_4.rst
 
 .. include:: chapters/overview.rst

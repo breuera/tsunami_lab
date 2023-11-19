@@ -1,0 +1,10 @@
+{
+    "dimension": 2,
+    "nx": 5,
+    "ny": 5,
+    "xLen": 10.0,
+    "yLen": 10.0,
+    "simTime": 1.25,
+    "boundaryCond": "OO",
+    "setup": "DamBreak"
+}

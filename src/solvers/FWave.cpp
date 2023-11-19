@@ -6,35 +6,33 @@
  **/
 
 #include "FWave.h"
+
 #include <cmath>
 #include <iostream>
 
-void tsunami_lab::solvers::FWave::heightAvg( t_real i_hL,
-                                             t_real i_hR,
-                                             t_real &o_height)
-{
+void tsunami_lab::solvers::FWave::heightAvg(t_real i_hL,
+                                            t_real i_hR,
+                                            t_real &o_height) {
     o_height = tsunami_lab::t_real(0.5) * (i_hL + i_hR);
 }
 
-void tsunami_lab::solvers::FWave::particleVelocityAvg( t_real i_hL,
-                                                       t_real i_hR,
-                                                       t_real i_uL,
-                                                       t_real i_uR,
-                                                       t_real &o_velocity)
-{
+void tsunami_lab::solvers::FWave::particleVelocityAvg(t_real i_hL,
+                                                      t_real i_hR,
+                                                      t_real i_uL,
+                                                      t_real i_uR,
+                                                      t_real &o_velocity) {
     t_real t_sqirt_hL = sqrt(i_hL);
     t_real t_sqirt_hR = sqrt(i_hR);
     o_velocity = i_uL * t_sqirt_hL + i_uR * t_sqirt_hR;
     o_velocity = o_velocity / (t_sqirt_hL + t_sqirt_hR);
 }
 
-void tsunami_lab::solvers::FWave::waveSpeeds( t_real i_hL,
-                                              t_real i_hR,
-                                              t_real i_uL,
-                                              t_real i_uR,
-                                              t_real &o_waveSpeedL,
-                                              t_real &o_waveSpeedR)
-{
+void tsunami_lab::solvers::FWave::waveSpeeds(t_real i_hL,
+                                             t_real i_hR,
+                                             t_real i_uL,
+                                             t_real i_uR,
+                                             t_real &o_waveSpeedL,
+                                             t_real &o_waveSpeedR) {
     // calculate Roe averages
     t_real l_height_avg = 0;
     t_real l_partical_vel_avg = 0;
@@ -47,25 +45,24 @@ void tsunami_lab::solvers::FWave::waveSpeeds( t_real i_hL,
     o_waveSpeedR = l_partical_vel_avg + tsunami_lab::solvers::FWave::c_sqrt_g * sqrt(l_height_avg);
 }
 
-void tsunami_lab::solvers::FWave::flux( t_real i_h,
-                                        t_real i_hu,
-                                        t_real o_flux[2])
-{
+void tsunami_lab::solvers::FWave::flux(t_real i_h,
+                                       t_real i_hu,
+                                       t_real o_flux[2]) {
     o_flux[0] = i_hu;
     t_real l_u = i_hu / i_h;
     o_flux[1] = i_h * pow(l_u, 2) + tsunami_lab::t_real(0.5) * tsunami_lab::solvers::FWave::c_g * pow(i_h, 2);
 }
 
-void tsunami_lab::solvers::FWave::waveStrengths( t_real i_hL,
-							                     t_real i_hR,
-                                                 t_real i_huL,
-                                                 t_real i_huR,
-                                                 t_real i_bL,
-                                                 t_real i_bR,
-                                                 t_real i_waveSpeedL,
-                                                 t_real i_waveSpeedR,
-                                                 t_real &o_strengthL,
-                                                 t_real &o_strengthR){
+void tsunami_lab::solvers::FWave::waveStrengths(t_real i_hL,
+                                                t_real i_hR,
+                                                t_real i_huL,
+                                                t_real i_huR,
+                                                t_real i_bL,
+                                                t_real i_bR,
+                                                t_real i_waveSpeedL,
+                                                t_real i_waveSpeedR,
+                                                t_real &o_strengthL,
+                                                t_real &o_strengthR) {
     // calculate fluxes
     t_real l_fluxL[2] = {0};
     t_real l_fluxR[2] = {0};
@@ -103,15 +100,14 @@ void tsunami_lab::solvers::FWave::waveStrengths( t_real i_hL,
     o_strengthR += l_R_inv[1][1] * l_decomposition_flux[1];
 }
 
-void tsunami_lab::solvers::FWave::netUpdates( t_real i_hL,
-                                              t_real i_hR,
-                                              t_real i_huL,
-                                              t_real i_huR,
-                                              t_real i_bL,
-                                              t_real i_bR,
-                                              t_real o_netUpdateL[2],
-                                              t_real o_netUpdateR[2])
-{
+void tsunami_lab::solvers::FWave::netUpdates(t_real i_hL,
+                                             t_real i_hR,
+                                             t_real i_huL,
+                                             t_real i_huR,
+                                             t_real i_bL,
+                                             t_real i_bR,
+                                             t_real o_netUpdateL[2],
+                                             t_real o_netUpdateR[2]) {
     // calculate particle velocity
     t_real l_uL = i_huL / i_hL;
     t_real l_uR = i_huR / i_hR;
@@ -139,31 +135,24 @@ void tsunami_lab::solvers::FWave::netUpdates( t_real i_hL,
     l_waveR[1] = l_waveStrengthR * l_waveSpeedR;
 
     // set netUpdates
-    for (int i = 0; i < 2; i++)
-    {
+    for (int i = 0; i < 2; i++) {
         o_netUpdateL[i] = 0;
         o_netUpdateR[i] = 0;
 
         // left wave
-        if (l_waveSpeedL < 0)
-        {
+        if (l_waveSpeedL < 0) {
             // left-going wave
             o_netUpdateL[i] += l_waveL[i];
-        }
-        else
-        {
+        } else {
             // right-going wave
             o_netUpdateR[i] += l_waveL[i];
         }
 
         // right wave
-        if (l_waveSpeedR > 0)
-        {
+        if (l_waveSpeedR > 0) {
             // right-going wave
             o_netUpdateR[i] += l_waveR[i];
-        }
-        else
-        {
+        } else {
             // left-going wave
             o_netUpdateL[i] += l_waveR[i];
         }

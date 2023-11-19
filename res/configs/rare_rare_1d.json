@@ -1,0 +1,12 @@
+{
+    "dimension": 1,
+    "nx": 500,
+    "ny": 1,
+    "xLen": 10.0,
+    "yLen": 500.0,
+    "thresholdX": 5.0,
+    "thresholdY": 1.0,
+    "simTime": 1.25,
+    "boundaryCond": "OO",
+    "setup": "RareRare"
+}

@@ -1,8 +1,11 @@
+#directories
 /cmake-build-default/
 /build/
 /.vscode/
 /.idea/
 /documentation/build/
 /out/
-/res/middle_states.csv
+
+# files
 *.dblite
+/res/middle_states.csv

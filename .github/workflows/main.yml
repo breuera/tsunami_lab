@@ -39,33 +39,26 @@ jobs:
         run: |
           scons mode=debug+san
           ./build/tests
-          ./build/tsunami_lab DamBreak 25 -r
-          ./build/tsunami_lab DamBreak 25 -f
+          ./build/tsunami_lab small_dam_break_1d.json
+          ./build/tsunami_lab small_dam_break_2d.json
           scons mode=release+san
           ./build/tests
-          ./build/tsunami_lab DamBreak 500 -r
-          ./build/tsunami_lab DamBreak 500 -f
+          ./build/tsunami_lab dam_break_1d.json
 
       - name: Valgrind
         run: |
           scons mode=debug
           valgrind ./build/tests
-          valgrind ./build/tsunami_lab DamBreak 25 -r
-          valgrind ./build/tsunami_lab DamBreak 25 -f
+          valgrind ./build/tsunami_lab small_dam_break_1d.json
+          valgrind ./build/tsunami_lab small_dam_break_2d.json
 
       - name: Release
         run: |
           scons
           ./build/tests
-          ./build/tsunami_lab DamBreak 500 -r
-          ./build/tsunami_lab DamBreak 500 -f
-          ./build/tsunami_lab Sanitize1d 500 -r
-          ./build/tsunami_lab Sanitize1d 500 -f
-          ./build/tsunami_lab ShockShock 500 -r
-          ./build/tsunami_lab ShockShock 500 -f
-          ./build/tsunami_lab RareRare 500 -r
-          ./build/tsunami_lab RareRare 500 -f
-          ./build/tsunami_lab CustomSetup 500 -r
-          ./build/tsunami_lab CustomSetup 500 -f
-          ./build/tsunami_lab SubcriticalFlow1d 250 -f
-          ./build/tsunami_lab SupercriticalFlow1d 250 -f
+          ./build/tsunami_lab dam_break_1d.json
+          ./build/tsunami_lab rare_rare_1d.json
+          ./build/tsunami_lab shock_shock_1d.json
+          ./build/tsunami_lab subcritical_flow_1d.json
+          ./build/tsunami_lab supercritical_flow_1d.json
+          
