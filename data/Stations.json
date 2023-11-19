@@ -1,5 +1,5 @@
 {
-    "period" : 4,
+    "outputfrequency" : 4,
     "stations": [
         {
             "name": "Station1",

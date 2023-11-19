@@ -171,3 +171,91 @@ Here is the graphical illustration:
 
 .. |pic4| image:: _static/content/images/week4/dambreak2d_bat_2.png
    :width: 45%
+
+
+Task 4.2: Implementing the tsunami_lab::io::Stations Class
+
+    4.2.1 & 4.2.2 Creation of the tsunami_lab::io::Stations Class
+
+
+It's designed to manage and process data for a collection of observation stations, each uniquely identified and positioned in the simulation space.
+
+Loading Stations from a JSON File
+
+The configuration and initialization of these stations are handled through a JSON file, providing a structured and flexible way to define station attributes. The loadStationsFromJSON method, automatically called during the class's construction, parses this file to set up each station.
+
+.. code:: c++
+    void tsunami_lab::io::Stations::loadStationsFromJSON(const std::string &filePath)
+    {
+        std::ifstream file(filePath);
+        nlohmann::json j;
+        file >> j;
+
+        m_outputFrequency = j["outputfrequency"];
+
+        for (const auto &station : j["stations"])
+        {
+            std::string name = station["name"];
+            t_real x = station["x"];
+            t_real y = station["y"];
+            addStation(name, x, y);
+        }
+    }
+
+In this method, each station's name and coordinates are extracted from the JSON file and added to the class's internal vector using the addStation method. This vector is a collection of Station_struct objects, each representing an individual station with its name and spatial coordinates.
+
+Data Recording via writeStationOutput
+
+One of the core functionalities of this class is the writeStationOutput method. It's responsible for writing simulation data for each station into individual CSV files, provided the station lies within the simulation area's bounds. This method is crucial for gathering and storing simulation results in an organized and accessible format.
+
+.. code:: c++
+    void tsunami_lab::io::Stations::writeStationOutput(t_real i_dxy,
+                                                    t_idx i_nx,
+                                                    t_idx i_ny,
+                                                    t_real i_x_offset,
+                                                    t_real i_y_offset,
+                                                    t_idx i_stride,
+                                                    t_real const *i_h,
+                                                    t_real const *i_hu,
+                                                    t_real const *i_hv,
+                                                    t_real const *i_b,
+                                                    t_real i_time)
+    {
+
+        for (const auto &station : m_stations)
+        {
+            t_idx l_ix = (station.m_x + i_x_offset) / i_dxy;
+            t_idx l_iy = (station.m_y + i_y_offset) / i_dxy;
+            t_idx l_id = l_ix + l_iy * i_stride;
+
+            if (l_ix < i_nx && l_iy < i_ny)
+            {
+                std::ofstream file("station_data/" + station.m_name + ".csv", std::ios::app);
+                if (file.is_open())
+                {
+                    file << i_time;
+                    if (i_h != nullptr)
+                        file << "," << i_h[l_id];
+                    if (i_hu != nullptr)
+                        file << "," << i_hu[l_id];
+                    if (i_hv != nullptr)
+                        file << "," << i_hv[l_id];
+                    if (i_b != nullptr)
+                        file << "," << i_b[l_id];
+                    file << std::endl
+                        << std::flush;
+                }
+            }
+        }
+    }
+
+The method checks if each station is within the simulation grid. If a station is within the grid, the method writes various simulation parameters (like water height, momentum, bathymetry, etc.) into a CSV file named after the station. This conditional approach ensures that only relevant data is recorded, maintaining the integrity and relevance of the simulation data.
+
+Additional Functionalities and Structures
+
+addStation Method: Adds a new station to the stations vector, taking the station's name and coordinates as inputs.
+
+getOutputFrequency Method: Returns the output frequency for data recording, ensuring uniform data collection intervals across different stations.
+
+getStations Method: Provides access to the vector of stations, allowing other components of the simulation to interact with the station data.
+

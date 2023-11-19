@@ -77,7 +77,7 @@ void tsunami_lab::io::Stations::loadStationsFromJSON(const std::string &filePath
     nlohmann::json j;
     file >> j;
 
-    m_outputFrequency = j["period"];
+    m_outputFrequency = j["outputfrequency"];
 
     for (const auto &station : j["stations"])
     {
