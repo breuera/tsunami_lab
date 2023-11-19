@@ -23,18 +23,18 @@ TEST_CASE("Test the CSV-writer for 1D settings.", "[CsvWrite1d]")
                               5,
                               1,
                               7,
-                              l_h + 1,
-                              l_hu + 1,
+                              l_h,
+                              l_hu,
                               nullptr,
-                              l_b + 1,
+                              l_b,
                               l_stream0);
 
   std::string l_ref0 = R"V0G0N(x,y,height,momentum_x,bathymetry
--49.75,-49.75,5,2,0
--49.25,-49.75,4,3,0
--48.75,-49.75,3,4,0
--48.25,-49.75,2,3,0
--47.75,-49.75,1,2,0
+-49.75,-49.75,1,5,2
+-49.25,-49.75,2,4,3
+-48.75,-49.75,3,3,4
+-48.25,-49.75,4,2,3
+-47.75,-49.75,5,1,2
 )V0G0N";
 
   REQUIRE(l_stream0.str() == l_ref0);

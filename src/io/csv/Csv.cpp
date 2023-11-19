@@ -22,26 +22,35 @@ void tsunami_lab::io::Csv::write(t_real i_dxy,
                                  t_real const *i_b,
                                  std::ostream &io_stream)
 {
+
+  int x_ghost_cell = 0;
+  int y_ghost_cell = 0;
   // write the CSV header
   io_stream << "x,y";
   if (i_h != nullptr)
     io_stream << ",height";
   if (i_hu != nullptr)
+  {
     io_stream << ",momentum_x";
+    x_ghost_cell = 1;
+  }
   if (i_hv != nullptr)
+  {
     io_stream << ",momentum_y";
+    y_ghost_cell = 1;
+  }
   if (i_b != nullptr)
     io_stream << ",bathymetry";
   io_stream << "\n";
 
   // iterate over all cells
-  for (t_idx l_iy = 1; l_iy < i_ny + 1; l_iy++)
+  for (t_idx l_iy = y_ghost_cell; l_iy < i_ny + y_ghost_cell; l_iy++)
   {
-    for (t_idx l_ix = 1; l_ix < i_nx + 1; l_ix++)
+    for (t_idx l_ix = x_ghost_cell; l_ix < i_nx + x_ghost_cell; l_ix++)
     {
       // derive coordinates of cell center
-      t_real l_posX = (l_ix - 0.5) * i_dxy - 50;
-      t_real l_posY = (l_iy - 0.5) * i_dxy - 50;
+      t_real l_posX = (l_ix + 0.5 - x_ghost_cell) * i_dxy - 50;
+      t_real l_posY = (l_iy + 0.5 - y_ghost_cell) * i_dxy - 50;
 
       t_idx l_id = l_iy * i_stride + l_ix;
 
