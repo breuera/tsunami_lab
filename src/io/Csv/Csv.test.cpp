@@ -6,6 +6,7 @@
  **/
 #include <catch2/catch.hpp>
 #include <fstream>
+#include <iostream>
 #include <sstream>
 
 #include "../../constants.h"
@@ -30,14 +31,13 @@ TEST_CASE("Test the CSV-writer for 1D settings.", "[CsvWrite1d]") {
                                 l_b + 1,
                                 l_stream0);
 
-    std::string l_ref0 = R"V0G0N(x,y,height,momentum_x,bathymetry,final_height
-0.25,0.25,1,5,1,2
-0.75,0.25,2,4,2,4
-1.25,0.25,3,3,3,6
-1.75,0.25,4,2,4,8
-2.25,0.25,5,1,5,10
+    std::string l_ref0 = R"V0G0N(x,y,height,momentum_x,bathymetry,h+b,bathymetry_scale
+0.25,0.25,1,5,1,2,1
+0.75,0.25,2,4,2,4,2
+1.25,0.25,3,3,3,6,3
+1.75,0.25,4,2,4,8,4
+2.25,0.25,5,1,5,10,5
 )V0G0N";
-
     REQUIRE(l_stream0.str().size() == l_ref0.size());
     REQUIRE(l_stream0.str() == l_ref0);
 }
@@ -72,13 +72,13 @@ TEST_CASE("Test the CSV-writer for 2D settings.", "[CsvWrite2d]") {
                                 l_b + 4 + 1,
                                 l_stream1);
 
-    std::string l_ref1 = R"V0G0N(x,y,height,momentum_x,momentum_y,bathymetry,final_height
-5,5,5,10,5,10,15
-15,5,6,9,9,9,15
-5,15,9,6,6,6,15
-15,15,10,5,10,5,15
+    std::string l_ref1 = R"V0G0N(x,y,height,momentum_x,momentum_y,bathymetry,h+b,momentum_avg,bathymetry_scale
+5,5,5,10,5,10,15,7.5,10
+15,5,6,9,9,9,15,9,9
+5,15,9,6,6,6,15,6,6
+15,15,10,5,10,5,15,7.5,5
 )V0G0N";
-
+    std::cout << l_stream1.str() << std::endl;
     REQUIRE(l_stream1.str().size() == l_ref1.size());
     REQUIRE(l_stream1.str() == l_ref1);
 }

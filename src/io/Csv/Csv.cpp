@@ -6,6 +6,7 @@
  **/
 #include "Csv.h"
 
+#include <cmath>
 #include <iostream>
 #include <sstream>
 
@@ -24,7 +25,9 @@ void tsunami_lab::io::Csv::write(t_real i_dxy,
     if (i_hu != nullptr) io_stream << ",momentum_x";
     if (i_hv != nullptr) io_stream << ",momentum_y";
     if (i_b != nullptr) io_stream << ",bathymetry";
-    if (i_h != nullptr && i_b != nullptr) io_stream << ",final_height";
+    if (i_h != nullptr && i_b != nullptr) io_stream << ",h+b";
+    if (i_hu != nullptr && i_hv != nullptr) io_stream << ",momentum_avg";
+    if (i_b != nullptr) io_stream << ",bathymetry_scale";
     io_stream << "\n";
 
     // iterate over all cells
@@ -42,8 +45,9 @@ void tsunami_lab::io::Csv::write(t_real i_dxy,
             if (i_hu != nullptr) io_stream << "," << i_hu[l_id];
             if (i_hv != nullptr) io_stream << "," << i_hv[l_id];
             if (i_b != nullptr) io_stream << "," << i_b[l_id];
-            if (i_h != nullptr && i_b != nullptr)
-                io_stream << "," << i_h[l_id] + i_b[l_id];
+            if (i_h != nullptr && i_b != nullptr) io_stream << "," << i_h[l_id] + i_b[l_id];
+            if (i_hu != nullptr && i_hv != nullptr) io_stream << "," << (fabs(i_hu[l_id]) + fabs(i_hv[l_id])) / 2;
+            if (i_b != nullptr) io_stream << "," << i_b[l_id];
             io_stream << "\n";
         }
     }
