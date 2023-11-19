@@ -1,14 +1,19 @@
-# 4 Two Dimensional solver
+4 Two Dimensional solver
+========================
 
-## Links:
+Links:
+------------
 
-`Github Repo <https://github.com/MherMnatsakanyan03/tsunami_lab.git>`\_
+`Github Repo <https://github.com/MherMnatsakanyan03/tsunami_lab.git>`_
 
-## Individual Contributions:
+
+Individual Contributions:
+-------------------------
 
 Mher Mnatsakanyan and Maurice Herold did a similar amount of work.
 
-## Task 4.1:
+Task 4.1:
+---------
 
 4.1.1 2D support
 ^^^^^^^^^^^^^^^^
@@ -76,6 +81,52 @@ with consideration to the given dimension.
         // ...
     }
 
+
+
+4.1.2 2D Dambreak
+^^^^^^^^^^^^^^^^^
+
+The implementation of the 2D-Dambreak setup is not very much different to the regular setups.
+This time we are using both the :code:`i_x` and :code:`i_y` coordinate:
+
+.. code:: c++
+
+    tsunami_lab::t_real tsunami_lab::setups::DamBreak2d::getHeight(t_real i_x,
+                                                                   t_real i_y) const
+    {
+        // move circle by amount
+        t_real x_offset = i_x - 50;
+        t_real y_offset = i_y - 50;
+        if (getBathymetry(i_x, i_y) > 0)
+        {
+            return 0;
+        }
+        if (std::sqrt(x_offset * x_offset + y_offset * y_offset) < 10)
+        {
+            return 10;
+        }
+        else
+        {
+            return 5;
+        }
+    }
+
+Here is the graphical illustration:
+
+|pic1| |pic2|
+
+.. |pic1| image:: _static/content/images/week4/dambreak2d_1.png
+   :width: 45%
+
+.. |pic2| image:: _static/content/images/week4/dambreak2d_2.png
+   :width: 45%
+
+4.1.3 2D Dambreak + Bathymetrie
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+At first, we tried to add a cylinder shaped obstacle onto the grid. This caused the simulation
+to break, because some values were ended up being nan or inf. 
+
 .. code:: c++
  
     {
@@ -91,3 +142,32 @@ with consideration to the given dimension.
             return -10;
         }
     }
+
+
+Which is why we then implemented a simple cubic-shaped obstacle in the following manner:
+
+.. code:: c++
+
+    tsunami_lab::t_real tsunami_lab::setups::DamBreak2d::getBathymetry(t_real i_x,
+                                                                       t_real i_y) const
+    {
+        int offset = -10;
+        if (i_x + offset < 5 && i_x + offset > -5 && i_y + offset < 5 && i_y + offset > -5)
+        {
+            return 10;
+        }
+        else
+        {
+            return -10;
+        }
+    }    
+
+Here is the graphical illustration:
+
+|pic3| |pic4|
+
+.. |pic3| image:: _static/content/images/week4/dambreak2d_bat_1.png
+   :width: 45%
+
+.. |pic4| image:: _static/content/images/week4/dambreak2d_bat_2.png
+   :width: 45%
