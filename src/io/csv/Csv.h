@@ -29,6 +29,8 @@ public:
    * @param i_dxy cell width in x- and y-direction.
    * @param i_nx number of cells in x-direction.
    * @param i_ny number of cells in y-direction.
+   * @param i_x_offset offset x-direction.
+   * @param i_y_offset offset in y-direction.
    * @param i_stride stride of the data arrays in y-direction (x is assumed to be stride-1).
    * @param i_h water height of the cells; optional: use nullptr if not required.
    * @param i_hu momentum in x-direction of the cells; optional: use nullptr if not required.
@@ -39,6 +41,8 @@ public:
   static void write(t_real i_dxy,
                     t_idx i_nx,
                     t_idx i_ny,
+                    t_idx i_x_offset,
+                    t_idx i_y_offset,
                     t_idx i_stride,
                     t_real const *i_h,
                     t_real const *i_hu,

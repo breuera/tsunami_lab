@@ -22,6 +22,8 @@ TEST_CASE("Test the CSV-writer for 1D settings.", "[CsvWrite1d]")
   tsunami_lab::io::Csv::write(0.5,
                               5,
                               1,
+                              0,
+                              0,
                               7,
                               l_h,
                               l_hu,
@@ -30,15 +32,15 @@ TEST_CASE("Test the CSV-writer for 1D settings.", "[CsvWrite1d]")
                               l_stream0);
 
   std::string l_ref0 = R"V0G0N(x,y,height,momentum_x,bathymetry
--49.75,-49.75,1,5,2
--49.25,-49.75,2,4,3
--48.75,-49.75,3,3,4
--48.25,-49.75,4,2,3
--47.75,-49.75,5,1,2
+0.25,0.25,1,5,2
+0.75,0.25,2,4,3
+1.25,0.25,3,3,4
+1.75,0.25,4,2,3
+2.25,0.25,5,1,2
 )V0G0N";
 
-  REQUIRE(l_stream0.str() == l_ref0);
   REQUIRE(l_stream0.str().size() == l_ref0.size());
+  REQUIRE(l_stream0.str() == l_ref0);
 }
 
 TEST_CASE("Test the CSV-writer for 2D settings.", "[CsvWrite2d]")
@@ -65,6 +67,8 @@ TEST_CASE("Test the CSV-writer for 2D settings.", "[CsvWrite2d]")
   tsunami_lab::io::Csv::write(10,
                               2,
                               2,
+                              0,
+                              0,
                               4,
                               l_h + 4 + 1,
                               l_hu + 4 + 1,
@@ -73,14 +77,14 @@ TEST_CASE("Test the CSV-writer for 2D settings.", "[CsvWrite2d]")
                               l_stream1);
 
   std::string l_ref1 = R"V0G0N(x,y,height,momentum_x,momentum_y,bathymetry
--45,-45,10,5,10,5
--35,-45,11,4,14,4
--45,-35,14,1,11,1
--35,-35,15,0,15,0
+5,5,10,5,10,5
+15,5,11,4,14,4
+5,15,14,1,11,1
+15,15,15,0,15,0
 )V0G0N";
 
-  REQUIRE(l_stream1.str() == l_ref1);
   REQUIRE(l_stream1.str().size() == l_ref1.size());
+  REQUIRE(l_stream1.str() == l_ref1);
 }
 
 TEST_CASE("Test the CSV-reader for 1D settings.", "[CsvReader1d]")
