@@ -36,17 +36,61 @@ struct Station_struct
 class tsunami_lab::io::Stations
 {
 private:
-    int m_outputFrequency = 1;
+    int m_outputFrequency;
     std::vector<Station_struct> m_stations;
 
 public:
+    /**
+     * add station to the station vector.
+     *
+     * @param i_name station name.
+     * @param i_x x-coordinate of station.
+     * @param i_y y-coordinate of station.
+     **/
     void addStation(const std::string i_name, t_real i_x, t_real i_y);
 
-    void writeStationOutput();
+    int getOutputFrequency();
 
-    void loadStationsFromJSON(const std::string &filename);
+    /**
+     * Writes the data as CSV to the given stream.
+     *
+     * @param i_dxy cell width in x- and y-direction.
+     * @param i_nx number of cells in x-direction.
+     * @param i_ny number of cells in y-direction.
+     * @param i_stride stride of the data arrays in y-direction (x is assumed to be stride-1).
+     * @param i_h water height of the cells; optional: use nullptr if not required.
+     * @param i_hu momentum in x-direction of the cells; optional: use nullptr if not required.
+     * @param i_hv momentum in y-direction of the cells; optional: use nullptr if not required.
+     * @param i_b bathymetry of the cells; optional: use nullptr if not required.
+     * @param i_time time of the output.
+     **/
 
-    Stations(const std::string &configFilePath);
+    void writeStationOutput(t_real i_dxy,
+                            t_idx i_nx,
+                            t_idx i_ny,
+                            t_real i_x_offset,
+                            t_real i_y_offset,
+                            t_idx i_stride,
+                            t_real const *i_h,
+                            t_real const *i_hu,
+                            t_real const *i_hv,
+                            t_real const *i_b,
+                            t_real i_time);
+
+    /**
+     * load Station file.
+     *
+     * @param filePath path of the station file
+     **/
+
+    void loadStationsFromJSON(const std::string &filePath);
+
+    /**
+     * Constructs the stations.
+     *
+     * @param filePath path of the station file
+     */
+    Stations(const std::string &filePath);
 };
 
 #endif

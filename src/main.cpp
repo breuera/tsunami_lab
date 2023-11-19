@@ -20,6 +20,7 @@
 #include <vector>
 
 #include "io/csv/Csv.h"
+#include "io/stations/Stations.h"
 #include "patches/wavepropagation1d/WavePropagation1d.h"
 #include "patches/wavepropagation2d/WavePropagation2d.h"
 #include "setups/dambreak1d/DamBreak1d.h"
@@ -36,8 +37,8 @@ int state_boundary_top = 0;
 int state_boundary_bottom = 0;
 int state_boundary_left = 0;
 int state_boundary_right = 0;
-tsunami_lab::t_idx l_x_offset = 0;
-tsunami_lab::t_idx l_y_offset = 0;
+tsunami_lab::t_real l_x_offset = 0;
+tsunami_lab::t_real l_y_offset = 0;
 int dimension;
 
 int main(int i_argc,
@@ -88,6 +89,7 @@ int main(int i_argc,
         std::cerr << "-r STATE_RIGHT = 'open','closed', default is 'open'" << std::endl;
         std::cerr << "-t STATE_TOP = 'open','closed', default is 'open'" << std::endl;
         std::cerr << "-b STATE_BOTTOM = 'open','closed', default is 'open'" << std::endl;
+        std::cerr << "-i 'path'" << std::endl;
         return EXIT_FAILURE;
     }
     else
@@ -109,6 +111,8 @@ int main(int i_argc,
 
     // construct setup with default value
     tsunami_lab::setups::Setup *l_setup = new tsunami_lab::setups::DamBreak2d();
+    tsunami_lab::io::Stations *l_stations = nullptr;
+    l_stations = new tsunami_lab::io::Stations("data/Stations.json");
 
     // get command line arguments
     opterr = 0; // disable error messages of getopt
@@ -366,6 +370,12 @@ int main(int i_argc,
             }
             break;
         }
+        case 'i':
+        {
+            std::string i_filePath(optarg);
+            l_stations = new tsunami_lab::io::Stations(i_filePath);
+            break;
+        }
         // unknown option
         case '?':
         {
@@ -381,7 +391,8 @@ int main(int i_argc,
                 << "    -l STATE_LEFT = 'open','closed', default is 'open'" << std::endl
                 << "    -r STATE_RIGHT = 'open','closed', default is 'open'" << std::endl
                 << "    -t STATE_TOP = 'open','closed', default is 'open'" << std::endl
-                << "    -b STATE_BOTTOM = 'open','closed', default is 'open'" << std::endl;
+                << "    -b STATE_BOTTOM = 'open','closed', default is 'open'" << std::endl
+                << "    -i 'path' " << std::endl;
             break;
         }
         }
@@ -426,11 +437,11 @@ int main(int i_argc,
     // set up solver
     for (tsunami_lab::t_idx l_cy = 0; l_cy < l_ny; l_cy++)
     {
-        tsunami_lab::t_real l_y = l_cy * l_dxy;
+        tsunami_lab::t_real l_y = l_cy * l_dxy - l_y_offset;
 
         for (tsunami_lab::t_idx l_cx = 0; l_cx < l_nx; l_cx++)
         {
-            tsunami_lab::t_real l_x = l_cx * l_dxy;
+            tsunami_lab::t_real l_x = l_cx * l_dxy - l_x_offset;
 
             // get initial values of the setup
             tsunami_lab::t_real l_h = l_setup->getHeight(l_x,
@@ -488,6 +499,17 @@ int main(int i_argc,
     // create csv_dump folder
     std::filesystem::create_directory("csv_dump");
 
+    // clear station_data
+    if (std::filesystem::exists("station_data"))
+    {
+        std::filesystem::remove_all("station_data");
+    }
+
+    // create station_data folder
+    std::filesystem::create_directory("station_data");
+
+    int multiplayer = 0;
+
     // iterate over time
     while (l_simTime < l_endTime)
     {
@@ -516,6 +538,21 @@ int main(int i_argc,
             l_file.close();
             l_nOut++;
         }
+        if (l_simTime >= multiplayer)
+        {
+            l_stations->writeStationOutput(l_dxy,
+                                           l_nx,
+                                           l_ny,
+                                           l_x_offset,
+                                           l_y_offset,
+                                           l_waveProp->getStride(),
+                                           l_waveProp->getHeight(),
+                                           l_waveProp->getMomentumX(),
+                                           l_waveProp->getMomentumY(),
+                                           l_waveProp->getBathymetry(),
+                                           l_simTime);
+            multiplayer += l_stations->getOutputFrequency();
+        }
 
         l_waveProp->timeStep(l_scaling);
 
@@ -529,6 +566,7 @@ int main(int i_argc,
     std::cout << "freeing memory" << std::endl;
     delete l_setup;
     delete l_waveProp;
+    delete l_stations;
 
     std::cout << "finished, exiting" << std::endl;
     return EXIT_SUCCESS;
