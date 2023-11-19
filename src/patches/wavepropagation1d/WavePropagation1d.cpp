@@ -43,6 +43,7 @@ tsunami_lab::patches::WavePropagation1d::~WavePropagation1d()
 
 void tsunami_lab::patches::WavePropagation1d::timeStep(t_real i_scaling)
 {
+    setGhostOutflow();
     // pointers to old and new data
     t_real *l_hOld = m_h[m_step];
     t_real *l_huOld = m_hu[m_step];
