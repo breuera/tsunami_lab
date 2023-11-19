@@ -5,3 +5,4 @@
 /docs/project-report/build
 /docs/developer-doc/**
 .sconsign.dblite
+/station_data/**
