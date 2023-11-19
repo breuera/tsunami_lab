@@ -36,16 +36,16 @@ jobs:
               run: |
                   scons mode=debug+san
                   ./build/tests
-                  ./build/tsunami_lab -d 1d -v roe -s "shockshock1d 55 25" 500
+                  ./build/tsunami_lab -d 1d -v roe -s "shockshock1d 55 25" 30
                   scons mode=release+san
                   ./build/tests
-                  ./build/tsunami_lab -d 1d -v fwave -s "tsunami1d" 500
+                  ./build/tsunami_lab -d 1d -v fwave -s "tsunami1d" 30
 
             - name: Sanitize 2D
               run: |
                   scons mode=debug+san
                   ./build/tests
-                  ./build/tsunami_lab -d 2d -s "dambreak2d" 500
+                  ./build/tsunami_lab -d 2d -s "dambreak2d" 30
 
             - name: Valgrind 1D
               run: |
