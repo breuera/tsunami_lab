@@ -102,6 +102,7 @@ To compile with a specific mode, use the mode flag as follows:
 
 Running the project
 -------------------
+Make sure that the current terminal is located in the /tsunami_lab/ directory.
 
 To execute the test files, use the following command:
 
@@ -113,42 +114,44 @@ To execute the project, use the following command with the appropriate flags:
 
 .. code-block::
 
-    ./build/tsunami_lab [flags]
+    ./build/tsunami_lab <config_file_name.json>
 
-#. first flag setup option:
-    Choose from DamBreak, RareRare, or ShockShock, CustomSetup, CustomSetup, Sanitize1d, SubcriticalFlow1d, SupercriticalFlow1d.
+The ``<config_file_name.json>`` argument is used to pass the name of the JSON config 
+file on to the program. The config needs to be located in the /tsunami_lab/res/configs/ 
+directory.
 
-    Use Sanatize1d to sanitize with the middle_states.csv
-    Default version will use dummie_middle_states.csv file, otherwise, make sure middle_states.csv file is in the tsunami_lab/res/ folder.
+Structure of a config file
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-#. second flag:
-    Specify the number of cells as an integer.
+**List of arguments:**
 
-#. fourth flag (optional):
-    Choose the type of solver:
-        -f for F-WaveSolver
-        -r for Roe Solver
-    
-    Defaults to -f.
+- "dimension": integer, that indicates the dimensions of a simulation
 
-#. fifth flag (optional):
-    Choose the type of boundary conditions:
-        -oo for both sides outflow
-        -ro for left reflection and right outflow
-        -or for left outflow and right reflection
-        -rr for both sides reflection
-    
-    Defaults to -oo.
+- "nx": integer, that decides the number of cells in x-direction
 
-Example command to execute the project with flags:
+- "ny": integer, that decides the number of cells in y-direction
 
-.. code-block::
+- "xLen": float, that decides the length in x-direction 
 
-    ./build/tsunami_lab DamBreak Sanatizer 100 -f
+- "yLen": float, that decides the length in y-direction 
 
-This will run the Tsunami Lab Project with the DamBreak setup, in sanitizer mode, using 100 cells, and the F-WaveSolver.
+- "thresholdX": float, that decides the changing point in x-direction for a setup (ex.: dam location)
 
-You can customize the flags according to your requirements.
+- "thresholdY": float, that decides the changing point in y-direction for a setup
+
+- "simTime": float, time length of a simulation
+
+- "boundaryCond": string, that decides the boundary conditions
+
+Options: 1d: "OO", "RR", "RO", "OR"; 2d: "OO"
+
+- "setup": string, that decides the used setup
+
+Options: 
+1d: "DamBreak", "RareRare", "ShockShock", "SubcriticalFlow", "SupercriticalFlow", "TsunamiEvent", "Sanitize", "CustomSetup"; 
+2d: "DamBreak"
+
+
 
 .. _ch:Troubleshooting:
 
@@ -170,7 +173,7 @@ Common issues
 
 * Running the Project:
     If you encounter errors while running the project, ensure that you have provided the correct command-line flags as explained in the Compiling the Project section. Check for any typos or incorrect inputs.
-    Verify that the required input files (e.g., Middle_states or dummie_middle_states) are present in the designated folders as mentioned in the project flags.
+    Verify that the required input files (e.g., Middle_states or dummy_middle_states) are present in the designated folders as mentioned in the project flags.
 
 Contact Information
 ^^^^^^^^^^^^^^^^^^^
