@@ -116,10 +116,9 @@ class tsunami_lab::solvers::FWave {
      * @param i_huR momentum of the right side.
      * @param i_bL bathymetry of the left side.
      * @param i_bR bathymetry of the right side.
-     * @param o_netUpdateL will be set to the net-updates for the left side; 0: hight 1: momentum.
-     * @param o_netUpdateR will be set to the net-updates for the right side; 0: hight, 1: momentum.
+     * @param o_netUpdateL will be set to the net-updates for the left side; 0: height 1: momentum.
+     * @param o_netUpdateR will be set to the net-updates for the right side; 0: height, 1: momentum.
      **/
-
     static void netUpdates(t_real i_hL,
                            t_real i_hR,
                            t_real i_huL,
