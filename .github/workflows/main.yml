@@ -40,6 +40,7 @@ jobs:
           scons mode=debug+san
           ./build/tests
           ./build/tsunami_lab small_dam_break_1d.json
+          ./build/tsunami_lab small_dam_break_2d.json
           scons mode=release+san
           ./build/tests
           ./build/tsunami_lab dam_break_1d.json
@@ -49,6 +50,7 @@ jobs:
           scons mode=debug
           valgrind ./build/tests
           valgrind ./build/tsunami_lab small_dam_break_1d.json
+          valgrind ./build/tsunami_lab small_dam_break_2d.json
 
       - name: Release
         run: |
