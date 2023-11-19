@@ -10,10 +10,8 @@
    chapters/assignment_2.rst
    
    chapters/assignment_3.rst
-   
-   chapters/assignment_3_bohdan.rst
 
-   chapters/assignment_3_phillip.rst
+   chapters/assignment_4.rst
 
 .. include:: chapters/overview.rst
 
