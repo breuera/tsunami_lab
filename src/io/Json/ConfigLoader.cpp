@@ -18,6 +18,7 @@
 // include setup classes
 #include "../../setups/CustomSetup1d/CustomSetup1d.h"
 #include "../../setups/DamBreak1d/DamBreak1d.h"
+#include "../../setups/DamBreak2d/DamBreak2d.h"
 #include "../../setups/RareRare1d/RareRare1d.h"
 #include "../../setups/ShockShock1d/ShockShock1d.h"
 #include "../../setups/SubcriticalFlow1d/SubcriticalFlow1d.h"
@@ -150,6 +151,8 @@ tsunami_lab::t_idx tsunami_lab::io::ConfigLoader::loadConfig(std::string i_path,
     if (l_setupName.compare("DamBreak") == 0) {
         if (l_dimension == 1) {
             o_setup = new tsunami_lab::setups::DamBreak1d(10, 5, 5);
+        } else {
+            o_setup = new tsunami_lab::setups::DamBreak2d(10, 5, l_xLen, l_yLen, 10);
         }
     } else if (l_setupName.compare("RareRare") == 0) {
         if (l_dimension == 1) {
@@ -199,12 +202,9 @@ tsunami_lab::t_idx tsunami_lab::io::ConfigLoader::loadConfig(std::string i_path,
                                                   l_x,
                                                   l_y,
                                                   l_distance);
-            std::cout << l_bathymetry[551] << std::endl;
-
             o_setup = new tsunami_lab::setups::TsunamiEvent1d(l_bathymetry);
 
             delete[] l_distance;
-            // delete[] l_bathymetry;
             delete[] l_x;
             delete[] l_y;
         }
