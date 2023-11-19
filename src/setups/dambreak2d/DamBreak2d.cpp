@@ -13,7 +13,7 @@ tsunami_lab::t_real tsunami_lab::setups::DamBreak2d::getHeight(t_real i_x,
   // move circle by amount
   t_real x_offset = i_x - 50;
   t_real y_offset = i_y - 50;
-  if (getBathymetry(x_offset, y_offset) > 0)
+  if (getBathymetry(i_x, i_y) > 0)
   {
     return 0;
   }
@@ -42,15 +42,13 @@ tsunami_lab::t_real tsunami_lab::setups::DamBreak2d::getMomentumY(t_real,
 tsunami_lab::t_real tsunami_lab::setups::DamBreak2d::getBathymetry(t_real i_x,
                                                                    t_real i_y) const
 {
-  // move circle by amount
-  t_real x_offset = i_x - 10;
-  t_real y_offset = i_y - 25;
-  if (std::sqrt(x_offset * x_offset + y_offset * y_offset) < 3)
+  int offset = -10;
+  if (i_x + offset < 5 && i_x + offset > -5 && i_y + offset < 5 && i_y + offset > -5)
   {
-    return 0;
+    return 10;
   }
   else
   {
-    return 0;
+    return -10;
   }
 }

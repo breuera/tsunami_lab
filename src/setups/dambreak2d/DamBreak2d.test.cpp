@@ -20,7 +20,7 @@ TEST_CASE("Test the two-dimensional dam break setup.", "[DamBreak2d]")
 
   REQUIRE(l_damBreak.getMomentumY(0, 0) == 0);
 
-  REQUIRE(l_damBreak.getBathymetry(0, 0) == 0);
+  REQUIRE(l_damBreak.getBathymetry(0, 0) == -10);
 
   // inside dam-circle
   REQUIRE(l_damBreak.getHeight(50, 50) == 10);
@@ -29,8 +29,8 @@ TEST_CASE("Test the two-dimensional dam break setup.", "[DamBreak2d]")
 
   REQUIRE(l_damBreak.getMomentumY(50, 50) == 0);
 
-  REQUIRE(l_damBreak.getBathymetry(50, 50) == 0);
+  REQUIRE(l_damBreak.getBathymetry(50, 50) == -10);
 
   // on batometry-cylinder
-  // REQUIRE(l_damBreak.getBathymetry(10, 25) == 10);
+  REQUIRE(l_damBreak.getBathymetry(10, 10) == 10);
 }
