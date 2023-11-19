@@ -180,6 +180,8 @@ int main(int i_argc,
                 std::cout << intermediate << std::endl;
             }
 
+            delete l_setup;
+
             // ensure that segmentation fault is not caused
             if (((tokens[0] == "dambreak1d" || tokens[0] == "shockshock1d" || tokens[0] == "rarerare1d") && tokens.size() == 3) && dimension == 1)
             {
