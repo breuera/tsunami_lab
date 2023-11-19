@@ -189,6 +189,6 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
         // free memory
         std::cout << "finished time loop" << std::endl;
         std::cout << "freeing memory" << std::endl;
-        delete l_waveProp;
     }
+    delete l_waveProp;
 }
