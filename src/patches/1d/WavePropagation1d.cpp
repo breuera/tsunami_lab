@@ -39,7 +39,7 @@ tsunami_lab::patches::WavePropagation1d::~WavePropagation1d() {
     delete[] m_b;
 }
 
-void tsunami_lab::patches::WavePropagation1d::timeStep(t_real i_scaling) {
+void tsunami_lab::patches::WavePropagation1d::timeStep(t_real i_scaling, t_real) {
     // pointers to old and new data
     t_real *l_hOld = m_h[m_step];
     t_real *l_huOld = m_hu[m_step];

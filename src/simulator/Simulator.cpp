@@ -124,7 +124,7 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
             }
 
             l_waveProp->setGhostCells(i_simConfig.getBoundaryCondition());
-            l_waveProp->timeStep(l_scaling);
+            l_waveProp->timeStep(l_scaling, 0);
 
             l_timeStep++;
             l_simTime += l_dt;
@@ -134,7 +134,7 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
         bool l_is_correct_middle_state = false;
         for (tsunami_lab::t_idx l_timeStep = 0; l_timeStep < l_number_of_time_steps; l_timeStep++) {
             l_waveProp->setGhostCells("OO");
-            l_waveProp->timeStep(l_scaling);
+            l_waveProp->timeStep(l_scaling, 0);
 
             tsunami_lab::t_real l_middle_state = l_waveProp->getHeight()[(tsunami_lab::t_idx)i_simConfig.getThresholdX()];
             if (abs(l_middle_state - i_hStar) < 4.20) {

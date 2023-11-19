@@ -7,7 +7,6 @@
 #include "WavePropagation1d.h"
 
 #include <catch2/catch.hpp>
-#include <iostream>
 
 TEST_CASE("Test the 1d wave propagation solver (Roe).", "[WaveProp1d]") {
     /*
@@ -51,7 +50,7 @@ TEST_CASE("Test the 1d wave propagation solver (Roe).", "[WaveProp1d]") {
     m_waveProp.setGhostCells("OO");
 
     // perform a time step
-    m_waveProp.timeStep(0.1);
+    m_waveProp.timeStep(0.1, 0);
 
     // steady state
     for (std::size_t l_ce = 0; l_ce < 49; l_ce++) {
@@ -102,6 +101,7 @@ TEST_CASE("Test the 1d wave propagation solver (FWave).", "[WaveProp1d]") {
                                 0,
                                 0);
         m_waveProp.setBathymetry(l_ce,
+                                 0,
                                  5);
     }
     for (std::size_t l_ce = 50; l_ce < 100; l_ce++) {
@@ -112,6 +112,7 @@ TEST_CASE("Test the 1d wave propagation solver (FWave).", "[WaveProp1d]") {
                                 0,
                                 0);
         m_waveProp.setBathymetry(l_ce,
+                                 0,
                                  0);
     }
 
@@ -119,7 +120,7 @@ TEST_CASE("Test the 1d wave propagation solver (FWave).", "[WaveProp1d]") {
     m_waveProp.setGhostCells("OO");
 
     // perform a time step
-    m_waveProp.timeStep(0.1);
+    m_waveProp.timeStep(0.1, 0);
 
     // steady state
     for (std::size_t l_ce = 0; l_ce < 49; l_ce++) {
