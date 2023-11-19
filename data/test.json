@@ -1,0 +1,15 @@
+{
+    "period": 1,
+    "stations": [
+        {
+            "name": "Station_1",
+            "x": 10,
+            "y": 15
+        },
+        {
+            "name": "Station_2",
+            "x": 15,
+            "y": 20
+        }
+    ]
+}

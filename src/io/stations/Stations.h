@@ -1,8 +1,9 @@
 /**
- * @author Alexander Breuer (alex.breuer AT uni-jena.de)
+ * @author Mher Mnatsakanyan (mher.mnatsakanyan AT uni-jena.de)
+ * @author Maurice Herold (maurice.herold AT uni-jena.de)
  *
  * @section DESCRIPTION
- * IO-routines for writing a snapshot as Comma Separated Values (CSV).
+ * Two-dimensional dam break problem.
  **/
 #ifndef TSUNAMI_LAB_IO_STATIONS
 #define TSUNAMI_LAB_IO_STATIONS
@@ -49,6 +50,14 @@ public:
      **/
     void addStation(const std::string i_name, t_real i_x, t_real i_y);
 
+    /**
+     * retun the stations.
+     **/
+    std::vector<Station_struct> getStations();
+
+    /**
+     * retun the outputFrequency.
+     **/
     int getOutputFrequency();
 
     /**
