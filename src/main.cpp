@@ -33,9 +33,12 @@
 // declaration of variables
 int solver_choice = 0;
 int state_boundary_top = 0;
-int state_boundary_bottom = 1;
+int state_boundary_bottom = 0;
 int state_boundary_left = 0;
-int state_boundary_right = 1;
+int state_boundary_right = 0;
+int l_x_offset = 0;
+int l_y_offset = 0;
+int dimension;
 
 int main(int i_argc,
          char *i_argv[])
@@ -59,7 +62,7 @@ int main(int i_argc,
 
     // number of cells in x- and y-direction
     tsunami_lab::t_idx l_nx = 0;
-    tsunami_lab::t_idx l_ny = 0;
+    tsunami_lab::t_idx l_ny = 1;
 
     // set cell size
     tsunami_lab::t_real l_dxy = 1;
@@ -70,21 +73,26 @@ int main(int i_argc,
     std::cout << "### https://scalable.uni-jena.de ###" << std::endl;
     std::cout << "####################################" << std::endl;
 
-    if ((i_argc < 2) || (i_argv[i_argc - 1][0] == '-'))
+    if ((i_argc < 4) || (i_argv[i_argc - 1][0] == '-'))
     {
         std::cerr << "invalid number of arguments OR wrong order, usage:" << std::endl;
-        std::cerr << "  ./build/tsunami_lab [-v SOLVER] [-s SETUP] [-l STATE_LEFT] [-r STATE_RIGHT] N_CELLS_X" << std::endl;
-        std::cerr << "where N_CELLS_X is the number of cells in x-direction." << std::endl;
-        std::cerr << "-v SOLVER = 'roe','fwave', default is 'fwave'" << std::endl;
-        std::cerr << "-s SETUP  = 'dambreak h_l h_r','rarerare h hu','shockshock h hu', 'supercritical', 'subcritical', 'tsunami', default is 'dambreak 15 7'" << std::endl;
+        std::cerr << "  ./build/tsunami_lab [-d DIMENSION] [-s SETUP] [-v SOLVER] [-l STATE_LEFT] [-r STATE_RIGHT] [-t STATE_TOP] [-b STATE_BOTTOM]  N_CELLS_X" << std::endl;
+        std::cerr << "where N_CELLS_X is the number of cells in x-direction. The Grid is quadratic in 2d, so the same value will be taken for cells in y-direction" << std::endl;
+        std::cerr << "-d DIMENSION = '1d','2d'" << std::endl;
+        std::cerr << "When using 1d-simulation, the choices for setup are:" << std::endl;
+        std::cerr << "  -s SETUP  = 'dambreak1d h_l h_r','rarerare1d h hu','shockshock1d h hu', 'supercritical1d', 'subcritical1d', 'tsunami1d'" << std::endl;
+        std::cerr << "When using 2d-simulation, the choices for setup are:" << std::endl;
+        std::cerr << "  -s SETUP  = 'dambreak2d'" << std::endl;
+        std::cerr << "-v SOLVER = 'roe','fwave', default is 'fwave'. Be aware, that the roe-solver is depricated." << std::endl;
         std::cerr << "-l STATE_LEFT = 'open','closed', default is 'open'" << std::endl;
         std::cerr << "-r STATE_RIGHT = 'open','closed', default is 'open'" << std::endl;
+        std::cerr << "-t STATE_TOP = 'open','closed', default is 'open'" << std::endl;
+        std::cerr << "-b STATE_BOTTOM = 'open','closed', default is 'open'" << std::endl;
         return EXIT_FAILURE;
     }
     else
     {
         l_nx = atoi(i_argv[i_argc - 1]);
-        l_ny = l_nx;
         if (l_nx < 1)
         {
             std::cerr << "invalid number of cells" << std::endl;
@@ -92,22 +100,47 @@ int main(int i_argc,
         }
     }
 
-    tsunami_lab::t_real l_endTime = 15;
-    tsunami_lab::t_real l_width = 100.0;
+    tsunami_lab::t_real l_endTime = 1.25;
+    tsunami_lab::t_real l_width = 10.0;
     std::vector<tsunami_lab::t_real> m_b_in;
+
+    // construct solver
+    tsunami_lab::patches::WavePropagation *l_waveProp;
 
     // construct setup with default value
     tsunami_lab::setups::Setup *l_setup;
-    l_setup = new tsunami_lab::setups::DamBreak2d();
 
     // get command line arguments
     opterr = 0; // disable error messages of getopt
     int opt;
 
-    while ((opt = getopt(i_argc, i_argv, "s:v:l:r:")) != -1)
+    while ((opt = getopt(i_argc, i_argv, "d:s:v:l:r:t:b:")) != -1)
     {
         switch (opt)
         {
+        case 'd':
+        {
+            if (std::string(optarg) == "1d")
+            {
+                std::cout << "simulating in 1d" << std::endl;
+                dimension = 1;
+            }
+            else if (std::string(optarg) == "2d")
+            {
+                std::cout << "simulating in 2d" << std::endl;
+                dimension = 2;
+            }
+            else
+            {
+                std::cerr
+                    << "undefined dimension "
+                    << std::string(optarg) << std::endl
+                    << "possible options are: '1d' or '2d'" << std::endl
+                    << "be sure to only type in lower-case" << std::endl;
+                return EXIT_FAILURE;
+            }
+            break;
+        }
         case 'v':
         {
             if (std::string(optarg) == "roe")
@@ -148,7 +181,7 @@ int main(int i_argc,
             }
 
             // ensure that segmentation fault is not caused
-            if (((tokens[0] == "dambreak" || tokens[0] == "shockshock" || tokens[0] == "rarerare") && tokens.size() == 3))
+            if (((tokens[0] == "dambreak1d" || tokens[0] == "shockshock1d" || tokens[0] == "rarerare1d") && tokens.size() == 3) && dimension == 1)
             {
                 // convert to t_real
                 double l_arg1, l_arg2;
@@ -162,26 +195,25 @@ int main(int i_argc,
                 {
                     std::cerr
                         << "Invalid argument: " << ia.what() << std::endl
-                        << "be sure to only type numbers after the solver-name" << std::endl;
+                        << "be sure to only type numbers after the setup-name" << std::endl;
                     return EXIT_FAILURE;
                 }
-                delete l_setup;
 
-                if (tokens[0] == "dambreak")
+                if (tokens[0] == "dambreak1d")
                 {
                     std::cout << "using DamBreak1d(" << l_arg1 << ", " << l_arg2 << ", 5) setup" << std::endl;
                     l_setup = new tsunami_lab::setups::DamBreak1d(l_arg1,
                                                                   l_arg2,
                                                                   5);
                 }
-                else if (tokens[0] == "shockshock")
+                else if (tokens[0] == "shockshock1d")
                 {
                     std::cout << "using ShockShock1d(" << l_arg1 << ", " << l_arg2 << ", 5) setup" << std::endl;
                     l_setup = new tsunami_lab::setups::ShockShock1d(l_arg1,
                                                                     l_arg2,
                                                                     5);
                 }
-                else if (tokens[0] == "rarerare")
+                else if (tokens[0] == "rarerare1d")
                 {
                     std::cout << "using RareRare1d(" << l_arg1 << "," << l_arg2 << ", 5) setup" << std::endl;
                     l_setup = new tsunami_lab::setups::RareRare1d(l_arg1,
@@ -193,26 +225,26 @@ int main(int i_argc,
                 {
                     std::cerr
                         << "Undefined setup: " << tokens[0] << std::endl
-                        << "possible options are: 'dambreak', 'shockshock' or 'rarerare'" << std::endl
+                        << "possible options are: 'dambreak1d', 'shockshock1d' or 'rarerare1d'" << std::endl
                         << "be sure to only type in lower-case" << std::endl;
                     return EXIT_FAILURE;
                 }
             }
-            else if (tokens[0] == "subcritical")
+            else if (tokens[0] == "subcritical1d" && dimension == 1)
             {
                 l_width = 25;
                 l_endTime = 200;
                 std::cout << "using Subcritical() setup" << std::endl;
                 l_setup = new tsunami_lab::setups::Subcritical1d();
             }
-            else if (tokens[0] == "supercritical")
+            else if (tokens[0] == "supercritical1d" && dimension == 1)
             {
                 l_width = 25;
                 l_endTime = 200;
                 std::cout << "using Supercritical() setup" << std::endl;
                 l_setup = new tsunami_lab::setups::Supercritical1d();
             }
-            else if (tokens[0] == "tsunami")
+            else if (tokens[0] == "tsunami1d" && dimension == 1)
             {
                 tsunami_lab::io::Csv::read("data/real.csv", m_b_in);
 
@@ -221,12 +253,23 @@ int main(int i_argc,
 
                 l_setup = new tsunami_lab::setups::TsunamiEvent1d(m_b_in);
             }
+            else if (tokens[0] == "dambreak2d" && dimension == 2)
+            {
+                l_width = 100;
+                l_endTime = 15;
+                l_x_offset = -50;
+                l_y_offset = -50;
+                std::cout << "using Dambreak2d() setup" << std::endl;
+                l_setup = new tsunami_lab::setups::DamBreak2d();
+            }
             else
             {
                 // if input doesn't follow the regulations "<name> <arg1> <arg2>"
+                // OR dimension does't match with the setup
                 std::cerr
-                    << "False number of arguments for setup: " << tokens.size() << std::endl
-                    << "Expected: 3" << std::endl;
+                    << "Either: False number of arguments for setup: " << tokens.size() << std::endl
+                    << "Expected: 3" << std::endl
+                    << "OR: Wrong dimension-setup-combination: " << tokens.size() << std::endl;
                 return EXIT_FAILURE;
             }
             break;
@@ -277,19 +320,97 @@ int main(int i_argc,
             }
             break;
         }
+        case 't':
+        {
+            if (std::string(optarg) == "open")
+            {
+                std::cout << "top-boundary open" << std::endl;
+                state_boundary_top = 0;
+            }
+            else if (std::string(optarg) == "closed")
+            {
+                std::cout << "top-boundary closed" << std::endl;
+                state_boundary_top = 1;
+            }
+            else
+            {
+                std::cerr
+                    << "unknown state "
+                    << std::string(optarg) << std::endl
+                    << "possible options are: 'open' or 'closed'" << std::endl
+                    << "be sure to only type in lower-case" << std::endl;
+                return EXIT_FAILURE;
+            }
+            break;
+        }
+        case 'b':
+        {
+            if (std::string(optarg) == "open")
+            {
+                std::cout << "bottom-boundary open" << std::endl;
+                state_boundary_bottom = 0;
+            }
+            else if (std::string(optarg) == "closed")
+            {
+                std::cout << "bottom-boundary closed" << std::endl;
+                state_boundary_bottom = 1;
+            }
+            else
+            {
+                std::cerr
+                    << "unknown state "
+                    << std::string(optarg) << std::endl
+                    << "possible options are: 'open' or 'closed'" << std::endl
+                    << "be sure to only type in lower-case" << std::endl;
+                return EXIT_FAILURE;
+            }
+            break;
+        }
         // unknown option
         case '?':
         {
             std::cerr
-                << "Undefinded option: " << char(optopt) << std::endl
+                << "Undefinded option: " << char(optopt) << " OR wrong dimension-setup-combination" << std::endl
                 << "possible options are:" << std::endl
-                << "  -v SOLVER = 'roe','fwave', default is 'fwave'" << std::endl
-                << "  -s SETUP  = 'dambreak h_l h_r','rarerare h hu','shockshock h hu', default is 'dambreak 15 7'" << std::endl
-                << "-l STATE_LEFT = 'open','closed', default is 'open'" << std::endl
-                << "-r STATE_RIGHT = 'open','closed', default is 'open'" << std::endl;
+                << "    -d DIMENSION = '1d','2d'" << std::endl
+                << "    When using 1d-simulation, the choices for setup are:" << std::endl
+                << "        -s SETUP  = 'dambreak h_l h_r','rarerare h hu','shockshock h hu', 'supercritical', 'subcritical', 'tsunami'" << std::endl
+                << "    When using 2d-simulation, the choices for setup are:" << std::endl
+                << "        -s SETUP  = 'dambreak'" << std::endl
+                << "    -v SOLVER = 'roe','fwave', default is 'fwave'. Be aware, that the roe-solver is depricated." << std::endl
+                << "    -l STATE_LEFT = 'open','closed', default is 'open'" << std::endl
+                << "    -r STATE_RIGHT = 'open','closed', default is 'open'" << std::endl
+                << "    -t STATE_TOP = 'open','closed', default is 'open'" << std::endl
+                << "    -b STATE_BOTTOM = 'open','closed', default is 'open'" << std::endl;
             break;
         }
         }
+    }
+
+    switch (dimension)
+    {
+    case 1:
+        l_waveProp = new tsunami_lab::patches::WavePropagation1d(l_nx,
+                                                                 solver_choice,
+                                                                 state_boundary_left,
+                                                                 state_boundary_right);
+        break;
+
+    case 2:
+        l_ny = l_nx;
+        l_waveProp = new tsunami_lab::patches::WavePropagation2d(l_nx,
+                                                                 l_ny,
+                                                                 solver_choice,
+                                                                 state_boundary_left,
+                                                                 state_boundary_right,
+                                                                 state_boundary_top,
+                                                                 state_boundary_bottom);
+        break;
+
+    default:
+        std::cerr << "Dimension has to be specified" << std::endl;
+        return EXIT_FAILURE;
+        break;
     }
 
     l_dxy = l_width / l_nx;
@@ -298,16 +419,6 @@ int main(int i_argc,
     std::cout << "  number of cells in x-direction: " << l_nx << std::endl;
     std::cout << "  number of cells in y-direction: " << l_ny << std::endl;
     std::cout << "  cell size:                      " << l_dxy << std::endl;
-
-    // construct solver
-    tsunami_lab::patches::WavePropagation *l_waveProp;
-    l_waveProp = new tsunami_lab::patches::WavePropagation2d(l_nx,
-                                                             l_ny,
-                                                             solver_choice,
-                                                             state_boundary_left,
-                                                             state_boundary_right,
-                                                             state_boundary_top,
-                                                             state_boundary_bottom);
 
     // maximum observed height in the setup
     tsunami_lab::t_real l_hMax = std::numeric_limits<tsunami_lab::t_real>::lowest();
@@ -394,6 +505,8 @@ int main(int i_argc,
             tsunami_lab::io::Csv::write(l_dxy,
                                         l_nx,
                                         l_ny,
+                                        l_x_offset,
+                                        l_y_offset,
                                         l_waveProp->getStride(),
                                         l_waveProp->getHeight(),
                                         l_waveProp->getMomentumX(),
