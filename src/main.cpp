@@ -36,8 +36,8 @@ int state_boundary_top = 0;
 int state_boundary_bottom = 0;
 int state_boundary_left = 0;
 int state_boundary_right = 0;
-int l_x_offset = 0;
-int l_y_offset = 0;
+tsunami_lab::t_idx l_x_offset = 0;
+tsunami_lab::t_idx l_y_offset = 0;
 int dimension;
 
 int main(int i_argc,
@@ -108,7 +108,7 @@ int main(int i_argc,
     tsunami_lab::patches::WavePropagation *l_waveProp;
 
     // construct setup with default value
-    tsunami_lab::setups::Setup *l_setup;
+    tsunami_lab::setups::Setup *l_setup = new tsunami_lab::setups::DamBreak2d();
 
     // get command line arguments
     opterr = 0; // disable error messages of getopt
@@ -257,8 +257,8 @@ int main(int i_argc,
             {
                 l_width = 100;
                 l_endTime = 15;
-                l_x_offset = -50;
-                l_y_offset = -50;
+                l_x_offset = 50;
+                l_y_offset = 50;
                 std::cout << "using Dambreak2d() setup" << std::endl;
                 l_setup = new tsunami_lab::setups::DamBreak2d();
             }
@@ -269,7 +269,7 @@ int main(int i_argc,
                 std::cerr
                     << "Either: False number of arguments for setup: " << tokens.size() << std::endl
                     << "Expected: 3" << std::endl
-                    << "OR: Wrong dimension-setup-combination: " << tokens.size() << std::endl;
+                    << "OR: Wrong dimension-setup-combination" << std::endl;
                 return EXIT_FAILURE;
             }
             break;
