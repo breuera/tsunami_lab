@@ -6,8 +6,8 @@
  **/
 #include "WavePropagation1d.h"
 
-#include "../solvers/FWave.h"
-#include "../solvers/Roe.h"
+#include "../../solvers/FWave.h"
+#include "../../solvers/Roe.h"
 
 tsunami_lab::patches::WavePropagation1d::WavePropagation1d(t_idx i_nCells, bool i_use_roe_solver) {
     m_nCells = i_nCells;
@@ -39,7 +39,7 @@ tsunami_lab::patches::WavePropagation1d::~WavePropagation1d() {
     delete[] m_b;
 }
 
-void tsunami_lab::patches::WavePropagation1d::timeStep(t_real i_scaling) {
+void tsunami_lab::patches::WavePropagation1d::timeStep(t_real i_scaling, t_real) {
     // pointers to old and new data
     t_real *l_hOld = m_h[m_step];
     t_real *l_huOld = m_hu[m_step];
@@ -90,62 +90,49 @@ void tsunami_lab::patches::WavePropagation1d::timeStep(t_real i_scaling) {
     }
 }
 
-void tsunami_lab::patches::WavePropagation1d::setGhostOutflow() {
+void tsunami_lab::patches::WavePropagation1d::setGhostCells(std::string i_setting) {
     t_real *l_h = m_h[m_step];
     t_real *l_hu = m_hu[m_step];
 
-    // set left boundary
-    l_h[0] = l_h[1];
-    l_hu[0] = l_hu[1];
-    m_b[0] = m_b[1];
+    if (i_setting.compare("OO") == 0) {
+        // set left boundary
+        l_h[0] = l_h[1];
+        l_hu[0] = l_hu[1];
+        m_b[0] = m_b[1];
 
-    // set right boundary
-    l_h[m_nCells + 1] = l_h[m_nCells];
-    l_hu[m_nCells + 1] = l_hu[m_nCells];
-    m_b[m_nCells + 1] = m_b[m_nCells];
-}
+        // set right boundary
+        l_h[m_nCells + 1] = l_h[m_nCells];
+        l_hu[m_nCells + 1] = l_hu[m_nCells];
+        m_b[m_nCells + 1] = m_b[m_nCells];
+    } else if (i_setting.compare("RR") == 0) {
+        // set left boundary
+        l_h[0] = l_h[1];
+        l_hu[0] = -l_hu[1];
+        m_b[0] = m_b[1];
 
-void tsunami_lab::patches::WavePropagation1d::setGhostReflecting() {
-    t_real *l_h = m_h[m_step];
-    t_real *l_hu = m_hu[m_step];
+        // set right boundary
+        l_h[m_nCells + 1] = l_h[m_nCells];
+        l_hu[m_nCells + 1] = -l_hu[m_nCells];
+        m_b[m_nCells + 1] = m_b[m_nCells];
+    } else if (i_setting.compare("RO") == 0) {
+        // set left boundary
+        l_h[0] = l_h[1];
+        l_hu[0] = -l_hu[1];
+        m_b[0] = m_b[1];
 
-    // set left boundary
-    l_h[0] = l_h[1];
-    l_hu[0] = -l_hu[1];
-    m_b[0] = m_b[1];
+        // set right boundary
+        l_h[m_nCells + 1] = l_h[m_nCells];
+        l_hu[m_nCells + 1] = l_hu[m_nCells];
+        m_b[m_nCells + 1] = m_b[m_nCells];
+    } else if (i_setting.compare("OR") == 0) {
+        // set left boundary
+        l_h[0] = l_h[1];
+        l_hu[0] = l_hu[1];
+        m_b[0] = m_b[1];
 
-    // set right boundary
-    l_h[m_nCells + 1] = l_h[m_nCells];
-    l_hu[m_nCells + 1] = -l_hu[m_nCells];
-    m_b[m_nCells + 1] = m_b[m_nCells];
-}
-
-void tsunami_lab::patches::WavePropagation1d::setGhostLeftReflecting() {
-    t_real *l_h = m_h[m_step];
-    t_real *l_hu = m_hu[m_step];
-
-    // set left boundary
-    l_h[0] = l_h[1];
-    l_hu[0] = -l_hu[1];
-    m_b[0] = m_b[1];
-
-    // set right boundary
-    l_h[m_nCells + 1] = l_h[m_nCells];
-    l_hu[m_nCells + 1] = l_hu[m_nCells];
-    m_b[m_nCells + 1] = m_b[m_nCells];
-}
-
-void tsunami_lab::patches::WavePropagation1d::setGhostRightReflecting() {
-    t_real *l_h = m_h[m_step];
-    t_real *l_hu = m_hu[m_step];
-
-    // set left boundary
-    l_h[0] = l_h[1];
-    l_hu[0] = l_hu[1];
-    m_b[0] = m_b[1];
-
-    // set right boundary
-    l_h[m_nCells + 1] = l_h[m_nCells];
-    l_hu[m_nCells + 1] = -l_hu[m_nCells];
-    m_b[m_nCells + 1] = m_b[m_nCells];
+        // set right boundary
+        l_h[m_nCells + 1] = l_h[m_nCells];
+        l_hu[m_nCells + 1] = -l_hu[m_nCells];
+        m_b[m_nCells + 1] = m_b[m_nCells];
+    }
 }

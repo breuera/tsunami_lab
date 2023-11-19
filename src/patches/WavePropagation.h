@@ -7,6 +7,8 @@
 #ifndef TSUNAMI_LAB_PATCHES_WAVE_PROPAGATION
 #define TSUNAMI_LAB_PATCHES_WAVE_PROPAGATION
 
+#include <string>
+
 #include "../constants.h"
 
 namespace tsunami_lab {
@@ -25,29 +27,18 @@ class tsunami_lab::patches::WavePropagation {
     /**
      * Performs a time step.
      *
-     * @param i_scaling scaling of the time step.
+     * @param i_scalingX scaling of the time step (dt / dx).
+     * @param i_scalingY scaling of the time step (dt / dy).
      **/
-    virtual void timeStep(t_real i_scaling) = 0;
+    virtual void timeStep(t_real i_scalingX,
+                          t_real i_scalingY) = 0;
 
     /**
-     * Sets the values of the ghost cells according to outflow boundary conditions.
+     * Sets the values of the ghost cells according to entered outflow boundary conditions.
+     *
+     * @param i_setting defines the boundary condition.
      **/
-    virtual void setGhostOutflow() = 0;
-
-    /**
-     * Sets the values of the ghost cells according to reflect boundary conditions.
-     **/
-    virtual void setGhostReflecting() = 0;
-
-    /**
-     * Sets the left value of the ghost cells according to reflect boundary condition and the right value to outflow boundary condition.
-     **/
-    virtual void setGhostLeftReflecting() = 0;
-
-    /**
-     * Sets the right value of the ghost cells according to reflect boundary condition and the left value to outflow boundary condition.
-     **/
-    virtual void setGhostRightReflecting() = 0;
+    virtual void setGhostCells(std::string i_setting) = 0;
 
     /**
      * Gets the stride in y-direction. x-direction is stride-1.
@@ -121,9 +112,11 @@ class tsunami_lab::patches::WavePropagation {
      * Sets the bathymetry to the given value.
      *
      * @param i_ix id of the cell in x-direction.
+     * @param i_ix id of the cell in y-direction.
      * @param i_b bathymetry.
      **/
     virtual void setBathymetry(t_idx i_ix,
+                               t_idx i_iy,
                                t_real i_b) = 0;
 };
 

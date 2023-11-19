@@ -13,7 +13,8 @@
 #include <limits>
 
 #include "../io/Csv/Csv.h"
-#include "../patches/WavePropagation1d.h"
+#include "../patches/1d/WavePropagation1d.h"
+#include "../patches/2d/WavePropagation2d.h"
 
 void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
                                            tsunami_lab::t_real i_hStar,
@@ -28,7 +29,12 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
 
     // construct solver
     tsunami_lab::patches::WavePropagation *l_waveProp;
-    l_waveProp = new tsunami_lab::patches::WavePropagation1d(l_nx, i_simConfig.isRoeSolver());
+
+    if (i_simConfig.getDimension() == 1) {
+        l_waveProp = new tsunami_lab::patches::WavePropagation1d(l_nx, i_simConfig.isRoeSolver());
+    } else {
+        l_waveProp = new tsunami_lab::patches::WavePropagation2d(l_nx, l_ny);
+    }
 
     // maximum observed height in the setup
     tsunami_lab::t_real l_hMax = std::numeric_limits<tsunami_lab::t_real>::lowest();
@@ -66,6 +72,7 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
                                      l_hv);
 
             l_waveProp->setBathymetry(l_cx,
+                                      l_cy,
                                       l_b);
         }
     }
@@ -88,14 +95,66 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
     tsunami_lab::t_real l_dt = 0.5 * l_dxy / l_speedMax;
 
     // derive scaling for a time step
-    tsunami_lab::t_real l_scaling = l_dt / l_dxy;
+    tsunami_lab::t_real l_scalingX = l_dt / l_dx;
+    tsunami_lab::t_real l_scalingY = l_dt / l_dy;
 
     // set up time and print control
     tsunami_lab::t_idx l_nOut = 0;
     tsunami_lab::t_real l_endTime = i_simConfig.getSimTime();
     tsunami_lab::t_real l_simTime = 0;
+    if (i_simConfig.getDimension() == 1) {
+        if (i_hStar == -1) {
+            tsunami_lab::t_idx l_timeStep = 0;
+            // iterate over time
+            while (l_simTime < l_endTime) {
+                if (l_timeStep % 25 == 0) {
+                    std::cout << "  simulation time / #time steps: "
+                              << l_simTime << " / " << l_timeStep << std::endl;
 
-    if (i_hStar == -1) {
+                    std::string l_path = "./out/solution_" + std::to_string(l_nOut) + ".csv";
+                    std::cout << "  writing wave field to " << l_path << std::endl;
+
+                    std::ofstream l_file;
+                    l_file.open(l_path);
+
+                    tsunami_lab::io::Csv::write(l_dxy,
+                                                l_nx,
+                                                1,
+                                                1,
+                                                l_waveProp->getHeight(),
+                                                l_waveProp->getMomentumX(),
+                                                nullptr,
+                                                l_waveProp->getBathymetry(),
+                                                l_file);
+                    l_file.close();
+                    l_nOut++;
+                }
+
+                l_waveProp->setGhostCells(i_simConfig.getBoundaryCondition());
+                l_waveProp->timeStep(l_scalingX, 0);
+
+                l_timeStep++;
+                l_simTime += l_dt;
+            }
+        } else {
+            tsunami_lab::t_idx l_number_of_time_steps = 100;
+            bool l_is_correct_middle_state = false;
+            for (tsunami_lab::t_idx l_timeStep = 0; l_timeStep < l_number_of_time_steps; l_timeStep++) {
+                l_waveProp->setGhostCells("OO");
+                l_waveProp->timeStep(l_scalingX, 0);
+
+                tsunami_lab::t_real l_middle_state = l_waveProp->getHeight()[(tsunami_lab::t_idx)i_simConfig.getThresholdX()];
+                if (abs(l_middle_state - i_hStar) < 4.20) {
+                    l_is_correct_middle_state = true;
+                }
+            }
+            if (l_is_correct_middle_state) {
+                std::cout << "middle state was calculated: true" << std::endl;
+            } else {
+                std::cout << "middle state was calculated: false" << std::endl;
+            }
+        }
+    } else {
         tsunami_lab::t_idx l_timeStep = 0;
         // iterate over time
         while (l_simTime < l_endTime) {
@@ -111,50 +170,25 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
 
                 tsunami_lab::io::Csv::write(l_dxy,
                                             l_nx,
-                                            1,
-                                            1,
+                                            l_ny,
+                                            i_simConfig.getXCells() + 2,
                                             l_waveProp->getHeight(),
                                             l_waveProp->getMomentumX(),
-                                            nullptr,
+                                            l_waveProp->getMomentumY(),
                                             l_waveProp->getBathymetry(),
                                             l_file);
                 l_file.close();
                 l_nOut++;
             }
-            if (i_simConfig.getBoundaryCondition() == "RR") {
-                l_waveProp->setGhostReflecting();
-            } else if (i_simConfig.getBoundaryCondition() == "OR") {
-                l_waveProp->setGhostRightReflecting();
-            } else if (i_simConfig.getBoundaryCondition() == "RO") {
-                l_waveProp->setGhostLeftReflecting();
-            } else {
-                l_waveProp->setGhostOutflow();
-            }
-            l_waveProp->timeStep(l_scaling);
+            l_waveProp->setGhostCells(i_simConfig.getBoundaryCondition());
+            l_waveProp->timeStep(l_scalingX, l_scalingY);
 
             l_timeStep++;
             l_simTime += l_dt;
         }
-    } else {
-        tsunami_lab::t_idx l_number_of_time_steps = 100;
-        bool l_is_correct_middle_state = false;
-        for (tsunami_lab::t_idx l_timeStep = 0; l_timeStep < l_number_of_time_steps; l_timeStep++) {
-            l_waveProp->setGhostOutflow();
-            l_waveProp->timeStep(l_scaling);
-
-            tsunami_lab::t_real l_middle_state = l_waveProp->getHeight()[(tsunami_lab::t_idx)i_simConfig.getThresholdX()];
-            if (abs(l_middle_state - i_hStar) < 4.20) {
-                l_is_correct_middle_state = true;
-            }
-        }
-        if (l_is_correct_middle_state) {
-            std::cout << "middle state was calculated: true" << std::endl;
-        } else {
-            std::cout << "middle state was calculated: false" << std::endl;
-        }
+        // free memory
+        std::cout << "finished time loop" << std::endl;
+        std::cout << "freeing memory" << std::endl;
     }
-    // free memory
-    std::cout << "finished time loop" << std::endl;
-    std::cout << "freeing memory" << std::endl;
     delete l_waveProp;
 }

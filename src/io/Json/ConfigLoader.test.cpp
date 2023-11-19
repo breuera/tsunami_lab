@@ -32,4 +32,5 @@ TEST_CASE("Test reading a config JSON file.", "[ConfigLoader]") {
     REQUIRE(l_simConfig.getBoundaryCondition().compare("OR") == 0);
     REQUIRE(l_simConfig.isRoeSolver());
     REQUIRE(l_hStar == -1);
+    delete l_setups;
 }
