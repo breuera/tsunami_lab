@@ -157,11 +157,13 @@ void tsunami_lab::patches::WavePropagation2d::setGhostCells(std::string i_settin
             l_h[getIndex(l_x, 0)] = l_h[getIndex(l_x, 1)];
             l_hu[getIndex(l_x, 0)] = l_hu[getIndex(l_x, 1)];
             l_hv[getIndex(l_x, 0)] = l_hv[getIndex(l_x, 1)];
+            m_b[getIndex(l_x, 0)] = m_b[getIndex(l_x, 1)];
 
             // set lower boundary
             l_h[getIndex(l_x, m_mCellsY + 1)] = l_h[getIndex(l_x, m_mCellsY)];
             l_hu[getIndex(l_x, m_mCellsY + 1)] = l_hu[getIndex(l_x, m_mCellsY)];
             l_hv[getIndex(l_x, m_mCellsY + 1)] = l_hv[getIndex(l_x, m_mCellsY)];
+            m_b[getIndex(l_x, m_mCellsY + 1)] = m_b[getIndex(l_x, m_mCellsY)];
         }
 
         for (t_idx l_y = 1; l_y < m_mCellsY + 1; l_y++) {
@@ -169,11 +171,13 @@ void tsunami_lab::patches::WavePropagation2d::setGhostCells(std::string i_settin
             l_h[getIndex(0, l_y)] = l_h[getIndex(1, l_y)];
             l_hu[getIndex(0, l_y)] = l_hu[getIndex(1, l_y)];
             l_hv[getIndex(0, l_y)] = l_hv[getIndex(1, l_y)];
+            m_b[getIndex(0, l_y)] = m_b[getIndex(1, l_y)];
 
             // set right boundary
             l_h[getIndex(m_nCellsX + 1, l_y)] = l_h[getIndex(m_nCellsX, l_y)];
             l_hu[getIndex(m_nCellsX + 1, l_y)] = l_hu[getIndex(m_nCellsX, l_y)];
             l_hv[getIndex(m_nCellsX + 1, l_y)] = l_hv[getIndex(m_nCellsX, l_y)];
+            m_b[getIndex(m_nCellsX + 1, l_y)] = m_b[getIndex(m_nCellsX, l_y)];
         }
 
         // set corner boundaries
@@ -182,20 +186,24 @@ void tsunami_lab::patches::WavePropagation2d::setGhostCells(std::string i_settin
         l_h[getIndex(0, 0)] = l_h[getIndex(1, 1)];
         l_hu[getIndex(0, 0)] = l_hu[getIndex(1, 1)];
         l_hv[getIndex(0, 0)] = l_hv[getIndex(1, 1)];
+        m_b[getIndex(0, 0)] = m_b[getIndex(1, 1)];
 
         // upper right
         l_h[getIndex(m_nCellsX + 1, 0)] = l_h[getIndex(m_nCellsX, 1)];
         l_hu[getIndex(m_nCellsX + 1, 0)] = l_hu[getIndex(m_nCellsX, 1)];
         l_hv[getIndex(m_nCellsX + 1, 0)] = l_hv[getIndex(m_nCellsX, 1)];
+        m_b[getIndex(m_nCellsX + 1, 0)] = m_b[getIndex(m_nCellsX, 1)];
 
         // lower left
         l_h[getIndex(0, m_mCellsY + 1)] = l_h[getIndex(1, m_mCellsY)];
         l_hu[getIndex(0, m_mCellsY + 1)] = l_hu[getIndex(1, m_mCellsY)];
         l_hv[getIndex(0, m_mCellsY + 1)] = l_hv[getIndex(1, m_mCellsY)];
+        m_b[getIndex(0, m_mCellsY + 1)] = m_b[getIndex(1, m_mCellsY)];
 
         // lower right
         l_h[getIndex(m_nCellsX + 1, m_mCellsY + 1)] = l_h[getIndex(m_nCellsX, m_mCellsY)];
         l_hu[getIndex(m_nCellsX + 1, m_mCellsY + 1)] = l_hu[getIndex(m_nCellsX, m_mCellsY)];
         l_hv[getIndex(m_nCellsX + 1, m_mCellsY + 1)] = l_hv[getIndex(m_nCellsX, m_mCellsY)];
+        m_b[getIndex(m_nCellsX + 1, m_mCellsY + 1)] = m_b[getIndex(m_nCellsX, m_mCellsY)];
     }
 }

@@ -17,7 +17,6 @@
 #undef public
 
 TEST_CASE("Test the simulation running method.", "[Simulator]") {
-    std::cout << "starting simulation running test" << std::endl;
     tsunami_lab::configs::SimConfig l_config = tsunami_lab::configs::SimConfig(1,
                                                                                50,
                                                                                1,
@@ -77,5 +76,6 @@ TEST_CASE("Test the simulation running method.", "[Simulator]") {
         // check middle state
         REQUIRE(l_height == Approx(7.2627));
     }
+    l_file.close();
     delete l_setup;
 }
