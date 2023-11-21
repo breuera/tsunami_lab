@@ -10,6 +10,7 @@
 #include <vector>
 #include <string>
 #include <fstream>
+#include <sys/stat.h>
 
 void tsunami_lab::io::Stations::addStation(const std::string i_name, t_real i_x, t_real i_y)
 {
@@ -47,9 +48,19 @@ void tsunami_lab::io::Stations::writeStationOutput(t_real i_dxy,
 
         if (l_ix < i_nx && l_iy < i_ny)
         {
-            std::ofstream file("station_data/" + station.m_name + ".csv", std::ios::app);
+            std::string filename = "station_data/" + station.m_name + ".csv";
+            std::ofstream file(filename, std::ios::app);
+
+            struct stat buffer;
+            bool isNewFile = (stat(filename.c_str(), &buffer) != 0 || buffer.st_size == 0);
+
             if (file.is_open())
             {
+
+                if (isNewFile)
+                {
+                    file << "Time,height,momentum_x,momentum_y,bathymetry\n";
+                }
                 file << i_time;
                 if (i_h != nullptr)
                     file << "," << i_h[l_id];
