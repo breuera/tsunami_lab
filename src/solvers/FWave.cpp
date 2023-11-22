@@ -108,6 +108,33 @@ void tsunami_lab::solvers::FWave::netUpdates(t_real i_hL,
                                              t_real i_bR,
                                              t_real o_netUpdateL[2],
                                              t_real o_netUpdateR[2]) {
+    bool l_isLeftDry = (i_hL <= 0);
+    bool l_isRightDry = (i_hR <= 0);
+
+    // set netUpdates to zero if both cells are dry
+    if (l_isLeftDry && l_isRightDry) {
+        for (int l_idx = 0; l_idx < 2; l_idx++) {
+            o_netUpdateL[l_idx] = 0;
+            o_netUpdateR[l_idx] = 0;
+        }
+
+        return;
+    }
+
+    // if left cell is dry set left to reflecting
+    if (l_isLeftDry) {
+        i_hL = i_hR;
+        i_huL = -i_huR;
+        i_bL = i_bR;
+    }
+
+    // if right cell is dry set right to reflecting
+    if (l_isRightDry) {
+        i_hR = i_hL;
+        i_huR = -i_huL;
+        i_bR = i_bL;
+    }
+
     // calculate particle velocity
     t_real l_uL = i_huL / i_hL;
     t_real l_uR = i_huR / i_hR;
@@ -140,19 +167,19 @@ void tsunami_lab::solvers::FWave::netUpdates(t_real i_hL,
         o_netUpdateR[i] = 0;
 
         // left wave
-        if (l_waveSpeedL < 0) {
+        if (l_waveSpeedL < 0 && !l_isLeftDry) {
             // left-going wave
             o_netUpdateL[i] += l_waveL[i];
-        } else {
+        } else if (l_waveSpeedL >= 0 && !l_isRightDry) {
             // right-going wave
             o_netUpdateR[i] += l_waveL[i];
         }
 
         // right wave
-        if (l_waveSpeedR > 0) {
+        if (l_waveSpeedR > 0 && !l_isRightDry) {
             // right-going wave
             o_netUpdateR[i] += l_waveR[i];
-        } else {
+        } else if (l_waveSpeedR <= 0 && !l_isLeftDry) {
             // left-going wave
             o_netUpdateL[i] += l_waveR[i];
         }
