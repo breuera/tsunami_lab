@@ -37,3 +37,27 @@ GMT:
                     -V (verbose)> dem.csv
     - cat data.csv| tr -s '[:blank:]' ',' > real.csv
 Gebco netCDF download
+
+20.11.2023:
+
+    ncgen -> generiert aus ascii einen Binärdatei
+    ncgen <file> -> syntax error check
+    ncgen -b <file> -> generiert Binärdatei
+    
+    ncdump <file> -> rückkonvertierung zu ascii
+    ncdump -h <file> -> nur header wird konvertiert
+
+    paraview mit .nc files: 
+        Surface with Edges
+        farbe: Elevation
+    
+    nc_create(<path>, <>, <id>)
+    nc_def_dim(<id>, <x>, <length>, <dimX>)
+    nc_def_dim(<id>, <y>, <length>, <dimY>)
+    nc_def_ver(<id>, <name>, <type(int)>, <dimension>, <dimId>, <varId>)
+    nc_enddef(<id>)
+    nc_put_var_int(<fileId>, <varId>, <pointer_to_data>)
+    nc_close(<id>)
+    zwischendurch immer: checkNcErr(<return_of_functions>)
+
+    g++ ... -lnetcdf

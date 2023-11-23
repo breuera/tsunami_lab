@@ -510,7 +510,7 @@ int main(int i_argc,
     // create station_data folder
     std::filesystem::create_directory("station_data");
 
-    int multiplayer = 0;
+    int multiplier = 0;
 
     // iterate over time
     while (l_simTime < l_endTime)
@@ -540,7 +540,7 @@ int main(int i_argc,
             l_file.close();
             l_nOut++;
         }
-        if (l_simTime >= multiplayer)
+        if (l_simTime >= multiplier)
         {
             l_stations->writeStationOutput(l_dxy,
                                            l_nx,
@@ -553,7 +553,7 @@ int main(int i_argc,
                                            l_waveProp->getMomentumY(),
                                            l_waveProp->getBathymetry(),
                                            l_simTime);
-            multiplayer += l_stations->getOutputFrequency();
+            multiplier += l_stations->getOutputFrequency();
         }
 
         l_waveProp->timeStep(l_scaling);
