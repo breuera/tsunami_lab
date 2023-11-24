@@ -174,6 +174,10 @@ tsunami_lab::t_idx tsunami_lab::io::ConfigLoader::loadConfig(std::string i_path,
         if (l_dimension == 1) {
             o_setup = new tsunami_lab::setups::CustomSetup1d(10, 10, -5, -5, 5);
         }
+    } else if (l_setupName.compare("ArtificialTsunamiEvent") == 0) {
+        if (l_dimension == 2) {
+            o_setup = new tsunami_lab::setups::ArtificialTsunamiEvent(l_xLen, l_yLen);
+        }
     } else if (l_setupName.compare("TsunamiEvent") == 0) {
         if (l_dimension == 1) {
             // set bathymetry file path
