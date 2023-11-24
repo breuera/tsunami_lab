@@ -4,35 +4,40 @@
  * @author Marek Sommerfeld (marek.sommerfeld AT uni-jena.de)
  *
  * @section DESCRIPTION
- * Artificial 2d Tsunami setup.
+ * Two-dimensional Tsunami event setup.
  **/
 
-#ifndef TSUNAMI_LAB_SETUPS_ARTIFICIAL_TSUNAMI_2D_H
-#define TSUNAMI_LAB_SETUPS_ARTIFICIAL_TSUNAMI_2D_H
+#ifndef TSUNAMI_LAB_SETUPS_TUSNAMI_EVENT_2D_H
+#define TSUNAMI_LAB_SETUPS_TUSNAMI_EVENT_2D_H
 
 #include "../Setup.h"
 
 namespace tsunami_lab {
     namespace setups {
-        class ArtificialTsunami2d;
+        class TsunamiEvent2d;
     }
 
 }  // namespace tsunami_lab
 /**
- * 2d artificial setup.
+ * 2d tsunami event setup.
  **/
-class tsunami_lab::setups::ArtificialTsunami2d : public Setup {
+class tsunami_lab::setups::TsunamiEvent2d : public Setup {
    private:
     //! bathymetry
     t_real *m_bathymetry;
+
+    //! displacement
+    t_real *m_displacement;
 
    public:
     /**
      * Constructor.
      *
      * @param i_bathymetry bathymetry on location (x, y).
+     * @param i_displacement displacement on location (x, y).
      **/
-    ArtificialTsunami2d(t_real *i_bathymetry);
+    TsunamiEvent2d(t_real *i_bathymetry,
+                   t_real *i_displacement);
 
     /**
      * Gets the height in x-direction.
@@ -48,7 +53,7 @@ class tsunami_lab::setups::ArtificialTsunami2d : public Setup {
     /**
      * Gets the momentum in x-direction.
      *
-     * @param i_x x-coordinate of the queried point.
+     * @param in_x x-coordinate of the queried point.
      * @return momentum in x-direction.
      **/
     t_real getMomentumX(t_real,
