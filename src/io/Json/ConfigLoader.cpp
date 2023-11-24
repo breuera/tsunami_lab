@@ -16,6 +16,7 @@
 #include "../../io/Csv/Csv.h"
 
 // include setup classes
+#include "../../setups/ArtificialTsunami2d/ArtificialTsunami2d.h"
 #include "../../setups/CustomSetup1d/CustomSetup1d.h"
 #include "../../setups/DamBreak1d/DamBreak1d.h"
 #include "../../setups/DamBreak2d/DamBreak2d.h"
@@ -176,7 +177,7 @@ tsunami_lab::t_idx tsunami_lab::io::ConfigLoader::loadConfig(std::string i_path,
         }
     } else if (l_setupName.compare("ArtificialTsunamiEvent") == 0) {
         if (l_dimension == 2) {
-            o_setup = new tsunami_lab::setups::ArtificialTsunamiEvent(l_xLen, l_yLen);
+            o_setup = new tsunami_lab::setups::ArtificialTsunami2d(l_xLen, l_yLen);
         }
     } else if (l_setupName.compare("TsunamiEvent") == 0) {
         if (l_dimension == 1) {
