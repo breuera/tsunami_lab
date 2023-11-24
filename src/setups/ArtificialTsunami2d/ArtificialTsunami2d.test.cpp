@@ -36,7 +36,8 @@ TEST_CASE("Test the two-dimensional artificial tsunami setup.", "[ArtificialTsun
     REQUIRE(l_artificialTsunami.getHeight(5400, 4600) == 100);
     REQUIRE(l_artificialTsunami.getMomentumX(5400, 4600) == 0);
     REQUIRE(l_artificialTsunami.getMomentumY(5400, 4600) == 0);
-    REQUIRE(l_artificialTsunami.getBathymetry(5400, 4600) == Approx(145.81));
+    REQUIRE(l_artificialTsunami.getBathymetry(5400, 4600) == Approx(145.81184f));
     // wolfram alpha: 5 * sin(((5400 / 500) + 1) * pi) * (-(4600 / 500)^2 + 1) = 245.81179250871...
     // -100 + 245.81179250871... = 145.811792508712...
+    // output von solver: 145.81184f
 }

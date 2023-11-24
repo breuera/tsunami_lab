@@ -19,10 +19,16 @@ namespace tsunami_lab {
 
 }  // namespace tsunami_lab
 /**
- * 2d artificial setup.
+ * 2d artificial tsunami setup.
  **/
 class tsunami_lab::setups::ArtificialTsunami2d : public Setup {
    private:
+    //! length of simulation in meters in x direction
+    t_real m_simLenX = 0;
+
+    //! length of simulation in meters in y direction
+    t_real m_simLenY = 0;
+
    public:
     /**
      * Constructor.
@@ -65,8 +71,7 @@ class tsunami_lab::setups::ArtificialTsunami2d : public Setup {
      * @return bathymetry at the given point.
      **/
     t_real getBathymetry(t_real in_x,
-                         t_real in_y,
-                         t_real) const;
+                         t_real in_y) const;
 };
 
 #endif

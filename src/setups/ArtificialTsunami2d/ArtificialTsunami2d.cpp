@@ -13,8 +13,7 @@
 #include <iostream>
 
 tsunami_lab::setups::ArtificialTsunami2d::ArtificialTsunami2d(t_real in_simLenX,
-                                                              t_real in_simLenY,
-                                                              t_real) {
+                                                              t_real in_simLenY) {
     m_simLenX = in_simLenX;
     m_simLenY = in_simLenY;
 }
@@ -36,20 +35,19 @@ tsunami_lab::t_real tsunami_lab::setups::ArtificialTsunami2d::getMomentumY(t_rea
 }
 
 tsunami_lab::t_real tsunami_lab::setups::ArtificialTsunami2d::getBathymetry(t_real in_x,
-                                                                            t_real in_y,
-                                                                            t_real) const {
+                                                                            t_real in_y) const {
     t_real displacement = 0;
     t_real pi = 3.14159265358979323846;
     // displacement = 5 * g(x) * f(y)
-    displacement = 5 * sin(((i_x / 500) + 1) * pi) * (-((i_y / 500) * (i_y / 500)) + 1);
+    displacement = 5 * sin(((in_x / 500) + 1) * pi) * (-((in_y / 500) * (in_y / 500)) + 1);
 
     // theory: 10km x 10km -> mid at 5000m. if |midx - in_x| <= 500 return -100 + displacement, else -100
 
-    t_real midx = in_x - (m_simLenX / 2);
-    t_real midy = in_y - (m_simLenY / 2);
+    t_real midx = (m_simLenX / 2);
+    t_real midy = (m_simLenY / 2);
 
     if (abs(midx - in_x) <= 500 && abs(midy - in_y) <= 500) {
-        return -100 + displacement;
+        return (-100 + displacement);
     } else {
         return -100;
     }
