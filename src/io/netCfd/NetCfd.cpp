@@ -6,6 +6,9 @@
  **/
 #include "NetCfd.h"
 
+// TODO: use
+#include <ncCheck.h>
+
 #include <fstream>
 #include <iostream>
 #include <sstream>
