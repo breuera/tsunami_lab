@@ -5,7 +5,9 @@
 /.idea/
 /documentation/build/
 /out/
+/.sconf_temp/
 
 # files
 *.dblite
 /res/middle_states.csv
+config.log
