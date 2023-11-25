@@ -22,6 +22,7 @@ l_sources = [ 'solvers/Roe.cpp',
               'setups/TsunamiEvent1d/TsunamiEvent1d.cpp',
               'configs/SimConfig.cpp',
               'io/Json/ConfigLoader.cpp',
+              'io/NetCDF/NetCDF.cpp',
               'io/Csv/Csv.cpp'
               ]
 
