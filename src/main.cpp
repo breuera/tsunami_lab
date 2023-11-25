@@ -20,6 +20,7 @@
 #include <vector>
 
 #include "io/csv/Csv.h"
+#include "io/netCfd/NetCfd.h"
 #include "io/stations/Stations.h"
 #include "patches/wavepropagation1d/WavePropagation1d.h"
 #include "patches/wavepropagation2d/WavePropagation2d.h"
@@ -526,20 +527,21 @@ int main(int i_argc,
             std::ofstream l_file;
             l_file.open(l_path);
 
-            tsunami_lab::io::Csv::write(l_dxy,
-                                        l_nx,
-                                        l_ny,
-                                        l_x_offset,
-                                        l_y_offset,
-                                        l_waveProp->getStride(),
-                                        l_waveProp->getHeight(),
-                                        l_waveProp->getMomentumX(),
-                                        l_waveProp->getMomentumY(),
-                                        l_waveProp->getBathymetry(),
-                                        l_file);
+            tsunami_lab::io::NetCfd::write(l_dxy,
+                                           l_nx,
+                                           l_ny,
+                                           l_x_offset,
+                                           l_y_offset,
+                                           l_waveProp->getHeight(),
+                                           l_waveProp->getMomentumX(),
+                                           l_waveProp->getMomentumY(),
+                                           l_waveProp->getBathymetry(),
+                                           "lfile",
+                                           l_nOut);
             l_file.close();
             l_nOut++;
         }
+
         if (l_simTime >= multiplier)
         {
             l_stations->writeStationOutput(l_dxy,
