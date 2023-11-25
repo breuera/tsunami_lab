@@ -20,7 +20,7 @@
 #include <vector>
 
 #include "io/csv/Csv.h"
-#include "io/netCfd/NetCfd.h"
+#include "io/netCDF/NetCDF.h"
 #include "io/stations/Stations.h"
 #include "patches/wavepropagation1d/WavePropagation1d.h"
 #include "patches/wavepropagation2d/WavePropagation2d.h"
@@ -527,7 +527,7 @@ int main(int i_argc,
             std::ofstream l_file;
             l_file.open(l_path);
 
-            tsunami_lab::io::NetCfd::write(l_dxy,
+            tsunami_lab::io::NetCdf::write(l_dxy,
                                            l_nx,
                                            l_ny,
                                            l_x_offset,
@@ -536,7 +536,7 @@ int main(int i_argc,
                                            l_waveProp->getMomentumX(),
                                            l_waveProp->getMomentumY(),
                                            l_waveProp->getBathymetry(),
-                                           "lfile",
+                                           l_file,
                                            l_nOut);
             l_file.close();
             l_nOut++;
