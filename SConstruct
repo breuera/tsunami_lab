@@ -33,6 +33,11 @@ if vars.UnknownVariables():
 # create environment
 env = Environment( variables = vars )
 
+# check for netcdf
+if not Configure(env).CheckLibWithHeader('netcdf', 'netcdf.h', 'c++'):
+  print('netcdf was not found')
+  Exit(1)
+
 # generate help message
 Help( vars.GenerateHelpText( env ) )
 
