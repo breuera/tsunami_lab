@@ -6,6 +6,7 @@
  * Two-dimensional tsunamievent problem.
  **/
 #include "TsunamiEvent2d.h"
+#include "../../io/netCDF/NetCDF.h"
 #include <string>
 #include <algorithm>
 #include <iostream>
@@ -15,6 +16,12 @@
 
 tsunami_lab::setups::TsunamiEvent2d::TsunamiEvent2d(std::vector<t_real> i_b_in)
 {
+  tsunami_lab::io::NetCdf *netCDF = nullptr;
+
+  netCDF = new tsunami_lab::io::NetCdf();
+
+  netCDF->read(m_nx, m_ny, &m_x, &m_y, &m_z, "../../data/artificialtsunami/artificialtsunami_bathymetry_1000.nc");
+  std::cout << m_nx << " " << m_ny << std::endl;
   m_b_in = i_b_in;
 }
 
@@ -63,6 +70,8 @@ tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent2d::getDisplacement(t_real 
                                                                          t_real i_y) const
 {
   // TODO: implement netcdf-reader and finish this
+
+  std::cout << m_nx << std::endl;
   return i_x + i_y;
 }
 

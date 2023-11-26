@@ -30,13 +30,13 @@ private:
 public:
   ~NetCdf();
 
-  NetCdf(const std::string &filename,
-         t_real i_dxy,
-         t_idx i_nx,
-         t_idx i_ny,
-         t_real i_x_offset,
-         t_real i_y_offset,
-         t_real const *i_b);
+  void netCdf(const std::string &filename,
+              t_real i_dxy,
+              t_idx i_nx,
+              t_idx i_ny,
+              t_real i_x_offset,
+              t_real i_y_offset,
+              t_real const *i_b);
 
   void write(t_idx i_nx,
              t_idx i_ny,
@@ -46,12 +46,12 @@ public:
              t_idx timeStep,
              t_real i_time);
 
-  std::vector<t_real> read(t_idx *o_nx,
-                           t_idx *o_ny,
-                           t_real **o_x,
-                           t_real **o_y,
-                           t_real **o_z,
-                           const std::string &filename);
+  void read(t_idx &o_nx,
+            t_idx &o_ny,
+            t_real **o_x,
+            t_real **o_y,
+            t_real **o_z,
+            const std::string &filename);
 
   static void handleNetCdfError(int status, const std::string &errorMessage);
 

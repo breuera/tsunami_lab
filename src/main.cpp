@@ -522,13 +522,15 @@ int main(int i_argc,
 
     tsunami_lab::io::NetCdf *netcdf_manager = nullptr;
 
-    netcdf_manager = new tsunami_lab::io::NetCdf("netCDF_dump/netCDFdump.nc",
-                                                 l_dxy,
-                                                 l_nx,
-                                                 l_ny,
-                                                 l_x_offset,
-                                                 l_y_offset,
-                                                 netcdf_manager->removeGhostCells(l_waveProp->getBathymetry(), l_nx, l_ny, 1, 1, l_dxy));
+    netcdf_manager = new tsunami_lab::io::NetCdf();
+
+    netcdf_manager->netCdf("netCDF_dump/netCDFdump.nc",
+                           l_dxy,
+                           l_nx,
+                           l_ny,
+                           l_x_offset,
+                           l_y_offset,
+                           netcdf_manager->removeGhostCells(l_waveProp->getBathymetry(), l_nx, l_ny, 1, 1, l_dxy));
 
     int multiplier = 0;
 

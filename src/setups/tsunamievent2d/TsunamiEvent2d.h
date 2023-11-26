@@ -27,8 +27,14 @@ class tsunami_lab::setups::TsunamiEvent2d : public Setup
 private:
   //! wall heigth
   t_real m_delta = 20;
+  t_idx m_nx;
+  t_idx m_ny;
+  t_real *m_x;
+  t_real *m_y;
+  t_real *m_z;
 
-  std::vector<t_real> m_b_in;
+  std::vector<t_real>
+      m_b_in;
 
   /**
    * @brief Get initial displacement
