@@ -13,6 +13,7 @@
 #include <limits>
 
 #include "../io/Csv/Csv.h"
+#include "../io/NetCDF/NetCDF.h"
 #include "../patches/1d/WavePropagation1d.h"
 #include "../patches/2d/WavePropagation2d.h"
 
@@ -156,6 +157,12 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
         }
     } else {
         tsunami_lab::t_idx l_timeStep = 0;
+        tsunami_lab::io::NetCDF *l_writer = new tsunami_lab::io::NetCDF();
+        l_writer->init(l_dxy,
+                       l_nx,
+                       l_ny,
+                       l_waveProp->getStride(),
+                       l_waveProp->getBathymetry());
         // iterate over time
         while (l_simTime < l_endTime) {
             if (l_timeStep % 25 == 0) {
@@ -165,19 +172,12 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
                 std::string l_path = "./out/solution_" + std::to_string(l_nOut) + ".csv";
                 std::cout << "  writing wave field to " << l_path << std::endl;
 
-                std::ofstream l_file;
-                l_file.open(l_path);
+                l_writer->write(l_simTime,
+                                l_nOut,
+                                l_waveProp->getHeight(),
+                                l_waveProp->getMomentumX(),
+                                l_waveProp->getMomentumY());
 
-                tsunami_lab::io::Csv::write(l_dxy,
-                                            l_nx,
-                                            l_ny,
-                                            i_simConfig.getXCells() + 2,
-                                            l_waveProp->getHeight(),
-                                            l_waveProp->getMomentumX(),
-                                            l_waveProp->getMomentumY(),
-                                            l_waveProp->getBathymetry(),
-                                            l_file);
-                l_file.close();
                 l_nOut++;
             }
             l_waveProp->setGhostCells(i_simConfig.getBoundaryCondition());
@@ -186,9 +186,11 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
             l_timeStep++;
             l_simTime += l_dt;
         }
+
         // free memory
         std::cout << "finished time loop" << std::endl;
         std::cout << "freeing memory" << std::endl;
+        delete l_writer;
     }
     delete l_waveProp;
 }
