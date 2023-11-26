@@ -80,7 +80,7 @@ int main(int i_argc,
     if ((i_argc < 4) || (i_argv[i_argc - 1][0] == '-'))
     {
         std::cerr << "invalid number of arguments OR wrong order, usage:" << std::endl;
-        std::cerr << "  ./build/tsunami_lab [-d DIMENSION] [-s SETUP] [-v SOLVER] [-l STATE_LEFT] [-r STATE_RIGHT] [-t STATE_TOP] [-b STATE_BOTTOM]  N_CELLS_X" << std::endl;
+        std::cerr << "  ./build/tsunami_lab [-d DIMENSION] [-s SETUP] [-v SOLVER] [-l STATE_LEFT] [-r STATE_RIGHT] [-t STATE_TOP] [-b STATE_BOTTOM] [-i STATION]  N_CELLS_X" << std::endl;
         std::cerr << "where N_CELLS_X is the number of cells in x-direction. The Grid is quadratic in 2d, so the same value will be taken for cells in y-direction" << std::endl;
         std::cerr << "-d DIMENSION = '1d','2d'" << std::endl;
         std::cerr << "When using 1d-simulation, the choices for setup are:" << std::endl;
@@ -92,7 +92,7 @@ int main(int i_argc,
         std::cerr << "-r STATE_RIGHT = 'open','closed', default is 'open'" << std::endl;
         std::cerr << "-t STATE_TOP = 'open','closed', default is 'open'" << std::endl;
         std::cerr << "-b STATE_BOTTOM = 'open','closed', default is 'open'" << std::endl;
-        std::cerr << "-i 'path'" << std::endl;
+        std::cerr << "-i STATION = 'path'" << std::endl;
         return EXIT_FAILURE;
     }
     else
