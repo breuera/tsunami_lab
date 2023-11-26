@@ -13,7 +13,7 @@
 
 tsunami_lab::io::NetCdf::~NetCdf()
 {
-  nc_close(m_ncid);
+  handleNetCdfError(nc_close(m_ncid), "Error closing netCDF file");
 }
 
 void tsunami_lab::io::NetCdf::netCdf(const std::string &filename,
@@ -123,6 +123,10 @@ void tsunami_lab::io::NetCdf::read(t_idx &o_nx,
   *o_x = l_xv;
   *o_y = l_yv;
   *o_z = l_zv;
+
+  delete[] l_xv;
+  delete[] l_yv;
+  delete[] l_zv;
 }
 
 void tsunami_lab::io::NetCdf::handleNetCdfError(int status, const std::string &errorMessage)
@@ -153,4 +157,5 @@ tsunami_lab::t_real *tsunami_lab::io::NetCdf::removeGhostCells(const t_real *i_d
     }
   }
   return l_o;
+  delete[] l_o;
 }
