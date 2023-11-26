@@ -511,6 +511,18 @@ int main(int i_argc,
     // create station_data folder
     std::filesystem::create_directory("station_data");
 
+    tsunami_lab::io::NetCdf *write = nullptr;
+
+    write = new tsunami_lab::io::NetCdf();
+
+    write->netCDF("test.nc",
+                  l_dxy,
+                  l_nx,
+                  l_ny,
+                  l_x_offset,
+                  l_y_offset,
+                  l_waveProp->getBathymetry());
+
     int multiplier = 0;
 
     // iterate over time
@@ -526,18 +538,26 @@ int main(int i_argc,
 
             std::ofstream l_file;
             l_file.open(l_path);
+            std::cout << "test: " << sizeof(l_waveProp->getHeight()) << std::endl;
+            write->write(l_nx,
+                         l_ny,
+                         l_waveProp->getHeight(),
+                         l_waveProp->getMomentumX(),
+                         l_waveProp->getMomentumY(),
+                         l_nOut,
+                         l_simTime);
 
-            tsunami_lab::io::NetCdf::write(l_dxy,
-                                           l_nx,
-                                           l_ny,
-                                           l_x_offset,
-                                           l_y_offset,
-                                           l_waveProp->getHeight(),
-                                           l_waveProp->getMomentumX(),
-                                           l_waveProp->getMomentumY(),
-                                           l_waveProp->getBathymetry(),
-                                           l_file,
-                                           l_nOut);
+            tsunami_lab::io::Csv::write(l_dxy,
+                                        l_nx,
+                                        l_ny,
+                                        l_x_offset,
+                                        l_y_offset,
+                                        l_waveProp->getStride(),
+                                        l_waveProp->getHeight(),
+                                        l_waveProp->getMomentumX(),
+                                        l_waveProp->getMomentumY(),
+                                        l_waveProp->getBathymetry(),
+                                        l_file);
             l_file.close();
             l_nOut++;
         }
@@ -571,6 +591,7 @@ int main(int i_argc,
     delete l_setup;
     delete l_waveProp;
     delete l_stations;
+    delete write;
 
     std::cout << "finished, exiting" << std::endl;
     return EXIT_SUCCESS;
