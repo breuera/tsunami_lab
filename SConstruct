@@ -32,12 +32,12 @@ if vars.UnknownVariables():
 
 # create environment
 env = Environment( variables = vars )
-env['CXX'] = '/opt/homebrew/bin/g++-13'
+""" env['CXX'] = '/opt/homebrew/bin/g++-13'
 env['CC'] = '/opt/homebrew/bin/gcc-13'
 
 # Add NetCDF include and lib paths
 env.Append(CPPPATH=['/opt/homebrew/include'])
-env.Append(LIBPATH=['/opt/homebrew/lib'])
+env.Append(LIBPATH=['/opt/homebrew/lib']) """
 env.Append(LIBS=['netcdf'])
 
 # generate help message

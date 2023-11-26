@@ -1,5 +1,6 @@
 /**
- * @author Alexander Breuer (alex.breuer AT uni-jena.de)
+ * @author Mher Mnatsakanyan (mher.mnatsakanyan AT uni-jena.de)
+ * @author Maurice Herold (maurice.herold AT uni-jena.de)
  *
  * @section DESCRIPTION
  * IO-routines for writing a snapshot as Comma Separated Values (CSV).
@@ -122,7 +123,12 @@ void tsunami_lab::io::NetCdf::handleNetCdfError(int status, const std::string &e
   }
 }
 
-tsunami_lab::t_real *tsunami_lab::io::NetCdf::removeGhostCells(const t_real *i_d, t_idx i_nx, t_idx i_ny, t_idx i_ghostCellsX, t_idx i_ghostCellsY, t_idx i_stride)
+tsunami_lab::t_real *tsunami_lab::io::NetCdf::removeGhostCells(const t_real *i_d,
+                                                               t_idx i_nx,
+                                                               t_idx i_ny,
+                                                               t_idx i_ghostCellsX,
+                                                               t_idx i_ghostCellsY,
+                                                               t_idx i_stride)
 {
   t_real *l_o = new t_real[i_nx * i_ny];
 
