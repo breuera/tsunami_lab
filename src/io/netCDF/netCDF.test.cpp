@@ -1,5 +1,6 @@
 /**
- * @author Alexander Breuer (alex.breuer AT uni-jena.de)
+ * @author Mher Mnatsakanyan (mher.mnatsakanyan AT uni-jena.de)
+ * @author Maurice Herold (maurice.herold AT uni-jena.de)
  *
  * @section DESCRIPTION
  * Unit tests for the NetCDF-interface.
@@ -13,7 +14,7 @@
 #define private public
 #undef public
 
-TEST_CASE("Test the NetCDF-writer for 2D settings.", "[NetCDFWrite2d]")
+TEST_CASE("Test the NetCDF-writer.", "[NetCDFWrite2d]")
 {
 
     if (std::filesystem::exists("netCDF_dump"))
@@ -133,23 +134,20 @@ TEST_CASE("Test the NetCDF-writer for 2D settings.", "[NetCDFWrite2d]")
         REQUIRE(l_bt[i] == 15 - i);
     }
 
+    tsunami_lab::t_real l_thvt[32] = {0, 4, 8, 12,
+                                      1, 5, 9, 13,
+                                      2, 6, 10, 14,
+                                      3, 7, 11, 15,
+                                      16, 20, 24, 28,
+                                      17, 21, 25, 29,
+                                      18, 22, 26, 30,
+                                      19, 23, 27, 31};
     for (int i = 0; i < 32; i++)
     {
         REQUIRE(l_ht[i] == i);
         REQUIRE(l_hut[i] == 31 - i);
+        REQUIRE(l_hvt[i] == l_thvt[i]);
     }
-
-    // ToDo:
-    /*
-     int count = 0;
-    for (int j = 0; j < 16; j++)
-    {
-        for (int k = 0; k < 17; k += 4)
-        {
-            REQUIRE(l_hvt[count] == k + j);
-            count++;
-        }
-    }*/
 
     tsunami_lab::io::NetCdf::handleNetCdfError(nc_close(l_ncid), "Error closing the NetCDF file: ");
 
@@ -159,4 +157,70 @@ TEST_CASE("Test the NetCDF-writer for 2D settings.", "[NetCDFWrite2d]")
     delete[] l_ht;
     delete[] l_hut;
     delete[] l_hvt;
+}
+
+TEST_CASE("Test the NetCDF-reader.", "[NetCDFRead2d]")
+{
+
+    int l_ncid, l_x_dimid, l_y_dimid;
+    int l_x_varid, l_y_varid, l_z_varid;
+
+    tsunami_lab::io::NetCdf::handleNetCdfError(nc_create("test.nc", NC_CLOBBER, &l_ncid), "Error creat the NetCDF file: ");
+
+    tsunami_lab::io::NetCdf::handleNetCdfError(nc_def_dim(l_ncid, "x", 10, &l_x_dimid), "Error define x dimension: ");
+    tsunami_lab::io::NetCdf::handleNetCdfError(nc_def_dim(l_ncid, "y", 10, &l_y_dimid), "Error define y dimension: ");
+
+    int dims[2] = {l_y_dimid, l_x_dimid};
+    tsunami_lab::io::NetCdf::handleNetCdfError(nc_def_var(l_ncid, "x", NC_FLOAT, 1, &l_x_dimid, &l_x_varid), "Error define x variable: ");
+    tsunami_lab::io::NetCdf::handleNetCdfError(nc_def_var(l_ncid, "y", NC_FLOAT, 1, &l_y_dimid, &l_y_varid), "Error define y variable: ");
+
+    tsunami_lab::io::NetCdf::handleNetCdfError(nc_def_var(l_ncid, "z", NC_FLOAT, 1, dims, &l_z_varid), "Error define y variable: ");
+
+    tsunami_lab::io::NetCdf::handleNetCdfError(nc_enddef(l_ncid), "Error end defining: ");
+
+    tsunami_lab::t_real *l_y = new tsunami_lab::t_real[10];
+    for (int i = 0; i < 10; i++)
+    {
+        l_y[i] = i;
+    }
+    tsunami_lab::t_real *l_x = new tsunami_lab::t_real[10];
+    for (int i = 0; i < 10; i++)
+    {
+        l_x[i] = 9 - i;
+    }
+    tsunami_lab::t_real *l_z = new tsunami_lab::t_real[10];
+    for (int i = 0; i < 10; i++)
+    {
+        l_z[i] = i * 10;
+    }
+    tsunami_lab::io::NetCdf::handleNetCdfError(nc_put_var_float(l_ncid, l_y_varid, l_y), "Error put y variables: ");
+    tsunami_lab::io::NetCdf::handleNetCdfError(nc_put_var_float(l_ncid, l_x_varid, l_x), "Error put x variables: ");
+    tsunami_lab::io::NetCdf::handleNetCdfError(nc_put_var_float(l_ncid, l_z_varid, l_z), "Error put z variables: ");
+
+    tsunami_lab::io::NetCdf::handleNetCdfError(nc_close(l_ncid), "Error closing netCDF file");
+
+    tsunami_lab::io::NetCdf *netCDF = nullptr;
+
+    netCDF = new tsunami_lab::io::NetCdf();
+
+    tsunami_lab::t_idx l_nxv, l_nyv;
+    tsunami_lab::t_real *l_xv, *l_yv, *l_zv;
+
+    netCDF->read(l_nxv, l_nyv, &l_xv, &l_yv, &l_zv, "test.nc");
+
+    delete netCDF;
+
+    REQUIRE(l_nxv == 10);
+    REQUIRE(l_nyv == 10);
+    for (int i = 0; i < 10; i++)
+    {
+        REQUIRE(l_xv[i] == 9 - i);
+        REQUIRE(l_yv[i] == i);
+        REQUIRE(l_zv[i] == i * 10);
+    }
+
+    delete[] l_xv;
+    delete[] l_yv;
+    delete[] l_zv;
+    std::filesystem::remove_all("test.nc");
 }
