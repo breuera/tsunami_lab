@@ -111,7 +111,7 @@ tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent2d::getBathymetry(t_real in
         }
     }
 
-    if (in_y >= smallestY && in_x <= biggestY) {
+    if (in_y >= smallestY && in_y <= biggestY) {
         for (t_idx i = 1; i < m_dimY_displacement; i++) {
             if (fabs(m_rawY_displacement[i] - in_y) < fabs(m_rawY_displacement[nearestValueY] - in_y)) {
                 nearestValueY = i;
@@ -122,9 +122,17 @@ tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent2d::getBathymetry(t_real in
     // new converted pos index displacement
     t_idx newDisplacementIndex = nearestValueY * m_dimX_displacement + nearestValueX;
 
+    // if in computational domain of displacement -> update displacement to value, else displacement = 0
+    t_real displacement = 0;
+    if (in_x >= smallestX && in_x <= biggestX) {
+        if (in_y >= smallestY && in_y <= biggestY) {
+            displacement = m_displacement[newDisplacementIndex];
+        }
+    }
+
     if (m_bathymetry[newBathymetryIndex] < 0) {
-        return !(m_bathymetry[newBathymetryIndex] < -20) ? -20 + m_displacement[newDisplacementIndex] : m_bathymetry[newBathymetryIndex] + m_displacement[newDisplacementIndex];
+        return !(m_bathymetry[newBathymetryIndex] < -20) ? -20 + displacement : m_bathymetry[newBathymetryIndex] + displacement;
     } else {
-        return (m_bathymetry[newBathymetryIndex] < 20) ? 20 + m_displacement[newDisplacementIndex] : m_bathymetry[newBathymetryIndex] + m_displacement[newDisplacementIndex];
+        return (m_bathymetry[newBathymetryIndex] < 20) ? 20 + displacement : m_bathymetry[newBathymetryIndex] + displacement;
     }
 }
