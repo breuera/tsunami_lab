@@ -50,6 +50,7 @@ l_tests = [ 'tests.cpp',
             'setups/ArtificialTsunami2d/ArtificialTsunami2d.test.cpp',
             'configs/SimConfig.test.cpp',
             'io/Json/ConfigLoader.test.cpp',
+            'io/NetCDF/NetCDF.test.cpp',
             'io/Csv/Csv.test.cpp',
             ]
 
