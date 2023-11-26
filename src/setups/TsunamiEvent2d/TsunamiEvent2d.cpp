@@ -53,8 +53,11 @@ tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent2d::getHeight(t_real in_x,
         }
     }
 
-    if (m_bathymetry[nearestValueX] < 0) {
-        return (-m_bathymetry[(t_idx)floor(in_x / 250)] < 20) ? 20 : -m_bathymetry[(t_idx)floor(in_x / 250)];
+    // new converted pos index bathymetry
+    t_idx newBathymetryIndex = nearestValueY * m_dimX_bathymetry + nearestValueX;
+
+    if (m_bathymetry[newBathymetryIndex] < 0) {
+        return (-m_bathymetry[newBathymetryIndex] < 20) ? 20 : -m_bathymetry[newBathymetryIndex];
     }
 
     return 0;
@@ -75,8 +78,8 @@ tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent2d::getBathymetry(t_real in
                                                                        t_real) const {
     // convert scaled x,y to given values from netCDF
     // simple unoptimzed solution: iterate over array and store index of nearest Value
-    int nearestValueX = 0;
-    int nearestValueY = 0;
+    t_idx nearestValueX = 0;
+    t_idx nearestValueY = 0;
     for (int i = 1; i < m_dimX_bathymetry; i++) {
         if (fabs(m_rawX_bathymetry[i] - in_x) < fabs(m_rawX_bathymetry[nearestValueX] - in_x)) {
             nearestValueX = i;
@@ -89,13 +92,41 @@ tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent2d::getBathymetry(t_real in
         }
     }
 
-    int newCord = nearestValueY
-    
-    //
-    if (m_bathymetry[?] < 0) {
-        return !(m_bathymetry[?] < -20) ? -20 + m_displacement[?] : m_bathymetry[?] + m_displacement[?];
+    // new converted pos index bathymetry
+    t_idx newBathymetryIndex = nearestValueY * m_dimX_bathymetry + nearestValueX;
+
+    // variables for displacement condition
+    t_real smallestX = m_rawX_displacement[0];
+    t_real biggestX = m_rawX_displacement[m_dimX_displacement - 1];
+    t_real smallestY = m_rawY_displacement[0];
+    t_real biggestY = m_rawY_displacement[m_dimX_displacement - 1];
+
+    nearestValueX = 0;
+    nearestValueY = 0;
+
+    // if in domain of displacement look for nearest value
+    if (in_x >= smallestX && in_x <= biggestX) {
+        for (int i = 1; i < m_dimX_displacement; i++) {
+            if (fabs(m_rawX_displacement[i] - in_x) < fabs(m_rawX_displacement[nearestValueX] - in_x)) {
+                nearestValueX = i;
+            }
+        }
     }
-    else {
-        return (m_bathymetry[?] < 20) ? 20 + m_displacement[?] : m_bathymetry[?] + m_displacement[?];
+
+    if (in_y >= smallestY && in_x <= biggestY) {
+        for (int i = 1; i < m_dimY_displacement; i++) {
+            if (fabs(m_rawY_displacement[i] - in_y) < fabs(m_rawY_displacement[nearestValueY] - in_y)) {
+                nearestValueY = i;
+            }
+        }
+    }
+
+    // new converted pos index displacement
+    t_idx newDisplacementIndex = nearestValueY * m_dimX_displacement + nearestValueX;
+
+    if (m_bathymetry[newBathymetryIndex] < 0) {
+        return !(m_bathymetry[newBathymetryIndex] < -20) ? -20 + m_displacement[newDisplacementIndex] : m_bathymetry[newBathymetryIndex] + m_displacement[newDisplacementIndex];
+    } else {
+        return (m_bathymetry[newBathymetryIndex] < 20) ? 20 + m_displacement[newDisplacementIndex] : m_bathymetry[newBathymetryIndex] + m_displacement[newDisplacementIndex];
     }
 }
