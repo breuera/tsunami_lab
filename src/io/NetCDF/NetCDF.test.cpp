@@ -37,7 +37,7 @@ TEST_CASE("Test the NetCDF writer.", "[NetCDFWrite]") {
     REQUIRE(l_writer->write(0.5, 0, h1, hu1, hv1) == 0);
     REQUIRE(l_writer->write(1.0, 1, h2, hu2, hv2) == 0);
 
-    delete[] l_writer;
+    delete l_writer;
 }
 
 TEST_CASE("Test the NetCDF read.", "[NetCDFRead]") {

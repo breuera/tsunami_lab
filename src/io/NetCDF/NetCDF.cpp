@@ -376,5 +376,4 @@ tsunami_lab::io::NetCDF::NetCDF() {
 }
 
 tsunami_lab::io::NetCDF::~NetCDF() {
-    delete[] m_b;
 }
