@@ -92,12 +92,13 @@ void tsunami_lab::io::NetCdf::read(t_idx &o_nx,
                                    t_real **o_x,
                                    t_real **o_y,
                                    t_real **o_z,
-                                   const std::string &filename)
+                                   const std::string filename)
 {
 
+  std::cout << "NetCDF:: Looking for file: " << filename << std::endl;
   t_idx l_nx, l_ny;
 
-  handleNetCdfError(nc_open(filename.c_str(), NC_NOWRITE, &m_ncid), "Error open file: ");
+  handleNetCdfError(nc_open(filename.data(), NC_NOWRITE, &m_ncid), "Error open file: ");
 
   handleNetCdfError(nc_inq_dimid(m_ncid, "x", &m_x_varid), "Error getting y dimension id: ");
   handleNetCdfError(nc_inq_dimid(m_ncid, "y", &m_y_varid), "Error getting y dimension id: ");

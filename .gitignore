@@ -6,3 +6,4 @@
 /docs/developer-doc/**
 .sconsign.dblite
 /station_data/**
+/netCDF_dump/**
