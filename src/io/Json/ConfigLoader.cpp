@@ -14,6 +14,7 @@
 #include <string>
 
 #include "../../io/Csv/Csv.h"
+#include "../../io/NetCDF/NetCDF.h"
 
 // include setup classes
 #include "../../setups/ArtificialTsunami2d/ArtificialTsunami2d.h"
@@ -140,6 +141,14 @@ tsunami_lab::t_idx tsunami_lab::io::ConfigLoader::loadConfig(std::string i_path,
         l_useRoeSolver = false;
     }
 
+    // set bathymetry and displacements file names
+    std::string l_bathymetryFileName, l_displacementsFileName;
+    if (l_configFile.contains("bathymetryFileName")) {
+        l_bathymetryFileName = l_configFile.at("BathymetryFileName");
+    } else {
+        std::cout << "BathymetryFileName takes on default value" << std::endl;
+    }
+
     // set setup configuration
     std::string l_setupName;
     if (l_configFile.contains("setup")) {
@@ -214,27 +223,35 @@ tsunami_lab::t_idx tsunami_lab::io::ConfigLoader::loadConfig(std::string i_path,
             delete[] l_x;
             delete[] l_y;
         } else if (l_dimension == 2) {
-            // set bathymetry file path
-            std::string l_filePath = "./res/dem.csv";
-            tsunami_lab::t_idx l_sampleCount = 1763;
+            tsunami_lab::t_idx l_bathymetryDimX, l_bathymetryDimY, l_dispDimX, l_dispDimY;
+            tsunami_lab::t_real *l_bathymetry;
+            tsunami_lab::t_real *l_bathymetryPosX;
+            tsunami_lab::t_real *l_bathymetryPosY;
+            tsunami_lab::t_real *l_displacements;
+            tsunami_lab::t_real *l_dispPosX;
+            tsunami_lab::t_real *l_dispPosY;
 
-            // set displacement file path
-            std::string l_filePath = "./res/dem.csv";
-            tsunami_lab::t_idx l_sampleCount = 1763;
+            int l_err = tsunami_lab::io::NetCDF::read(l_bathymetryFileName,
+                                                      l_displacementsFileName,
+                                                      &l_bathymetryDimX,
+                                                      &l_bathymetryDimY,
+                                                      l_bathymetryPosX,
+                                                      l_bathymetryPosY,
+                                                      l_bathymetry,
+                                                      &l_dispDimX,
+                                                      &l_dispDimY,
+                                                      l_dispPosX,
+                                                      l_dispPosY,
+                                                      l_displacements);
 
-            std::ifstream l_stream;
-            // try to read bathymetry file
-            std::cout << "reading /res/dem.csv ..." << std::endl;
-            l_stream.open(l_filePath, std::fstream::in);
+            tsunami_lab::setups::TsunamiEvent2d();
 
-            if (l_stream.fail()) {
-                std::cout << "failed to read /res/dem.csv" << std::endl;
-                return 0;
-            } else {
-                std::cout << "finished reading /res/dem.csv" << std::endl;
-            }
-
-            // das gleiche für displacement?
+            delete[] l_bathymetryPosX;
+            delete[] l_bathymetryPosY;
+            delete[] l_dispPosX;
+            delete[] l_dispPosY;
+            delete[] l_bathymetry;
+            delete[] l_displacements;
         }
     } else if (l_setupName.compare("Sanitize") == 0) {
         if (l_dimension == 1) {
