@@ -520,15 +520,15 @@ int main(int i_argc,
     // create csv_dump folder
     std::filesystem::create_directory("netCDF_dump");
 
-    tsunami_lab::io::NetCdf *write = nullptr;
+    tsunami_lab::io::NetCdf *netcdf_manager = nullptr;
 
-    write = new tsunami_lab::io::NetCdf("netCDF_dump/netCDFdump.nc",
-                                        l_dxy,
-                                        l_nx,
-                                        l_ny,
-                                        l_x_offset,
-                                        l_y_offset,
-                                        write->removeGhostCells(l_waveProp->getBathymetry(), l_nx, l_ny, 1, 1, l_dxy));
+    netcdf_manager = new tsunami_lab::io::NetCdf("netCDF_dump/netCDFdump.nc",
+                                                 l_dxy,
+                                                 l_nx,
+                                                 l_ny,
+                                                 l_x_offset,
+                                                 l_y_offset,
+                                                 netcdf_manager->removeGhostCells(l_waveProp->getBathymetry(), l_nx, l_ny, 1, 1, l_dxy));
 
     int multiplier = 0;
 
@@ -545,13 +545,13 @@ int main(int i_argc,
 
             std::ofstream l_file;
             l_file.open(l_path);
-            write->write(l_nx,
-                         l_ny,
-                         write->removeGhostCells(l_waveProp->getHeight(), l_nx, l_ny, 1, 1, l_dxy),
-                         write->removeGhostCells(l_waveProp->getMomentumX(), l_nx, l_ny, 1, 1, l_dxy),
-                         write->removeGhostCells(l_waveProp->getMomentumY(), l_nx, l_ny, 1, 1, l_dxy),
-                         l_nOut,
-                         l_simTime);
+            netcdf_manager->write(l_nx,
+                                  l_ny,
+                                  netcdf_manager->removeGhostCells(l_waveProp->getHeight(), l_nx, l_ny, 1, 1, l_dxy),
+                                  netcdf_manager->removeGhostCells(l_waveProp->getMomentumX(), l_nx, l_ny, 1, 1, l_dxy),
+                                  netcdf_manager->removeGhostCells(l_waveProp->getMomentumY(), l_nx, l_ny, 1, 1, l_dxy),
+                                  l_nOut,
+                                  l_simTime);
 
             tsunami_lab::io::Csv::write(l_dxy,
                                         l_nx,
@@ -597,7 +597,7 @@ int main(int i_argc,
     delete l_setup;
     delete l_waveProp;
     delete l_stations;
-    delete write;
+    delete netcdf_manager;
 
     std::cout << "finished, exiting" << std::endl;
     return EXIT_SUCCESS;
