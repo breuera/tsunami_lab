@@ -14,21 +14,36 @@
 #include <vector>
 #include "../../io/csv/Csv.h"
 
-tsunami_lab::setups::TsunamiEvent2d::TsunamiEvent2d(std::vector<t_real> i_b_in)
+tsunami_lab::setups::TsunamiEvent2d::TsunamiEvent2d()
 {
   tsunami_lab::io::NetCdf *netCDF = nullptr;
 
   netCDF = new tsunami_lab::io::NetCdf();
 
-  netCDF->read(m_nx, m_ny, &m_x, &m_y, &m_z, "../../data/artificialtsunami/artificialtsunami_bathymetry_1000.nc");
-  std::cout << m_nx << " " << m_ny << std::endl;
-  m_b_in = i_b_in;
+  std::cout << "Entering TsunamiEvent2d" << std::endl;
+
+  std::string bat_path = "data/artificialtsunami/artificialtsunami_bathymetry_1000.nc";
+  std::string dis_path = "data/artificialtsunami/artificialtsunami_displ_1000.nc";
+
+  netCDF->read(m_bathymetry_length_x,
+               m_bathymetry_length_y,
+               &m_bathymetry_values_x,
+               &m_bathymetry_values_y,
+               &m_bathymetry,
+               bat_path);
+
+  netCDF->read(m_displacement_length_x,
+               m_displacement_length_y,
+               &m_displacement_values_x,
+               &m_displacement_values_y,
+               &m_displacement,
+               dis_path);
 }
 
 tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent2d::getHeight(t_real i_x,
                                                                    t_real i_y) const
 {
-  t_real l_b_in = getBathymetryFromCSV(i_x, i_y);
+  t_real l_b_in = getBathymetryFromNetCdf(i_x, i_y);
   if (l_b_in < 0)
   {
     return std::max(-l_b_in, m_delta);
@@ -54,7 +69,7 @@ tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent2d::getMomentumY(t_real,
 tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent2d::getBathymetry(t_real i_x,
                                                                        t_real i_y) const
 {
-  t_real l_b_in = getBathymetryFromCSV(i_x, i_y);
+  t_real l_b_in = getBathymetryFromNetCdf(i_x, i_y);
 
   if (l_b_in < 0)
   {
@@ -69,15 +84,11 @@ tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent2d::getBathymetry(t_real i_
 tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent2d::getDisplacement(t_real i_x,
                                                                          t_real i_y) const
 {
-  // TODO: implement netcdf-reader and finish this
-
-  std::cout << m_nx << std::endl;
-  return i_x + i_y;
+  return m_displacement[(int)std::floor(i_y) * m_bathymetry_length_x + (int)std::floor(i_x)];
 }
 
-tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent2d::getBathymetryFromCSV(t_real i_x,
-                                                                              t_real i_y) const
+tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent2d::getBathymetryFromNetCdf(t_real i_x,
+                                                                                 t_real i_y) const
 {
-  // TODO: implement netcdf-reader and finish this
-  return i_x + i_y;
+  return m_bathymetry[(int)std::floor(i_y) * m_bathymetry_length_x + (int)std::floor(i_x)];
 }

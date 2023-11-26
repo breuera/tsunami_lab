@@ -31,6 +31,7 @@
 #include "setups/subcritical1d/Subcritical1d.h"
 #include "setups/supercritical1d/Supercritical1d.h"
 #include "setups/tsunamievent1d/TsunamiEvent1d.h"
+#include "setups/tsunamievent2d/TsunamiEvent2d.h"
 
 // declaration of variables
 int solver_choice = 0;
@@ -253,12 +254,22 @@ int main(int i_argc,
             }
             else if (tokens[0] == "tsunami1d" && dimension == 1)
             {
+                std::cout << "using TsunamiEvent1d() setup" << std::endl;
                 tsunami_lab::io::Csv::read("data/real.csv", m_b_in);
 
                 l_width = 250 * m_b_in.size();
                 l_endTime = 3600;
 
                 l_setup = new tsunami_lab::setups::TsunamiEvent1d(m_b_in);
+            }
+            else if (tokens[0] == "tsunami2d" && dimension == 2)
+            {
+                std::cout << "using TsunamiEvent2d() setup" << std::endl;
+
+                l_width = 5;
+                l_endTime = 0.5;
+
+                l_setup = new tsunami_lab::setups::TsunamiEvent2d();
             }
             else if (tokens[0] == "dambreak2d" && dimension == 2)
             {

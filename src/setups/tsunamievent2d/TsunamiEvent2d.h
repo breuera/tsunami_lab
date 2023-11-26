@@ -27,14 +27,36 @@ class tsunami_lab::setups::TsunamiEvent2d : public Setup
 private:
   //! wall heigth
   t_real m_delta = 20;
-  t_idx m_nx;
-  t_idx m_ny;
-  t_real *m_x;
-  t_real *m_y;
-  t_real *m_z;
 
-  std::vector<t_real>
-      m_b_in;
+  //! Length of bathymetry in x direction.
+  t_idx m_bathymetry_length_x;
+
+  //! Length of bathymetry in y direction.
+  t_idx m_bathymetry_length_y;
+
+  //! Array of x-values for the bathymetry.
+  t_real *m_bathymetry_values_x;
+
+  //! Array of y-values for the bathymetry.
+  t_real *m_bathymetry_values_y;
+
+  //! Array for the bathymetry.
+  t_real *m_bathymetry;
+
+  //! Length of displacement in x direction.
+  t_idx m_displacement_length_x;
+
+  //! Length of displacement in y direction.
+  t_idx m_displacement_length_y;
+
+  //! Array of x-values for the displacement.
+  t_real *m_displacement_values_x;
+
+  //! Array of y-values for the displacement.
+  t_real *m_displacement_values_y;
+
+  //! Array for the displacement.
+  t_real *m_displacement;
 
   /**
    * @brief Get initial displacement
@@ -53,15 +75,15 @@ private:
    * @param i_y y-coordinate of the queried point.
    * @return bathymetry from csv
    */
-  t_real getBathymetryFromCSV(t_real i_x,
-                              t_real i_y) const;
+  t_real getBathymetryFromNetCdf(t_real i_x,
+                                 t_real i_y) const;
 
 public:
   /**
    * @brief Construct a new TsunamiEvent1d object
    *
    */
-  TsunamiEvent2d(std::vector<t_real> i_b_in);
+  TsunamiEvent2d();
 
   /**
    * Gets the water height.
