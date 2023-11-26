@@ -90,9 +90,10 @@ void tsunami_lab::io::NetCdf::read(t_idx *o_nx,
                                    t_idx *o_ny,
                                    t_real **o_x,
                                    t_real **o_y,
-                                   t_real **o_z)
+                                   t_real **o_z,
+                                   const std::string &filename)
 {
-  handleNetCdfError(nc_open("your_file.nc", NC_NOWRITE, &m_ncid), "Error open file: ");
+  handleNetCdfError(nc_open(filename.c_str(), NC_NOWRITE, &m_ncid), "Error open file: ");
 
   handleNetCdfError(nc_inq_dimid(m_ncid, "x", &m_x_varid), "Error getting y dimension id: ");
   handleNetCdfError(nc_inq_dimid(m_ncid, "y", &m_y_varid), "Error getting y dimension id: ");
