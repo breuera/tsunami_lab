@@ -44,6 +44,14 @@ void tsunami_lab::io::NetCdf::netCdf(const std::string &filename,
   int bathy_dims[2] = {m_y_dimid, m_x_dimid};
   handleNetCdfError(nc_def_var(m_ncid, "bathymetry", NC_FLOAT, 2, bathy_dims, &m_b_varid), "Error define bathymetry variable:");
 
+  handleNetCdfError(nc_put_att_text(m_ncid, m_x_varid, "units", strlen("meter"), "meter"), "Error adding text x dimension");
+  handleNetCdfError(nc_put_att_text(m_ncid, m_y_varid, "units", strlen("meter"), "meter"), "Error adding text x dimension");
+  handleNetCdfError(nc_put_att_text(m_ncid, m_time_varid, "units", strlen("seconds"), "seconds"), "Error adding text x dimension");
+  handleNetCdfError(nc_put_att_text(m_ncid, m_h_varid, "units", strlen("meter"), "meter"), "Error adding text height dimension");
+  handleNetCdfError(nc_put_att_text(m_ncid, m_hu_varid, "units", strlen("seconds"), "seconds"), "Error adding text momentum_x dimension");
+  handleNetCdfError(nc_put_att_text(m_ncid, m_hv_varid, "units", strlen("seconds"), "seconds"), "Error adding text momentum_y dimension");
+  handleNetCdfError(nc_put_att_text(m_ncid, m_b_varid, "units", strlen("meter"), "meter"), "Error adding text bathymetry dimension");
+
   handleNetCdfError(nc_enddef(m_ncid), "Error end defining: ");
 
   // put y
