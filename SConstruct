@@ -30,14 +30,22 @@ if vars.UnknownVariables():
   print( "build configuration corrupted, don't know what to do with: " + str(vars.UnknownVariables().keys()) )
   exit(1)
 
+# defines plattform: 0 = Linux, 1 = Mac
+plattform_choice = 0;
+
 # create environment
 env = Environment( variables = vars )
-""" env['CXX'] = '/opt/homebrew/bin/g++-13'
-env['CC'] = '/opt/homebrew/bin/gcc-13'
 
-# Add NetCDF include and lib paths
-env.Append(CPPPATH=['/opt/homebrew/include'])
-env.Append(LIBPATH=['/opt/homebrew/lib']) """
+if(plattform_choice == 1):
+  env['CXX'] = '/opt/homebrew/bin/g++-13'
+  env['CC'] = '/opt/homebrew/bin/gcc-13'
+
+  # Add lib paths
+  env.Append(CPPPATH=['/opt/homebrew/include'])
+  env.Append(LIBPATH=['/opt/homebrew/lib'])
+
+
+# Add NetCDF include
 env.Append(LIBS=['netcdf'])
 
 # generate help message

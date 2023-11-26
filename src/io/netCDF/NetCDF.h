@@ -30,13 +30,13 @@ private:
 public:
   ~NetCdf();
 
-  void netCDF(const std::string &filename,
-              t_real i_dxy,
-              t_idx i_nx,
-              t_idx i_ny,
-              t_real i_x_offset,
-              t_real i_y_offset,
-              t_real const *i_b);
+  NetCdf(const std::string &filename,
+         t_real i_dxy,
+         t_idx i_nx,
+         t_idx i_ny,
+         t_real i_x_offset,
+         t_real i_y_offset,
+         t_real const *i_b);
 
   void write(t_idx i_nx,
              t_idx i_ny,
