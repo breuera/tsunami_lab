@@ -7,7 +7,6 @@
  **/
 #include "NetCDF.h"
 #include <netcdf.h>
-#include <vector>
 #include <iostream>
 #include <string>
 
