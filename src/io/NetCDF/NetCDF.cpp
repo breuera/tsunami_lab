@@ -137,99 +137,241 @@ int tsunami_lab::io::NetCDF::read(std::string i_nameBathymetry,
     return 0;
 }
 
-void checkNcErr(int i_err) {
-    if (i_err) {
-        std::cerr << "Error: "
-                  << nc_strerror(i_err)
-                  << std::endl;
-        exit(2);
-    }
-}
+int tsunami_lab::io::NetCDF::init(t_real i_dxy,
+                                  t_idx i_nx,
+                                  t_idx i_ny,
+                                  t_idx i_stride,
+                                  t_real const *i_b) {
+    m_dxy = i_dxy;
+    m_nx = i_nx;
+    m_ny = i_ny;
+    m_stride = i_stride;
+    m_b = i_b;
 
-void tsunami_lab::io::NetCDF::write(t_real i_dxy,
-                                    t_idx i_nx,
-                                    t_idx i_ny,
-                                    t_idx i_stride,
-                                    // t_real const *i_h,
-                                    // t_real const *i_hu,
-                                    // t_real const *i_hv,
-                                    t_real const *i_b) {
-    int l_ncId, l_dimXId, l_dimYId, l_dimTimeId;
-    int l_varXId, l_varYId, l_varBathymetryId, l_varHeightId, l_varMomentumXId, l_varMomentumYId;
-    int l_err;
+    int l_dimXId,
+        l_dimYId, l_dimTimeId;
+    int l_varXId, l_varYId, l_varTimeId, l_varBathymetryId, l_varHeightId, l_varMomentumXId, l_varMomentumYId;
+    int l_nc_err;
 
     // create netCDF file
-    l_err = nc_create("./out/solution.nc", NC_CLOBBER, &l_ncId);
-    checkNcErr(l_err);
+    l_nc_err = nc_create(m_fileName.c_str(), NC_CLOBBER, &m_ncId);
+    if (l_nc_err != NC_NOERR) {
+        std::cout << "Error: " << nc_strerror(l_nc_err) << std::endl;
+        return 1;
+    }
 
     // define dimensions
-    l_err = nc_def_dim(l_ncId, "x", i_nx, &l_dimXId);
-    checkNcErr(l_err);
+    l_nc_err = nc_def_dim(m_ncId, "x", i_nx, &l_dimXId);
+    if (l_nc_err != NC_NOERR) {
+        std::cout << "Error: " << nc_strerror(l_nc_err) << std::endl;
+        return 1;
+    }
 
-    l_err = nc_def_dim(l_ncId, "y", i_ny, &l_dimYId);
-    checkNcErr(l_err);
+    l_nc_err = nc_def_dim(m_ncId, "y", i_ny, &l_dimYId);
+    if (l_nc_err != NC_NOERR) {
+        std::cout << "Error: " << nc_strerror(l_nc_err) << std::endl;
+        return 1;
+    }
 
-    l_err = nc_def_dim(l_ncId, "time", NC_UNLIMITED, &l_dimTimeId);
-    checkNcErr(l_err);
+    l_nc_err = nc_def_dim(m_ncId, "time", NC_UNLIMITED, &l_dimTimeId);
+    if (l_nc_err != NC_NOERR) {
+        std::cout << "Error: " << nc_strerror(l_nc_err) << std::endl;
+        return 1;
+    }
 
     // define variables
-    l_err = nc_def_var(l_ncId, "x", NC_FLOAT, 1, &l_dimXId, &l_varXId);
-    checkNcErr(l_err);
+    l_nc_err = nc_def_var(m_ncId, "x", NC_FLOAT, 1, &l_dimXId, &l_varXId);
+    if (l_nc_err != NC_NOERR) {
+        std::cout << "Error: " << nc_strerror(l_nc_err) << std::endl;
+        return 1;
+    }
 
-    l_err = nc_def_var(l_ncId, "y", NC_FLOAT, 1, &l_dimYId, &l_varYId);
-    checkNcErr(l_err);
+    l_nc_err = nc_def_var(m_ncId, "y", NC_FLOAT, 1, &l_dimYId, &l_varYId);
+    if (l_nc_err != NC_NOERR) {
+        std::cout << "Error: " << nc_strerror(l_nc_err) << std::endl;
+        return 1;
+    }
 
-    int l_dimBDimIds[2];
-    l_dimBDimIds[0] = l_dimXId;
-    l_dimBDimIds[1] = l_dimYId;
-    //  int l_dimBathymetryIds[2] = {l_dimXId, l_dimYId};
-    l_err = nc_def_var(l_ncId, "bathymetry", NC_FLOAT, 2, l_dimBDimIds, &l_varBathymetryId);
-    checkNcErr(l_err);
+    l_nc_err = nc_def_var(m_ncId, "time", NC_FLOAT, 1, &l_dimTimeId, &l_varTimeId);
+    if (l_nc_err != NC_NOERR) {
+        std::cout << "Error: " << nc_strerror(l_nc_err) << std::endl;
+        return 1;
+    }
+
+    int l_dimBathymetryIds[2] = {l_dimXId, l_dimYId};
+    l_nc_err = nc_def_var(m_ncId, "bathymetry", NC_FLOAT, 2, l_dimBathymetryIds, &l_varBathymetryId);
+    if (l_nc_err != NC_NOERR) {
+        std::cout << "Error: " << nc_strerror(l_nc_err) << std::endl;
+        return 1;
+    }
 
     int l_dimHeightIds[3] = {l_dimTimeId, l_dimXId, l_dimYId};
-    l_err = nc_def_var(l_ncId, "height", NC_FLOAT, 3, l_dimHeightIds, &l_varHeightId);
-    checkNcErr(l_err);
+    l_nc_err = nc_def_var(m_ncId, "height", NC_FLOAT, 3, l_dimHeightIds, &l_varHeightId);
+    if (l_nc_err != NC_NOERR) {
+        std::cout << "Error: " << nc_strerror(l_nc_err) << std::endl;
+        return 1;
+    }
 
     int l_dimMomentumXIds[3] = {l_dimTimeId, l_dimXId, l_dimYId};
-    l_err = nc_def_var(l_ncId, "momentum_x", NC_FLOAT, 3, l_dimMomentumXIds, &l_varMomentumXId);
-    checkNcErr(l_err);
+    l_nc_err = nc_def_var(m_ncId, "momentum_x", NC_FLOAT, 3, l_dimMomentumXIds, &l_varMomentumXId);
+    if (l_nc_err != NC_NOERR) {
+        std::cout << "Error: " << nc_strerror(l_nc_err) << std::endl;
+        return 1;
+    }
 
     int l_dimMomentumYIds[3] = {l_dimTimeId, l_dimXId, l_dimYId};
-    l_err = nc_def_var(l_ncId, "momentum_y", NC_FLOAT, 3, l_dimMomentumYIds, &l_varMomentumYId);
-    checkNcErr(l_err);
-
-    l_err = nc_enddef(l_ncId);
-    checkNcErr(l_err);
-
-    // write data
-    float *l_dataX = new float[i_nx];
-    for (t_idx l_ix = 0; l_ix < i_nx; l_ix++) {
-        l_dataX[l_ix] = (l_ix + 0.5) * i_dxy;
-    }
-    l_err = nc_put_var_float(l_ncId, l_varXId, l_dataX);
-    checkNcErr(l_err);
-
-    float *l_dataY = new float[i_ny];
-    for (t_idx l_iy = 0; l_iy < i_ny; l_iy++) {
-        l_dataY[l_iy] = (l_iy + 0.5) * i_dxy;
-    }
-    l_err = nc_put_var_float(l_ncId, l_varYId, l_dataY);
-    checkNcErr(l_err);
-
-    t_real **l_bathymetry = new t_real *[i_nx];
-    for (t_idx l_ix = 0; l_ix < i_nx; l_ix++) {
-        l_bathymetry[l_ix] = new t_real[i_ny];
+    l_nc_err = nc_def_var(m_ncId, "momentum_y", NC_FLOAT, 3, l_dimMomentumYIds, &l_varMomentumYId);
+    if (l_nc_err != NC_NOERR) {
+        std::cout << "Error: " << nc_strerror(l_nc_err) << std::endl;
+        return 1;
     }
 
-    for (t_idx l_iy = 0; l_iy < i_ny; l_iy++) {
-        for (t_idx l_ix = 0; l_ix < i_nx; l_ix++) {
-            l_bathymetry[l_ix][l_iy] = i_b[(l_iy + 1) * i_stride + (l_ix + 1)];
+    l_nc_err = nc_enddef(m_ncId);
+    if (l_nc_err != NC_NOERR) {
+        std::cout << "Error: " << nc_strerror(l_nc_err) << std::endl;
+        return 1;
+    }
+
+    // write x coordinates
+    t_real *l_dataX = new t_real[m_nx];
+    for (t_idx l_ix = 0; l_ix < m_nx; l_ix++) {
+        l_dataX[l_ix] = (l_ix + 0.5) * m_dxy;
+    }
+    l_nc_err = nc_put_var_float(m_ncId, l_varXId, l_dataX);
+    if (l_nc_err != NC_NOERR) {
+        std::cout << "Error: " << nc_strerror(l_nc_err) << std::endl;
+        return 1;
+    }
+
+    // write y coordinates
+    t_real *l_dataY = new t_real[m_ny];
+    for (t_idx l_iy = 0; l_iy < m_ny; l_iy++) {
+        l_dataY[l_iy] = (l_iy + 0.5) * m_dxy;
+    }
+    l_nc_err = nc_put_var_float(m_ncId, l_varYId, l_dataY);
+    if (l_nc_err != NC_NOERR) {
+        std::cout << "Error: " << nc_strerror(l_nc_err) << std::endl;
+        return 1;
+    }
+
+    // write bathymetry
+    t_real *l_bathymetry = new t_real[m_nx * m_ny];
+    for (t_idx l_iy = 0; l_iy < m_ny; l_iy++) {
+        for (t_idx l_ix = 0; l_ix < m_nx; l_ix++) {
+            l_bathymetry[l_ix + l_iy * m_nx] = i_b[(l_iy + 1) * m_stride + (l_ix + 1)];
         }
     }
-    l_err = nc_put_var_float(l_ncId, l_varBathymetryId, &l_bathymetry[0][0]);
-    checkNcErr(l_err);
+    l_nc_err = nc_put_var_float(m_ncId, l_varBathymetryId, l_bathymetry);
+    if (l_nc_err != NC_NOERR) {
+        std::cout << "Error: " << nc_strerror(l_nc_err) << std::endl;
+        return 1;
+    }
 
-    // close file
-    l_err = nc_close(l_ncId);  // ncid
-    checkNcErr(l_err);
+    l_nc_err = nc_close(m_ncId);
+    if (l_nc_err != NC_NOERR) {
+        std::cout << "Error: " << nc_strerror(l_nc_err) << std::endl;
+        return 1;
+    }
+
+    return 0;
+}
+
+int tsunami_lab::io::NetCDF::write(t_real i_time,
+                                   t_idx i_timeStep,
+                                   t_real const *i_h,
+                                   t_real const *i_hu,
+                                   t_real const *i_hv) {
+    int l_varTimeId, l_varHeightId, l_varMomentumXId, l_varMomentumYId;
+    int l_nc_err;
+
+    l_nc_err = nc_open(m_fileName.c_str(), NC_WRITE, &m_ncId);
+    if (l_nc_err != NC_NOERR) {
+        std::cout << "Error: " << nc_strerror(l_nc_err) << std::endl;
+        return 1;
+    }
+
+    l_nc_err = nc_inq_varid(m_ncId, "time", &l_varTimeId);
+    if (l_nc_err != NC_NOERR) {
+        std::cout << "Error: " << nc_strerror(l_nc_err) << std::endl;
+        return 1;
+    }
+
+    l_nc_err = nc_inq_varid(m_ncId, "height", &l_varHeightId);
+    if (l_nc_err != NC_NOERR) {
+        std::cout << "Error: " << nc_strerror(l_nc_err) << std::endl;
+        return 1;
+    }
+
+    l_nc_err = nc_inq_varid(m_ncId, "momentum_x", &l_varMomentumXId);
+    if (l_nc_err != NC_NOERR) {
+        std::cout << "Error: " << nc_strerror(l_nc_err) << std::endl;
+        return 1;
+    }
+
+    l_nc_err = nc_inq_varid(m_ncId, "momentum_y", &l_varMomentumYId);
+    if (l_nc_err != NC_NOERR) {
+        std::cout << "Error: " << nc_strerror(l_nc_err) << std::endl;
+        return 1;
+    }
+
+    l_nc_err = nc_put_var1_float(m_ncId, l_varTimeId, &i_timeStep, &i_time);
+    if (l_nc_err != NC_NOERR) {
+        std::cout << "Error: " << nc_strerror(l_nc_err) << std::endl;
+        return 1;
+    }
+
+    size_t l_startp[3] = {i_timeStep, 0, 0};
+    size_t l_countp[3] = {1, m_nx, m_ny};
+
+    t_real *l_height = new t_real[m_nx * m_ny];
+    for (t_idx l_iy = 0; l_iy < m_ny; l_iy++) {
+        for (t_idx l_ix = 0; l_ix < m_nx; l_ix++) {
+            l_height[l_ix + l_iy * m_nx] = i_h[(l_iy + 1) * m_stride + (l_ix + 1)] + m_b[(l_iy + 1) * m_stride + (l_ix + 1)];
+        }
+    }
+    l_nc_err = nc_put_vara_float(m_ncId, l_varHeightId, l_startp, l_countp, l_height);
+    if (l_nc_err != NC_NOERR) {
+        std::cout << "Error: " << nc_strerror(l_nc_err) << std::endl;
+        return 1;
+    }
+
+    t_real *l_momentumX = new t_real[m_nx * m_ny];
+    for (t_idx l_iy = 0; l_iy < m_ny; l_iy++) {
+        for (t_idx l_ix = 0; l_ix < m_nx; l_ix++) {
+            l_momentumX[l_ix + l_iy * m_nx] = i_hu[(l_iy + 1) * m_stride + (l_ix + 1)];
+        }
+    }
+    l_nc_err = nc_put_vara_float(m_ncId, l_varMomentumXId, l_startp, l_countp, l_momentumX);
+    if (l_nc_err != NC_NOERR) {
+        std::cout << "Error: " << nc_strerror(l_nc_err) << std::endl;
+        return 1;
+    }
+
+    t_real *l_momentumY = new t_real[m_nx * m_ny];
+    for (t_idx l_iy = 0; l_iy < m_ny; l_iy++) {
+        for (t_idx l_ix = 0; l_ix < m_nx; l_ix++) {
+            l_momentumY[l_ix + l_iy * m_nx] = i_hv[(l_iy + 1) * m_stride + (l_ix + 1)];
+        }
+    }
+    l_nc_err = nc_put_vara_float(m_ncId, l_varMomentumYId, l_startp, l_countp, l_momentumY);
+    if (l_nc_err != NC_NOERR) {
+        std::cout << "Error: " << nc_strerror(l_nc_err) << std::endl;
+        return 1;
+    }
+
+    delete[] l_height;
+    delete[] l_momentumX;
+    delete[] l_momentumY;
+
+    l_nc_err = nc_close(m_ncId);
+    if (l_nc_err != NC_NOERR) {
+        std::cout << "Error: " << nc_strerror(l_nc_err) << std::endl;
+        return 1;
+    }
+
+    return 0;
+}
+
+tsunami_lab::io::NetCDF::~NetCDF() {
+    delete[] m_b;
 }
