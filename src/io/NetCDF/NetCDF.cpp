@@ -78,7 +78,6 @@ int tsunami_lab::io::NetCDF::read(std::string i_nameBathymetry,
     // read bathymetry
 
     l_nc_err = nc_get_var_float(l_ncIDBathymetry, l_varIDz, o_bathymetry);
-    std::cout << "hi" << std::endl;
     if (l_nc_err != NC_NOERR) {
         std::cerr << "Could not load data from variable z" << std::endl;
         return 1;
