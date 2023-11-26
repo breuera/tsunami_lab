@@ -87,13 +87,17 @@ void tsunami_lab::io::NetCdf::write(t_idx i_nx,
   handleNetCdfError(nc_put_vara_float(m_ncid, m_hv_varid, start, count, i_hv), "Error put momentum_y variables: ");
 }
 
-void tsunami_lab::io::NetCdf::read(t_idx *o_nx,
-                                   t_idx *o_ny,
-                                   t_real **o_x,
-                                   t_real **o_y,
-                                   t_real **o_z,
-                                   const std::string &filename)
+std::vector<tsunami_lab::t_real> tsunami_lab::io::NetCdf::read(t_idx *o_nx,
+                                                               t_idx *o_ny,
+                                                               t_real **o_x,
+                                                               t_real **o_y,
+                                                               t_real **o_z,
+                                                               const std::string &filename)
 {
+
+  t_idx l_nx, l_ny;
+  t_real *l_x, *l_y, *l_z;
+
   handleNetCdfError(nc_open(filename.c_str(), NC_NOWRITE, &m_ncid), "Error open file: ");
 
   handleNetCdfError(nc_inq_dimid(m_ncid, "x", &m_x_varid), "Error getting y dimension id: ");
@@ -106,13 +110,24 @@ void tsunami_lab::io::NetCdf::read(t_idx *o_nx,
   handleNetCdfError(nc_inq_varid(m_ncid, "y", &m_y_varid), "Error getting y value id:");
   handleNetCdfError(nc_inq_varid(m_ncid, "z", &m_z_varid), "Error getting z value id:");
 
-  *o_x = new t_real[*o_nx];
-  *o_y = new t_real[*o_ny];
-  *o_z = new t_real[*o_nx * *o_ny];
+  l_x = new t_real[l_nx];
+  l_y = new t_real[l_ny];
+  l_z = new t_real[l_nx * l_ny];
 
   handleNetCdfError(nc_get_var_float(m_ncid, m_x_varid, *o_x), "Error getting x value: ");
   handleNetCdfError(nc_get_var_float(m_ncid, m_y_varid, *o_y), "Error getting y value: ");
   handleNetCdfError(nc_get_var_float(m_ncid, m_z_varid, *o_z), "Error getting z value: ");
+
+  std::vector<t_real> result;
+  result.insert(result.end(), l_x, l_x + l_nx);
+  result.insert(result.end(), l_y, l_y + l_ny);
+  result.insert(result.end(), l_z, l_z + l_nx * l_ny);
+
+  delete[] l_x;
+  delete[] l_y;
+  delete[] l_z;
+
+  return result;
 }
 
 void tsunami_lab::io::NetCdf::handleNetCdfError(int status, const std::string &errorMessage)

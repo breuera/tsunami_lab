@@ -46,12 +46,12 @@ public:
              t_idx timeStep,
              t_real i_time);
 
-  void read(t_idx *o_nx,
-            t_idx *o_ny,
-            t_real **o_x,
-            t_real **o_y,
-            t_real **o_z,
-            const std::string &filename);
+  std::vector<t_real> read(t_idx *o_nx,
+                           t_idx *o_ny,
+                           t_real **o_x,
+                           t_real **o_y,
+                           t_real **o_z,
+                           const std::string &filename);
 
   static void handleNetCdfError(int status, const std::string &errorMessage);
 
