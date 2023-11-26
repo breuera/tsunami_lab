@@ -48,6 +48,7 @@ l_tests = [ 'tests.cpp',
             'setups/TsunamiEvent1d/TsunamiEvent1d.test.cpp',
             'configs/SimConfig.test.cpp',
             'io/Json/ConfigLoader.test.cpp',
+            'io/NetCDF/NetCDF.test.cpp',
             'io/Csv/Csv.test.cpp',
             ]
 
