@@ -13,6 +13,7 @@
 #include <limits>
 
 #include "../io/Csv/Csv.h"
+#include "../io/NetCDF/NetCDF.h"
 #include "../patches/1d/WavePropagation1d.h"
 #include "../patches/2d/WavePropagation2d.h"
 
@@ -167,6 +168,12 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
 
                 std::ofstream l_file;
                 l_file.open(l_path);
+
+                tsunami_lab::io::NetCDF::write(l_dxy,
+                                               l_nx,
+                                               l_ny,
+                                               i_simConfig.getXCells() + 2,
+                                               l_waveProp->getBathymetry());
 
                 tsunami_lab::io::Csv::write(l_dxy,
                                             l_nx,

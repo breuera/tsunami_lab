@@ -10,10 +10,11 @@
 #ifndef TSUNAMI_LAB_IO_NETCDF
 #define TSUNAMI_LAB_IO_NETCDF
 
+#include <netcdf.h>
+
 #include <string>
 
 #include "../../constants.h"
-#include "netcdf.h"
 
 namespace tsunami_lab {
     namespace io {
@@ -22,12 +23,21 @@ namespace tsunami_lab {
 }  // namespace tsunami_lab
 
 class tsunami_lab::io::NetCDF {
-    void read(std::string i_pathBathymetry,
-              std::string i_pathDisplacements,
-              t_real *&o_bathymetry,
-              t_real *&o_displacements);
+   public:
+    void
+    read(std::string i_pathBathymetry,
+         std::string i_pathDisplacements,
+         t_real *&o_bathymetry,
+         t_real *&o_displacements);
 
-    void write();
+    static void write(t_real i_dxy,
+                      t_idx i_nx,
+                      t_idx i_ny,
+                      t_idx i_stride,
+                      //  t_real const *i_h,
+                      //  t_real const *i_hu,
+                      //  t_real const *i_hv,
+                      t_real const *i_b);
 };
 
 #endif
