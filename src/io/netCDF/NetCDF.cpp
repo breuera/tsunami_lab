@@ -16,13 +16,13 @@ tsunami_lab::io::NetCdf::~NetCdf()
   nc_close(m_ncid);
 }
 
-void tsunami_lab::io::NetCdf::netCDF(const std::string &filename,
-                                     t_real i_dxy,
-                                     t_idx i_nx,
-                                     t_idx i_ny,
-                                     t_real i_x_offset,
-                                     t_real i_y_offset,
-                                     t_real const *i_b)
+tsunami_lab::io::NetCdf::NetCdf(const std::string &filename,
+                                t_real i_dxy,
+                                t_idx i_nx,
+                                t_idx i_ny,
+                                t_real i_x_offset,
+                                t_real i_y_offset,
+                                t_real const *i_b)
 {
   handleNetCdfError(nc_create(filename.c_str(), NC_CLOBBER, &m_ncid), "Error creat the NetCDF file: ");
 
