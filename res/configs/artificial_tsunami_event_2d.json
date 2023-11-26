@@ -4,7 +4,7 @@
     "ny": 500,
     "xLen": 10000.0,
     "yLen": 10000.0,
-    "simTime": 10000.0,
+    "simTime": 600,
     "boundaryCond": "OO",
     "setup": "ArtificialTsunamiEvent"
 }
