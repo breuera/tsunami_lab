@@ -535,13 +535,13 @@ int main(int i_argc,
 
     netcdf_manager = new tsunami_lab::io::NetCdf();
 
-    netcdf_manager->netCdf("netCDF_dump/netCDFdump.nc",
-                           l_dxy,
-                           l_nx,
-                           l_ny,
-                           l_x_offset,
-                           l_y_offset,
-                           netcdf_manager->removeGhostCells(l_waveProp->getBathymetry(), l_nx, l_ny, 1, 1, l_dxy));
+    netcdf_manager->initialize("netCDF_dump/netCDFdump.nc",
+                               l_dxy,
+                               l_nx,
+                               l_ny,
+                               l_x_offset,
+                               l_y_offset,
+                               netcdf_manager->removeGhostCells(l_waveProp->getBathymetry(), l_nx, l_ny, 1, 1, l_dxy));
 
     int multiplier = 0;
 
@@ -553,31 +553,38 @@ int main(int i_argc,
             std::cout << "  simulation time / #time steps: "
                       << l_simTime << " / " << l_timeStep << std::endl;
 
-            std::string l_path = targetPath.string() + "/" + "solution_" + std::to_string(l_nOut) + ".csv";
-            std::cout << "  writing wave field to " << l_path << std::endl;
+            if (dimension == 1)
+            {
+                std::string l_path = targetPath.string() + "/" + "solution_" + std::to_string(l_nOut) + ".csv";
+                std::cout << "  writing wave field to " << l_path << std::endl;
 
-            std::ofstream l_file;
-            l_file.open(l_path);
-            netcdf_manager->write(l_nx,
-                                  l_ny,
-                                  netcdf_manager->removeGhostCells(l_waveProp->getHeight(), l_nx, l_ny, 1, 1, l_dxy),
-                                  netcdf_manager->removeGhostCells(l_waveProp->getMomentumX(), l_nx, l_ny, 1, 1, l_dxy),
-                                  netcdf_manager->removeGhostCells(l_waveProp->getMomentumY(), l_nx, l_ny, 1, 1, l_dxy),
-                                  l_nOut,
-                                  l_simTime);
+                std::ofstream l_file;
+                l_file.open(l_path);
+                tsunami_lab::io::Csv::write(l_dxy,
+                                            l_nx,
+                                            l_ny,
+                                            l_x_offset,
+                                            l_y_offset,
+                                            l_waveProp->getStride(),
+                                            l_waveProp->getHeight(),
+                                            l_waveProp->getMomentumX(),
+                                            l_waveProp->getMomentumY(),
+                                            l_waveProp->getBathymetry(),
+                                            l_file);
 
-            tsunami_lab::io::Csv::write(l_dxy,
-                                        l_nx,
-                                        l_ny,
-                                        l_x_offset,
-                                        l_y_offset,
-                                        l_waveProp->getStride(),
-                                        l_waveProp->getHeight(),
-                                        l_waveProp->getMomentumX(),
-                                        l_waveProp->getMomentumY(),
-                                        l_waveProp->getBathymetry(),
-                                        l_file);
-            l_file.close();
+                l_file.close();
+            }
+            else if (dimension == 2)
+            {
+                netcdf_manager->write(l_nx,
+                                      l_ny,
+                                      netcdf_manager->removeGhostCells(l_waveProp->getHeight(), l_nx, l_ny, 1, 1, l_dxy),
+                                      netcdf_manager->removeGhostCells(l_waveProp->getMomentumX(), l_nx, l_ny, 1, 1, l_dxy),
+                                      netcdf_manager->removeGhostCells(l_waveProp->getMomentumY(), l_nx, l_ny, 1, 1, l_dxy),
+                                      l_nOut,
+                                      l_simTime);
+            }
+
             l_nOut++;
         }
 
