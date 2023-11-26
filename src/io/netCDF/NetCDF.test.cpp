@@ -159,7 +159,6 @@ TEST_CASE("Test the NetCDF-writer.", "[NetCDFWrite2d]")
     delete[] l_hvt;
 }
 
-/*
 TEST_CASE("Test the NetCDF-reader.", "[NetCDFRead2d]")
 {
 
@@ -225,5 +224,3 @@ TEST_CASE("Test the NetCDF-reader.", "[NetCDFRead2d]")
     delete[] l_zv;
     std::filesystem::remove_all("test.nc");
 }
-
-*/

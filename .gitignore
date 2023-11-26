@@ -7,3 +7,4 @@
 .sconsign.dblite
 /station_data/**
 /netCDF_dump/**
+test.nc

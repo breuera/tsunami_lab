@@ -47,8 +47,8 @@ void tsunami_lab::io::NetCdf::initialize(const std::string &filename,
   handleNetCdfError(nc_put_att_text(m_ncid, m_y_varid, "units", strlen("meter"), "meter"), "Error adding text x dimension");
   handleNetCdfError(nc_put_att_text(m_ncid, m_time_varid, "units", strlen("seconds"), "seconds"), "Error adding text x dimension");
   handleNetCdfError(nc_put_att_text(m_ncid, m_h_varid, "units", strlen("meter"), "meter"), "Error adding text height dimension");
-  handleNetCdfError(nc_put_att_text(m_ncid, m_hu_varid, "units", strlen("seconds"), "seconds"), "Error adding text momentum_x dimension");
-  handleNetCdfError(nc_put_att_text(m_ncid, m_hv_varid, "units", strlen("seconds"), "seconds"), "Error adding text momentum_y dimension");
+  handleNetCdfError(nc_put_att_text(m_ncid, m_hu_varid, "units", strlen("newton-seconds"), "newton-seconds"), "Error adding text momentum_x dimension");
+  handleNetCdfError(nc_put_att_text(m_ncid, m_hv_varid, "units", strlen("newton-seconds"), "newton-seconds"), "Error adding text momentum_y dimension");
   handleNetCdfError(nc_put_att_text(m_ncid, m_b_varid, "units", strlen("meter"), "meter"), "Error adding text bathymetry dimension");
 
   handleNetCdfError(nc_enddef(m_ncid), "Error end defining: ");
