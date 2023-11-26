@@ -511,17 +511,26 @@ int main(int i_argc,
     // create station_data folder
     std::filesystem::create_directory("station_data");
 
+    // clear csv_dump
+    if (std::filesystem::exists("netCDF_dump"))
+    {
+        std::filesystem::remove_all("netCDF_dump");
+    }
+
+    // create csv_dump folder
+    std::filesystem::create_directory("netCDF_dump");
+
     tsunami_lab::io::NetCdf *write = nullptr;
 
     write = new tsunami_lab::io::NetCdf();
 
-    write->netCDF("test.nc",
+    write->netCDF("netCDF_dump/netCDFdump.nc",
                   l_dxy,
                   l_nx,
                   l_ny,
                   l_x_offset,
                   l_y_offset,
-                  l_waveProp->getBathymetry());
+                  write->removeGhostCells(l_waveProp->getBathymetry(), l_nx, l_ny, 1, 1, l_dxy));
 
     int multiplier = 0;
 
@@ -538,12 +547,11 @@ int main(int i_argc,
 
             std::ofstream l_file;
             l_file.open(l_path);
-            std::cout << "test: " << sizeof(l_waveProp->getHeight()) << std::endl;
             write->write(l_nx,
                          l_ny,
-                         l_waveProp->getHeight(),
-                         l_waveProp->getMomentumX(),
-                         l_waveProp->getMomentumY(),
+                         write->removeGhostCells(l_waveProp->getHeight(), l_nx, l_ny, 1, 1, l_dxy),
+                         write->removeGhostCells(l_waveProp->getMomentumX(), l_nx, l_ny, 1, 1, l_dxy),
+                         write->removeGhostCells(l_waveProp->getMomentumY(), l_nx, l_ny, 1, 1, l_dxy),
                          l_nOut,
                          l_simTime);
 

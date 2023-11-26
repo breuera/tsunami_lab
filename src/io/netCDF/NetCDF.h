@@ -24,7 +24,7 @@ class tsunami_lab::io::NetCdf
 {
 private:
   int m_ncid, m_x_dimid, m_y_dimid, m_time_dimid;
-  int m_x_varid, m_y_varid, m_z_varid, m_h_varid, m_hu_varid, m_hv_varid, m_b_varid;
+  int m_x_varid, m_y_varid, m_z_varid, m_h_varid, m_hu_varid, m_hv_varid, m_b_varid, m_time_varid;
 
 public:
   ~NetCdf();
@@ -44,6 +44,21 @@ public:
              t_real const *i_hv,
              t_idx timeStep,
              t_real i_time);
+
+  void read(t_idx *o_nx,
+            t_idx *o_ny,
+            t_real **o_x,
+            t_real **o_y,
+            t_real **o_z);
+
+  static void handleNetCdfError(int status, const std::string &errorMessage);
+
+  static t_real *removeGhostCells(const t_real *i_data,
+                                  t_idx m_nx,
+                                  t_idx m_ny,
+                                  t_idx m_ghostCellsX,
+                                  t_idx m_ghostCellsY,
+                                  t_idx m_stride);
 };
 
 #endif
