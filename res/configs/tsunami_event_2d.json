@@ -1,0 +1,10 @@
+{
+    "dimension": 2,
+    "nx": 500,
+    "ny": 500,
+    "xLen": 5000.0,
+    "yLen": 5000.0,
+    "simTime": 5000,
+    "boundaryCond": "OO",
+    "setup": "TsunamiEvent"
+}

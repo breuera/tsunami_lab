@@ -14,8 +14,10 @@
 #include <string>
 
 #include "../../io/Csv/Csv.h"
+#include "../../io/NetCDF/NetCDF.h"
 
 // include setup classes
+#include "../../setups/ArtificialTsunami2d/ArtificialTsunami2d.h"
 #include "../../setups/CustomSetup1d/CustomSetup1d.h"
 #include "../../setups/DamBreak1d/DamBreak1d.h"
 #include "../../setups/DamBreak2d/DamBreak2d.h"
@@ -24,6 +26,7 @@
 #include "../../setups/SubcriticalFlow1d/SubcriticalFlow1d.h"
 #include "../../setups/SupercriticalFlow1d/SupercriticalFlow1d.h"
 #include "../../setups/TsunamiEvent1d/TsunamiEvent1d.h"
+#include "../../setups/TsunamiEvent2d/TsunamiEvent2d.h"
 using json = nlohmann::json;
 
 tsunami_lab::t_idx tsunami_lab::io::ConfigLoader::loadConfig(std::string i_path,
@@ -138,6 +141,22 @@ tsunami_lab::t_idx tsunami_lab::io::ConfigLoader::loadConfig(std::string i_path,
         l_useRoeSolver = false;
     }
 
+    // set bathymetry and displacements file names
+    std::string l_bathymetryFileName, l_displacementsFileName;
+    if (l_configFile.contains("bathymetryFileName")) {
+        l_bathymetryFileName = l_configFile.at("bathymetryFileName");
+    } else {
+        std::cout << "bathymetryFileName takes on default value" << std::endl;
+        l_bathymetryFileName = "dummy_bathymetry.nc";
+    }
+
+    if (l_configFile.contains("displacementsFileName")) {
+        l_displacementsFileName = l_configFile.at("displacementsFileName");
+    } else {
+        std::cout << "displacementsFileName takes on default value" << std::endl;
+        l_displacementsFileName = "dummy_disp.nc";
+    }
+
     // set setup configuration
     std::string l_setupName;
     if (l_configFile.contains("setup")) {
@@ -174,6 +193,10 @@ tsunami_lab::t_idx tsunami_lab::io::ConfigLoader::loadConfig(std::string i_path,
         if (l_dimension == 1) {
             o_setup = new tsunami_lab::setups::CustomSetup1d(10, 10, -5, -5, 5);
         }
+    } else if (l_setupName.compare("ArtificialTsunamiEvent") == 0) {
+        if (l_dimension == 2) {
+            o_setup = new tsunami_lab::setups::ArtificialTsunami2d(l_xLen, l_yLen);
+        }
     } else if (l_setupName.compare("TsunamiEvent") == 0) {
         if (l_dimension == 1) {
             // set bathymetry file path
@@ -207,6 +230,50 @@ tsunami_lab::t_idx tsunami_lab::io::ConfigLoader::loadConfig(std::string i_path,
             delete[] l_distance;
             delete[] l_x;
             delete[] l_y;
+        } else if (l_dimension == 2) {
+            tsunami_lab::t_idx l_bathymetryDimX, l_bathymetryDimY, l_dispDimX, l_dispDimY;
+            tsunami_lab::t_real *l_bathymetry;
+            tsunami_lab::t_real *l_bathymetryPosX;
+            tsunami_lab::t_real *l_bathymetryPosY;
+            tsunami_lab::t_real *l_displacements;
+            tsunami_lab::t_real *l_dispPosX;
+            tsunami_lab::t_real *l_dispPosY;
+
+            int l_err = tsunami_lab::io::NetCDF::read(l_bathymetryFileName,
+                                                      l_displacementsFileName,
+                                                      &l_bathymetryDimX,
+                                                      &l_bathymetryDimY,
+                                                      l_bathymetryPosX,
+                                                      l_bathymetryPosY,
+                                                      l_bathymetry,
+                                                      &l_dispDimX,
+                                                      &l_dispDimY,
+                                                      l_dispPosX,
+                                                      l_dispPosY,
+                                                      l_displacements);
+
+            if (l_err != 0) {
+                std::cout << "Failed to read the betCDF files" << std::endl;
+                return EXIT_FAILURE;
+            }
+
+            o_setup = new tsunami_lab::setups::TsunamiEvent2d(l_bathymetry,
+                                                              l_bathymetryPosX,
+                                                              l_bathymetryDimX,
+                                                              l_bathymetryPosY,
+                                                              l_bathymetryDimY,
+                                                              l_displacements,
+                                                              l_dispPosX,
+                                                              l_dispDimX,
+                                                              l_dispPosY,
+                                                              l_dispDimY);
+
+            delete[] l_bathymetryPosX;
+            delete[] l_bathymetryPosY;
+            delete[] l_dispPosX;
+            delete[] l_dispPosY;
+            delete[] l_bathymetry;
+            delete[] l_displacements;
         }
     } else if (l_setupName.compare("Sanitize") == 0) {
         if (l_dimension == 1) {
