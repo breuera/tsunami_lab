@@ -40,14 +40,14 @@ tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent2d::getHeight(t_real in_x,
     // simple unoptimzed solution: iterate over array and store index of nearest Value
     int nearestValueX = 0;
     int nearestValueY = 0;
-    for (int i = 1; i < m_dimX_bathymetry; i++) {
+    for (t_idx i = 1; i < m_dimX_bathymetry; i++) {
         if (fabs(m_rawX_bathymetry[i] - in_x) < fabs(m_rawX_bathymetry[nearestValueX] - in_x)) {
             nearestValueX = i;
         }
     }
 
-    for (int i = 1; i < m_dimY_bathymetry; i++) {
-        if (fabs(m_rawX_bathymetry[i] - in_x) < fabs(m_rawX_bathymetry[nearestValueY] - in_x)) {
+    for (t_idx i = 1; i < m_dimY_bathymetry; i++) {
+        if (fabs(m_rawX_bathymetry[i] - in_y) < fabs(m_rawX_bathymetry[nearestValueY] - in_y)) {
             nearestValueY = i;
         }
     }
@@ -78,13 +78,13 @@ tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent2d::getBathymetry(t_real in
     // simple unoptimzed solution: iterate over array and store index of nearest Value
     t_idx nearestValueX = 0;
     t_idx nearestValueY = 0;
-    for (int i = 1; i < m_dimX_bathymetry; i++) {
+    for (t_idx i = 1; i < m_dimX_bathymetry; i++) {
         if (fabs(m_rawX_bathymetry[i] - in_x) < fabs(m_rawX_bathymetry[nearestValueX] - in_x)) {
             nearestValueX = i;
         }
     }
 
-    for (int i = 1; i < m_dimY_bathymetry; i++) {
+    for (t_idx i = 1; i < m_dimY_bathymetry; i++) {
         if (fabs(m_rawY_bathymetry[i] - in_y) < fabs(m_rawY_bathymetry[nearestValueY] - in_y)) {
             nearestValueY = i;
         }
@@ -104,7 +104,7 @@ tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent2d::getBathymetry(t_real in
 
     // if in domain of displacement look for nearest value
     if (in_x >= smallestX && in_x <= biggestX) {
-        for (int i = 1; i < m_dimX_displacement; i++) {
+        for (t_idx i = 1; i < m_dimX_displacement; i++) {
             if (fabs(m_rawX_displacement[i] - in_x) < fabs(m_rawX_displacement[nearestValueX] - in_x)) {
                 nearestValueX = i;
             }
@@ -112,7 +112,7 @@ tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent2d::getBathymetry(t_real in
     }
 
     if (in_y >= smallestY && in_x <= biggestY) {
-        for (int i = 1; i < m_dimY_displacement; i++) {
+        for (t_idx i = 1; i < m_dimY_displacement; i++) {
             if (fabs(m_rawY_displacement[i] - in_y) < fabs(m_rawY_displacement[nearestValueY] - in_y)) {
                 nearestValueY = i;
             }
