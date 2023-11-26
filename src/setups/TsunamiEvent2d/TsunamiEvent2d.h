@@ -10,6 +10,7 @@
 #ifndef TSUNAMI_LAB_SETUPS_TUSNAMI_EVENT_2D_H
 #define TSUNAMI_LAB_SETUPS_TUSNAMI_EVENT_2D_H
 
+#include "../../constants.h"
 #include "../Setup.h"
 
 namespace tsunami_lab {
@@ -26,18 +27,59 @@ class tsunami_lab::setups::TsunamiEvent2d : public Setup {
     //! bathymetry
     t_real *m_bathymetry;
 
+    //! raw X pos of bathymetry
+    t_real *m_rawX_bathymetry;
+
+    //! dimension of raw X pos of bathymetry
+    t_idx m_dimX_bathymetry;
+
+    //! raw Y pos of bathymetry
+    t_real *m_rawY_bathymetry;
+
+    //! dimension of raw Y pos of bathymetry
+    t_idx m_dimY_bathymetry;
+
     //! displacement
     t_real *m_displacement;
+
+    //! raw X pos of displacement
+    t_real *m_rawX_displacement;
+
+    //! dimension of raw X pos of displacement
+    t_idx m_dimX_displacement;
+
+    //! raw Y pos of displacement
+    t_real *m_rawY_displacement;
+
+    //! dimension of raw Y pos of displacement
+    t_idx m_dimY_displacement;
 
    public:
     /**
      * Constructor.
      *
-     * @param i_bathymetry bathymetry on location (x, y).
-     * @param i_displacement displacement on location (x, y).
+     * @param in_bathymetry bathymetry on location (x, y).
+     * @param in_rawX_bathymetry raw x values of bathymetry.
+     * @param in_dimX_bathymetry dimension of raw x values of bathymetry.
+     * @param in_rawY_bathymetry raw y values of bathymetry.
+     * @param in_dimY_bathymetry dimension of raw y values of bathymetry.
+     * @param in_displacement displacement on location (x, y).
+     * @param in_rawX_displacement raw x values of displacement.
+     * @param in_dimX_displacement dimension of raw x values of displacement.
+     * @param in_rawY_displacement raw y values of displacement.
+     * @param in_dimY_displacement dimension of raw y values of displacement.
+     *
      **/
-    TsunamiEvent2d(t_real *i_bathymetry,
-                   t_real *i_displacement);
+    TsunamiEvent2d(t_real *in_bathymetry,
+                   t_real *in_rawX_bathymetry,
+                   t_idx in_dimX_bathymetry,
+                   t_real *in_rawY_bathymetry,
+                   t_idx in_dimY_bathymetry,
+                   t_real *in_displacement,
+                   t_real *in_rawX_displacement,
+                   t_idx in_dimX_displacement,
+                   t_real *in_rawY_displacement,
+                   t_idx in_dimY_displacement);
 
     /**
      * Gets the height in x-direction.
