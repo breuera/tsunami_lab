@@ -372,6 +372,9 @@ int tsunami_lab::io::NetCDF::write(t_real i_time,
     return 0;
 }
 
+tsunami_lab::io::NetCDF::NetCDF() {
+}
+
 tsunami_lab::io::NetCDF::~NetCDF() {
     delete[] m_b;
 }
