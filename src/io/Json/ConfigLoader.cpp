@@ -25,6 +25,7 @@
 #include "../../setups/SubcriticalFlow1d/SubcriticalFlow1d.h"
 #include "../../setups/SupercriticalFlow1d/SupercriticalFlow1d.h"
 #include "../../setups/TsunamiEvent1d/TsunamiEvent1d.h"
+#include "../../setups/TsunamiEvent2d/TsunamiEvent2d.h"
 using json = nlohmann::json;
 
 tsunami_lab::t_idx tsunami_lab::io::ConfigLoader::loadConfig(std::string i_path,
@@ -212,6 +213,28 @@ tsunami_lab::t_idx tsunami_lab::io::ConfigLoader::loadConfig(std::string i_path,
             delete[] l_distance;
             delete[] l_x;
             delete[] l_y;
+        } else if (l_dimension == 2) {
+            // set bathymetry file path
+            std::string l_filePath = "./res/dem.csv";
+            tsunami_lab::t_idx l_sampleCount = 1763;
+
+            // set displacement file path
+            std::string l_filePath = "./res/dem.csv";
+            tsunami_lab::t_idx l_sampleCount = 1763;
+
+            std::ifstream l_stream;
+            // try to read bathymetry file
+            std::cout << "reading /res/dem.csv ..." << std::endl;
+            l_stream.open(l_filePath, std::fstream::in);
+
+            if (l_stream.fail()) {
+                std::cout << "failed to read /res/dem.csv" << std::endl;
+                return 0;
+            } else {
+                std::cout << "finished reading /res/dem.csv" << std::endl;
+            }
+
+            // das gleiche für displacement?
         }
     } else if (l_setupName.compare("Sanitize") == 0) {
         if (l_dimension == 1) {
