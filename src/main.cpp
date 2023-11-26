@@ -32,6 +32,7 @@
 #include "setups/supercritical1d/Supercritical1d.h"
 #include "setups/tsunamievent1d/TsunamiEvent1d.h"
 #include "setups/tsunamievent2d/TsunamiEvent2d.h"
+#include "setups/artificialTsunami2d/ArtificialTsunami2d.h"
 
 // declaration of variables
 int solver_choice = 0;
@@ -266,10 +267,23 @@ int main(int i_argc,
             {
                 std::cout << "using TsunamiEvent2d() setup" << std::endl;
 
-                l_width = 5;
-                l_endTime = 0.5;
+                l_width = 10000;
+                l_x_offset = 5000;
+                l_y_offset = 5000;
+                l_endTime = 300;
 
                 l_setup = new tsunami_lab::setups::TsunamiEvent2d();
+            }
+            else if (tokens[0] == "artificial2d" && dimension == 2)
+            {
+                std::cout << "using ArtificialTsunami2d() setup" << std::endl;
+
+                l_width = 10000;
+                l_x_offset = 5000;
+                l_y_offset = 5000;
+                l_endTime = 300;
+
+                l_setup = new tsunami_lab::setups::ArtificialTsunami2d();
             }
             else if (tokens[0] == "dambreak2d" && dimension == 2)
             {
@@ -541,7 +555,7 @@ int main(int i_argc,
                                l_ny,
                                l_x_offset,
                                l_y_offset,
-                               netcdf_manager->removeGhostCells(l_waveProp->getBathymetry(), l_nx, l_ny, 1, 1, l_dxy));
+                               netcdf_manager->removeGhostCells(l_waveProp->getBathymetry(), l_nx, l_ny, 1, 1, l_waveProp->getStride()));
 
     int multiplier = 0;
 
@@ -578,9 +592,24 @@ int main(int i_argc,
             {
                 netcdf_manager->write(l_nx,
                                       l_ny,
-                                      netcdf_manager->removeGhostCells(l_waveProp->getHeight(), l_nx, l_ny, 1, 1, l_dxy),
-                                      netcdf_manager->removeGhostCells(l_waveProp->getMomentumX(), l_nx, l_ny, 1, 1, l_dxy),
-                                      netcdf_manager->removeGhostCells(l_waveProp->getMomentumY(), l_nx, l_ny, 1, 1, l_dxy),
+                                      netcdf_manager->removeGhostCells(l_waveProp->getHeight(),
+                                                                       l_nx,
+                                                                       l_ny,
+                                                                       1,
+                                                                       1,
+                                                                       l_waveProp->getStride()),
+                                      netcdf_manager->removeGhostCells(l_waveProp->getMomentumX(),
+                                                                       l_nx,
+                                                                       l_ny,
+                                                                       1,
+                                                                       1,
+                                                                       l_waveProp->getStride()),
+                                      netcdf_manager->removeGhostCells(l_waveProp->getMomentumY(),
+                                                                       l_nx,
+                                                                       l_ny,
+                                                                       1,
+                                                                       1,
+                                                                       l_waveProp->getStride()),
                                       l_nOut,
                                       l_simTime);
             }

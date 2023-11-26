@@ -14,6 +14,16 @@
 #include <vector>
 #include "../../io/csv/Csv.h"
 
+tsunami_lab::setups::TsunamiEvent2d::~TsunamiEvent2d()
+{
+  delete[] m_bathymetry_values_x;
+  delete[] m_bathymetry_values_y;
+  delete[] m_bathymetry;
+  delete[] m_displacement_values_x;
+  delete[] m_displacement_values_y;
+  delete[] m_displacement;
+}
+
 tsunami_lab::setups::TsunamiEvent2d::TsunamiEvent2d()
 {
   tsunami_lab::io::NetCdf *netCDF = nullptr;
@@ -25,19 +35,21 @@ tsunami_lab::setups::TsunamiEvent2d::TsunamiEvent2d()
   std::string bat_path = "data/artificialtsunami/artificialtsunami_bathymetry_1000.nc";
   std::string dis_path = "data/artificialtsunami/artificialtsunami_displ_1000.nc";
 
-  netCDF->read(m_bathymetry_length_x,
-               m_bathymetry_length_y,
+  netCDF->read(&m_bathymetry_length_x,
+               &m_bathymetry_length_y,
                &m_bathymetry_values_x,
                &m_bathymetry_values_y,
                &m_bathymetry,
                bat_path);
 
-  netCDF->read(m_displacement_length_x,
-               m_displacement_length_y,
+  netCDF->read(&m_displacement_length_x,
+               &m_displacement_length_y,
                &m_displacement_values_x,
                &m_displacement_values_y,
                &m_displacement,
                dis_path);
+
+  delete netCDF;
 }
 
 tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent2d::getHeight(t_real i_x,
@@ -84,11 +96,44 @@ tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent2d::getBathymetry(t_real i_
 tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent2d::getDisplacement(t_real i_x,
                                                                          t_real i_y) const
 {
-  return m_displacement[(int)std::floor(i_y) * m_bathymetry_length_x + (int)std::floor(i_x)];
+  if (i_x < m_displacement_values_x[0] || i_x > m_displacement_values_x[m_displacement_length_x - 1])
+  {
+    return 0;
+  }
+  if (i_y < m_displacement_values_y[0] || i_y > m_displacement_values_y[m_displacement_length_y - 1])
+  {
+    return 0;
+  }
+
+  t_real l_dxy = m_displacement_values_x[1] - m_displacement_values_x[0];
+  t_real l_offset_x = m_displacement_values_x[0];
+  t_real l_offset_y = m_displacement_values_y[0];
+
+  t_idx l_x = (i_x - l_offset_x) / l_dxy;
+  t_idx l_y = (i_y - l_offset_y) / l_dxy;
+
+  return m_displacement[l_y * m_displacement_length_x + l_x];
 }
 
 tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent2d::getBathymetryFromNetCdf(t_real i_x,
                                                                                  t_real i_y) const
 {
-  return m_bathymetry[(int)std::floor(i_y) * m_bathymetry_length_x + (int)std::floor(i_x)];
+
+  if (i_x < m_bathymetry_values_x[0] || i_x > m_bathymetry_values_x[m_bathymetry_length_x - 1])
+  {
+    return 0;
+  }
+  if (i_y < m_bathymetry_values_y[0] || i_y > m_bathymetry_values_y[m_bathymetry_length_y - 1])
+  {
+    return 0;
+  }
+
+  t_real l_dxy = m_bathymetry_values_x[1] - m_bathymetry_values_x[0];
+  t_real l_offset_x = m_bathymetry_values_x[0];
+  t_real l_offset_y = m_bathymetry_values_y[0];
+
+  t_idx l_x = (i_x - l_offset_x) / l_dxy;
+  t_idx l_y = (i_y - l_offset_y) / l_dxy;
+
+  return m_bathymetry[l_y * m_bathymetry_length_x + l_x];
 }

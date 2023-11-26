@@ -22,7 +22,7 @@ TEST_CASE("Test the one-dimensional TsunamiEvent2d setup.", "[TsunamiEvent2d]")
     // b_in > 20
     tsunami_lab::t_real end = 375000;
 
-    tsunami_lab::setups::TsunamiEvent2d l_tsunamievent(m_b_in);
+    tsunami_lab::setups::TsunamiEvent2d l_tsunamievent();
 
     //
     REQUIRE(l_tsunamievent.getHeight(beginning, 0) == 20.0f);

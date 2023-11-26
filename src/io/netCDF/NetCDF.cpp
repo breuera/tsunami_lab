@@ -3,7 +3,8 @@
  * @author Maurice Herold (maurice.herold AT uni-jena.de)
  *
  * @section DESCRIPTION
- * IO-routines for writing a snapshot as Comma Separated Values (CSV).
+ * IO-routines for writing and reading large data
+ *
  **/
 #include "NetCDF.h"
 #include <netcdf.h>
@@ -12,7 +13,10 @@
 
 tsunami_lab::io::NetCdf::~NetCdf()
 {
-  handleNetCdfError(nc_close(m_ncid), "Error closing netCDF file");
+  if (m_ncid != -1)
+  {
+    handleNetCdfError(nc_close(m_ncid), "Error closing netCDF file: ");
+  }
 }
 
 void tsunami_lab::io::NetCdf::initialize(const std::string &filename,
@@ -43,13 +47,13 @@ void tsunami_lab::io::NetCdf::initialize(const std::string &filename,
   int bathy_dims[2] = {m_y_dimid, m_x_dimid};
   handleNetCdfError(nc_def_var(m_ncid, "bathymetry", NC_FLOAT, 2, bathy_dims, &m_b_varid), "Error define bathymetry variable:");
 
-  handleNetCdfError(nc_put_att_text(m_ncid, m_x_varid, "units", strlen("meter"), "meter"), "Error adding text x dimension");
-  handleNetCdfError(nc_put_att_text(m_ncid, m_y_varid, "units", strlen("meter"), "meter"), "Error adding text x dimension");
-  handleNetCdfError(nc_put_att_text(m_ncid, m_time_varid, "units", strlen("seconds"), "seconds"), "Error adding text x dimension");
-  handleNetCdfError(nc_put_att_text(m_ncid, m_h_varid, "units", strlen("meter"), "meter"), "Error adding text height dimension");
-  handleNetCdfError(nc_put_att_text(m_ncid, m_hu_varid, "units", strlen("newton-seconds"), "newton-seconds"), "Error adding text momentum_x dimension");
-  handleNetCdfError(nc_put_att_text(m_ncid, m_hv_varid, "units", strlen("newton-seconds"), "newton-seconds"), "Error adding text momentum_y dimension");
-  handleNetCdfError(nc_put_att_text(m_ncid, m_b_varid, "units", strlen("meter"), "meter"), "Error adding text bathymetry dimension");
+  handleNetCdfError(nc_put_att_text(m_ncid, m_x_varid, "units", 5, "meter"), "Error adding text x dimension");
+  handleNetCdfError(nc_put_att_text(m_ncid, m_y_varid, "units", 5, "meter"), "Error adding text y dimension");
+  handleNetCdfError(nc_put_att_text(m_ncid, m_time_varid, "units", 7, "seconds"), "Error adding text x dimension");
+  handleNetCdfError(nc_put_att_text(m_ncid, m_h_varid, "units", 5, "meter"), "Error adding text height dimension");
+  handleNetCdfError(nc_put_att_text(m_ncid, m_hu_varid, "units", 14, "newton-seconds"), "Error adding text momentum_x dimension");
+  handleNetCdfError(nc_put_att_text(m_ncid, m_hv_varid, "units", 14, "newton-seconds"), "Error adding text momentum_y dimension");
+  handleNetCdfError(nc_put_att_text(m_ncid, m_b_varid, "units", 5, "meter"), "Error adding text bathymetry dimension");
 
   handleNetCdfError(nc_enddef(m_ncid), "Error end defining: ");
 
@@ -73,6 +77,7 @@ void tsunami_lab::io::NetCdf::initialize(const std::string &filename,
 
   delete[] l_x;
   delete[] l_y;
+  delete[] i_b;
 }
 
 void tsunami_lab::io::NetCdf::write(t_idx i_nx,
@@ -92,10 +97,14 @@ void tsunami_lab::io::NetCdf::write(t_idx i_nx,
   handleNetCdfError(nc_put_var1_float(m_ncid, m_time_varid, &timeStep, &i_time), "Error put time variables: ");
 
   handleNetCdfError(nc_put_vara_float(m_ncid, m_hv_varid, start, count, i_hv), "Error put momentum_y variables: ");
+
+  delete[] i_h;
+  delete[] i_hu;
+  delete[] i_hv;
 }
 
-void tsunami_lab::io::NetCdf::read(t_idx &o_nx,
-                                   t_idx &o_ny,
+void tsunami_lab::io::NetCdf::read(t_idx *o_nx,
+                                   t_idx *o_ny,
                                    t_real **o_x,
                                    t_real **o_y,
                                    t_real **o_z,
@@ -105,36 +114,40 @@ void tsunami_lab::io::NetCdf::read(t_idx &o_nx,
   std::cout << "NetCDF:: Looking for file: " << filename << std::endl;
   t_idx l_nx, l_ny;
 
-  handleNetCdfError(nc_open(filename.data(), NC_NOWRITE, &m_ncid), "Error open file: ");
+  int l_ncid_read;
 
-  handleNetCdfError(nc_inq_dimid(m_ncid, "x", &m_x_varid), "Error getting y dimension id: ");
-  handleNetCdfError(nc_inq_dimid(m_ncid, "y", &m_y_varid), "Error getting y dimension id: ");
+  handleNetCdfError(nc_open(filename.data(), NC_NOWRITE, &l_ncid_read), "Error open file: ");
 
-  handleNetCdfError(nc_inq_dimlen(m_ncid, m_x_varid, &l_nx), "Error getting x dimension length: ");
-  handleNetCdfError(nc_inq_dimlen(m_ncid, m_y_varid, &l_ny), "Error getting y dimension length: ");
+  int l_x_dimid_read, l_y_dimid_read;
 
-  handleNetCdfError(nc_inq_varid(m_ncid, "x", &m_x_varid), "Error getting x value id: ");
-  handleNetCdfError(nc_inq_varid(m_ncid, "y", &m_y_varid), "Error getting y value id:");
-  handleNetCdfError(nc_inq_varid(m_ncid, "z", &m_z_varid), "Error getting z value id:");
+  handleNetCdfError(nc_inq_dimid(l_ncid_read, "x", &l_x_dimid_read), "Error getting y dimension id: ");
+  handleNetCdfError(nc_inq_dimid(l_ncid_read, "y", &l_y_dimid_read), "Error getting y dimension id: ");
+
+  handleNetCdfError(nc_inq_dimlen(l_ncid_read, l_x_dimid_read, &l_nx), "Error getting x dimension length: ");
+  handleNetCdfError(nc_inq_dimlen(l_ncid_read, l_y_dimid_read, &l_ny), "Error getting y dimension length: ");
+
+  int l_x_varid_read, l_y_varid_read, l_z_varid_read;
+
+  handleNetCdfError(nc_inq_varid(l_ncid_read, "x", &l_x_varid_read), "Error getting x value id: ");
+  handleNetCdfError(nc_inq_varid(l_ncid_read, "y", &l_y_varid_read), "Error getting y value id:");
+  handleNetCdfError(nc_inq_varid(l_ncid_read, "z", &l_z_varid_read), "Error getting z value id:");
 
   t_real *l_xv, *l_yv, *l_zv;
   l_xv = new t_real[l_nx];
   l_yv = new t_real[l_ny];
   l_zv = new t_real[l_nx * l_ny];
 
-  handleNetCdfError(nc_get_var_float(m_ncid, m_x_varid, l_xv), "Error getting x value: ");
-  handleNetCdfError(nc_get_var_float(m_ncid, m_y_varid, l_yv), "Error getting y value: ");
-  handleNetCdfError(nc_get_var_float(m_ncid, m_z_varid, l_zv), "Error getting z value: ");
+  handleNetCdfError(nc_get_var_float(l_ncid_read, l_x_varid_read, l_xv), "Error getting x value: ");
+  handleNetCdfError(nc_get_var_float(l_ncid_read, l_y_varid_read, l_yv), "Error getting y value: ");
+  handleNetCdfError(nc_get_var_float(l_ncid_read, l_z_varid_read, l_zv), "Error getting z value: ");
 
-  o_nx = l_nx;
-  o_ny = l_ny;
+  *o_nx = l_nx;
+  *o_ny = l_ny;
   *o_x = l_xv;
   *o_y = l_yv;
   *o_z = l_zv;
 
-  delete[] l_xv;
-  delete[] l_yv;
-  delete[] l_zv;
+  handleNetCdfError(nc_close(l_ncid_read), "Error closing file: ");
 }
 
 void tsunami_lab::io::NetCdf::handleNetCdfError(int status, const std::string &errorMessage)
@@ -155,15 +168,14 @@ tsunami_lab::t_real *tsunami_lab::io::NetCdf::removeGhostCells(const t_real *i_d
 {
   t_real *l_o = new t_real[i_nx * i_ny];
 
-  for (t_idx l_x = i_ghostCellsX; l_x < i_nx + i_ghostCellsX; l_x++)
+  for (t_idx l_x = 0; l_x < i_nx; l_x++)
   {
-    for (t_idx l_y = i_ghostCellsY; l_y < i_ny + i_ghostCellsY; l_y++)
+    for (t_idx l_y = 0; l_y < i_ny; l_y++)
     {
-      t_idx l_id = l_y * i_stride + l_x;
+      t_idx l_id = (l_y + i_ghostCellsY) * i_stride + (l_x + i_ghostCellsX);
 
       l_o[l_y * i_nx + l_x] = i_d[(l_id)];
     }
   }
   return l_o;
-  delete[] l_o;
 }

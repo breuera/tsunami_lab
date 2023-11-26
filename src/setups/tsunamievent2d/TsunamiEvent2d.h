@@ -86,6 +86,12 @@ public:
   TsunamiEvent2d();
 
   /**
+   * @brief Destroy the Tsunami Event 2d object
+   *
+   */
+  ~TsunamiEvent2d();
+
+  /**
    * Gets the water height.
    *
    * @param i_x x-coordinate of the queried point.
