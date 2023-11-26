@@ -89,8 +89,7 @@ class tsunami_lab::setups::TsunamiEvent2d : public Setup {
      * @return height in x-direction.
      **/
     t_real getHeight(t_real in_x,
-                     t_real in_y,
-                     t_real) const;
+                     t_real in_y) const;
 
     /**
      * Gets the momentum in x-direction.
@@ -117,8 +116,7 @@ class tsunami_lab::setups::TsunamiEvent2d : public Setup {
      * @return bathymetry at the given point.
      **/
     t_real getBathymetry(t_real in_x,
-                         t_real in_y,
-                         t_real) const;
+                         t_real in_y) const;
 };
 
 #endif

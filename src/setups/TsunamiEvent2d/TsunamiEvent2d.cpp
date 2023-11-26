@@ -35,8 +35,7 @@ tsunami_lab::setups::TsunamiEvent2d::TsunamiEvent2d(t_real *in_bathymetry,
 }
 
 tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent2d::getHeight(t_real in_x,
-                                                                   t_real in_y,
-                                                                   t_real) const {
+                                                                   t_real in_y) const {
     // convert scaled x,y to given values from netCDF
     // simple unoptimzed solution: iterate over array and store index of nearest Value
     int nearestValueX = 0;
@@ -74,8 +73,7 @@ tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent2d::getMomentumY(t_real,
 }
 
 tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent2d::getBathymetry(t_real in_x,
-                                                                       t_real in_y,
-                                                                       t_real) const {
+                                                                       t_real in_y) const {
     // convert scaled x,y to given values from netCDF
     // simple unoptimzed solution: iterate over array and store index of nearest Value
     t_idx nearestValueX = 0;

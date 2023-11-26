@@ -144,9 +144,17 @@ tsunami_lab::t_idx tsunami_lab::io::ConfigLoader::loadConfig(std::string i_path,
     // set bathymetry and displacements file names
     std::string l_bathymetryFileName, l_displacementsFileName;
     if (l_configFile.contains("bathymetryFileName")) {
-        l_bathymetryFileName = l_configFile.at("BathymetryFileName");
+        l_bathymetryFileName = l_configFile.at("bathymetryFileName");
     } else {
-        std::cout << "BathymetryFileName takes on default value" << std::endl;
+        std::cout << "bathymetryFileName takes on default value" << std::endl;
+        l_bathymetryFileName = "dummy_bathymetry.nc";
+    }
+
+    if (l_configFile.contains("displacementsFileName")) {
+        l_displacementsFileName = l_configFile.at("displacementsFileName");
+    } else {
+        std::cout << "displacementsFileName takes on default value" << std::endl;
+        l_displacementsFileName = "dummy_disp.nc";
     }
 
     // set setup configuration
@@ -244,7 +252,21 @@ tsunami_lab::t_idx tsunami_lab::io::ConfigLoader::loadConfig(std::string i_path,
                                                       l_dispPosY,
                                                       l_displacements);
 
-            tsunami_lab::setups::TsunamiEvent2d();
+            if (l_err != 0) {
+                std::cout << "Failed to read the betCDF files" << std::endl;
+                return EXIT_FAILURE;
+            }
+
+            o_setup = new tsunami_lab::setups::TsunamiEvent2d(l_bathymetry,
+                                                              l_bathymetryPosX,
+                                                              l_bathymetryDimX,
+                                                              l_bathymetryPosY,
+                                                              l_bathymetryDimY,
+                                                              l_displacements,
+                                                              l_dispPosX,
+                                                              l_dispDimX,
+                                                              l_dispPosY,
+                                                              l_dispDimY);
 
             delete[] l_bathymetryPosX;
             delete[] l_bathymetryPosY;
