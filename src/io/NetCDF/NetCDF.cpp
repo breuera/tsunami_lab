@@ -273,6 +273,10 @@ int tsunami_lab::io::NetCDF::init(t_real i_dxy,
         return 1;
     }
 
+    delete[] l_dataY;
+    delete[] l_dataX;
+    delete[] l_bathymetry;
+
     return 0;
 }
 
