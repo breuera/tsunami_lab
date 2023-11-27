@@ -77,7 +77,7 @@ void tsunami_lab::io::NetCdf::initialize(const std::string &filename,
 
   delete[] l_x;
   delete[] l_y;
-  delete i_b;
+  delete[] i_b;
 }
 
 void tsunami_lab::io::NetCdf::write(t_idx i_nx,
@@ -97,6 +97,10 @@ void tsunami_lab::io::NetCdf::write(t_idx i_nx,
   handleNetCdfError(nc_put_var1_float(m_ncid, m_time_varid, &timeStep, &i_time), "Error put time variables: ");
 
   handleNetCdfError(nc_put_vara_float(m_ncid, m_hv_varid, start, count, i_hv), "Error put momentum_y variables: ");
+
+  delete[] i_h;
+  delete[] i_hu;
+  delete[] i_hv;
 }
 
 void tsunami_lab::io::NetCdf::read(t_idx *o_nx,

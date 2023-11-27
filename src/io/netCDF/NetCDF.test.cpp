@@ -15,7 +15,7 @@
 #define private public
 #undef public
 
-/*TEST_CASE("Test the NetCDF-writer.", "[NetCDFWrite2d]")
+TEST_CASE("Test the NetCDF-writer.", "[NetCDFWrite2d]")
 {
 
     if (std::filesystem::exists("netCDF_dump"))
@@ -42,7 +42,7 @@
                        4,
                        0,
                        0,
-                       l_b);
+                       writer->removeGhostCells(l_b, 4, 4, 0, 0, 4));
 
     tsunami_lab::t_real l_h[16] = {0, 1, 2, 3,
                                    4, 5, 6, 7,
@@ -58,9 +58,9 @@
                                     3, 7, 11, 15};
     writer->write(4,
                   4,
-                  l_h,
-                  l_hu,
-                  l_hv,
+                  writer->removeGhostCells(l_h, 4, 4, 0, 0, 4),
+                  writer->removeGhostCells(l_hu, 4, 4, 0, 0, 4),
+                  writer->removeGhostCells(l_hv, 4, 4, 0, 0, 4),
                   0,
                   0.2);
 
@@ -73,9 +73,9 @@
 
     writer->write(4,
                   4,
-                  l_h,
-                  l_hu,
-                  l_hv,
+                  writer->removeGhostCells(l_h, 4, 4, 0, 0, 4),
+                  writer->removeGhostCells(l_hu, 4, 4, 0, 0, 4),
+                  writer->removeGhostCells(l_hv, 4, 4, 0, 0, 4),
                   1,
                   1.8);
     delete writer;
@@ -158,7 +158,7 @@
     delete[] l_ht;
     delete[] l_hut;
     delete[] l_hvt;
-}*/
+}
 
 TEST_CASE("Test the NetCDF-reader.", "[NetCDFRead2d]")
 {
