@@ -36,6 +36,18 @@ TEST_CASE("Test the NetCDF writer.", "[NetCDFWrite]") {
     REQUIRE(l_writer->write(0.5, 0, h1, hu1, hv1) == NC_NOERR);
     REQUIRE(l_writer->write(1.0, 1, h2, hu2, hv2) == NC_NOERR);
 
+    int l_ncId;
+    int l_varIDx, l_varIDy, l_varIDtime, l_varIDheight, l_varIDmomentumX, l_varIDmomentumY, l_varIDbathymetry;
+
+    REQUIRE(nc_open("./out/solution.nc", NC_NOWRITE, &l_ncId) == NC_NOERR);
+    REQUIRE(nc_inq_varid(l_ncId, "x", &l_varIDx) == NC_NOERR);
+    REQUIRE(nc_inq_varid(l_ncId, "y", &l_varIDy) == NC_NOERR);
+    REQUIRE(nc_inq_varid(l_ncId, "time", &l_varIDtime) == NC_NOERR);
+    REQUIRE(nc_inq_varid(l_ncId, "height", &l_varIDheight) == NC_NOERR);
+    REQUIRE(nc_inq_varid(l_ncId, "momentum_x", &l_varIDmomentumX) == NC_NOERR);
+    REQUIRE(nc_inq_varid(l_ncId, "momentum_y", &l_varIDmomentumY) == NC_NOERR);
+    REQUIRE(nc_inq_varid(l_ncId, "bathymetry", &l_varIDbathymetry) == NC_NOERR);
+
     delete l_writer;
 }
 
