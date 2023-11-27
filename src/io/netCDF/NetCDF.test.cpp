@@ -224,6 +224,9 @@ TEST_CASE("Test the NetCDF-reader.", "[NetCDFRead2d]")
     delete[] l_xv;
     delete[] l_yv;
     delete[] l_zv;
+    delete[] l_x;
+    delete[] l_y;
+    delete[] l_z;
     delete netCDF;
     std::filesystem::remove_all("test.nc");
 }
