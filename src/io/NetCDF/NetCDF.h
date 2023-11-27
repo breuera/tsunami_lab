@@ -13,6 +13,7 @@
 #include <netcdf.h>
 
 #include <string>
+#include <cstring>
 
 #include "../../constants.h"
 
