@@ -112,6 +112,10 @@ int main(int i_argc,
     // construct solver
     tsunami_lab::patches::WavePropagation *l_waveProp;
 
+    tsunami_lab::io::NetCdf *netcdf_manager = nullptr;
+
+    netcdf_manager = new tsunami_lab::io::NetCdf();
+
     // construct setup with default value
     tsunami_lab::setups::Setup *l_setup = new tsunami_lab::setups::DamBreak2d();
     tsunami_lab::io::Stations *l_stations = nullptr;
@@ -436,6 +440,13 @@ int main(int i_argc,
         break;
 
     case 2:
+        netcdf_manager->initialize("netCDF_dump/netCDFdump.nc",
+                                   l_dxy,
+                                   l_nx,
+                                   l_ny,
+                                   l_x_offset,
+                                   l_y_offset,
+                                   netcdf_manager->removeGhostCells(l_waveProp->getBathymetry(), l_nx, l_ny, 1, 1, l_waveProp->getStride()));
         l_ny = l_nx;
         l_waveProp = new tsunami_lab::patches::WavePropagation2d(l_nx,
                                                                  l_ny,
@@ -544,18 +555,6 @@ int main(int i_argc,
 
     // create csv_dump folder
     std::filesystem::create_directory("netCDF_dump");
-
-    tsunami_lab::io::NetCdf *netcdf_manager = nullptr;
-
-    netcdf_manager = new tsunami_lab::io::NetCdf();
-
-    netcdf_manager->initialize("netCDF_dump/netCDFdump.nc",
-                               l_dxy,
-                               l_nx,
-                               l_ny,
-                               l_x_offset,
-                               l_y_offset,
-                               netcdf_manager->removeGhostCells(l_waveProp->getBathymetry(), l_nx, l_ny, 1, 1, l_waveProp->getStride()));
 
     int multiplier = 0;
 
