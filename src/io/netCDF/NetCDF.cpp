@@ -77,6 +77,7 @@ void tsunami_lab::io::NetCdf::initialize(const std::string &filename,
 
   delete[] l_x;
   delete[] l_y;
+  delete i_b;
 }
 
 void tsunami_lab::io::NetCdf::write(t_idx i_nx,
