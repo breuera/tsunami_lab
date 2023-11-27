@@ -6,60 +6,60 @@
 name: Tsunami Lab
 
 on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
-  schedule:
-    - cron: 0 0 * * *
+   workflow_dispatch:
+   push:
+      branches: [main]
+   pull_request:
+      branches: [main]
+   schedule:
+      - cron: 0 0 * * *
 
 jobs:
-  CI:
-    runs-on: ubuntu-latest
+   CI:
+      runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v4
+      steps:
+         - uses: actions/checkout@v4
 
-      - name: Dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install scons
-          sudo apt-get install valgrind
-          sudo apt-get install cppcheck
-          sudo apt-get install libnetcdf-c++4-dev
-          git submodule init
-          git submodule update
+         - name: Dependencies
+           run: |
+              sudo apt-get update
+              sudo apt-get install scons
+              sudo apt-get install valgrind
+              sudo apt-get install cppcheck
+              sudo apt-get install libnetcdf-c++4-dev
+              git submodule init
+              git submodule update
 
-      - name: Static Code Analysis
-        run: cppcheck src/ --template=gcc --force --error-exitcode=1
+         - name: Static Code Analysis
+           run: cppcheck src/ --template=gcc --force --error-exitcode=1
 
-      - name: Static Code Analysis
-        run: cppcheck src/ --template=gcc --force --error-exitcode=1
+         - name: Static Code Analysis
+           run: cppcheck src/ --template=gcc --force --error-exitcode=1
 
-      - name: Sanitize
-        run: |
-          scons mode=debug+san
-          ./build/tests
-          ./build/tsunami_lab small_dam_break_1d.json
-          ./build/tsunami_lab small_dam_break_2d.json
-          scons mode=release+san
-          ./build/tests
-          ./build/tsunami_lab dam_break_1d.json
+         - name: Sanitize
+           run: |
+              scons mode=debug+san
+              ./build/tests
+              ./build/tsunami_lab small_dam_break_1d.json
+              ./build/tsunami_lab small_dam_break_2d.json
+              scons mode=release+san
+              ./build/tests
+              ./build/tsunami_lab dam_break_1d.json
 
-      - name: Valgrind
-        run: |
-          scons mode=debug
-          valgrind ./build/tests
-          valgrind ./build/tsunami_lab small_dam_break_1d.json
-          valgrind ./build/tsunami_lab small_dam_break_2d.json
+         - name: Valgrind
+           run: |
+              scons mode=debug
+              valgrind ./build/tests
+              valgrind ./build/tsunami_lab small_dam_break_1d.json
+              valgrind ./build/tsunami_lab small_dam_break_2d.json
 
-      - name: Release
-        run: |
-          scons
-          ./build/tests
-          ./build/tsunami_lab dam_break_1d.json
-          ./build/tsunami_lab rare_rare_1d.json
-          ./build/tsunami_lab shock_shock_1d.json
-          ./build/tsunami_lab subcritical_flow_1d.json
-          ./build/tsunami_lab supercritical_flow_1d.json
-          
+         - name: Release
+           run: |
+              scons
+              ./build/tests
+              ./build/tsunami_lab dam_break_1d.json
+              ./build/tsunami_lab rare_rare_1d.json
+              ./build/tsunami_lab shock_shock_1d.json
+              ./build/tsunami_lab subcritical_flow_1d.json
+              ./build/tsunami_lab supercritical_flow_1d.json
