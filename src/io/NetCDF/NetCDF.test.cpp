@@ -17,6 +17,28 @@
 #include "NetCDF.h"
 #undef public
 
+TEST_CASE("Test the NetCDF writer.", "[NetCDFWrite]") {
+    tsunami_lab::io::NetCDF *l_writer = new tsunami_lab::io::NetCDF();
+
+    // -1 == ghost cell
+    tsunami_lab::t_real b[16] = {-1, -1, -1, -1,
+                                 -1, 1, 2, -1,
+                                 -1, 3, 4, -1,
+                                 -1, -1, -1, -1};
+    tsunami_lab::t_real h1[16] = {-1, -1, -1, -1, -1, 1, 2, -1, -1, 3, 4, -1, -1, -1, -1, -1};
+    tsunami_lab::t_real hu1[16] = {-1, -1, -1, -1, -1, 1, 2, -1, -1, 3, 4, -1, -1, -1, -1, -1};
+    tsunami_lab::t_real hv1[16] = {-1, -1, -1, -1, -1, 1, 2, -1, -1, 3, 4, -1, -1, -1, -1, -1};
+    tsunami_lab::t_real h2[16] = {-1, -1, -1, -1, -1, 4, 3, -1, -1, 2, 1, -1, -1, -1, -1, -1};
+    tsunami_lab::t_real hu2[16] = {-1, -1, -1, -1, -1, 4, 3, -1, -1, 2, 1, -1, -1, -1, -1, -1};
+    tsunami_lab::t_real hv2[16] = {-1, -1, -1, -1, -1, 4, 3, -1, -1, 2, 1, -1, -1, -1, -1, -1};
+
+    REQUIRE(l_writer->init(1, 2, 2, 4, b) == NC_NOERR);
+    REQUIRE(l_writer->write(0.5, 0, h1, hu1, hv1) == NC_NOERR);
+    REQUIRE(l_writer->write(1.0, 1, h2, hu2, hv2) == NC_NOERR);
+
+    delete l_writer;
+}
+
 TEST_CASE("Test the NetCDF read.", "[NetCDFRead]") {
     std::string l_bathymetryName = "dummy_bathymetry.nc";
     std::string l_displacementsName = "dummy_disp.nc";
