@@ -169,7 +169,7 @@ tsunami_lab::t_real *tsunami_lab::io::NetCdf::removeGhostCells(const t_real *i_d
     {
       t_idx l_id = (l_y + i_ghostCellsY) * i_stride + (l_x + i_ghostCellsX);
 
-      l_o[l_y * i_nx + l_x] = i_d[(l_id)];
+      l_o[l_y * i_ny + l_x] = i_d[(l_id)];
     }
   }
   return l_o;
