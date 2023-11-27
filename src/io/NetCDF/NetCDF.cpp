@@ -181,18 +181,23 @@ int tsunami_lab::io::NetCDF::init(t_real i_dxy,
 
     // define variables
     l_nc_err = nc_def_var(m_ncId, "x", NC_FLOAT, 1, &l_dimXId, &l_varXId);
+	 l_nc_err += nc_put_att_text(m_ncId, l_varXId, "units", 6, "meters");
+	 l_nc_err += nc_put_att_text(m_ncId, l_varXId, "axis", 1, "X");
     if (l_nc_err != NC_NOERR) {
         std::cout << "Error: " << nc_strerror(l_nc_err) << std::endl;
         return 1;
     }
 
     l_nc_err = nc_def_var(m_ncId, "y", NC_FLOAT, 1, &l_dimYId, &l_varYId);
+	 l_nc_err += nc_put_att_text(m_ncId, l_varYId, "units", 6, "meters");
+	 l_nc_err += nc_put_att_text(m_ncId, l_varXId, "axis", 1, "Y");
     if (l_nc_err != NC_NOERR) {
         std::cout << "Error: " << nc_strerror(l_nc_err) << std::endl;
         return 1;
     }
 
     l_nc_err = nc_def_var(m_ncId, "time", NC_FLOAT, 1, &l_dimTimeId, &l_varTimeId);
+	 l_nc_err += nc_put_att_text(m_ncId, l_varTimeId, "units", 7, "seconds");
     if (l_nc_err != NC_NOERR) {
         std::cout << "Error: " << nc_strerror(l_nc_err) << std::endl;
         return 1;
@@ -200,6 +205,7 @@ int tsunami_lab::io::NetCDF::init(t_real i_dxy,
 
     int l_dimBathymetryIds[2] = {l_dimXId, l_dimYId};
     l_nc_err = nc_def_var(m_ncId, "bathymetry", NC_FLOAT, 2, l_dimBathymetryIds, &l_varBathymetryId);
+	 l_nc_err += nc_put_att_text(m_ncId, l_varBathymetryId, "units", 6, "meters");
     if (l_nc_err != NC_NOERR) {
         std::cout << "Error: " << nc_strerror(l_nc_err) << std::endl;
         return 1;
@@ -207,6 +213,7 @@ int tsunami_lab::io::NetCDF::init(t_real i_dxy,
 
     int l_dimHeightIds[3] = {l_dimTimeId, l_dimXId, l_dimYId};
     l_nc_err = nc_def_var(m_ncId, "height", NC_FLOAT, 3, l_dimHeightIds, &l_varHeightId);
+	 l_nc_err += nc_put_att_text(m_ncId, l_varHeightId, "units", 6, "meters");
     if (l_nc_err != NC_NOERR) {
         std::cout << "Error: " << nc_strerror(l_nc_err) << std::endl;
         return 1;
@@ -214,6 +221,7 @@ int tsunami_lab::io::NetCDF::init(t_real i_dxy,
 
     int l_dimMomentumXIds[3] = {l_dimTimeId, l_dimXId, l_dimYId};
     l_nc_err = nc_def_var(m_ncId, "momentum_x", NC_FLOAT, 3, l_dimMomentumXIds, &l_varMomentumXId);
+	 l_nc_err += nc_put_att_text(m_ncId, l_varMomentumXId, "units", 11, "meters*kg/s");
     if (l_nc_err != NC_NOERR) {
         std::cout << "Error: " << nc_strerror(l_nc_err) << std::endl;
         return 1;
@@ -221,6 +229,7 @@ int tsunami_lab::io::NetCDF::init(t_real i_dxy,
 
     int l_dimMomentumYIds[3] = {l_dimTimeId, l_dimXId, l_dimYId};
     l_nc_err = nc_def_var(m_ncId, "momentum_y", NC_FLOAT, 3, l_dimMomentumYIds, &l_varMomentumYId);
+	 l_nc_err += nc_put_att_text(m_ncId, l_varMomentumYId, "units", 11, "meters*kg/s");
     if (l_nc_err != NC_NOERR) {
         std::cout << "Error: " << nc_strerror(l_nc_err) << std::endl;
         return 1;
