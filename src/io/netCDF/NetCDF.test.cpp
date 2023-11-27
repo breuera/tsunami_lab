@@ -159,7 +159,7 @@ TEST_CASE("Test the NetCDF-writer.", "[NetCDFWrite2d]")
     delete[] l_hut;
     delete[] l_hvt;
 }
-/*
+
 TEST_CASE("Test the NetCDF-reader.", "[NetCDFRead2d]")
 {
 
@@ -204,12 +204,13 @@ TEST_CASE("Test the NetCDF-reader.", "[NetCDFRead2d]")
 
     netCDF = new tsunami_lab::io::NetCdf();
 
-    tsunami_lab::t_idx l_nxv, l_nyv;
-    tsunami_lab::t_real *l_xv, *l_yv, *l_zv;
+    tsunami_lab::t_idx l_nxv;
+    tsunami_lab::t_idx l_nyv;
+    tsunami_lab::t_real *l_xv;
+    tsunami_lab::t_real *l_yv;
+    tsunami_lab::t_real *l_zv;
 
-    netCDF->read(l_nxv, l_nyv, &l_xv, &l_yv, &l_zv, "test.nc");
-
-    delete netCDF;
+    netCDF->read(&l_nxv, &l_nyv, &l_xv, &l_yv, &l_zv, "test.nc");
 
     REQUIRE(l_nxv == 10);
     REQUIRE(l_nyv == 10);
@@ -223,6 +224,6 @@ TEST_CASE("Test the NetCDF-reader.", "[NetCDFRead2d]")
     delete[] l_xv;
     delete[] l_yv;
     delete[] l_zv;
+    delete netCDF;
     std::filesystem::remove_all("test.nc");
 }
- */
