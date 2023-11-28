@@ -162,7 +162,8 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
                        l_nx,
                        l_ny,
                        l_waveProp->getStride(),
-                       l_waveProp->getBathymetry());
+                       l_waveProp->getBathymetry(),
+                       "./out/solution.nc");
         // iterate over time
         while (l_simTime < l_endTime) {
             if (l_timeStep % 25 == 0) {

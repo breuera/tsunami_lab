@@ -32,14 +32,14 @@ TEST_CASE("Test the NetCDF writer.", "[NetCDFWrite]") {
     tsunami_lab::t_real hu2[16] = {-1, -1, -1, -1, -1, 4, 3, -1, -1, 2, 1, -1, -1, -1, -1, -1};
     tsunami_lab::t_real hv2[16] = {-1, -1, -1, -1, -1, 4, 3, -1, -1, 2, 1, -1, -1, -1, -1, -1};
 
-    REQUIRE(l_writer->init(1, 2, 2, 4, b) == NC_NOERR);
+    REQUIRE(l_writer->init(1, 2, 2, 4, b, "solution.nc") == NC_NOERR);
     REQUIRE(l_writer->write(0.5, 0, h1, hu1, hv1) == NC_NOERR);
     REQUIRE(l_writer->write(1.0, 1, h2, hu2, hv2) == NC_NOERR);
 
     int l_ncId;
     int l_varIDx, l_varIDy, l_varIDtime, l_varIDheight, l_varIDmomentumX, l_varIDmomentumY, l_varIDbathymetry;
 
-    REQUIRE(nc_open("./out/solution.nc", NC_NOWRITE, &l_ncId) == NC_NOERR);
+    REQUIRE(nc_open("solution.nc", NC_NOWRITE, &l_ncId) == NC_NOERR);
 
     REQUIRE(nc_inq_varid(l_ncId, "x", &l_varIDx) == NC_NOERR);
     REQUIRE(nc_inq_varid(l_ncId, "y", &l_varIDy) == NC_NOERR);
