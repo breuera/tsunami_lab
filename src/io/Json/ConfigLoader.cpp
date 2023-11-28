@@ -118,7 +118,7 @@ tsunami_lab::t_idx tsunami_lab::io::ConfigLoader::loadConfig(std::string i_path,
     e_boundary l_boundaryCond[4] = {OUTFLOW, OUTFLOW, OUTFLOW, OUTFLOW};
     if (l_configFile.contains("boundaryCond")) {
         std::string l_boundary = l_configFile.at("boundaryCond");
-        for (t_idx l_i; l_i < l_boundary.length(); l_i++) {
+        for (t_idx l_i = 0; l_i < l_boundary.length(); l_i++) {
             if (l_boundary[l_i] == 'R') {
                 l_boundaryCond[l_i] = REFLECTING;
             } else {
