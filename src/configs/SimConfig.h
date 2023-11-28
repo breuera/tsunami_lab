@@ -44,8 +44,8 @@ class tsunami_lab::configs::SimConfig {
     //! time of the simulation.
     tsunami_lab::t_real m_simTime = tsunami_lab::t_real(1.25);
 
-    //! boolean that shows which boundary condition is to be used.
-    std::string m_boundaryCondition = "-oo";
+    //! list of which boundary condition to use.
+    e_boundary *m_boundaryCondition;
 
     //! boolean that shows if the Roe Solver is to be used.
     bool m_isRoeSolver = false;
@@ -67,7 +67,7 @@ class tsunami_lab::configs::SimConfig {
      * @param i_thresholdX position of the point in x-direction, where the conditions change.
      * @param i_thresholdY position of the point in y-direction, where the conditions change.
      * @param i_simTime time of the simulation in seconds.
-     * @param i_boundaryCondition string that determents the chosen boundary conditions.
+     * @param i_boundaryCondition list that determines the chosen boundary conditions.
      * @param i_isRoeSolver boolean that shows if the roe solver is to be used (false -> f-wave solver).
      */
     SimConfig(tsunami_lab::t_idx i_dimension,
@@ -78,7 +78,7 @@ class tsunami_lab::configs::SimConfig {
               tsunami_lab::t_real i_thresholdX,
               tsunami_lab::t_real i_thresholdY,
               tsunami_lab::t_real i_simTime,
-              std::string i_boundaryCondition,
+              e_boundary *i_boundaryCondition,
               bool i_isRoeSolver);
     /**
      * Destructor which frees all allocated memory.
@@ -158,11 +158,11 @@ class tsunami_lab::configs::SimConfig {
     }
 
     /**
-     * Gets string holding the boundary conditions.
+     * Gets list holding the boundary conditions.
      *
-     * @return string holding the boundary conditions.
+     * @return list holding the boundary conditions.
      */
-    std::string getBoundaryCondition() {
+    e_boundary *getBoundaryCondition() {
         return m_boundaryCondition;
     }
 

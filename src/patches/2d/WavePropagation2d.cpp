@@ -12,19 +12,19 @@
 tsunami_lab::patches::WavePropagation2d::WavePropagation2d(t_idx i_nCellsX,
                                                            t_idx i_mCellsY) {
     m_nCellsX = i_nCellsX;
-    m_mCellsY = i_mCellsY;
-    m_mnCells = (i_nCellsX + 2) * (i_mCellsY + 2);
+    m_nCellsY = i_mCellsY;
+    m_nCellsAll = (i_nCellsX + 2) * (i_mCellsY + 2);
 
     // allocate memory including a single ghost cell on each side
     for (unsigned short l_st = 0; l_st < 2; l_st++) {
-        m_h[l_st] = new t_real[m_mnCells];
-        m_hu[l_st] = new t_real[m_mnCells];
-        m_hv[l_st] = new t_real[m_mnCells];
+        m_h[l_st] = new t_real[m_nCellsAll];
+        m_hu[l_st] = new t_real[m_nCellsAll];
+        m_hv[l_st] = new t_real[m_nCellsAll];
     }
-    m_b = new t_real[m_mnCells];
+    m_b = new t_real[m_nCellsAll];
 
     // init to zero
-    for (t_idx l_ce = 0; l_ce < m_mnCells; l_ce++) {
+    for (t_idx l_ce = 0; l_ce < m_nCellsAll; l_ce++) {
         for (unsigned short l_st = 0; l_st < 2; l_st++) {
             m_h[l_st][l_ce] = 0;
             m_hu[l_st][l_ce] = 0;
@@ -61,12 +61,12 @@ void tsunami_lab::patches::WavePropagation2d::timeStep(t_real i_scalingX,
     t_real *l_hvNew = m_hv[m_step];
 
     // create arrays to save the data from the x-sweep
-    t_real *l_hStar = new t_real[m_mnCells];
-    t_real *l_huStar = new t_real[m_mnCells];
-    t_real *l_hvStar = new t_real[m_mnCells];
+    t_real *l_hStar = new t_real[m_nCellsAll];
+    t_real *l_huStar = new t_real[m_nCellsAll];
+    t_real *l_hvStar = new t_real[m_nCellsAll];
 
     // init cell (Star) quantities
-    for (t_idx l_ceY = 0; l_ceY < m_mCellsY + 2; l_ceY++) {
+    for (t_idx l_ceY = 0; l_ceY < m_nCellsY + 2; l_ceY++) {
         for (t_idx l_ceX = 0; l_ceX < m_nCellsX + 2; l_ceX++) {
             t_idx l_idx = getIndex(l_ceX, l_ceY);
             l_hStar[l_idx] = l_hOld[l_idx];
@@ -76,7 +76,7 @@ void tsunami_lab::patches::WavePropagation2d::timeStep(t_real i_scalingX,
     }
 
     // iterate over edges in x-direction for every row and update with Riemann solutions (x-sweep)
-    for (t_idx l_edY = 0; l_edY < m_mCellsY + 2; l_edY++) {
+    for (t_idx l_edY = 0; l_edY < m_nCellsY + 2; l_edY++) {
         for (t_idx l_edX = 0; l_edX < m_nCellsX + 1; l_edX++) {
             // determine left and right cell-id
             t_idx l_ceL = getIndex(l_edX, l_edY);
@@ -104,7 +104,7 @@ void tsunami_lab::patches::WavePropagation2d::timeStep(t_real i_scalingX,
     }
 
     // init new cell quantities
-    for (t_idx l_ceY = 1; l_ceY < m_mCellsY + 1; l_ceY++) {
+    for (t_idx l_ceY = 1; l_ceY < m_nCellsY + 1; l_ceY++) {
         for (t_idx l_ceX = 1; l_ceX < m_nCellsX + 1; l_ceX++) {
             t_idx l_idx = getIndex(l_ceX, l_ceY);
             l_hNew[l_idx] = l_hStar[l_idx];
@@ -115,7 +115,7 @@ void tsunami_lab::patches::WavePropagation2d::timeStep(t_real i_scalingX,
 
     // iterate over edges in y-direction for every column and update with Riemann solutions (y-sweep)
     for (t_idx l_edX = 1; l_edX < m_nCellsX + 1; l_edX++) {
-        for (t_idx l_edY = 0; l_edY < m_mCellsY + 1; l_edY++) {
+        for (t_idx l_edY = 0; l_edY < m_nCellsY + 1; l_edY++) {
             // determine upper and lower cell-id
             t_idx l_ceU = getIndex(l_edX, l_edY);
             t_idx l_ceD = getIndex(l_edX, l_edY + 1);
@@ -146,64 +146,87 @@ void tsunami_lab::patches::WavePropagation2d::timeStep(t_real i_scalingX,
     delete[] l_hvStar;
 }
 
-void tsunami_lab::patches::WavePropagation2d::setGhostCells(std::string i_setting) {
-    t_real *l_h = m_h[m_step];
-    t_real *l_hu = m_hu[m_step];
-    t_real *l_hv = m_hv[m_step];
+void tsunami_lab::patches::WavePropagation2d::copyCornerCells(t_real *o_dataArray) {
+    t_idx l_xMax = m_nCellsX + 1;
+    t_idx l_yMax = m_nCellsY + 1;
 
-    if (i_setting.compare("OO") == 0) {
-        for (t_idx l_x = 1; l_x < m_nCellsX + 1; l_x++) {
-            // set upper boundary
-            l_h[getIndex(l_x, 0)] = l_h[getIndex(l_x, 1)];
-            l_hu[getIndex(l_x, 0)] = l_hu[getIndex(l_x, 1)];
-            l_hv[getIndex(l_x, 0)] = l_hv[getIndex(l_x, 1)];
-            m_b[getIndex(l_x, 0)] = m_b[getIndex(l_x, 1)];
+    o_dataArray[getIndex(0, 0)] = o_dataArray[getIndex(1, 1)];
+    o_dataArray[getIndex(l_xMax, 0)] = o_dataArray[getIndex(l_xMax - 1, 1)];
+    o_dataArray[getIndex(0, l_yMax)] = o_dataArray[getIndex(1, l_yMax - 1)];
+    o_dataArray[getIndex(l_xMax, l_yMax)] = o_dataArray[getIndex(l_xMax - 1, l_yMax - 1)];
+}
 
-            // set lower boundary
-            l_h[getIndex(l_x, m_mCellsY + 1)] = l_h[getIndex(l_x, m_mCellsY)];
-            l_hu[getIndex(l_x, m_mCellsY + 1)] = l_hu[getIndex(l_x, m_mCellsY)];
-            l_hv[getIndex(l_x, m_mCellsY + 1)] = l_hv[getIndex(l_x, m_mCellsY)];
-            m_b[getIndex(l_x, m_mCellsY + 1)] = m_b[getIndex(l_x, m_mCellsY)];
+void tsunami_lab::patches::WavePropagation2d::copyGhostCellsOutflow(short i_axis[2], t_real *o_dataArray) {
+    t_idx l_xMax = m_nCellsX + 1;
+    t_idx l_yMax = m_nCellsY + 1;
+
+    if (i_axis[0] == 1) {
+        for (t_idx l_iy = 1; l_iy < l_yMax; l_iy++) {
+            o_dataArray[getIndex(l_xMax, l_iy)] = o_dataArray[getIndex(l_xMax - 1, l_iy)];
         }
-
-        for (t_idx l_y = 1; l_y < m_mCellsY + 1; l_y++) {
-            // set left boundary
-            l_h[getIndex(0, l_y)] = l_h[getIndex(1, l_y)];
-            l_hu[getIndex(0, l_y)] = l_hu[getIndex(1, l_y)];
-            l_hv[getIndex(0, l_y)] = l_hv[getIndex(1, l_y)];
-            m_b[getIndex(0, l_y)] = m_b[getIndex(1, l_y)];
-
-            // set right boundary
-            l_h[getIndex(m_nCellsX + 1, l_y)] = l_h[getIndex(m_nCellsX, l_y)];
-            l_hu[getIndex(m_nCellsX + 1, l_y)] = l_hu[getIndex(m_nCellsX, l_y)];
-            l_hv[getIndex(m_nCellsX + 1, l_y)] = l_hv[getIndex(m_nCellsX, l_y)];
-            m_b[getIndex(m_nCellsX + 1, l_y)] = m_b[getIndex(m_nCellsX, l_y)];
+    } else if (i_axis[0] == -1) {
+        for (t_idx l_iy = 1; l_iy < l_yMax; l_iy++) {
+            o_dataArray[getIndex(0, l_iy)] = o_dataArray[getIndex(1, l_iy)];
         }
+    }
 
-        // set corner boundaries
+    if (i_axis[1] == 1) {
+        for (t_idx l_ix = 1; l_ix < l_xMax; l_ix++) {
+            o_dataArray[getIndex(l_ix, l_yMax)] = o_dataArray[getIndex(l_ix, l_yMax - 1)];
+        }
+    } else if (i_axis[1] == -1) {
+        for (t_idx l_ix = 1; l_ix < l_xMax; l_ix++) {
+            o_dataArray[getIndex(l_ix, 0)] = o_dataArray[getIndex(l_ix, 1)];
+        }
+    }
 
-        // upper left
-        l_h[getIndex(0, 0)] = l_h[getIndex(1, 1)];
-        l_hu[getIndex(0, 0)] = l_hu[getIndex(1, 1)];
-        l_hv[getIndex(0, 0)] = l_hv[getIndex(1, 1)];
-        m_b[getIndex(0, 0)] = m_b[getIndex(1, 1)];
+    copyCornerCells(o_dataArray);
+}
 
-        // upper right
-        l_h[getIndex(m_nCellsX + 1, 0)] = l_h[getIndex(m_nCellsX, 1)];
-        l_hu[getIndex(m_nCellsX + 1, 0)] = l_hu[getIndex(m_nCellsX, 1)];
-        l_hv[getIndex(m_nCellsX + 1, 0)] = l_hv[getIndex(m_nCellsX, 1)];
-        m_b[getIndex(m_nCellsX + 1, 0)] = m_b[getIndex(m_nCellsX, 1)];
+void tsunami_lab::patches::WavePropagation2d::copyGhostCellsReflecting(short i_axis[2], t_real i_value, t_real *o_dataArray) {
+    t_idx l_xMax = m_nCellsX + 1;
+    t_idx l_yMax = m_nCellsY + 1;
 
-        // lower left
-        l_h[getIndex(0, m_mCellsY + 1)] = l_h[getIndex(1, m_mCellsY)];
-        l_hu[getIndex(0, m_mCellsY + 1)] = l_hu[getIndex(1, m_mCellsY)];
-        l_hv[getIndex(0, m_mCellsY + 1)] = l_hv[getIndex(1, m_mCellsY)];
-        m_b[getIndex(0, m_mCellsY + 1)] = m_b[getIndex(1, m_mCellsY)];
+    if (i_axis[0] == 1) {
+        for (t_idx l_iy = 1; l_iy < l_yMax; l_iy++) {
+            o_dataArray[getIndex(l_xMax, l_iy)] = i_value;
+        }
+    } else if (i_axis[0] == -1) {
+        for (t_idx l_iy = 1; l_iy < l_yMax; l_iy++) {
+            o_dataArray[getIndex(0, l_iy)] = i_value;
+        }
+    }
 
-        // lower right
-        l_h[getIndex(m_nCellsX + 1, m_mCellsY + 1)] = l_h[getIndex(m_nCellsX, m_mCellsY)];
-        l_hu[getIndex(m_nCellsX + 1, m_mCellsY + 1)] = l_hu[getIndex(m_nCellsX, m_mCellsY)];
-        l_hv[getIndex(m_nCellsX + 1, m_mCellsY + 1)] = l_hv[getIndex(m_nCellsX, m_mCellsY)];
-        m_b[getIndex(m_nCellsX + 1, m_mCellsY + 1)] = m_b[getIndex(m_nCellsX, m_mCellsY)];
+    if (i_axis[1] == 1) {
+        for (t_idx l_ix = 1; l_ix < l_xMax; l_ix++) {
+            o_dataArray[getIndex(l_ix, l_yMax)] = i_value;
+        }
+    } else if (i_axis[1] == -1) {
+        for (t_idx l_ix = 1; l_ix < l_xMax; l_ix++) {
+            o_dataArray[getIndex(l_ix, 0)] = i_value;
+        }
+    }
+
+    copyCornerCells(o_dataArray);
+}
+
+void tsunami_lab::patches::WavePropagation2d::setGhostCells(e_boundary *i_boundary) {
+    short l_axis[4][2] = {{1, 0},
+                          {0, 1},
+                          {-1, 0},
+                          {0, -1}};
+
+    for (t_idx l_i = 0; l_i < 4; l_i++) {
+        if (i_boundary[l_i] == OUTFLOW) {
+            copyGhostCellsOutflow(l_axis[l_i], m_h[m_step]);
+            copyGhostCellsOutflow(l_axis[l_i], m_hu[m_step]);
+            copyGhostCellsOutflow(l_axis[l_i], m_hv[m_step]);
+            copyGhostCellsOutflow(l_axis[l_i], m_b);
+        } else if (i_boundary[l_i] == REFLECTING) {
+            copyGhostCellsReflecting(l_axis[l_i], 0, m_h[m_step]);
+            copyGhostCellsReflecting(l_axis[l_i], 0, m_hu[m_step]);
+            copyGhostCellsReflecting(l_axis[l_i], 0, m_hv[m_step]);
+            copyGhostCellsReflecting(l_axis[l_i], 20, m_b);
+        }
     }
 }

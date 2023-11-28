@@ -47,7 +47,8 @@ TEST_CASE("Test the 1d wave propagation solver (Roe).", "[WaveProp1d]") {
     }
 
     // set outflow boundary condition
-    m_waveProp.setGhostCells("OO");
+    tsunami_lab::e_boundary l_boundary[2] = {tsunami_lab::OUTFLOW, tsunami_lab::OUTFLOW};
+    m_waveProp.setGhostCells(l_boundary);
 
     // perform a time step
     m_waveProp.timeStep(0.1, 0);
@@ -117,7 +118,8 @@ TEST_CASE("Test the 1d wave propagation solver (FWave).", "[WaveProp1d]") {
     }
 
     // set outflow boundary condition
-    m_waveProp.setGhostCells("OO");
+    tsunami_lab::e_boundary l_boundary[2] = {tsunami_lab::OUTFLOW, tsunami_lab::OUTFLOW};
+    m_waveProp.setGhostCells(l_boundary);
 
     // perform a time step
     m_waveProp.timeStep(0.1, 0);
@@ -177,7 +179,8 @@ TEST_CASE("Test Reflecting Boundary Condition.", "[ReflectingBoundaryConditions]
     }
 
     // set reflecting boundary condition
-    m_waveProp.setGhostCells("RR");
+    tsunami_lab::e_boundary l_boundary[2] = {tsunami_lab::REFLECTING, tsunami_lab::REFLECTING};
+    m_waveProp.setGhostCells(l_boundary);
 
     // Ghost Reflecting Boundary condition
     REQUIRE(m_waveProp.getHeight()[-1] == Approx(10));
@@ -218,7 +221,8 @@ TEST_CASE("Test Left Reflecting Boundary Condition.", "[LeftReflectingBoundaryCo
     }
 
     // set left reflecting and right outflow boundary conditions
-    m_waveProp.setGhostCells("RO");
+    tsunami_lab::e_boundary l_boundary[2] = {tsunami_lab::REFLECTING, tsunami_lab::OUTFLOW};
+    m_waveProp.setGhostCells(l_boundary);
 
     // Ghost Reflecting Boundary condition
     REQUIRE(m_waveProp.getHeight()[-1] == Approx(10));
@@ -259,7 +263,8 @@ TEST_CASE("Test Right Reflecting Boundary Condition.", "[RightReflectingBoundary
     }
 
     // set right reflecting and left outflow boundary conditions
-    m_waveProp.setGhostCells("OR");
+    tsunami_lab::e_boundary l_boundary[2] = {tsunami_lab::OUTFLOW, tsunami_lab::REFLECTING};
+    m_waveProp.setGhostCells(l_boundary);
 
     // Ghost Reflecting Boundary condition
     REQUIRE(m_waveProp.getHeight()[-1] == Approx(10));
