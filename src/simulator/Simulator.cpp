@@ -141,7 +141,8 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
             tsunami_lab::t_idx l_number_of_time_steps = 100;
             bool l_is_correct_middle_state = false;
             for (tsunami_lab::t_idx l_timeStep = 0; l_timeStep < l_number_of_time_steps; l_timeStep++) {
-                l_waveProp->setGhostCells("OO");
+                e_boundary l_boundary[4] = {OUTFLOW, OUTFLOW, OUTFLOW, OUTFLOW};
+                l_waveProp->setGhostCells(l_boundary);
                 l_waveProp->timeStep(l_scalingX, 0);
 
                 tsunami_lab::t_real l_middle_state = l_waveProp->getHeight()[(tsunami_lab::t_idx)i_simConfig.getThresholdX()];

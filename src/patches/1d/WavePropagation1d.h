@@ -58,11 +58,11 @@ class tsunami_lab::patches::WavePropagation1d : public WavePropagation {
                   t_real);
 
     /**
-     * Sets the values of the ghost cells according to entered outflow boundary conditions.
+     * Sets the values of the ghost cells according to entered boundary conditions.
      *
-     * @param i_setting defines the boundary condition.
+     * @param i_boundary defines the boundary condition.
      **/
-    void setGhostCells(std::string i_setting);
+    void setGhostCells(e_boundary *i_boundary);
 
     /**
      * Gets the stride in y-direction. x-direction is stride-1.

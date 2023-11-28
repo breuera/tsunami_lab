@@ -22,7 +22,7 @@ TEST_CASE("Test the SimConfig data-structure.", "[SimConfig]") {
     tsunami_lab::t_real l_thresholdX = tsunami_lab::t_real(1600);
     tsunami_lab::t_real l_thresholdY = tsunami_lab::t_real(1600);
     tsunami_lab::t_real l_simTime = tsunami_lab::t_real(200.0);
-    std::string l_boundaryCondition = "OO";
+    tsunami_lab::e_boundary l_boundaryCondition[2] = {tsunami_lab::OUTFLOW, tsunami_lab::REFLECTING};
     bool l_isRoeSolver = true;
 
     tsunami_lab::configs::SimConfig l_config = tsunami_lab::configs::SimConfig(l_dimension,
