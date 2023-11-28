@@ -115,12 +115,18 @@ tsunami_lab::t_idx tsunami_lab::io::ConfigLoader::loadConfig(std::string i_path,
     }
 
     // set boundary condition
-    std::string l_boundaryCond;
+    e_boundary l_boundaryCond[4] = {OUTFLOW, OUTFLOW, OUTFLOW, OUTFLOW};
     if (l_configFile.contains("boundaryCond")) {
-        l_boundaryCond = l_configFile.at("boundaryCond");
+        std::string l_boundary = l_configFile.at("boundaryCond");
+        for (t_idx l_i; l_i < l_boundary.length(); l_i++) {
+            if (l_boundary[l_i] == 'R') {
+                l_boundaryCond[l_i] = REFLECTING;
+            } else {
+                l_boundaryCond[l_i] = OUTFLOW;
+            }
+        }
     } else {
         std::cout << "boundaryCond takes on default value" << std::endl;
-        l_boundaryCond = "OO";
     }
 
     // set solver

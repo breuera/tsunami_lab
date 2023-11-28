@@ -24,10 +24,10 @@ class tsunami_lab::patches::WavePropagation2d : public WavePropagation {
     t_idx m_nCellsX = 0;
 
     //! number of cells in y-direction discretizing the computational domain
-    t_idx m_mCellsY = 0;
+    t_idx m_nCellsY = 0;
 
     //! number of overall cells discretizing the computational domain including ghost cells
-    t_idx m_mnCells = 0;
+    t_idx m_nCellsAll = 0;
 
     //! water heights for the current and next time step for all cells
     t_real *m_h[2] = {nullptr, nullptr};
@@ -73,11 +73,35 @@ class tsunami_lab::patches::WavePropagation2d : public WavePropagation {
                   t_real i_scalingY);
 
     /**
+     * @brief copies the 4 corner cells of the water grid into the ghost corner cells.
+     *
+     * @param o_dataArray corresponding data array containing cell data, for example h or hu.
+     */
+    void copyCornerCells(t_real *o_dataArray);
+
+    /**
+     * @brief copies the data of each outter cell into the ghost cells according to axis alignment.
+     *
+     * @param i_axis array to determine which edge should be set. 0: x-Axis (-1, 1; left, right); 1: y-Axis (-1, 1: bottom, top).
+     * @param o_dataArray corresponding data array containing cell data, for example h or hu.
+     */
+    void copyGhostCellsOutflow(short i_axis[2], t_real *o_dataArray);
+
+    /**
+     * @brief copies the data of each outter cell into the ghost cells according to axis alignment.
+     *
+     * @param i_axis array to determine which edge should be set. 0: x-Axis (-1, 1; left, right); 1: y-Axis (-1, 1: bottom, top).
+     * @param i_value the value the cell should be set to.
+     * @param o_dataArray corresponding data array containing cell data, for example h or hu.
+     */
+    void copyGhostCellsReflecting(short i_axis[2], t_real i_value, t_real *o_dataArray);
+
+    /**
      * Sets the values of the ghost cells according to entered outflow boundary conditions.
      *
-     * @param i_setting defines the boundary condition.
+     * @param i_boundary defines the boundary condition.
      **/
-    void setGhostCells(std::string i_setting);
+    void setGhostCells(e_boundary *i_boundary);
 
     /**
      * Gets the stride in y-direction. x-direction is stride-1.

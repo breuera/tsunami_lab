@@ -18,7 +18,7 @@ tsunami_lab::configs::SimConfig::SimConfig(tsunami_lab::t_idx i_dimension,
                                            tsunami_lab::t_real i_thresholdX,
                                            tsunami_lab::t_real i_thresholdY,
                                            tsunami_lab::t_real i_simTime,
-                                           std::string i_boundaryCondition,
+                                           e_boundary *i_boundaryCondition,
                                            bool i_isRoeSolver) {
     m_dimension = i_dimension;
     m_nx = i_nx;
