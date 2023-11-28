@@ -12,8 +12,8 @@
 
 #include <netcdf.h>
 
-#include <string>
 #include <cstring>
+#include <string>
 
 #include "../../constants.h"
 
@@ -25,7 +25,7 @@ namespace tsunami_lab {
 
 class tsunami_lab::io::NetCDF {
    private:
-    std::string m_fileName = "./out/solution.nc";
+    std::string m_fileName;
 
     t_real const *m_b;
 
@@ -50,12 +50,14 @@ class tsunami_lab::io::NetCDF {
      * @param i_ny number of cells in y-direction.
      * @param stride stride of the data arrays in y-direction (including ghost cells).
      * @param i_b bathymetry of the cells; optional: use nullptr if not required.
+     * @param i_fileName the name or path of the output file.
      */
     int init(t_real i_dxy,
              t_idx i_nx,
              t_idx i_ny,
              t_idx stride,
-             t_real const *i_b);
+             t_real const *i_b,
+             std::string i_outFileName);
 
     /**
      * @brief appends data for given timestep.

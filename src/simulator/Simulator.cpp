@@ -158,19 +158,21 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
     } else {
         tsunami_lab::t_idx l_timeStep = 0;
         tsunami_lab::io::NetCDF *l_writer = new tsunami_lab::io::NetCDF();
+
+        std::string l_path = "./out/solution.nc";
+        std::cout << "  writing wave field to " << l_path << std::endl;
         l_writer->init(l_dxy,
                        l_nx,
                        l_ny,
                        l_waveProp->getStride(),
-                       l_waveProp->getBathymetry());
+                       l_waveProp->getBathymetry(),
+                       l_path);
+
         // iterate over time
         while (l_simTime < l_endTime) {
             if (l_timeStep % 25 == 0) {
-                std::cout << "  simulation time / #time steps: "
-                          << l_simTime << " / " << l_timeStep << std::endl;
-
-                std::string l_path = "./out/solution_" + std::to_string(l_nOut) + ".csv";
-                std::cout << "  writing wave field to " << l_path << std::endl;
+                std::cout << "  simulation time / #time steps / #step: "
+                          << l_simTime << " / " << l_timeStep << " / " << l_nOut << std::endl;
 
                 l_writer->write(l_simTime,
                                 l_nOut,
