@@ -133,7 +133,7 @@ int main(int i_argc,
     opterr = 0; // disable error messages of getopt
     int opt;
 
-    while ((opt = getopt(i_argc, i_argv, "d:s:v:l:r:t:b:")) != -1)
+    while ((opt = getopt(i_argc, i_argv, "d:s:v:l:r:t:b:i:")) != -1)
     {
         switch (opt)
         {
