@@ -446,6 +446,11 @@ int main(int i_argc,
                                                                  state_boundary_right,
                                                                  state_boundary_top,
                                                                  state_boundary_bottom);
+        // create csv_dump folder
+        if (std::filesystem::exists("netCDF_dump"))
+        {
+            std::filesystem::remove_all("netCDF_dump");
+        }
 
         netcdf_manager->initialize("netCDF_dump/netCDFdump.nc",
                                    l_dxy,
@@ -545,15 +550,6 @@ int main(int i_argc,
 
     // create station_data folder
     std::filesystem::create_directory("station_data");
-
-    // clear csv_dump
-    if (std::filesystem::exists("netCDF_dump"))
-    {
-        std::filesystem::remove_all("netCDF_dump");
-    }
-
-    // create csv_dump folder
-    std::filesystem::create_directory("netCDF_dump");
 
     int multiplier = 0;
 
