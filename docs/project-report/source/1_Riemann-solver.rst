@@ -33,7 +33,6 @@ The following is a video representing the Dambreak and the Height/Momentum over 
    :muted:
 
 
-
 Task 1.3:
 -------------------------
 The Riemann-Solver and the Roe Solver have similar results in tests for Dambreak.

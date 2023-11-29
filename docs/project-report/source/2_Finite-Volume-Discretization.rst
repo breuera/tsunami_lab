@@ -293,6 +293,7 @@ Dam-Break problem with h_r=50 and h_r=40 in two following timeframes.
 | The simulation showed the shock-wave moving to the edge from frame 4 to 11. This means that out of the :math:`1.25s` it took the wave :math:`\frac{4}{11}`th of that time to move :math:`4.75m`. 
 |   :math:`t = \frac{4}{11} \cdot 1.25s = 0.45s`
 | That makes the speed roughly :math:`v_{shock wave} \approx \frac{4.75m}{0.45s} \approx 11.6 \frac{m}{s} \approx 41.76 \frac{km}{h}`.
+
 And it should arrive at the village after :math:`t_{evacuation} = \frac{25km}{41.76 \frac{km}{h}} = 0.6 h \approx 36 min`.
 
 It should be noted, that the simulation so far does not consider :math:`hu_{r}=0.7`
