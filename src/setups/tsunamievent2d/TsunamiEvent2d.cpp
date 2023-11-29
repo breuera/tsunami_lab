@@ -24,16 +24,18 @@ tsunami_lab::setups::TsunamiEvent2d::~TsunamiEvent2d()
   delete[] m_displacement;
 }
 
-tsunami_lab::setups::TsunamiEvent2d::TsunamiEvent2d()
+tsunami_lab::setups::TsunamiEvent2d::TsunamiEvent2d(std::string bat_path,
+                                                    std::string dis_path,
+                                                    t_real *o_width,
+                                                    t_real *o_height,
+                                                    t_real *o_x_offset,
+                                                    t_real *o_y_offset)
 {
   tsunami_lab::io::NetCdf *netCDF = nullptr;
 
   netCDF = new tsunami_lab::io::NetCdf();
 
   std::cout << "Entering TsunamiEvent2d" << std::endl;
-
-  std::string bat_path = "data/artificialtsunami/artificialtsunami_bathymetry_1000.nc";
-  std::string dis_path = "data/artificialtsunami/artificialtsunami_displ_1000.nc";
 
   netCDF->read(&m_bathymetry_length_x,
                &m_bathymetry_length_y,
@@ -48,6 +50,16 @@ tsunami_lab::setups::TsunamiEvent2d::TsunamiEvent2d()
                &m_displacement_values_y,
                &m_displacement,
                dis_path);
+
+  // Make width/height/offsets public after calculatin,
+  // opens possibility for different input-files
+  *o_width = m_bathymetry_values_x[m_bathymetry_length_x - 1] - m_bathymetry_values_x[0];
+  *o_height = m_bathymetry_values_y[m_bathymetry_length_y - 1] - m_bathymetry_values_y[0];
+
+  m_x_offset = m_bathymetry_values_x[0];
+  m_y_offset = m_bathymetry_values_y[0];
+  *o_x_offset = -m_x_offset;
+  *o_y_offset = -m_y_offset;
 
   delete netCDF;
 }
@@ -129,11 +141,9 @@ tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent2d::getBathymetryFromNetCdf
   }
 
   t_real l_dxy = m_bathymetry_values_x[1] - m_bathymetry_values_x[0];
-  t_real l_offset_x = m_bathymetry_values_x[0];
-  t_real l_offset_y = m_bathymetry_values_y[0];
 
-  t_idx l_x = (i_x - l_offset_x) / l_dxy;
-  t_idx l_y = (i_y - l_offset_y) / l_dxy;
+  t_idx l_x = (i_x - m_x_offset) / l_dxy;
+  t_idx l_y = (i_y - m_y_offset) / l_dxy;
 
   return m_bathymetry[l_y * m_bathymetry_length_x + l_x];
 }

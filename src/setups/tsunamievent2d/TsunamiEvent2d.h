@@ -9,7 +9,7 @@
 #define TSUNAMI_LAB_SETUPS_TSUNAMIEVENT_2D_H
 
 #include "./../Setup.h"
-#include <vector>
+#include <string>
 
 namespace tsunami_lab
 {
@@ -58,6 +58,9 @@ private:
   //! Array for the displacement.
   t_real *m_displacement;
 
+  t_real m_x_offset;
+  t_real m_y_offset;
+
   /**
    * @brief Get initial displacement
    *
@@ -65,8 +68,9 @@ private:
    * @param i_y y-coordinate of the queried point.
    * @return displacement
    */
-  t_real getDisplacement(t_real i_x,
-                         t_real i_y) const;
+  t_real
+  getDisplacement(t_real i_x,
+                  t_real i_y) const;
 
   /**
    * @brief Get Bathymetry from CSV file
@@ -83,7 +87,12 @@ public:
    * @brief Construct a new TsunamiEvent1d object
    *
    */
-  TsunamiEvent2d();
+  TsunamiEvent2d(std::string bat_path,
+                 std::string dis_path,
+                 t_real *o_width,
+                 t_real *o_height,
+                 t_real *o_x_offset,
+                 t_real *o_y_offset);
 
   /**
    * @brief Destroy the Tsunami Event 2d object
