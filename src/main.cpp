@@ -44,10 +44,13 @@ int state_boundary_right = 0;
 tsunami_lab::t_real l_x_offset = 0;
 tsunami_lab::t_real l_y_offset = 0;
 int dimension;
+bool simulate_real_tsunami = false;
 // std::string bat_path = "data/artificialtsunami/artificialtsunami_bathymetry_1000.nc";
 // std::string dis_path = "data/artificialtsunami/artificialtsunami_displ_1000.nc";
-std::string bat_path = "data/real_tsunamis/chile_gebco20_usgs_250m_bath_fixed.nc";
-std::string dis_path = "data/real_tsunamis/chile_gebco20_usgs_250m_displ_fixed.nc";
+// std::string bat_path = "data/real_tsunamis/chile_gebco20_usgs_250m_bath_fixed.nc";
+// std::string dis_path = "data/real_tsunamis/chile_gebco20_usgs_250m_displ_fixed.nc";
+std::string bat_path = "data/real_tsunamis/tohoku_gebco20_usgs_250m_bath.nc";
+std::string dis_path = "data/real_tsunamis/tohoku_gebco20_usgs_250m_displ.nc";
 
 int main(int i_argc,
          char *i_argv[])
@@ -273,7 +276,7 @@ int main(int i_argc,
             else if (tokens[0] == "tsunami2d" && dimension == 2)
             {
                 std::cout << "using TsunamiEvent2d() setup" << std::endl;
-
+                simulate_real_tsunami = true;
                 l_endTime = 36000;
 
                 tsunami_lab::t_real l_height = -1;
@@ -283,6 +286,9 @@ int main(int i_argc,
                                                                   &l_height,
                                                                   &l_x_offset,
                                                                   &l_y_offset);
+
+                std::cout << "Width: " << l_width << std::endl;
+                std::cout << "Height: " << l_height << std::endl;
                 // in this case l_nx is initially to interpret as the cell-length in meter (l_dxy)
                 // with this, we can now get the cell count dynamically, depending on the input file
                 // (same with l_ny, its the ratio of heigth to width times the x-cell-count)
@@ -453,7 +459,10 @@ int main(int i_argc,
         break;
 
     case 2:
-        l_ny = l_nx;
+        if (!simulate_real_tsunami)
+        {
+            l_ny = l_nx;
+        }
         l_waveProp = new tsunami_lab::patches::WavePropagation2d(l_nx,
                                                                  l_ny,
                                                                  solver_choice,
@@ -461,19 +470,7 @@ int main(int i_argc,
                                                                  state_boundary_right,
                                                                  state_boundary_top,
                                                                  state_boundary_bottom);
-        // create csv_dump folder
-        if (std::filesystem::exists("netCDF_dump"))
-        {
-            std::filesystem::remove_all("netCDF_dump");
-        }
 
-        netcdf_manager->initialize("netCDF_dump/netCDFdump.nc",
-                                   l_dxy,
-                                   l_nx,
-                                   l_ny,
-                                   l_x_offset,
-                                   l_y_offset,
-                                   netcdf_manager->removeGhostCells(l_waveProp->getBathymetry(), l_nx, l_ny, 1, 1, l_waveProp->getStride()));
         break;
 
     default:
@@ -530,6 +527,25 @@ int main(int i_argc,
                                       l_cy,
                                       l_b);
         }
+    }
+
+    if (dimension == 2)
+    {
+        if (std::filesystem::exists("netCDF_dump"))
+        {
+            std::filesystem::remove_all("netCDF_dump");
+        }
+
+        // create netCDF_dump folder
+        std::filesystem::create_directory("netCDF_dump");
+
+        netcdf_manager->initialize("netCDF_dump/netCDFdump.nc",
+                                   l_dxy,
+                                   l_nx,
+                                   l_ny,
+                                   l_x_offset,
+                                   l_y_offset,
+                                   netcdf_manager->removeGhostCells(l_waveProp->getBathymetry(), l_nx, l_ny, 1, 1, l_waveProp->getStride()));
     }
 
     // derive maximum wave speed in setup; the momentum is ignored
