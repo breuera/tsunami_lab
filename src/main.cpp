@@ -90,11 +90,13 @@ int main(int i_argc,
         std::cerr << "invalid number of arguments OR wrong order, usage:" << std::endl;
         std::cerr << "  ./build/tsunami_lab [-d DIMENSION] [-s SETUP] [-v SOLVER] [-l STATE_LEFT] [-r STATE_RIGHT] [-t STATE_TOP] [-b STATE_BOTTOM] [-i STATION]  N_CELLS_X" << std::endl;
         std::cerr << "where N_CELLS_X is the number of cells in x-direction. The Grid is quadratic in 2d, so the same value will be taken for cells in y-direction" << std::endl;
+        std::cerr << "The exception is 'tsunami2d', where N_CELLS_X represents the size of a cell." << std::endl;
+        std::cerr << "Its is planned however to switch to a json-config based approach where everything will change." << std::endl;
         std::cerr << "-d DIMENSION = '1d','2d'" << std::endl;
         std::cerr << "When using 1d-simulation, the choices for setup are:" << std::endl;
         std::cerr << "  -s SETUP  = 'dambreak1d h_l h_r','rarerare1d h hu','shockshock1d h hu', 'supercritical1d', 'subcritical1d', 'tsunami1d'" << std::endl;
         std::cerr << "When using 2d-simulation, the choices for setup are:" << std::endl;
-        std::cerr << "  -s SETUP  = 'dambreak2d'" << std::endl;
+        std::cerr << "  -s SETUP  = 'dambreak2d', 'tsunami2d'" << std::endl;
         std::cerr << "-v SOLVER = 'roe','fwave', default is 'fwave'. Be aware, that the roe-solver is depricated." << std::endl;
         std::cerr << "-l STATE_LEFT = 'open','closed', default is 'open'" << std::endl;
         std::cerr << "-r STATE_RIGHT = 'open','closed', default is 'open'" << std::endl;
@@ -292,6 +294,7 @@ int main(int i_argc,
                 // in this case l_nx is initially to interpret as the cell-length in meter (l_dxy)
                 // with this, we can now get the cell count dynamically, depending on the input file
                 // (same with l_ny, its the ratio of heigth to width times the x-cell-count)
+                // credits to Justus Dreßler for giving the idea of dynamic cell-count calculation
                 l_nx = l_width / l_nx;
                 l_ny = l_nx * l_height / l_width;
 
@@ -437,7 +440,7 @@ int main(int i_argc,
                 << "    When using 1d-simulation, the choices for setup are:" << std::endl
                 << "        -s SETUP  = 'dambreak h_l h_r','rarerare h hu','shockshock h hu', 'supercritical', 'subcritical', 'tsunami'" << std::endl
                 << "    When using 2d-simulation, the choices for setup are:" << std::endl
-                << "        -s SETUP  = 'dambreak'" << std::endl
+                << "        -s SETUP  = 'dambreak', 'tsunami2d'" << std::endl
                 << "    -v SOLVER = 'roe','fwave', default is 'fwave'. Be aware, that the roe-solver is depricated." << std::endl
                 << "    -l STATE_LEFT = 'open','closed', default is 'open'" << std::endl
                 << "    -r STATE_RIGHT = 'open','closed', default is 'open'" << std::endl
