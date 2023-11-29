@@ -8,3 +8,5 @@
 /station_data/**
 /netCDF_dump/**
 test.nc
+
+/data/real_tsunamis/**

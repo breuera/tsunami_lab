@@ -35,6 +35,7 @@
 #include "setups/artificialTsunami2d/ArtificialTsunami2d.h"
 
 // declaration of variables
+tsunami_lab::t_idx simulated_frame = 25;
 int solver_choice = 0;
 int state_boundary_top = 0;
 int state_boundary_bottom = 0;
@@ -43,6 +44,10 @@ int state_boundary_right = 0;
 tsunami_lab::t_real l_x_offset = 0;
 tsunami_lab::t_real l_y_offset = 0;
 int dimension;
+// std::string bat_path = "data/artificialtsunami/artificialtsunami_bathymetry_1000.nc";
+// std::string dis_path = "data/artificialtsunami/artificialtsunami_displ_1000.nc";
+std::string bat_path = "data/real_tsunamis/chile_gebco20_usgs_250m_bath_fixed.nc";
+std::string dis_path = "data/real_tsunamis/chile_gebco20_usgs_250m_displ_fixed.nc";
 
 int main(int i_argc,
          char *i_argv[])
@@ -269,12 +274,22 @@ int main(int i_argc,
             {
                 std::cout << "using TsunamiEvent2d() setup" << std::endl;
 
-                l_width = 10000;
-                l_x_offset = 5000;
-                l_y_offset = 5000;
-                l_endTime = 300;
+                l_endTime = 36000;
 
-                l_setup = new tsunami_lab::setups::TsunamiEvent2d();
+                tsunami_lab::t_real l_height = -1;
+                l_setup = new tsunami_lab::setups::TsunamiEvent2d(bat_path,
+                                                                  dis_path,
+                                                                  &l_width,
+                                                                  &l_height,
+                                                                  &l_x_offset,
+                                                                  &l_y_offset);
+                // in this case l_nx is initially to interpret as the cell-length in meter (l_dxy)
+                // with this, we can now get the cell count dynamically, depending on the input file
+                // (same with l_ny, its the ratio of heigth to width times the x-cell-count)
+                l_nx = l_width / l_nx;
+                l_ny = l_nx * l_height / l_width;
+
+                simulated_frame = 500;
             }
             else if (tokens[0] == "artificial2d" && dimension == 2)
             {
@@ -556,7 +571,7 @@ int main(int i_argc,
     // iterate over time
     while (l_simTime < l_endTime)
     {
-        if (l_timeStep % 25 == 0)
+        if (l_timeStep % simulated_frame == 0)
         {
             std::cout << "  simulation time / #time steps: "
                       << l_simTime << " / " << l_timeStep << std::endl;

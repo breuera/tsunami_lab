@@ -61,3 +61,8 @@ Gebco netCDF download
     zwischendurch immer: checkNcErr(<return_of_functions>)
 
     g++ ... -lnetcdf
+
+27.11.2023
+
+    - for 3d: WarpByScalar in ParaView
+    - download colorway -> "Rescale custom color range"
