@@ -98,6 +98,9 @@ void tsunami_lab::io::NetCdf::write(t_idx i_nx,
 
   handleNetCdfError(nc_put_vara_float(m_ncid, m_hv_varid, start, count, i_hv), "Error put momentum_y variables: ");
 
+  // freeing memory because "removeGhostCells"-function return these,
+  // they are not saved in a variable so this is the only time they
+  // can be deleted
   delete[] i_h;
   delete[] i_hu;
   delete[] i_hv;

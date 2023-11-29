@@ -11,7 +11,6 @@
 
 #include "../../constants.h"
 #include <cstring>
-#include <iostream>
 #include <vector>
 
 namespace tsunami_lab
