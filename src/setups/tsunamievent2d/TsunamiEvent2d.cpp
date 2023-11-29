@@ -7,12 +7,7 @@
  **/
 #include "TsunamiEvent2d.h"
 #include "../../io/netCDF/NetCDF.h"
-#include <string>
-#include <algorithm>
 #include <iostream>
-#include <cmath>
-#include <vector>
-#include "../../io/csv/Csv.h"
 
 tsunami_lab::setups::TsunamiEvent2d::~TsunamiEvent2d()
 {
