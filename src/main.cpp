@@ -45,10 +45,10 @@ tsunami_lab::t_real l_x_offset = 0;
 tsunami_lab::t_real l_y_offset = 0;
 int dimension;
 bool simulate_real_tsunami = false;
-std::string bat_path = "data/artificialtsunami/artificialtsunami_bathymetry_1000.nc";
-std::string dis_path = "data/artificialtsunami/artificialtsunami_displ_1000.nc";
-// std::string bat_path = "data/real_tsunamis/chile_gebco20_usgs_250m_bath_fixed.nc";
-// std::string dis_path = "data/real_tsunamis/chile_gebco20_usgs_250m_displ_fixed.nc";
+// std::string bat_path = "data/artificialtsunami/artificialtsunami_bathymetry_1000.nc";
+// std::string dis_path = "data/artificialtsunami/artificialtsunami_displ_1000.nc";
+std::string bat_path = "data/real_tsunamis/chile_gebco20_usgs_250m_bath_fixed.nc";
+std::string dis_path = "data/real_tsunamis/chile_gebco20_usgs_250m_displ_fixed.nc";
 // std::string bat_path = "data/real_tsunamis/tohoku_gebco20_usgs_250m_bath.nc";
 // std::string dis_path = "data/real_tsunamis/tohoku_gebco20_usgs_250m_displ.nc";
 
@@ -279,7 +279,7 @@ int main(int i_argc,
             {
                 std::cout << "using TsunamiEvent2d() setup" << std::endl;
                 simulate_real_tsunami = true;
-                l_endTime = 300;
+                l_endTime = 36000;
 
                 tsunami_lab::t_real l_height = -1;
                 l_setup = new tsunami_lab::setups::TsunamiEvent2d(bat_path,
@@ -298,7 +298,7 @@ int main(int i_argc,
                 l_nx = l_width / l_nx;
                 l_ny = l_nx * l_height / l_width;
 
-                simulated_frame = 25;
+                simulated_frame = 500;
             }
             else if (tokens[0] == "artificial2d" && dimension == 2)
             {
