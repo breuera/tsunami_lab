@@ -1,13 +1,13 @@
 {
     "dimension": 2,
     "nx": 14000,
-    "ny": 12000,
+    "ny": 11800,
     "xLen": 3500000.0,
-    "yLen": 3000000.0,
+    "yLen": 2950000.0,
     "bathymetryFileName": "chile_gebco20_usgs_250m_bath_fixed.nc",
     "displacementsFileName": "chile_gebco20_usgs_250m_displ_fixed.nc",
     "epicenterOffsetX": -3000000,
-    "epicenterOffsetY": -1500000,
+    "epicenterOffsetY": -1450000,
     "simTime": 1.25,
     "boundaryCond": "OO",
     "setup": "TsunamiEvent"
