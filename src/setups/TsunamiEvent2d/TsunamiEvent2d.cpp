@@ -23,7 +23,9 @@ tsunami_lab::setups::TsunamiEvent2d::TsunamiEvent2d(t_real i_simLenX,
                                                     t_idx i_displacementsDimY,
                                                     t_real *i_displacementsPosX,
                                                     t_real *i_displacementsPosY,
-                                                    t_real *i_displacements) {
+                                                    t_real *i_displacements,
+                                                    t_real i_epicenterOffsetX,
+                                                    t_real i_epicenterOffsetY) {
     m_simLenX = i_simLenX;
     m_simLenY = i_simLenY;
     m_bathymetryDimX = i_bathymetryDimX;
@@ -36,6 +38,8 @@ tsunami_lab::setups::TsunamiEvent2d::TsunamiEvent2d(t_real i_simLenX,
     m_displacementsPosX = i_displacementsPosX;
     m_displacementsPosY = i_displacementsPosY;
     m_displacement = i_displacements;
+    m_epicenterOffsetX = i_epicenterOffsetX;
+    m_epicenterOffsetY = i_epicenterOffsetY;
 }
 
 tsunami_lab::setups::TsunamiEvent2d::~TsunamiEvent2d() {
@@ -49,8 +53,8 @@ tsunami_lab::setups::TsunamiEvent2d::~TsunamiEvent2d() {
 
 tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent2d::getHeight(t_real i_x,
                                                                    t_real i_y) const {
-    t_real l_offsetX = -(m_simLenX / 2);
-    t_real l_offsetY = -(m_simLenY / 2);
+    t_real l_offsetX = m_epicenterOffsetX;
+    t_real l_offsetY = m_epicenterOffsetY;
 
     i_x += l_offsetX;
     i_y += l_offsetY;
@@ -94,8 +98,8 @@ tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent2d::getMomentumY(t_real,
 
 tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent2d::getBathymetry(t_real i_x,
                                                                        t_real i_y) const {
-    t_real l_offsetX = -(m_simLenX / 2);
-    t_real l_offsetY = -(m_simLenY / 2);
+    t_real l_offsetX = m_epicenterOffsetX;
+    t_real l_offsetY = m_epicenterOffsetY;
 
     i_x += l_offsetX;
     i_y += l_offsetY;

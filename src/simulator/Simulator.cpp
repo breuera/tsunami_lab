@@ -146,7 +146,7 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
                 l_waveProp->setGhostCells(l_boundary);
                 l_waveProp->timeStep(l_scalingX, 0);
 
-                tsunami_lab::t_real l_middle_state = l_waveProp->getHeight()[(tsunami_lab::t_idx)i_simConfig.getThresholdX()];
+                tsunami_lab::t_real l_middle_state = l_waveProp->getHeight()[tsunami_lab::t_idx(5.0)];
                 if (abs(l_middle_state - i_hStar) < 4.20) {
                     l_is_correct_middle_state = true;
                 }

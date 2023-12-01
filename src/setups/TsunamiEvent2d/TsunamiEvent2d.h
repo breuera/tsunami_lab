@@ -60,6 +60,12 @@ class tsunami_lab::setups::TsunamiEvent2d : public Setup {
     //! raw y-coordinates of the displacements
     t_real *m_displacementsPosY = nullptr;
 
+    //! epicenter offset to 0-point in x-direction
+    t_real m_epicenterOffsetX = 0;
+
+    //! epicenter offset to 0-point in y-direction
+    t_real m_epicenterOffsetY = 0;
+
     //! delta
     t_real m_delta = 20;
 
@@ -79,6 +85,8 @@ class tsunami_lab::setups::TsunamiEvent2d : public Setup {
      * @param i_displacementsPosX raw x-coordinates of the displacements.
      * @param i_displacementsPosY raw y-coordinates of the displacements.
      * @param i_displacements displacements.
+     * @param i_epicenterOffsetX epicenter offset to 0-point in x-direction
+     * @param i_epicenterOffsetY epicenter offset to 0-point in y-direction
      */
     TsunamiEvent2d(t_real i_simLenX,
                    t_real i_simLenY,
@@ -91,7 +99,9 @@ class tsunami_lab::setups::TsunamiEvent2d : public Setup {
                    t_idx i_displacementsDimY,
                    t_real *i_displacementsPosX,
                    t_real *i_displacementsPosY,
-                   t_real *i_displacements);
+                   t_real *i_displacements,
+                   t_real i_epicenterOffsetX,
+                   t_real i_epicenterOffsetY);
 
     /**
      * Destructor.

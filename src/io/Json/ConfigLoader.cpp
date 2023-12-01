@@ -87,22 +87,22 @@ tsunami_lab::t_idx tsunami_lab::io::ConfigLoader::loadConfig(std::string i_path,
         l_yLen = 10.0;
     }
 
-    // threshold of simulation x-direction
-    tsunami_lab::t_real l_thresholdX;
-    if (l_configFile.contains("thresholdX")) {
-        l_thresholdX = l_configFile.at("thresholdX");
+    // offset of the epicenter to the 0-point in x-direction
+    tsunami_lab::t_real l_epicenterOffsetX;
+    if (l_configFile.contains("epicenterOffsetX")) {
+        l_epicenterOffsetX = l_configFile.at("epicenterOffsetX");
     } else {
-        std::cout << "thresholdX takes on default value" << std::endl;
-        l_thresholdX = l_xLen / 2;
+        std::cout << "epicenterOffsetX takes on default value" << std::endl;
+        l_epicenterOffsetX = -(l_xLen / 2);
     }
 
-    // threshold of simulation y-direction
-    tsunami_lab::t_real l_thresholdY;
-    if (l_configFile.contains("thresholdY")) {
-        l_thresholdY = l_configFile.at("thresholdY");
+    // offset of the epicenter to the 0-point in x-direction
+    tsunami_lab::t_real l_epicenterOffsetY;
+    if (l_configFile.contains("epicenterOffsetY")) {
+        l_epicenterOffsetY = l_configFile.at("epicenterOffsetY");
     } else {
-        std::cout << "thresholdY takes on default value" << std::endl;
-        l_thresholdY = l_yLen / 2;
+        std::cout << "epicenterOffsetY takes on default value" << std::endl;
+        l_epicenterOffsetY = -(l_yLen / 2);
     }
 
     // set time of simulation
@@ -274,7 +274,9 @@ tsunami_lab::t_idx tsunami_lab::io::ConfigLoader::loadConfig(std::string i_path,
                                                               l_dispDimY,
                                                               l_dispPosX,
                                                               l_dispPosY,
-                                                              l_displacements);
+                                                              l_displacements,
+                                                              l_epicenterOffsetX,
+                                                              l_epicenterOffsetY);
         }
     } else if (l_setupName.compare("Sanitize") == 0) {
         if (l_dimension == 1) {
@@ -321,7 +323,7 @@ tsunami_lab::t_idx tsunami_lab::io::ConfigLoader::loadConfig(std::string i_path,
             std::uniform_int_distribution<> distr(0, l_middleStateCount - 1);
             tsunami_lab::t_idx l_idx = distr(gen);
 
-            o_setup = new tsunami_lab::setups::CustomSetup1d(l_hL[l_idx], l_hR[l_idx], l_huL[l_idx], l_huR[l_idx], l_thresholdX);
+            o_setup = new tsunami_lab::setups::CustomSetup1d(l_hL[l_idx], l_hR[l_idx], l_huL[l_idx], l_huR[l_idx], 5.0);
             o_hStar = l_hStar[l_idx];
 
             delete[] l_hL;
@@ -340,8 +342,6 @@ tsunami_lab::t_idx tsunami_lab::io::ConfigLoader::loadConfig(std::string i_path,
                                                   l_ny,
                                                   l_xLen,
                                                   l_yLen,
-                                                  l_thresholdX,
-                                                  l_thresholdY,
                                                   l_simTime,
                                                   l_boundaryCond,
                                                   l_useRoeSolver);

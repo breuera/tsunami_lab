@@ -15,8 +15,6 @@ tsunami_lab::configs::SimConfig::SimConfig(tsunami_lab::t_idx i_dimension,
                                            tsunami_lab::t_idx i_ny,
                                            tsunami_lab::t_real i_xLen,
                                            tsunami_lab::t_real i_yLen,
-                                           tsunami_lab::t_real i_thresholdX,
-                                           tsunami_lab::t_real i_thresholdY,
                                            tsunami_lab::t_real i_simTime,
                                            e_boundary i_boundaryCondition[4],
                                            bool i_isRoeSolver) {
@@ -25,8 +23,6 @@ tsunami_lab::configs::SimConfig::SimConfig(tsunami_lab::t_idx i_dimension,
     m_ny = i_ny;
     m_xLen = i_xLen;
     m_yLen = i_yLen;
-    m_thresholdX = i_thresholdX;
-    m_thresholdY = i_thresholdY;
     m_simTime = i_simTime;
     for (t_idx l_i = 0; l_i < 4; l_i++) {
         m_boundaryCondition[l_i] = i_boundaryCondition[l_i];
