@@ -8,7 +8,7 @@
     "displacementsFileName": "tohoku_gebco20_usgs_250m_displ.nc",
     "epicenterOffsetX": -200000,
     "epicenterOffsetY": -750000,
-    "simTime": 1.25,
+    "simTime": 2030,
     "boundaryCond": "OO",
     "setup": "TsunamiEvent"
 }
