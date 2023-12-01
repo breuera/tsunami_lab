@@ -257,23 +257,18 @@ tsunami_lab::t_idx tsunami_lab::io::ConfigLoader::loadConfig(std::string i_path,
                 return EXIT_FAILURE;
             }
 
-            o_setup = new tsunami_lab::setups::TsunamiEvent2d(l_bathymetry,
-                                                              l_bathymetryPosX,
+            o_setup = new tsunami_lab::setups::TsunamiEvent2d(l_xLen,
+                                                              l_yLen,
                                                               l_bathymetryDimX,
-                                                              l_bathymetryPosY,
                                                               l_bathymetryDimY,
-                                                              l_displacements,
-                                                              l_dispPosX,
+                                                              l_bathymetryPosX,
+                                                              l_bathymetryPosY,
+                                                              l_bathymetry,
                                                               l_dispDimX,
+                                                              l_dispDimY,
+                                                              l_dispPosX,
                                                               l_dispPosY,
-                                                              l_dispDimY);
-
-            delete[] l_bathymetryPosX;
-            delete[] l_bathymetryPosY;
-            delete[] l_dispPosX;
-            delete[] l_dispPosY;
-            delete[] l_bathymetry;
-            delete[] l_displacements;
+                                                              l_displacements);
         }
     } else if (l_setupName.compare("Sanitize") == 0) {
         if (l_dimension == 1) {

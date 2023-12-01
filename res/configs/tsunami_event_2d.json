@@ -2,9 +2,11 @@
     "dimension": 2,
     "nx": 500,
     "ny": 500,
-    "xLen": 5000.0,
-    "yLen": 5000.0,
-    "simTime": 5000,
+    "xLen": 10000.0,
+    "yLen": 10000.0,
+    "bathymetryFileName": "artificialtsunami_bathymetry_1000.nc",
+    "displacementsFileName": "artificialtsunami_displ_1000.nc",
+    "simTime": 600,
     "boundaryCond": "OO",
     "setup": "TsunamiEvent"
 }

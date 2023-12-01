@@ -24,72 +24,89 @@ namespace tsunami_lab {
  **/
 class tsunami_lab::setups::TsunamiEvent2d : public Setup {
    private:
-    //! bathymetry
-    t_real *m_bathymetry;
+    //! length of the simulation in x-direction.
+    t_real m_simLenX = 0;
 
-    //! raw X pos of bathymetry
-    t_real *m_rawX_bathymetry;
+    //! length of the simulation in y-direction.
+    t_real m_simLenY = 0;
 
-    //! dimension of raw X pos of bathymetry
-    t_idx m_dimX_bathymetry;
+    //! bathymetries
+    t_real *m_bathymetry = nullptr;
 
-    //! raw Y pos of bathymetry
-    t_real *m_rawY_bathymetry;
+    //! dimension of raw x-coordinates of bathymetry
+    t_idx m_bathymetryDimX = 0;
 
-    //! dimension of raw Y pos of bathymetry
-    t_idx m_dimY_bathymetry;
+    //! dimension of raw y-coordinates of bathymetry
+    t_idx m_bathymetryDimY = 0;
 
-    //! displacement
-    t_real *m_displacement;
+    //! raw x-coordinates of the bathymetry
+    t_real *m_bathymetryPosX = nullptr;
 
-    //! raw X pos of displacement
-    t_real *m_rawX_displacement;
+    //! raw y-coordinates of the bathymetry
+    t_real *m_bathymetryPosY = nullptr;
 
-    //! dimension of raw X pos of displacement
-    t_idx m_dimX_displacement;
+    //! displacements
+    t_real *m_displacement = nullptr;
 
-    //! raw Y pos of displacement
-    t_real *m_rawY_displacement;
+    //! dimension of raw x-coordinates of displacements
+    t_idx m_displacementsDimX = 0;
 
-    //! dimension of raw Y pos of displacement
-    t_idx m_dimY_displacement;
+    //! dimension of raw y-coordinates of displacements
+    t_idx m_displacementsDimY = 0;
+
+    //! raw x-coordinates of the displacements
+    t_real *m_displacementsPosX = nullptr;
+
+    //! raw y-coordinates of the displacements
+    t_real *m_displacementsPosY = nullptr;
+
+    //! delta
+    t_real m_delta = 20;
 
    public:
     /**
-     * Constructor.
+     * Construct.
      *
-     * @param in_bathymetry bathymetry on location (x, y).
-     * @param in_rawX_bathymetry raw x values of bathymetry.
-     * @param in_dimX_bathymetry dimension of raw x values of bathymetry.
-     * @param in_rawY_bathymetry raw y values of bathymetry.
-     * @param in_dimY_bathymetry dimension of raw y values of bathymetry.
-     * @param in_displacement displacement on location (x, y).
-     * @param in_rawX_displacement raw x values of displacement.
-     * @param in_dimX_displacement dimension of raw x values of displacement.
-     * @param in_rawY_displacement raw y values of displacement.
-     * @param in_dimY_displacement dimension of raw y values of displacement.
-     *
-     **/
-    TsunamiEvent2d(t_real *in_bathymetry,
-                   t_real *in_rawX_bathymetry,
-                   t_idx in_dimX_bathymetry,
-                   t_real *in_rawY_bathymetry,
-                   t_idx in_dimY_bathymetry,
-                   t_real *in_displacement,
-                   t_real *in_rawX_displacement,
-                   t_idx in_dimX_displacement,
-                   t_real *in_rawY_displacement,
-                   t_idx in_dimY_displacement);
+     * @param i_simLenX length of the simulation in x-direction.
+     * @param i_simLenY length of the simulation in y-direction.
+     * @param i_bathymetryDimX dimension of raw x-coordinates of bathymetry.
+     * @param i_bathymetryDimY dimension of raw y-coordinates of bathymetry.
+     * @param i_bathymetryPosX raw x-coordinates of the bathymetry.
+     * @param i_bathymetryPosY raw y-coordinates of the bathymetry.
+     * @param i_bathymetry bathymetries.
+     * @param i_displacementsDimX dimension of raw x-coordinates of displacements.
+     * @param i_displacementsDimY dimension of raw y-coordinates of displacements.
+     * @param i_displacementsPosX raw x-coordinates of the displacements.
+     * @param i_displacementsPosY raw y-coordinates of the displacements.
+     * @param i_displacements displacements.
+     */
+    TsunamiEvent2d(t_real i_simLenX,
+                   t_real i_simLenY,
+                   t_idx i_bathymetryDimX,
+                   t_idx i_bathymetryDimY,
+                   t_real *i_bathymetryPosX,
+                   t_real *i_bathymetryPosY,
+                   t_real *i_bathymetry,
+                   t_idx i_displacementsDimX,
+                   t_idx i_displacementsDimY,
+                   t_real *i_displacementsPosX,
+                   t_real *i_displacementsPosY,
+                   t_real *i_displacements);
+
+    /**
+     * Destructor.
+     */
+    ~TsunamiEvent2d();
 
     /**
      * Gets the height in x-direction.
      *
-     * @param in_x x-coordinate of the queried point.
-     * @param in_y y-coordinate of the queried point.
+     * @param i_x x-coordinate of the queried point.
+     * @param i_y y-coordinate of the queried point.
      * @return height in x-direction.
      **/
-    t_real getHeight(t_real in_x,
-                     t_real in_y) const;
+    t_real getHeight(t_real i_x,
+                     t_real i_y) const;
 
     /**
      * Gets the momentum in x-direction.
@@ -111,12 +128,12 @@ class tsunami_lab::setups::TsunamiEvent2d : public Setup {
     /**
      * Gets the bathymetry at a given point.
      *
-     * @param in_x x-coordinate of the queried point.
-     * @param in_y y-coordinate of the queried point.
+     * @param i_x x-coordinate of the queried point.
+     * @param i_y y-coordinate of the queried point.
      * @return bathymetry at the given point.
      **/
-    t_real getBathymetry(t_real in_x,
-                         t_real in_y) const;
+    t_real getBathymetry(t_real i_x,
+                         t_real i_y) const;
 };
 
 #endif

@@ -12,53 +12,73 @@
 #include <cmath>
 #include <iostream>
 
-tsunami_lab::setups::TsunamiEvent2d::TsunamiEvent2d(t_real *in_bathymetry,
-                                                    t_real *in_rawX_bathymetry,
-                                                    t_idx in_dimX_bathymetry,
-                                                    t_real *in_rawY_bathymetry,
-                                                    t_idx in_dimY_bathymetry,
-                                                    t_real *in_displacement,
-                                                    t_real *in_rawX_displacement,
-                                                    t_idx in_dimX_displacement,
-                                                    t_real *in_rawY_displacement,
-                                                    t_idx in_dimY_displacement) {
-    m_bathymetry = in_bathymetry;
-    m_rawX_bathymetry = in_rawX_bathymetry;
-    m_dimX_bathymetry = in_dimX_bathymetry;
-    m_rawY_bathymetry = in_rawY_bathymetry;
-    m_dimY_bathymetry = in_dimY_bathymetry;
-    m_displacement = in_displacement;
-    m_rawX_displacement = in_rawX_displacement;
-    m_dimX_displacement = in_dimX_displacement;
-    m_rawY_displacement = in_rawY_displacement;
-    m_dimY_displacement = in_dimY_displacement;
+tsunami_lab::setups::TsunamiEvent2d::TsunamiEvent2d(t_real i_simLenX,
+                                                    t_real i_simLenY,
+                                                    t_idx i_bathymetryDimX,
+                                                    t_idx i_bathymetryDimY,
+                                                    t_real *i_bathymetryPosX,
+                                                    t_real *i_bathymetryPosY,
+                                                    t_real *i_bathymetry,
+                                                    t_idx i_displacementsDimX,
+                                                    t_idx i_displacementsDimY,
+                                                    t_real *i_displacementsPosX,
+                                                    t_real *i_displacementsPosY,
+                                                    t_real *i_displacements) {
+    m_simLenX = i_simLenX;
+    m_simLenY = i_simLenY;
+    m_bathymetryDimX = i_bathymetryDimX;
+    m_bathymetryDimY = i_bathymetryDimY;
+    m_bathymetryPosX = i_bathymetryPosX;
+    m_bathymetryPosY = i_bathymetryPosY;
+    m_bathymetry = i_bathymetry;
+    m_displacementsDimX = i_displacementsDimX;
+    m_displacementsDimY = i_displacementsDimY;
+    m_displacementsPosX = i_displacementsPosX;
+    m_displacementsPosY = i_displacementsPosY;
+    m_displacement = i_displacements;
 }
 
-tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent2d::getHeight(t_real in_x,
-                                                                   t_real in_y) const {
-    // convert scaled x,y to given values from netCDF
-    // simple unoptimzed solution: iterate over array and store index of nearest Value
-    int nearestValueX = 0;
-    int nearestValueY = 0;
-    for (t_idx i = 1; i < m_dimX_bathymetry; i++) {
-        if (fabs(m_rawX_bathymetry[i] - in_x) < fabs(m_rawX_bathymetry[nearestValueX] - in_x)) {
-            nearestValueX = i;
+tsunami_lab::setups::TsunamiEvent2d::~TsunamiEvent2d() {
+    delete[] m_bathymetryPosX;
+    delete[] m_bathymetryPosY;
+    delete[] m_bathymetry;
+    delete[] m_displacementsPosX;
+    delete[] m_displacementsPosY;
+    delete[] m_displacement;
+}
+
+tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent2d::getHeight(t_real i_x,
+                                                                   t_real i_y) const {
+    t_real l_offsetX = -(m_simLenX / 2);
+    t_real l_offsetY = -(m_simLenY / 2);
+
+    i_x += l_offsetX;
+    i_y += l_offsetY;
+
+    t_idx l_gridIdxX = 0;
+    t_idx l_gridIdxY = 0;
+    t_real l_gridX = m_bathymetryPosX[0];
+    t_real l_gridY = m_bathymetryPosY[0];
+
+    for (t_idx l_i = 1; l_i < m_bathymetryDimX; l_i++) {
+        if (fabs(i_x - l_gridX) > fabs(i_x - m_bathymetryPosX[l_i])) {
+            l_gridX = m_bathymetryPosX[l_i];
+            l_gridIdxX = l_i;
         }
     }
 
-    for (t_idx i = 1; i < m_dimY_bathymetry; i++) {
-        if (fabs(m_rawX_bathymetry[i] - in_y) < fabs(m_rawX_bathymetry[nearestValueY] - in_y)) {
-            nearestValueY = i;
+    for (t_idx l_i = 1; l_i < m_bathymetryDimY; l_i++) {
+        if (fabs(i_y - l_gridY) > fabs(i_y - m_bathymetryPosY[l_i])) {
+            l_gridY = m_bathymetryPosY[l_i];
+            l_gridIdxY = l_i;
         }
     }
 
-    // new converted pos index bathymetry
-    t_idx newBathymetryIndex = nearestValueY * m_dimX_bathymetry + nearestValueX;
+    t_idx l_mappedGridIdx = l_gridIdxY * m_bathymetryDimX + l_gridIdxX;
 
-    if (m_bathymetry[newBathymetryIndex] < 0) {
-        return (-m_bathymetry[newBathymetryIndex] < 20) ? 20 : -m_bathymetry[newBathymetryIndex];
+    if (m_bathymetry[l_mappedGridIdx] < 0) {
+        return std::max(-m_bathymetry[l_mappedGridIdx], m_delta);
     }
-
     return 0;
 }
 
@@ -72,67 +92,68 @@ tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent2d::getMomentumY(t_real,
     return 0;
 }
 
-tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent2d::getBathymetry(t_real in_x,
-                                                                       t_real in_y) const {
-    // convert scaled x,y to given values from netCDF
-    // simple unoptimzed solution: iterate over array and store index of nearest Value
-    t_idx nearestValueX = 0;
-    t_idx nearestValueY = 0;
-    for (t_idx i = 1; i < m_dimX_bathymetry; i++) {
-        if (fabs(m_rawX_bathymetry[i] - in_x) < fabs(m_rawX_bathymetry[nearestValueX] - in_x)) {
-            nearestValueX = i;
+tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent2d::getBathymetry(t_real i_x,
+                                                                       t_real i_y) const {
+    t_real l_offsetX = -(m_simLenX / 2);
+    t_real l_offsetY = -(m_simLenY / 2);
+
+    i_x += l_offsetX;
+    i_y += l_offsetY;
+
+    t_idx l_gridIdxX = 0;
+    t_idx l_gridIdxY = 0;
+    t_real l_gridX = m_bathymetryPosX[0];
+    t_real l_gridY = m_bathymetryPosY[0];
+
+    for (t_idx l_i = 1; l_i < m_bathymetryDimX; l_i++) {
+        if (fabs(i_x - l_gridX) > fabs(i_x - m_bathymetryPosX[l_i])) {
+            l_gridX = m_bathymetryPosX[l_i];
+            l_gridIdxX = l_i;
         }
     }
 
-    for (t_idx i = 1; i < m_dimY_bathymetry; i++) {
-        if (fabs(m_rawY_bathymetry[i] - in_y) < fabs(m_rawY_bathymetry[nearestValueY] - in_y)) {
-            nearestValueY = i;
+    for (t_idx l_i = 1; l_i < m_bathymetryDimY; l_i++) {
+        if (fabs(i_y - l_gridY) > fabs(i_y - m_bathymetryPosY[l_i])) {
+            l_gridY = m_bathymetryPosY[l_i];
+            l_gridIdxY = l_i;
         }
     }
 
-    // new converted pos index bathymetry
-    t_idx newBathymetryIndex = nearestValueY * m_dimX_bathymetry + nearestValueX;
+    t_idx l_mappedGridIdx = l_gridIdxY * m_bathymetryDimX + l_gridIdxX;
 
-    // variables for displacement condition
-    t_real smallestX = m_rawX_displacement[0];
-    t_real biggestX = m_rawX_displacement[m_dimX_displacement - 1];
-    t_real smallestY = m_rawY_displacement[0];
-    t_real biggestY = m_rawY_displacement[m_dimX_displacement - 1];
+    // get possible displacement
+    t_real l_dispXDomainStart = m_displacementsPosX[0];
+    t_real l_dispXDomainEnd = m_displacementsPosX[m_displacementsDimX - 1];
+    t_real l_dispYDomainStart = m_displacementsPosY[0];
+    t_real l_dispYDomainEnd = m_displacementsPosY[m_displacementsDimY - 1];
 
-    nearestValueX = 0;
-    nearestValueY = 0;
-
-    // if in domain of displacement look for nearest value
-    if (in_x >= smallestX && in_x <= biggestX) {
-        for (t_idx i = 1; i < m_dimX_displacement; i++) {
-            if (fabs(m_rawX_displacement[i] - in_x) < fabs(m_rawX_displacement[nearestValueX] - in_x)) {
-                nearestValueX = i;
+    bool l_isInDomainX = i_x > l_dispXDomainStart && i_x < l_dispXDomainEnd;
+    bool l_isInDomainY = i_y > l_dispYDomainStart && i_y < l_dispYDomainEnd;
+    bool l_setDisplacement = l_isInDomainX && l_isInDomainY;
+    t_real l_displacement = 0;
+    if (l_setDisplacement) {
+        t_idx l_dispGridIdxX = 0;
+        t_idx l_dispGridIdxY = 0;
+        for (t_idx l_i = 1; l_i < m_displacementsDimX; l_i++) {
+            if (m_displacementsPosX[l_i] == l_gridX) {
+                l_dispGridIdxX = l_i;
             }
         }
-    }
 
-    if (in_y >= smallestY && in_y <= biggestY) {
-        for (t_idx i = 1; i < m_dimY_displacement; i++) {
-            if (fabs(m_rawY_displacement[i] - in_y) < fabs(m_rawY_displacement[nearestValueY] - in_y)) {
-                nearestValueY = i;
+        for (t_idx l_i = 1; l_i < m_displacementsDimY; l_i++) {
+            if (m_displacementsPosY[l_i] == l_gridY) {
+                l_dispGridIdxY = l_i;
             }
         }
+
+        t_idx l_mappedDispGridIdx = l_dispGridIdxY * m_displacementsDimX + l_dispGridIdxX;
+
+        l_displacement = m_displacement[l_mappedDispGridIdx];
     }
 
-    // new converted pos index displacement
-    t_idx newDisplacementIndex = nearestValueY * m_dimX_displacement + nearestValueX;
-
-    // if in computational domain of displacement -> update displacement to value, else displacement = 0
-    t_real displacement = 0;
-    if (in_x >= smallestX && in_x <= biggestX) {
-        if (in_y >= smallestY && in_y <= biggestY) {
-            displacement = m_displacement[newDisplacementIndex];
-        }
-    }
-
-    if (m_bathymetry[newBathymetryIndex] < 0) {
-        return !(m_bathymetry[newBathymetryIndex] < -20) ? -20 + displacement : m_bathymetry[newBathymetryIndex] + displacement;
+    if (m_bathymetry[l_mappedGridIdx] < 0) {
+        return std::min(m_bathymetry[l_mappedGridIdx], -m_delta) + l_displacement;
     } else {
-        return (m_bathymetry[newBathymetryIndex] < 20) ? 20 + displacement : m_bathymetry[newBathymetryIndex] + displacement;
+        return std::max(m_bathymetry[l_mappedGridIdx], m_delta) + l_displacement;
     }
 }
