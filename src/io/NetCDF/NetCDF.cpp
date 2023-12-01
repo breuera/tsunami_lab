@@ -27,6 +27,8 @@ int tsunami_lab::io::NetCDF::read(std::string i_nameBathymetry,
     i_nameBathymetry = "./res/" + i_nameBathymetry;
     i_nameDisplacements = "./res/" + i_nameDisplacements;
     int l_ncIDBathymetry, l_ncIDDisplacements;
+
+    std::cout << "start loading bathymetry file: " << i_nameBathymetry << std::endl;
     int l_nc_err = nc_open(i_nameBathymetry.c_str(), 0, &l_ncIDBathymetry);
 
     // open bathymetry file
@@ -74,14 +76,16 @@ int tsunami_lab::io::NetCDF::read(std::string i_nameBathymetry,
         std::cerr << "Could not load data from variable y" << std::endl;
         return 1;
     }
+    std::cout << "finished bathymetry configuration loading" << std::endl;
 
     // read bathymetry
-
+    std::cout << "loading bathymetry data" << std::endl;
     l_nc_err = nc_get_var_float(l_ncIDBathymetry, l_varIDz, o_bathymetry);
     if (l_nc_err != NC_NOERR) {
         std::cerr << "Could not load data from variable z" << std::endl;
         return 1;
     }
+    std::cout << "finished loading bathymetry file: " << i_nameBathymetry << std::endl;
     // read displacements
 
     l_nc_err = nc_open(i_nameDisplacements.c_str(), 0, &l_ncIDDisplacements);
