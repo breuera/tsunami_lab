@@ -45,7 +45,7 @@ class tsunami_lab::configs::SimConfig {
     tsunami_lab::t_real m_simTime = tsunami_lab::t_real(1.25);
 
     //! list of which boundary condition to use.
-    e_boundary *m_boundaryCondition;
+    e_boundary m_boundaryCondition[4] = {OUTFLOW, OUTFLOW, OUTFLOW, OUTFLOW};
 
     //! boolean that shows if the Roe Solver is to be used.
     bool m_isRoeSolver = false;
@@ -78,7 +78,7 @@ class tsunami_lab::configs::SimConfig {
               tsunami_lab::t_real i_thresholdX,
               tsunami_lab::t_real i_thresholdY,
               tsunami_lab::t_real i_simTime,
-              e_boundary *i_boundaryCondition,
+              e_boundary i_boundaryCondition[4],
               bool i_isRoeSolver);
     /**
      * Destructor which frees all allocated memory.

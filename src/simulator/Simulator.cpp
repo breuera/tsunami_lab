@@ -87,13 +87,14 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
     // choose l_dxy as l_dx if it is smaller or l_dy if it is smaller
     tsunami_lab::t_real l_dxy = l_dx * l_isXStepSmaller + l_dy * !l_isXStepSmaller;
 
+    // derive constant time step; changes at simulation time are ignored
+    tsunami_lab::t_real l_dt = 0.5 * l_dxy / l_speedMax;
+
     std::cout << "runtime configuration" << std::endl;
     std::cout << "  number of cells in x-direction: " << l_nx << std::endl;
     std::cout << "  number of cells in y-direction: " << l_ny << std::endl;
     std::cout << "  cell size:                      " << l_dxy << std::endl;
-
-    // derive constant time step; changes at simulation time are ignored
-    tsunami_lab::t_real l_dt = 0.5 * l_dxy / l_speedMax;
+    std::cout << "  time step:                      " << l_dt << std::endl;
 
     // derive scaling for a time step
     tsunami_lab::t_real l_scalingX = l_dt / l_dx;
