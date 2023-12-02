@@ -8,7 +8,7 @@
     "displacementsFileName": "chile_gebco20_usgs_250m_displ_fixed.nc",
     "epicenterOffsetX": -3000000,
     "epicenterOffsetY": -1450000,
-    "simTime": 1.25,
+    "simTime": 2194,
     "boundaryCond": "OO",
     "setup": "TsunamiEvent"
 }
