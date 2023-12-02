@@ -9,6 +9,7 @@
 #include "F_wave.h"
 
 #include "cmath"
+
 void tsunami_lab::solvers::FWave::waveSpeeds(t_real i_hL,
                                              t_real i_hR,
                                              t_real i_uL,
@@ -180,7 +181,7 @@ void tsunami_lab::solvers::FWave::netUpdates(t_real i_hL,
         {
             o_netUpdateR[l_qt] += l_waveR[l_qt];
         }
-        else if (l_sR >= 0 && do_update_left)
+        else if (l_sR <= 0 && do_update_left)
         {
             o_netUpdateL[l_qt] += l_waveR[l_qt];
         }

@@ -82,9 +82,9 @@ void tsunami_lab::patches::WavePropagation2d::timeStep(t_real i_scaling)
     }
 
     // iterate over edges and update with Riemann solutions in x-direction
-    for (t_idx l_x = 1; l_x < m_nCells_x + 1; l_x++)
+    for (t_idx l_x = 0; l_x < m_nCells_x + 1; l_x++)
     {
-        for (t_idx l_y = 1; l_y < m_nCells_y + 1; l_y++)
+        for (t_idx l_y = 0; l_y < m_nCells_y + 1; l_y++)
         {
             // determine left and right cell-id
             t_idx l_cord_L = getCoordinates(l_x, l_y);
