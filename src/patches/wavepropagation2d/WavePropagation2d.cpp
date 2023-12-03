@@ -70,7 +70,8 @@ void tsunami_lab::patches::WavePropagation2d::timeStep(t_real i_scaling)
 
     t_real *l_b = m_b;
 
-    // init new cell quantities
+// init new cell quantities
+#pragma omp parallel for
     for (t_idx l_x = 1; l_x < m_nCells_x + 1; l_x++)
     {
         for (t_idx l_y = 1; l_y < m_nCells_y + 1; l_y++)
@@ -81,7 +82,8 @@ void tsunami_lab::patches::WavePropagation2d::timeStep(t_real i_scaling)
         }
     }
 
-    // iterate over edges and update with Riemann solutions in x-direction
+// iterate over edges and update with Riemann solutions in x-direction
+#pragma omp parallel for
     for (t_idx l_x = 0; l_x < m_nCells_x + 1; l_x++)
     {
         for (t_idx l_y = 0; l_y < m_nCells_y + 1; l_y++)
@@ -143,7 +145,8 @@ void tsunami_lab::patches::WavePropagation2d::timeStep(t_real i_scaling)
 
     l_b = m_b;
 
-    // init new cell quantities
+// init new cell quantities
+#pragma omp parallel for
     for (t_idx l_x = 1; l_x < m_nCells_x + 1; l_x++)
     {
         for (t_idx l_y = 1; l_y < m_nCells_y + 1; l_y++)
@@ -153,7 +156,8 @@ void tsunami_lab::patches::WavePropagation2d::timeStep(t_real i_scaling)
             l_hvNew[getCoordinates(l_x, l_y)] = l_hvOld[getCoordinates(l_x, l_y)];
         }
     }
-    // iterate over edges and update with Riemann solutions in y-direction
+// iterate over edges and update with Riemann solutions in y-direction
+#pragma omp parallel for
     for (t_idx l_x = 0; l_x < m_nCells_x + 1; l_x++)
     {
         for (t_idx l_y = 0; l_y < m_nCells_y + 1; l_y++)
