@@ -103,7 +103,7 @@ Be aware that the value will grow exponentially depending on how smaller the cel
 
 The wave left the domain after around 8h, which is kinda hard to tell based on the video provided though.
 
-.. video:: _static/content/videos/week6/tohoku_500.mp4
+.. video:: _static/content/videos/week6/tohoku_1000.mp4
    :width: 700
    :loop:
    :autoplay:
@@ -111,11 +111,44 @@ The wave left the domain after around 8h, which is kinda hard to tell based on t
 
 Video of Tohoku-simulation with cell-size set to 1000m.
 
-.. todo::
-    * Add more videos
+.. video:: _static/content/videos/week6/tohoku_500.mp4
+   :width: 700
+   :loop:
+   :autoplay:
+   :muted:
+
+Video of Tohoku-simulation with cell-size set to 500m.
+
 
 6.2.2 Soma-Station
 ^^^^^^^^^^^^^^^^^^
 
-.. todo::
-    * Solve task
+In this section, we estimate the travel time of the first tsunami waves from the epicenter
+of the 2011 M 9.1 Tohoku earthquake to Sõma, a town in Japan. The computation involves the
+use of bathymetry data and a simple wave speed formula.
+
+The dataset provided includes bathymetry measurements around the area of Sõma and the
+epicenter of the Tohoku earthquake.
+
+The wave speed :math:`L` at each point is calculated using the formula :math:`L = \sqrt{gh}`
+
+Sõma is located approximately 54.6 km north and 127.6 km west of the earthquake's epicenter.
+Using these coordinates, the straight-line distance to Sõma is computed. The average wave
+speed derived from the bathymetry data is then used to calculate the travel time of the
+tsunami waves to Sõma.
+
+.. math::
+    \begin{align}
+        \text{Distance} &= \sqrt{\text{North}^2 + \text{West}^2}\\
+        \text{Travel Time} &= \frac{\text{Distance}}{\text{Average Wave Speed}}
+    \end{align}
+
+Results:
+
+* Distance to Sõma: 138.8 km
+* Average Wave Speed: 86.64 m/s
+* Travel Time to Sõma: Approximately 26.7 minutes
+
+The simulation looked like the following:
+
+.. image:: _static/content/images/week6/soma.png
