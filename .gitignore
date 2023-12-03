@@ -12,3 +12,4 @@
 *.cdl
 /res/middle_states.csv
 config.log
+_build/*
