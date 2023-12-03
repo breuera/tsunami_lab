@@ -47,6 +47,9 @@ if(plattform_choice == 1):
 
 # Add NetCDF include
 env.Append(LIBS=['netcdf'])
+# Added parallelization
+env.Append(CCFLAGS=['-fopenmp'])
+env.Append(LINKFLAGS=['-fopenmp'])
 
 # generate help message
 Help( vars.GenerateHelpText( env ) )

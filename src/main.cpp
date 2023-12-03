@@ -535,10 +535,10 @@ int main(int i_argc,
 
     if (dimension == 2)
     {
-        if (std::filesystem::exists("netCDF_dump"))
+        /* if (std::filesystem::exists("netCDF_dump"))
         {
             std::filesystem::remove_all("netCDF_dump");
-        }
+        } */
 
         // create netCDF_dump folder
         std::filesystem::create_directory("netCDF_dump");
