@@ -15,7 +15,7 @@ tsunami_lab::io::NetCdf::~NetCdf()
 {
   if (m_ncid != -1)
   {
-    handleNetCdfError(nc_close(m_ncid), "Error closing netCDF file: ");
+    // handleNetCdfError(nc_close(m_ncid), "Error closing netCDF file: ");
   }
 }
 
@@ -27,7 +27,10 @@ void tsunami_lab::io::NetCdf::initialize(const std::string &filename,
                                          t_real i_y_offset,
                                          t_real const *i_b)
 {
-  handleNetCdfError(nc_create(filename.c_str(), NC_CLOBBER, &m_ncid), "Error creat the NetCDF file: ");
+
+  m_out_file_name = filename;
+
+  handleNetCdfError(nc_create(m_out_file_name.c_str(), NC_CLOBBER, &m_ncid), "Error creat the NetCDF file: ");
 
   // Define the dimensions
   handleNetCdfError(nc_def_dim(m_ncid, "x", i_nx, &m_x_dimid), "Error define x dimension: ");
@@ -75,6 +78,8 @@ void tsunami_lab::io::NetCdf::initialize(const std::string &filename,
 
   handleNetCdfError(nc_put_var_float(m_ncid, m_b_varid, i_b), "Error put bathymetry variables: ");
 
+  handleNetCdfError(nc_close(m_ncid), "Error closing in init: ");
+
   delete[] l_x;
   delete[] l_y;
   delete[] i_b;
@@ -89,6 +94,8 @@ void tsunami_lab::io::NetCdf::write(t_idx i_nx,
                                     t_real i_time)
 {
 
+  handleNetCdfError(nc_open(m_out_file_name.c_str(), NC_WRITE, &m_ncid), "Error opening in write: ");
+
   size_t start[3] = {timeStep, 0, 0};
   size_t count[3] = {1, i_ny, i_nx};
 
@@ -97,6 +104,8 @@ void tsunami_lab::io::NetCdf::write(t_idx i_nx,
   handleNetCdfError(nc_put_var1_float(m_ncid, m_time_varid, &timeStep, &i_time), "Error put time variables: ");
 
   handleNetCdfError(nc_put_vara_float(m_ncid, m_hv_varid, start, count, i_hv), "Error put momentum_y variables: ");
+
+  handleNetCdfError(nc_close(m_ncid), "Error closing in write: ");
 
   // freeing memory because "removeGhostCells"-function return these,
   // they are not saved in a variable so this is the only time they

@@ -25,6 +25,8 @@ namespace tsunami_lab
 class tsunami_lab::io::NetCdf
 {
 private:
+  std::string m_out_file_name;
+
   int m_ncid = -1,
       m_x_dimid = -1,
       m_y_dimid = -1,
