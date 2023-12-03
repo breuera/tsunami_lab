@@ -10,6 +10,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <ctime>
 #include <cstdlib>
 #include <filesystem>
 #include <fstream>
@@ -542,7 +543,9 @@ int main(int i_argc,
         // create netCDF_dump folder
         std::filesystem::create_directory("netCDF_dump");
 
-        netcdf_manager->initialize("netCDF_dump/netCDFdump.nc",
+        std::time_t t = std::time(nullptr);
+
+        netcdf_manager->initialize("netCDF_dump/netCDFdump_" + std::to_string(l_dxy) + "_ " + std::to_string(t) + ".nc",
                                    l_dxy,
                                    l_nx,
                                    l_ny,
