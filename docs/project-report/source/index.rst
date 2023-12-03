@@ -15,3 +15,4 @@ Welcome to Tsunami WS23's documentation!
    3_Bathymetry_Boundry
    4_Two_Dimensional_solver
    5_large_data.rst
+   6_Tsunami_simulation.rst
