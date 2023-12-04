@@ -77,9 +77,15 @@ Chile with a cell-size of 1000 and a simulation-time of 10 hours.
 
 Be aware that the value will grow exponentially depending on how smaller the cell-size is and how long the simulation lasts.
 
-.. todo:: 
-    * Add more videos
-    * When does the wave leave the domain?
+.. video:: _static/content/videos/week6/chile_500.mp4
+   :width: 700
+   :loop:
+   :autoplay:
+   :muted:
+
+This video shows the simulation of the chile-event with 500m cells and 10h simulation time.
+
+The main wave leaves the domain at ca. 7h time (in the long direction).
 
 Task 6.2: 2011 M 9.1 Tohoku Event
 ---------------------------------
