@@ -124,6 +124,47 @@ public:
                                   t_idx i_ghostCellsX,
                                   t_idx i_ghostCellsY,
                                   t_idx i_stride);
+
+  void writeCheckpoint(t_idx i_nx,
+                       t_idx i_ny,
+                       t_real const *i_h,
+                       t_real const *i_hu,
+                       t_real const *i_hv,
+                       t_real const *i_b,
+                       t_real i_x_offset,
+                       t_real i_y_offset,
+                       t_real i_stride,
+                       int i_solver_choice,
+                       int i_state_boundary_left,
+                       int i_state_boundary_right,
+                       int i_state_boundary_top,
+                       int i_state_boundary_bottom,
+                       t_real i_width,
+                       t_real i_endTime,
+                       t_idx i_timeStep,
+                       t_real i_time,
+                       t_idx i_nOut);
+
+  void readCheckpoint(t_idx *o_nx,
+                      t_idx *o_ny,
+                      t_real **o_h,
+                      t_real **o_hu,
+                      t_real **o_hv,
+                      t_real **o_b,
+                      t_real *o_x_offset,
+                      t_real *o_y_offset,
+                      t_real *o_stride,
+                      int *o_solver_choice,
+                      int *o_state_boundary_left,
+                      int *o_state_boundary_right,
+                      int *o_state_boundary_top,
+                      int *o_state_boundary_bottom,
+                      t_real *o_width,
+                      t_real *o_endTime,
+                      t_idx *o_timeStep,
+                      t_real *o_time,
+                      t_idx *o_nOut,
+                      const std::string filename);
 };
 
 #endif

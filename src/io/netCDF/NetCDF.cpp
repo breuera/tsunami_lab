@@ -10,6 +10,7 @@
 #include <netcdf.h>
 #include <iostream>
 #include <string>
+#include <filesystem>
 
 tsunami_lab::io::NetCdf::~NetCdf()
 {
@@ -190,4 +191,202 @@ tsunami_lab::t_real *tsunami_lab::io::NetCdf::removeGhostCells(const t_real *i_d
     }
   }
   return l_o;
+}
+
+void tsunami_lab::io::NetCdf::writeCheckpoint(t_idx i_nx,
+                                              t_idx i_ny,
+                                              t_real const *i_h,
+                                              t_real const *i_hu,
+                                              t_real const *i_hv,
+                                              t_real const *i_b,
+                                              t_real i_x_offset,
+                                              t_real i_y_offset,
+                                              t_real i_stride,
+                                              int i_solver_choice,
+                                              int i_state_boundary_left,
+                                              int i_state_boundary_right,
+                                              int i_state_boundary_top,
+                                              int i_state_boundary_bottom,
+                                              t_real i_width,
+                                              t_real i_endTime,
+                                              t_idx i_timeStep,
+                                              t_real i_time,
+                                              t_idx i_nOut)
+{
+  if (!std::filesystem::exists("checkpoints"))
+  {
+    std::filesystem::create_directory("checkpoints");
+  }
+  std::string l_fileName = "checkpoints/checkpoint_1.nc";
+
+  int l_ncid;
+
+  handleNetCdfError(nc_create(l_fileName.c_str(), NC_CLOBBER, &l_ncid), "Error creat the NetCDF file: ");
+
+  // Define the dimensions
+  int l_x_dimid, l_y_dimid;
+  handleNetCdfError(nc_def_dim(l_ncid, "x", i_nx, &l_x_dimid), "Error define x dimension: ");
+  handleNetCdfError(nc_def_dim(l_ncid, "y", i_ny, &l_y_dimid), "Error define y dimension: ");
+
+  int l_b_varid, l_h_varid, l_hu_varid, l_hv_varid;
+  int x_y_dim[2] = {l_y_dimid, l_x_dimid};
+  handleNetCdfError(nc_def_var(l_ncid, "bathymetry", NC_FLOAT, 2, x_y_dim, &l_b_varid), "Error define bathymetry variable:");
+  handleNetCdfError(nc_def_var(l_ncid, "height", NC_FLOAT, 2, x_y_dim, &l_h_varid), "Error define height variable:");
+  handleNetCdfError(nc_def_var(l_ncid, "momentum_x", NC_FLOAT, 2, x_y_dim, &l_hu_varid), "Error define momentum_x variable:");
+  handleNetCdfError(nc_def_var(l_ncid, "momentum_y", NC_FLOAT, 2, x_y_dim, &l_hv_varid), "Error define momentum_y variable:");
+
+  int l_x_offset_dimid,
+      l_y_offset_dimid,
+      l_stride_dimid,
+      l_solver_choice_dimid,
+      l_state_boundary_left_dimid,
+      l_state_boundary_right_dimid,
+      l_state_boundary_top_dimid,
+      l_state_boundary_bottom_dimid,
+      l_width_dimid,
+      l_endTime_dimid,
+      l_timeStep_dimid,
+      l_time_dimid,
+      l_nOut_dimid;
+
+  // Defining the variables
+  handleNetCdfError(nc_def_var(l_ncid, "x_offset", NC_FLOAT, 0, NULL, &l_x_offset_dimid), "Error define x_offset variable:");
+  handleNetCdfError(nc_def_var(l_ncid, "y_offset", NC_FLOAT, 0, NULL, &l_y_offset_dimid), "Error define y_offset variable:");
+  handleNetCdfError(nc_def_var(l_ncid, "stride", NC_FLOAT, 0, NULL, &l_stride_dimid), "Error define stride variable:");
+  handleNetCdfError(nc_def_var(l_ncid, "solver_choice", NC_INT, 0, NULL, &l_solver_choice_dimid), "Error define solver_choice variable:");
+  handleNetCdfError(nc_def_var(l_ncid, "state_boundary_left", NC_INT, 0, NULL, &l_state_boundary_left_dimid), "Error define state_boundary_left variable:");
+  handleNetCdfError(nc_def_var(l_ncid, "state_boundary_right", NC_INT, 0, NULL, &l_state_boundary_right_dimid), "Error define state_boundary_right variable:");
+  handleNetCdfError(nc_def_var(l_ncid, "state_boundary_top", NC_INT, 0, NULL, &l_state_boundary_top_dimid), "Error define state_boundary_top variable:");
+  handleNetCdfError(nc_def_var(l_ncid, "state_boundary_bottom", NC_INT, 0, NULL, &l_state_boundary_bottom_dimid), "Error define state_boundary_bottom variable:");
+  handleNetCdfError(nc_def_var(l_ncid, "width", NC_FLOAT, 0, NULL, &l_width_dimid), "Error define width variable:");
+  handleNetCdfError(nc_def_var(l_ncid, "endTime", NC_FLOAT, 0, NULL, &l_endTime_dimid), "Error define endTime variable:");
+  handleNetCdfError(nc_def_var(l_ncid, "timeStep", NC_INT, 0, NULL, &l_timeStep_dimid), "Error define timeStep variable:");
+  handleNetCdfError(nc_def_var(l_ncid, "time", NC_FLOAT, 0, NULL, &l_time_dimid), "Error define time variable:");
+  handleNetCdfError(nc_def_var(l_ncid, "nOut", NC_FLOAT, 0, NULL, &l_nOut_dimid), "Error define nOut variable:");
+
+  handleNetCdfError(nc_enddef(l_ncid), "Error end defining: ");
+
+  // Writing the values to the NetCDF file
+  handleNetCdfError(nc_put_var_float(l_ncid, l_x_offset_dimid, &i_x_offset), "Error put x_offset variable: ");
+  handleNetCdfError(nc_put_var_float(l_ncid, l_y_offset_dimid, &i_y_offset), "Error put y_offset variable: ");
+  handleNetCdfError(nc_put_var_float(l_ncid, l_stride_dimid, &i_stride), "Error put stride variable: ");
+  handleNetCdfError(nc_put_var_int(l_ncid, l_solver_choice_dimid, &i_solver_choice), "Error put solver_choice variable: ");
+  handleNetCdfError(nc_put_var_int(l_ncid, l_state_boundary_left_dimid, &i_state_boundary_left), "Error put state_boundary_left variable: ");
+  handleNetCdfError(nc_put_var_int(l_ncid, l_state_boundary_right_dimid, &i_state_boundary_right), "Error put state_boundary_right variable: ");
+  handleNetCdfError(nc_put_var_int(l_ncid, l_state_boundary_top_dimid, &i_state_boundary_top), "Error put state_boundary_top variable: ");
+  handleNetCdfError(nc_put_var_int(l_ncid, l_state_boundary_bottom_dimid, &i_state_boundary_bottom), "Error put state_boundary_bottom variable: ");
+  handleNetCdfError(nc_put_var_float(l_ncid, l_width_dimid, &i_width), "Error put width variable: ");
+  handleNetCdfError(nc_put_var_float(l_ncid, l_endTime_dimid, &i_endTime), "Error put endTime variable: ");
+  handleNetCdfError(nc_put_var_int(l_ncid, l_timeStep_dimid, (const int *)&i_timeStep), "Error put timeStep variable: ");
+  handleNetCdfError(nc_put_var_float(l_ncid, l_time_dimid, &i_time), "Error put time variable: ");
+  handleNetCdfError(nc_put_var_int(l_ncid, l_nOut_dimid, (const int *)&i_nOut), "Error put nOut variable: ");
+
+  handleNetCdfError(nc_put_var_float(l_ncid, l_b_varid, i_b), "Error put bathymetry variables: ");
+  handleNetCdfError(nc_put_var_float(l_ncid, l_h_varid, i_h), "Error put bathymetry variables: ");
+  handleNetCdfError(nc_put_var_float(l_ncid, l_hu_varid, i_hu), "Error put bathymetry variables: ");
+  handleNetCdfError(nc_put_var_float(l_ncid, l_hv_varid, i_hv), "Error put bathymetry variables: ");
+
+  handleNetCdfError(nc_close(l_ncid), "Error closing in write: ");
+}
+
+void tsunami_lab::io::NetCdf::readCheckpoint(t_idx *o_nx,
+                                             t_idx *o_ny,
+                                             t_real **o_h,
+                                             t_real **o_hu,
+                                             t_real **o_hv,
+                                             t_real **o_b,
+                                             t_real *o_x_offset,
+                                             t_real *o_y_offset,
+                                             t_real *o_stride,
+                                             int *o_solver_choice,
+                                             int *o_state_boundary_left,
+                                             int *o_state_boundary_right,
+                                             int *o_state_boundary_top,
+                                             int *o_state_boundary_bottom,
+                                             t_real *o_width,
+                                             t_real *o_endTime,
+                                             t_idx *o_timeStep,
+                                             t_real *o_time,
+                                             t_idx *o_nOut,
+                                             const std::string filename)
+{
+
+  std::cout << "NetCDF:: Looking for file: " << filename << std::endl;
+
+  int l_ncid;
+  handleNetCdfError(nc_open(filename.data(), NC_NOWRITE, &l_ncid), "Error open file: ");
+
+  int l_x_dimid_read, l_y_dimid_read;
+  handleNetCdfError(nc_inq_dimid(l_ncid, "x", &l_x_dimid_read), "Error getting y dimension id: ");
+  handleNetCdfError(nc_inq_dimid(l_ncid, "y", &l_y_dimid_read), "Error getting y dimension id: ");
+
+  handleNetCdfError(nc_inq_dimlen(l_ncid, l_x_dimid_read, o_nx), "Error getting x dimension length: ");
+  handleNetCdfError(nc_inq_dimlen(l_ncid, l_y_dimid_read, o_ny), "Error getting y dimension length: ");
+
+  int l_b_varid, l_h_varid, l_hu_varid, l_hv_varid;
+
+  handleNetCdfError(nc_inq_varid(l_ncid, "bathymetry", &l_b_varid), "Error getting bathymetry value id:");
+  handleNetCdfError(nc_inq_varid(l_ncid, "height", &l_h_varid), "Error getting height value id:");
+  handleNetCdfError(nc_inq_varid(l_ncid, "momentum_x", &l_hu_varid), "Error getting momentum_x value id:");
+  handleNetCdfError(nc_inq_varid(l_ncid, "momentum_y", &l_hv_varid), "Error getting momentum_y value id:");
+
+  *o_b = new t_real[(*o_nx) * (*o_ny)];
+  *o_h = new t_real[(*o_nx) * (*o_ny)];
+  *o_hu = new t_real[(*o_nx) * (*o_ny)];
+  *o_hv = new t_real[(*o_nx) * (*o_ny)];
+
+  handleNetCdfError(nc_get_var_float(l_ncid, l_b_varid, *o_h), "Error getting h value: ");
+  handleNetCdfError(nc_get_var_float(l_ncid, l_h_varid, *o_hu), "Error getting hu value: ");
+  handleNetCdfError(nc_get_var_float(l_ncid, l_hu_varid, *o_hv), "Error getting hv value: ");
+  handleNetCdfError(nc_get_var_float(l_ncid, l_hv_varid, *o_b), "Error getting b value: ");
+
+  int l_x_offset_dimid,
+      l_y_offset_dimid,
+      l_stride_dimid,
+      l_solver_choice_dimid,
+      l_state_boundary_left_dimid,
+      l_state_boundary_right_dimid,
+      l_state_boundary_top_dimid,
+      l_state_boundary_bottom_dimid,
+      l_width_dimid,
+      l_endTime_dimid,
+      l_timeStep_dimid,
+      l_time_dimid,
+      l_nOut_dimid;
+
+  handleNetCdfError(nc_inq_varid(l_ncid, "x_offset", &l_x_offset_dimid), "Error getting x_offset value id: ");
+  handleNetCdfError(nc_inq_varid(l_ncid, "y_offset", &l_y_offset_dimid), "Error getting y_offset value id: ");
+  handleNetCdfError(nc_inq_varid(l_ncid, "stride", &l_stride_dimid), "Error getting stride value id: ");
+  handleNetCdfError(nc_inq_varid(l_ncid, "solver_choice", &l_solver_choice_dimid), "Error getting solver_choice value id: ");
+  handleNetCdfError(nc_inq_varid(l_ncid, "state_boundary_left", &l_state_boundary_left_dimid), "Error getting state_boundary_left value id: ");
+  handleNetCdfError(nc_inq_varid(l_ncid, "state_boundary_right", &l_state_boundary_right_dimid), "Error getting state_boundary_right value id: ");
+  handleNetCdfError(nc_inq_varid(l_ncid, "state_boundary_top", &l_state_boundary_top_dimid), "Error getting state_boundary_top value id: ");
+  handleNetCdfError(nc_inq_varid(l_ncid, "state_boundary_bottom", &l_state_boundary_bottom_dimid), "Error getting state_boundary_bottom value id: ");
+  handleNetCdfError(nc_inq_varid(l_ncid, "width", &l_width_dimid), "Error getting width value id: ");
+  handleNetCdfError(nc_inq_varid(l_ncid, "endTime", &l_endTime_dimid), "Error getting endTime value id: ");
+  handleNetCdfError(nc_inq_varid(l_ncid, "timeStep", &l_timeStep_dimid), "Error getting timeStep value id: ");
+  handleNetCdfError(nc_inq_varid(l_ncid, "time", &l_time_dimid), "Error getting time value id: ");
+  handleNetCdfError(nc_inq_varid(l_ncid, "nOut", &l_nOut_dimid), "Error getting nOut value id: ");
+
+  // Float variables
+  handleNetCdfError(nc_get_var_float(l_ncid, l_x_offset_dimid, o_x_offset), "Error getting x_offset value: ");
+  handleNetCdfError(nc_get_var_float(l_ncid, l_y_offset_dimid, o_y_offset), "Error getting y_offset value: ");
+  handleNetCdfError(nc_get_var_float(l_ncid, l_stride_dimid, o_stride), "Error getting stride value: ");
+  handleNetCdfError(nc_get_var_float(l_ncid, l_width_dimid, o_width), "Error getting width value: ");
+  handleNetCdfError(nc_get_var_float(l_ncid, l_endTime_dimid, o_endTime), "Error getting endTime value: ");
+  handleNetCdfError(nc_get_var_float(l_ncid, l_time_dimid, o_time), "Error getting time value: ");
+
+  // Integer variables
+  handleNetCdfError(nc_get_var_int(l_ncid, l_solver_choice_dimid, o_solver_choice), "Error getting solver_choice value: ");
+  handleNetCdfError(nc_get_var_int(l_ncid, l_state_boundary_left_dimid, o_state_boundary_left), "Error getting state_boundary_left value: ");
+  handleNetCdfError(nc_get_var_int(l_ncid, l_state_boundary_right_dimid, o_state_boundary_right), "Error getting state_boundary_right value: ");
+  handleNetCdfError(nc_get_var_int(l_ncid, l_state_boundary_top_dimid, o_state_boundary_top), "Error getting state_boundary_top value: ");
+  handleNetCdfError(nc_get_var_int(l_ncid, l_state_boundary_bottom_dimid, o_state_boundary_bottom), "Error getting state_boundary_bottom value: ");
+  int l_nOut, l_timeStep;
+  handleNetCdfError(nc_get_var_int(l_ncid, l_timeStep_dimid, &l_timeStep), "Error getting timeStep value: ");
+  handleNetCdfError(nc_get_var_int(l_ncid, l_nOut_dimid, &l_nOut), "Error getting nOut value: ");
+  *o_nOut = l_nOut;
+  *o_timeStep = l_timeStep;
+
+  handleNetCdfError(nc_close(l_ncid), "Error closing file: ");
 }
