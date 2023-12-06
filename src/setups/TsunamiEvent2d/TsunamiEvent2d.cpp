@@ -79,7 +79,6 @@ tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent2d::getHeight(t_real i_x,
     }
 
     t_idx l_mappedGridIdx = l_gridIdxY * m_bathymetryDimX + l_gridIdxX;
-
     if (m_bathymetry[l_mappedGridIdx] < 0) {
         return std::max(-m_bathymetry[l_mappedGridIdx], m_delta);
     }
