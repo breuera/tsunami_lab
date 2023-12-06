@@ -41,10 +41,16 @@ int tsunami_lab::io::NetCDF::read(std::string i_nameBathymetry,
     // get dimensions
     std::size_t l_xDim, l_yDim;
     l_nc_err = nc_inq_dimlen(l_ncIDBathymetry, 0, &l_xDim);
+
+    if (l_nc_err != NC_NOERR) {
+        std::cerr << "Could not get the size of the x-dimension in bathymetry." << std::endl;
+        return 1;
+    }
+
     l_nc_err = nc_inq_dimlen(l_ncIDBathymetry, 1, &l_yDim);
 
     if (l_nc_err != NC_NOERR) {
-        std::cerr << "Could get the size of a dimension in bathymetry." << std::endl;
+        std::cerr << "Could not get the size of the y-dimension in bathymetry." << std::endl;
         return 1;
     }
 
@@ -57,11 +63,23 @@ int tsunami_lab::io::NetCDF::read(std::string i_nameBathymetry,
     // get variable ids
     int l_varIDx, l_varIDy, l_varIDz;
     l_nc_err = nc_inq_varid(l_ncIDBathymetry, "x", &l_varIDx);
+
+    if (l_nc_err != NC_NOERR) {
+        std::cerr << "Could not find the x variable in bathymetry." << std::endl;
+        return 1;
+    }
+
     l_nc_err = nc_inq_varid(l_ncIDBathymetry, "y", &l_varIDy);
+
+    if (l_nc_err != NC_NOERR) {
+        std::cerr << "Could not find the y-variable in bathymetry." << std::endl;
+        return 1;
+    }
+
     l_nc_err = nc_inq_varid(l_ncIDBathymetry, "z", &l_varIDz);
 
     if (l_nc_err != NC_NOERR) {
-        std::cerr << "Could find variable in bathymetry." << std::endl;
+        std::cerr << "Could not find the z-variable in bathymetry." << std::endl;
         return 1;
     }
 
@@ -80,26 +98,34 @@ int tsunami_lab::io::NetCDF::read(std::string i_nameBathymetry,
 
     // read bathymetry
     std::cout << "loading bathymetry data" << std::endl;
-    l_nc_err = nc_get_var_float(l_ncIDBathymetry, l_varIDz, o_bathymetry);
+    l_nc_err = nc_get_var_float(l_ncIDBathymetry, l_varIDz, &o_bathymetry[0]);
     if (l_nc_err != NC_NOERR) {
         std::cerr << "Could not load data from variable z" << std::endl;
         return 1;
     }
+
     std::cout << "finished loading bathymetry file: " << i_nameBathymetry << std::endl;
     // read displacements
 
+    std::cout << "start loading displacement file: " << i_nameDisplacements << std::endl;
     l_nc_err = nc_open(i_nameDisplacements.c_str(), 0, &l_ncIDDisplacements);
 
     if (l_nc_err != NC_NOERR) {
-        std::cerr << "Could not open file: " << i_nameBathymetry << std::endl;
+        std::cerr << "Could not open file: " << i_nameDisplacements << std::endl;
         return 1;
     }
 
     l_nc_err = nc_inq_dimlen(l_ncIDDisplacements, 0, &l_xDim);
+
+    if (l_nc_err != NC_NOERR) {
+        std::cerr << "Could not get the size of the x-dimension in displacements." << std::endl;
+        return 1;
+    }
+
     l_nc_err = nc_inq_dimlen(l_ncIDDisplacements, 1, &l_yDim);
 
     if (l_nc_err != NC_NOERR) {
-        std::cerr << "Could get the size of a dimension in displacements." << std::endl;
+        std::cerr << "Could not get the size of the y-dimension in displacements." << std::endl;
         return 1;
     }
 
@@ -111,11 +137,23 @@ int tsunami_lab::io::NetCDF::read(std::string i_nameBathymetry,
 
     // get variable ids
     l_nc_err = nc_inq_varid(l_ncIDDisplacements, "x", &l_varIDx);
+
+    if (l_nc_err != NC_NOERR) {
+        std::cerr << "Could not find x-variable in displacements." << std::endl;
+        return 1;
+    }
+
     l_nc_err = nc_inq_varid(l_ncIDDisplacements, "y", &l_varIDy);
+
+    if (l_nc_err != NC_NOERR) {
+        std::cerr << "Could not find y-variable in displacements." << std::endl;
+        return 1;
+    }
+
     l_nc_err = nc_inq_varid(l_ncIDDisplacements, "z", &l_varIDz);
 
     if (l_nc_err != NC_NOERR) {
-        std::cerr << "Could find variable in displacements." << std::endl;
+        std::cerr << "Could not find z-variable in displacements." << std::endl;
         return 1;
     }
 
@@ -132,11 +170,13 @@ int tsunami_lab::io::NetCDF::read(std::string i_nameBathymetry,
     }
 
     // read displacements
+    std::cout << "loading displacements data" << std::endl;
     l_nc_err = nc_get_var_float(l_ncIDDisplacements, l_varIDz, &o_displacements[0]);
     if (l_nc_err != NC_NOERR) {
         std::cerr << "Could not load data from variable z" << std::endl;
         return 1;
     }
+    std::cout << "finished loading displacement file: " << i_nameDisplacements << std::endl;
 
     return 0;
 }
