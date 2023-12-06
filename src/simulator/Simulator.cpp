@@ -41,6 +41,7 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
     tsunami_lab::t_real l_hMax = std::numeric_limits<tsunami_lab::t_real>::lowest();
 
     // set up solver
+    std::cout << l_dx << ", " << l_dy << std::endl;
     for (tsunami_lab::t_idx l_cy = 0; l_cy < l_ny; l_cy++) {
         tsunami_lab::t_real l_y = l_cy * l_dy;
 
@@ -50,16 +51,21 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
             // get initial values of the setup
             tsunami_lab::t_real l_h = i_setup->getHeight(l_x,
                                                          l_y);
+            std::cout << "height: " << l_h << ", at: " << l_x << ", " << l_y << std::endl;
             l_hMax = std::max(l_h, l_hMax);
 
             tsunami_lab::t_real l_hu = i_setup->getMomentumX(l_x,
                                                              l_y);
+            std::cout << "hu: " << l_hu << ", at: " << l_x << ", " << l_y << std::endl;
             tsunami_lab::t_real l_hv = i_setup->getMomentumY(l_x,
                                                              l_y);
+            std::cout << "hv: " << l_hv << ", at: " << l_x << ", " << l_y << std::endl;
             tsunami_lab::t_real l_b = i_setup->getBathymetry(l_x,
                                                              l_y);
+            std::cout << "bathymetry: " << l_b << ", at: " << l_x << ", " << l_y << std::endl;
 
             // set initial values in wave propagation solver
+            std::cout << "Set initial values for cell " << l_x << ", " << l_y << std::endl;
             l_waveProp->setHeight(l_cx,
                                   l_cy,
                                   l_h);
@@ -75,6 +81,7 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
             l_waveProp->setBathymetry(l_cx,
                                       l_cy,
                                       l_b);
+            std::cout << "Cell at: " << l_x << ", " << l_y << " was properly set." << std::endl;
         }
     }
 
