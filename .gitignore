@@ -13,3 +13,11 @@
 /res/middle_states.csv
 config.log
 _build/*
+
+# bathymerty and displacement files
+/res/artificialtsunami_bathymetry_1000.nc
+/res/artificialtsunami_displ_1000.nc
+
+/res/chile*
+/res/tohoku*
+
