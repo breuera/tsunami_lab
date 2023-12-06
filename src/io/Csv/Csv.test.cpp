@@ -78,7 +78,6 @@ TEST_CASE("Test the CSV-writer for 2D settings.", "[CsvWrite2d]") {
 5,15,9,6,6,6,15,6,6
 15,15,10,5,10,5,15,7.5,5
 )V0G0N";
-    std::cout << l_stream1.str() << std::endl;
     REQUIRE(l_stream1.str().size() == l_ref1.size());
     REQUIRE(l_stream1.str() == l_ref1);
 }
