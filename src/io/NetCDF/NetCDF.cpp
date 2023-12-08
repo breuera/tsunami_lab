@@ -249,7 +249,7 @@ int tsunami_lab::io::NetCDF::init(t_real i_dxy,
         return 1;
     }
 
-    int l_dimBathymetryIds[2] = {l_dimXId, l_dimYId};
+    int l_dimBathymetryIds[2] = {l_dimYId, l_dimXId};
     l_nc_err = nc_def_var(m_ncId, "bathymetry", NC_FLOAT, 2, l_dimBathymetryIds, &l_varBathymetryId);
     l_nc_err += nc_put_att_text(m_ncId, l_varBathymetryId, "units", 6, "meters");
     if (l_nc_err != NC_NOERR) {
@@ -257,7 +257,7 @@ int tsunami_lab::io::NetCDF::init(t_real i_dxy,
         return 1;
     }
 
-    int l_dimHeightIds[3] = {l_dimTimeId, l_dimXId, l_dimYId};
+    int l_dimHeightIds[3] = {l_dimTimeId, l_dimYId, l_dimXId};
     l_nc_err = nc_def_var(m_ncId, "height", NC_FLOAT, 3, l_dimHeightIds, &l_varHeightId);
     l_nc_err += nc_put_att_text(m_ncId, l_varHeightId, "units", 6, "meters");
     if (l_nc_err != NC_NOERR) {
@@ -265,7 +265,7 @@ int tsunami_lab::io::NetCDF::init(t_real i_dxy,
         return 1;
     }
 
-    int l_dimMomentumXIds[3] = {l_dimTimeId, l_dimXId, l_dimYId};
+    int l_dimMomentumXIds[3] = {l_dimTimeId, l_dimYId, l_dimXId};
     l_nc_err = nc_def_var(m_ncId, "momentum_x", NC_FLOAT, 3, l_dimMomentumXIds, &l_varMomentumXId);
     l_nc_err += nc_put_att_text(m_ncId, l_varMomentumXId, "units", 11, "meters*kg/s");
     if (l_nc_err != NC_NOERR) {
@@ -273,7 +273,7 @@ int tsunami_lab::io::NetCDF::init(t_real i_dxy,
         return 1;
     }
 
-    int l_dimMomentumYIds[3] = {l_dimTimeId, l_dimXId, l_dimYId};
+    int l_dimMomentumYIds[3] = {l_dimTimeId, l_dimYId, l_dimXId};
     l_nc_err = nc_def_var(m_ncId, "momentum_y", NC_FLOAT, 3, l_dimMomentumYIds, &l_varMomentumYId);
     l_nc_err += nc_put_att_text(m_ncId, l_varMomentumYId, "units", 11, "meters*kg/s");
     if (l_nc_err != NC_NOERR) {
@@ -380,12 +380,12 @@ int tsunami_lab::io::NetCDF::write(t_real i_time,
     }
 
     size_t l_startp[3] = {i_timeStep, 0, 0};
-    size_t l_countp[3] = {1, m_nx, m_ny};
+    size_t l_countp[3] = {1, m_ny, m_nx};
 
     t_real *l_height = new t_real[m_nx * m_ny];
     for (t_idx l_iy = 0; l_iy < m_ny; l_iy++) {
         for (t_idx l_ix = 0; l_ix < m_nx; l_ix++) {
-            l_height[l_ix + l_iy * m_nx] = i_h[(l_iy + 1) * m_stride + (l_ix + 1)] + m_b[(l_iy + 1) * m_stride + (l_ix + 1)];
+            l_height[l_ix + l_iy * m_nx] = i_h[(l_iy + 1) * m_stride + (l_ix + 1)];  // + m_b[(l_iy + 1) * m_stride + (l_ix + 1)];
         }
     }
     l_nc_err = nc_put_vara_float(m_ncId, l_varHeightId, l_startp, l_countp, l_height);
