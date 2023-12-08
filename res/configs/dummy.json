@@ -1,9 +1,9 @@
 {
     "dimension": 2,
-    "nx": 50,
-    "ny": 50,
-    "xLen": 60,
-    "yLen": 40,
+    "nx": 600,
+    "ny": 400,
+    "xLen": 60.0,
+    "yLen": 40.0,
     "bathymetryFileName": "dummy_bathymetry.nc",
     "displacementsFileName": "dummy_disp.nc",
     "epicenterOffsetX": -30,
