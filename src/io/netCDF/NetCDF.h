@@ -125,6 +125,29 @@ public:
                                   t_idx i_ghostCellsY,
                                   t_idx i_stride);
 
+  /**
+   * @brief Writes every nessecary parameter for a checkpoint
+   *
+   * @param i_nx number of cells in x-direction.
+   * @param i_ny number of cells in y-direction.
+   * @param i_h water height of the cells.
+   * @param i_hu momentum in x-direction of the cells.
+   * @param i_hv momentum in y-direction of the cells
+   * @param i_b bathymetry of the cells.
+   * @param i_x_offset offset x-direction.
+   * @param i_y_offset offset y-direction.
+   * @param i_stride Stride (x-axis + 2).
+   * @param i_solver_choice Solver-choice (0 = roe, 1 = fwave)
+   * @param i_state_boundary_left State of the left-boundary (0 = open, 1 = closed)
+   * @param i_state_boundary_right State of the right-boundary (0 = open, 1 = closed)
+   * @param i_state_boundary_top State of the top-boundary (0 = open, 1 = closed)
+   * @param i_state_boundary_bottom State of the bottom-boundary (0 = open, 1 = closed)
+   * @param i_width width of the simulated area
+   * @param i_endTime Time of simulation
+   * @param i_timeStep Current time-step of the simulation.
+   * @param i_time Current time-stamp of the simulation.
+   * @param i_nOut Counter
+   */
   void writeCheckpoint(t_idx i_nx,
                        t_idx i_ny,
                        t_real const *i_h,
@@ -145,6 +168,30 @@ public:
                        t_real i_time,
                        t_idx i_nOut);
 
+  /**
+   * @brief Reads all necessary parameters for a checkpoint from a file
+   *
+   * @param o_nx Pointer to number of cells in x-direction.
+   * @param o_ny Pointer to number of cells in y-direction.
+   * @param o_h Pointer to water height of the cells.
+   * @param o_hu Pointer to momentum in x-direction of the cells.
+   * @param o_hv Pointer to momentum in y-direction of the cells.
+   * @param o_b Pointer to bathymetry of the cells.
+   * @param o_x_offset Pointer to offset in x-direction.
+   * @param o_y_offset Pointer to offset in y-direction.
+   * @param o_stride Pointer to Stride (x-axis + 2).
+   * @param o_solver_choice Pointer to Solver-choice (0 = roe, 1 = fwave)
+   * @param o_state_boundary_left Pointer to State of the left-boundary (0 = open, 1 = closed)
+   * @param o_state_boundary_right Pointer to State of the right-boundary (0 = open, 1 = closed)
+   * @param o_state_boundary_top Pointer to State of the top-boundary (0 = open, 1 = closed)
+   * @param o_state_boundary_bottom Pointer to State of the bottom-boundary (0 = open, 1 = closed)
+   * @param o_width Pointer to width of the simulated area
+   * @param o_endTime Pointer to Time of simulation
+   * @param o_timeStep Pointer to Current time-step of the simulation.
+   * @param o_time Pointer to Current time-stamp of the simulation.
+   * @param o_nOut Pointer to Counter
+   * @param filename Name of the file to read the checkpoint from.
+   */
   void readCheckpoint(t_idx *o_nx,
                       t_idx *o_ny,
                       t_real **o_h,
