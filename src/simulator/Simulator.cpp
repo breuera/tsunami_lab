@@ -41,6 +41,7 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
     tsunami_lab::t_real l_hMax = std::numeric_limits<tsunami_lab::t_real>::lowest();
 
     // set up solver
+    std::cout << l_dx << ", " << l_dy << std::endl;
     for (tsunami_lab::t_idx l_cy = 0; l_cy < l_ny; l_cy++) {
         tsunami_lab::t_real l_y = l_cy * l_dy;
 
@@ -87,13 +88,14 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
     // choose l_dxy as l_dx if it is smaller or l_dy if it is smaller
     tsunami_lab::t_real l_dxy = l_dx * l_isXStepSmaller + l_dy * !l_isXStepSmaller;
 
+    // derive constant time step; changes at simulation time are ignored
+    tsunami_lab::t_real l_dt = 0.5 * l_dxy / l_speedMax;
+
     std::cout << "runtime configuration" << std::endl;
     std::cout << "  number of cells in x-direction: " << l_nx << std::endl;
     std::cout << "  number of cells in y-direction: " << l_ny << std::endl;
     std::cout << "  cell size:                      " << l_dxy << std::endl;
-
-    // derive constant time step; changes at simulation time are ignored
-    tsunami_lab::t_real l_dt = 0.5 * l_dxy / l_speedMax;
+    std::cout << "  time step:                      " << l_dt << std::endl;
 
     // derive scaling for a time step
     tsunami_lab::t_real l_scalingX = l_dt / l_dx;
@@ -145,7 +147,7 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
                 l_waveProp->setGhostCells(l_boundary);
                 l_waveProp->timeStep(l_scalingX, 0);
 
-                tsunami_lab::t_real l_middle_state = l_waveProp->getHeight()[(tsunami_lab::t_idx)i_simConfig.getThresholdX()];
+                tsunami_lab::t_real l_middle_state = l_waveProp->getHeight()[tsunami_lab::t_idx(5.0)];
                 if (abs(l_middle_state - i_hStar) < 4.20) {
                     l_is_correct_middle_state = true;
                 }
@@ -180,7 +182,6 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
                                 l_waveProp->getHeight(),
                                 l_waveProp->getMomentumX(),
                                 l_waveProp->getMomentumY());
-
                 l_nOut++;
             }
             l_waveProp->setGhostCells(i_simConfig.getBoundaryCondition());

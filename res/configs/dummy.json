@@ -1,0 +1,14 @@
+{
+    "dimension": 2,
+    "nx": 60,
+    "ny": 40,
+    "xLen": 60.0,
+    "yLen": 40.0,
+    "bathymetryFileName": "dummy_bathymetry.nc",
+    "displacementsFileName": "dummy_disp.nc",
+    "epicenterOffsetX": -30,
+    "epicenterOffsetY": -10,
+    "simTime": 10,
+    "boundaryCond": "OO",
+    "setup": "TsunamiEvent"
+}

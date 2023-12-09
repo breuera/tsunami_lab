@@ -35,17 +35,11 @@ class tsunami_lab::configs::SimConfig {
     //! length of the simulation in y-direction
     tsunami_lab::t_real m_yLen = tsunami_lab::t_real(10.0);
 
-    //! location of the middle location in x-direction (where for example the dam is located)
-    tsunami_lab::t_real m_thresholdX = tsunami_lab::t_real(5.0);
-
-    //! location of the middle location in y-direction (where for example the dam is located)
-    tsunami_lab::t_real m_thresholdY = tsunami_lab::t_real(5.0);
-
     //! time of the simulation.
     tsunami_lab::t_real m_simTime = tsunami_lab::t_real(1.25);
 
     //! list of which boundary condition to use.
-    e_boundary *m_boundaryCondition;
+    e_boundary m_boundaryCondition[4] = {OUTFLOW, OUTFLOW, OUTFLOW, OUTFLOW};
 
     //! boolean that shows if the Roe Solver is to be used.
     bool m_isRoeSolver = false;
@@ -64,8 +58,6 @@ class tsunami_lab::configs::SimConfig {
      * @param i_ny number of cells in y-direction.
      * @param i_xLen length of the simulation in x-direction in meters.
      * @param i_yLen length of the simulation in y-direction in meters.
-     * @param i_thresholdX position of the point in x-direction, where the conditions change.
-     * @param i_thresholdY position of the point in y-direction, where the conditions change.
      * @param i_simTime time of the simulation in seconds.
      * @param i_boundaryCondition list that determines the chosen boundary conditions.
      * @param i_isRoeSolver boolean that shows if the roe solver is to be used (false -> f-wave solver).
@@ -75,10 +67,8 @@ class tsunami_lab::configs::SimConfig {
               tsunami_lab::t_idx i_ny,
               tsunami_lab::t_real i_xLen,
               tsunami_lab::t_real i_yLen,
-              tsunami_lab::t_real i_thresholdX,
-              tsunami_lab::t_real i_thresholdY,
               tsunami_lab::t_real i_simTime,
-              e_boundary *i_boundaryCondition,
+              e_boundary i_boundaryCondition[4],
               bool i_isRoeSolver);
     /**
      * Destructor which frees all allocated memory.
@@ -128,24 +118,6 @@ class tsunami_lab::configs::SimConfig {
      */
     tsunami_lab::t_real getYLength() {
         return m_yLen;
-    }
-
-    /**
-     * Gets the threshold in x-direction.
-     *
-     * @return threshold.
-     */
-    tsunami_lab::t_real getThresholdX() {
-        return m_thresholdX;
-    }
-
-    /**
-     * Gets the threshold in y-direction.
-     *
-     * @return threshold.
-     */
-    tsunami_lab::t_real getThresholdY() {
-        return m_thresholdY;
     }
 
     /**

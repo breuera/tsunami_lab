@@ -87,7 +87,7 @@ TEST_CASE("Test the NetCDF writer.", "[NetCDFWrite]") {
     REQUIRE(nc_get_var_float(l_ncId, l_varIDbathymetry, l_resultBathymetry) == NC_NOERR);
     for (int i = 0; i < 2; i++) REQUIRE(l_dataBathymetry[i] == l_resultBathymetry[i]);
 
-    std::remove("writer_test.nc");
+     std::remove("writer_test.nc");
 
     delete l_writer;
 }
@@ -120,33 +120,49 @@ TEST_CASE("Test the NetCDF read.", "[NetCDFRead]") {
     REQUIRE(l_error == 0);
     REQUIRE(l_bathymetryDimX == 5);
     REQUIRE(l_bathymetryDimY == 5);
-    REQUIRE(l_dispDimX == 2);
+    REQUIRE(l_dispDimX == 3);
     REQUIRE(l_dispDimY == 2);
 
+    float l_testBathymetryPosX[5] = {-25.0,
+                                     -15.0,
+                                     0.0,
+                                     15.0,
+                                     25.0};
+    float l_testBathymetryPosY[5] = {-5.0,
+                                     -3.0,
+                                     0.0,
+                                     15.0,
+                                     25.0};
+
     for (tsunami_lab::t_idx l_i = 0; l_i < l_bathymetryDimX; l_i++) {
-        REQUIRE(l_bathymetryPosX[l_i] == l_i);
-        REQUIRE(l_bathymetryPosY[l_i] == l_i);
+        REQUIRE(l_bathymetryPosX[l_i] == l_testBathymetryPosX[l_i]);
+        REQUIRE(l_bathymetryPosY[l_i] == l_testBathymetryPosY[l_i]);
     }
 
-    for (tsunami_lab::t_idx l_i = 0; l_i < l_dispDimX; l_i++) {
-        REQUIRE(l_dispPosX[l_i] == l_i + 2);
-        REQUIRE(l_dispPosY[l_i] == l_i + 2);
+    float l_testDispPosX[3] = {-10, -5, 0};
+    float l_testDispPosY[2] = {-5, -1};
+
+    for (tsunami_lab::t_idx l_i = 0; l_i < 3; l_i++) {
+        REQUIRE(l_dispPosX[l_i] == l_testDispPosX[l_i]);
+    }
+    for (tsunami_lab::t_idx l_i = 0; l_i < 2; l_i++) {
+        REQUIRE(l_dispPosY[l_i] == l_testDispPosY[l_i]);
     }
 
-    float l_testBathymetry[25] = {0.7362, 1.2548, 2.7894, 0.6543, 3.9876,
-                                  5.321, 4.5678, 2.3456, 1.1111, 0.9876,
-                                  6.5432, 8.7654, 3.2109, 4.5678, 9.8765,
-                                  2.3456, 1.2345, 7.8901, 5.4321, 0.1234,
-                                  3.4567, 9.0123, 6.789, 8.9012, 4.321};
+    float l_testBathymetry[25] = {-400.0, -300.0, -200.0, -100.0, 0,
+                                  -425.0, -350.0, -250.0, -150.0, -50.0,
+                                  -350.0, -250.0, -150.0, -50.0, 0.0,
+                                  -250.0, -150.0, -50.0, 50.0, 150.0,
+                                  -150.0, -50.0, 50.0, 150.0, 225.0};
 
-    for (tsunami_lab::t_idx l_i = 0; l_i < l_bathymetryDimX * l_bathymetryDimY; l_i++) {
+    for (tsunami_lab::t_idx l_i = 0; l_i < 25; l_i++) {
         REQUIRE(l_bathymetry[l_i] == l_testBathymetry[l_i]);
     }
 
-    float l_testDisplacements[4] = {0.7362, 1.2548,
-                                    8.9012, 4.3210};
+    float l_testDisplacements[6] = {8, 4, -4,
+                                    -8, -6, -3};
 
-    for (tsunami_lab::t_idx l_i = 0; l_i < l_dispDimX * l_dispDimY; l_i++) {
+    for (tsunami_lab::t_idx l_i = 0; l_i < 6; l_i++) {
         REQUIRE(l_displacements[l_i] == l_testDisplacements[l_i]);
     }
 

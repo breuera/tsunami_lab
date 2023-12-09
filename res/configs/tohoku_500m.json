@@ -1,0 +1,14 @@
+{
+    "dimension": 2,
+    "nx": 5400,
+    "ny": 3000,
+    "xLen": 2700000.0,
+    "yLen": 1500000.0,
+    "bathymetryFileName": "tohoku_gebco20_usgs_250m_bath.nc",
+    "displacementsFileName": "tohoku_gebco20_usgs_250m_displ.nc",
+    "epicenterOffsetX": -200000,
+    "epicenterOffsetY": -750000,
+    "simTime": 2030,
+    "boundaryCond": "OO",
+    "setup": "TsunamiEvent"
+}

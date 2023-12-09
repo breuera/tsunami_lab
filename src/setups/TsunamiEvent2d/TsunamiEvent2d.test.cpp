@@ -9,54 +9,84 @@
 #include "TsunamiEvent2d.h"
 
 #include <catch2/catch.hpp>
-#include <fstream>
+#include <iostream>
 
-#include "../../io/Csv/Csv.h"
+TEST_CASE("Test the two-dimensional tsunami setup data.", "[TsunamiSetup2d]") {
+    tsunami_lab::t_real l_simLenX = 3.5;
+    tsunami_lab::t_real l_simLenY = 3.5;
+    tsunami_lab::t_idx l_bathymetryDimX = 5;
+    tsunami_lab::t_idx l_bathymetryDimY = 5;
+    tsunami_lab::t_real l_bathymetryPosX[5] = {-3.0, -2.0, -1.0, -0.5, -0.1};
+    tsunami_lab::t_real *l_bathymetryPosX_ptr = new tsunami_lab::t_real[5];
+    tsunami_lab::t_real l_bathymetryPosY[5] = {-3.0, -2.0, -1.0, -0.5, -0.1};
+    tsunami_lab::t_real *l_bathymetryPosY_ptr = new tsunami_lab::t_real[5];
+    for (tsunami_lab::t_idx l_i = 0; l_i < 5; l_i++) {
+        l_bathymetryPosX_ptr[l_i] = l_bathymetryPosX[l_i];
+        l_bathymetryPosY_ptr[l_i] = l_bathymetryPosY[l_i];
+    }
+    tsunami_lab::t_real l_bathymetry[25] = {-8000.0, -7826.086956521738, -7652.173913043477, -7478.260869565216, -7304.3478260869565,
+                                            -7130.434782608695, -6956.521739130435, -6782.608695652175, -6608.695652173914, -6434.782608695653,
+                                            -6260.869565217391, -6086.95652173913, -5913.0434782608695, -5739.130434782609, -5565.217391304348,
+                                            -3478.2608695652175, -3304.3478260869565, -3130.4347826086955, -2956.521739130435, -2782.608695652174,
+                                            -521.7391304347826, -347.82608695652175, -173.91304347826087, 0.0, 50.0};
+    tsunami_lab::t_real *l_bathymetry_ptr = new tsunami_lab::t_real[25];
+    for (tsunami_lab::t_idx l_i = 0; l_i < 25; l_i++) {
+        l_bathymetry_ptr[l_i] = l_bathymetry[l_i];
+    }
+    tsunami_lab::t_idx l_displacementsDimX = 2;
+    tsunami_lab::t_idx l_displacementsDimY = 2;
+    tsunami_lab::t_real l_displacementsPosX[2] = {-1.6, -0};
+    tsunami_lab::t_real *l_displacementsPosX_ptr = new tsunami_lab::t_real[2];
+    tsunami_lab::t_real l_displacementsPosY[2] = {-1.25, -0.25};
+    tsunami_lab::t_real *l_displacementsPosY_ptr = new tsunami_lab::t_real[2];
+    for (tsunami_lab::t_idx l_i = 0; l_i < 2; l_i++) {
+        l_displacementsPosX_ptr[l_i] = l_displacementsPosX[l_i];
+        l_displacementsPosY_ptr[l_i] = l_displacementsPosY[l_i];
+    }
+    tsunami_lab::t_real l_displacements[4] = {-3.0, -2.0, -1.0, 0.0};
+    tsunami_lab::t_real *l_displacements_ptr = new tsunami_lab::t_real[4];
+    for (tsunami_lab::t_idx l_i = 0; l_i < 4; l_i++) {
+        l_displacements_ptr[l_i] = l_displacements[l_i];
+    }
+    tsunami_lab::t_real l_epicenterOffsetX = -3;
+    tsunami_lab::t_real l_epicenterOffsetY = -3;
 
-TEST_CASE("Test the one-dimensional with dem.csv data.", "[DemTsunamiSetup1d]") {
-    std::string filePath = "./res/dem.csv";
+    tsunami_lab::setups::TsunamiEvent2d l_setup = tsunami_lab::setups::TsunamiEvent2d(l_simLenX,
+                                                                                      l_simLenY,
+                                                                                      l_bathymetryDimX,
+                                                                                      l_bathymetryDimY,
+                                                                                      l_bathymetryPosX_ptr,
+                                                                                      l_bathymetryPosY_ptr,
+                                                                                      l_bathymetry_ptr,
+                                                                                      l_displacementsDimX,
+                                                                                      l_displacementsDimY,
+                                                                                      l_displacementsPosX_ptr,
+                                                                                      l_displacementsPosY_ptr,
+                                                                                      l_displacements_ptr,
+                                                                                      l_epicenterOffsetX,
+                                                                                      l_epicenterOffsetY);
 
-    std::ifstream l_stream;
-    // read bathymetry original file
-    std::cout << "reading /res/dem.csv ..." << std::endl;
-    l_stream.open(filePath, std::fstream::in);
-    REQUIRE(!l_stream.fail());
+    for (tsunami_lab::t_real l_ceY = 0; l_ceY < 5; l_ceY += 0.5) {
+        for (tsunami_lab::t_real l_ceX = 0; l_ceX < 5; l_ceX += 0.5) {
+            tsunami_lab::t_real l_momentumX_val = l_setup.getMomentumX(l_ceX, l_ceY);
+            tsunami_lab::t_real l_momentumY_val = l_setup.getMomentumY(l_ceX, l_ceY);
 
-    float *l_distance = nullptr;
-    float *l_bathymetry = nullptr;
-    float *l_x = nullptr;
-    float *l_y = nullptr;
+            REQUIRE(l_momentumX_val == 0);
+            REQUIRE(l_momentumY_val == 0);
+        }
+    }
 
-    tsunami_lab::io::Csv::read_gmt_states(l_stream,
-                                          l_bathymetry,
-                                          l_x,
-                                          l_y,
-                                          l_distance);
+    REQUIRE(l_setup.getHeight(0.0, 0.0) == Approx(8000.0));
+    REQUIRE(l_setup.getHeight(0.0, 2.9) == Approx(521.7391304347826));
+    REQUIRE(l_setup.getHeight(2.9, 0.0) == Approx(7304.3478260869565));
+    REQUIRE(l_setup.getHeight(2.8, 2.8) == Approx(0));
+    REQUIRE(l_setup.getHeight(2.0, 2.0) == Approx(5913.0434782608695));
+    REQUIRE(l_setup.getHeight(1.4, 1.4) == Approx(6956.521739130435));
 
-    tsunami_lab::setups::TsunamiEvent1d l_tsunami(l_bathymetry);
-
-    REQUIRE(l_tsunami.getMomentumX(0, 0) == 0);
-    REQUIRE(l_tsunami.getBathymetry(0, 0) == Approx(-20));
-    REQUIRE(l_tsunami.getHeight(0, 0) == Approx(20));
-
-    REQUIRE(l_tsunami.getMomentumX(25000, 0) == 0);
-    REQUIRE(l_tsunami.getBathymetry(25000, 0) == Approx(-127.975747046));
-    REQUIRE(l_tsunami.getHeight(25000, 0) == Approx(127.975747046));
-
-    REQUIRE(l_tsunami.getMomentumX(200000, 0) == 0);
-    REQUIRE(l_tsunami.getBathymetry(200000, 0) == Approx(-5123.87695f));
-    REQUIRE(l_tsunami.getHeight(200000, 0) == Approx(5115.21701793));
-
-    REQUIRE(l_tsunami.getMomentumX(249750, 0) == 0);
-    REQUIRE(l_tsunami.getBathymetry(249750, 0) == Approx(-6998.12598));
-    REQUIRE(l_tsunami.getHeight(249750, 0) == Approx(6998.33542995));
-
-    REQUIRE(l_tsunami.getMomentumX(440500, 0) == 0);
-    REQUIRE(l_tsunami.getBathymetry(440500, 0) == Approx(-5533.77099898));
-    REQUIRE(l_tsunami.getHeight(440500, 0) == Approx(5533.77099898));
-
-    delete[] l_bathymetry;
-    delete[] l_distance;
-    delete[] l_x;
-    delete[] l_y;
+    REQUIRE(l_setup.getBathymetry(0.0, 0.0) == Approx(-8000.0));
+    REQUIRE(l_setup.getBathymetry(0.0, 2.9) == Approx(-521.7391304347826));
+    REQUIRE(l_setup.getBathymetry(2.9, 0.0) == Approx(-7304.3478260869565));
+    REQUIRE(l_setup.getBathymetry(2.8, 2.8) == Approx(50));
+    REQUIRE(l_setup.getBathymetry(2.0, 2.0) == Approx(-5916.04346));
+    REQUIRE(l_setup.getBathymetry(1.4, 1.4) == Approx(-6956.521739130435));
 }

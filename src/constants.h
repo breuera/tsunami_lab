@@ -6,6 +6,7 @@
  **/
 #ifndef TSUNAMI_LAB_CONSTANTS_H
 #define TSUNAMI_LAB_CONSTANTS_H
+#define C_PI 3.14159265358979323846 /* pi */
 
 #include <cstddef>
 

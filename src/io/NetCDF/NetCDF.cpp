@@ -27,6 +27,8 @@ int tsunami_lab::io::NetCDF::read(std::string i_nameBathymetry,
     i_nameBathymetry = "./res/" + i_nameBathymetry;
     i_nameDisplacements = "./res/" + i_nameDisplacements;
     int l_ncIDBathymetry, l_ncIDDisplacements;
+
+    std::cout << "start loading bathymetry file: " << i_nameBathymetry << std::endl;
     int l_nc_err = nc_open(i_nameBathymetry.c_str(), 0, &l_ncIDBathymetry);
 
     // open bathymetry file
@@ -39,10 +41,16 @@ int tsunami_lab::io::NetCDF::read(std::string i_nameBathymetry,
     // get dimensions
     std::size_t l_xDim, l_yDim;
     l_nc_err = nc_inq_dimlen(l_ncIDBathymetry, 0, &l_xDim);
+
+    if (l_nc_err != NC_NOERR) {
+        std::cerr << "Could not get the size of the x-dimension in bathymetry." << std::endl;
+        return 1;
+    }
+
     l_nc_err = nc_inq_dimlen(l_ncIDBathymetry, 1, &l_yDim);
 
     if (l_nc_err != NC_NOERR) {
-        std::cerr << "Could get the size of a dimension in bathymetry." << std::endl;
+        std::cerr << "Could not get the size of the y-dimension in bathymetry." << std::endl;
         return 1;
     }
 
@@ -55,11 +63,23 @@ int tsunami_lab::io::NetCDF::read(std::string i_nameBathymetry,
     // get variable ids
     int l_varIDx, l_varIDy, l_varIDz;
     l_nc_err = nc_inq_varid(l_ncIDBathymetry, "x", &l_varIDx);
+
+    if (l_nc_err != NC_NOERR) {
+        std::cerr << "Could not find the x variable in bathymetry." << std::endl;
+        return 1;
+    }
+
     l_nc_err = nc_inq_varid(l_ncIDBathymetry, "y", &l_varIDy);
+
+    if (l_nc_err != NC_NOERR) {
+        std::cerr << "Could not find the y-variable in bathymetry." << std::endl;
+        return 1;
+    }
+
     l_nc_err = nc_inq_varid(l_ncIDBathymetry, "z", &l_varIDz);
 
     if (l_nc_err != NC_NOERR) {
-        std::cerr << "Could find variable in bathymetry." << std::endl;
+        std::cerr << "Could not find the z-variable in bathymetry." << std::endl;
         return 1;
     }
 
@@ -74,28 +94,38 @@ int tsunami_lab::io::NetCDF::read(std::string i_nameBathymetry,
         std::cerr << "Could not load data from variable y" << std::endl;
         return 1;
     }
+    std::cout << "finished bathymetry configuration loading" << std::endl;
 
     // read bathymetry
-
-    l_nc_err = nc_get_var_float(l_ncIDBathymetry, l_varIDz, o_bathymetry);
+    std::cout << "loading bathymetry data" << std::endl;
+    l_nc_err = nc_get_var_float(l_ncIDBathymetry, l_varIDz, &o_bathymetry[0]);
     if (l_nc_err != NC_NOERR) {
         std::cerr << "Could not load data from variable z" << std::endl;
         return 1;
     }
+
+    std::cout << "finished loading bathymetry file: " << i_nameBathymetry << std::endl;
     // read displacements
 
+    std::cout << "start loading displacement file: " << i_nameDisplacements << std::endl;
     l_nc_err = nc_open(i_nameDisplacements.c_str(), 0, &l_ncIDDisplacements);
 
     if (l_nc_err != NC_NOERR) {
-        std::cerr << "Could not open file: " << i_nameBathymetry << std::endl;
+        std::cerr << "Could not open file: " << i_nameDisplacements << std::endl;
         return 1;
     }
 
     l_nc_err = nc_inq_dimlen(l_ncIDDisplacements, 0, &l_xDim);
+
+    if (l_nc_err != NC_NOERR) {
+        std::cerr << "Could not get the size of the x-dimension in displacements." << std::endl;
+        return 1;
+    }
+
     l_nc_err = nc_inq_dimlen(l_ncIDDisplacements, 1, &l_yDim);
 
     if (l_nc_err != NC_NOERR) {
-        std::cerr << "Could get the size of a dimension in displacements." << std::endl;
+        std::cerr << "Could not get the size of the y-dimension in displacements." << std::endl;
         return 1;
     }
 
@@ -107,11 +137,23 @@ int tsunami_lab::io::NetCDF::read(std::string i_nameBathymetry,
 
     // get variable ids
     l_nc_err = nc_inq_varid(l_ncIDDisplacements, "x", &l_varIDx);
+
+    if (l_nc_err != NC_NOERR) {
+        std::cerr << "Could not find x-variable in displacements." << std::endl;
+        return 1;
+    }
+
     l_nc_err = nc_inq_varid(l_ncIDDisplacements, "y", &l_varIDy);
+
+    if (l_nc_err != NC_NOERR) {
+        std::cerr << "Could not find y-variable in displacements." << std::endl;
+        return 1;
+    }
+
     l_nc_err = nc_inq_varid(l_ncIDDisplacements, "z", &l_varIDz);
 
     if (l_nc_err != NC_NOERR) {
-        std::cerr << "Could find variable in displacements." << std::endl;
+        std::cerr << "Could not find z-variable in displacements." << std::endl;
         return 1;
     }
 
@@ -128,11 +170,13 @@ int tsunami_lab::io::NetCDF::read(std::string i_nameBathymetry,
     }
 
     // read displacements
+    std::cout << "loading displacements data" << std::endl;
     l_nc_err = nc_get_var_float(l_ncIDDisplacements, l_varIDz, &o_displacements[0]);
     if (l_nc_err != NC_NOERR) {
         std::cerr << "Could not load data from variable z" << std::endl;
         return 1;
     }
+    std::cout << "finished loading displacement file: " << i_nameDisplacements << std::endl;
 
     return 0;
 }
@@ -205,7 +249,7 @@ int tsunami_lab::io::NetCDF::init(t_real i_dxy,
         return 1;
     }
 
-    int l_dimBathymetryIds[2] = {l_dimXId, l_dimYId};
+    int l_dimBathymetryIds[2] = {l_dimYId, l_dimXId};
     l_nc_err = nc_def_var(m_ncId, "bathymetry", NC_FLOAT, 2, l_dimBathymetryIds, &l_varBathymetryId);
     l_nc_err += nc_put_att_text(m_ncId, l_varBathymetryId, "units", 6, "meters");
     if (l_nc_err != NC_NOERR) {
@@ -213,7 +257,7 @@ int tsunami_lab::io::NetCDF::init(t_real i_dxy,
         return 1;
     }
 
-    int l_dimHeightIds[3] = {l_dimTimeId, l_dimXId, l_dimYId};
+    int l_dimHeightIds[3] = {l_dimTimeId, l_dimYId, l_dimXId};
     l_nc_err = nc_def_var(m_ncId, "height", NC_FLOAT, 3, l_dimHeightIds, &l_varHeightId);
     l_nc_err += nc_put_att_text(m_ncId, l_varHeightId, "units", 6, "meters");
     if (l_nc_err != NC_NOERR) {
@@ -221,7 +265,7 @@ int tsunami_lab::io::NetCDF::init(t_real i_dxy,
         return 1;
     }
 
-    int l_dimMomentumXIds[3] = {l_dimTimeId, l_dimXId, l_dimYId};
+    int l_dimMomentumXIds[3] = {l_dimTimeId, l_dimYId, l_dimXId};
     l_nc_err = nc_def_var(m_ncId, "momentum_x", NC_FLOAT, 3, l_dimMomentumXIds, &l_varMomentumXId);
     l_nc_err += nc_put_att_text(m_ncId, l_varMomentumXId, "units", 11, "meters*kg/s");
     if (l_nc_err != NC_NOERR) {
@@ -229,7 +273,7 @@ int tsunami_lab::io::NetCDF::init(t_real i_dxy,
         return 1;
     }
 
-    int l_dimMomentumYIds[3] = {l_dimTimeId, l_dimXId, l_dimYId};
+    int l_dimMomentumYIds[3] = {l_dimTimeId, l_dimYId, l_dimXId};
     l_nc_err = nc_def_var(m_ncId, "momentum_y", NC_FLOAT, 3, l_dimMomentumYIds, &l_varMomentumYId);
     l_nc_err += nc_put_att_text(m_ncId, l_varMomentumYId, "units", 11, "meters*kg/s");
     if (l_nc_err != NC_NOERR) {
@@ -336,7 +380,7 @@ int tsunami_lab::io::NetCDF::write(t_real i_time,
     }
 
     size_t l_startp[3] = {i_timeStep, 0, 0};
-    size_t l_countp[3] = {1, m_nx, m_ny};
+    size_t l_countp[3] = {1, m_ny, m_nx};
 
     t_real *l_height = new t_real[m_nx * m_ny];
     for (t_idx l_iy = 0; l_iy < m_ny; l_iy++) {

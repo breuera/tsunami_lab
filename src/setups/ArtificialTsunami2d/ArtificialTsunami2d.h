@@ -29,15 +29,21 @@ class tsunami_lab::setups::ArtificialTsunami2d : public Setup {
     //! length of simulation in meters in y direction
     t_real m_simLenY = 0;
 
+    //! input bathymetry
+    t_real m_bIn = -100;
+
+    //! delta
+    t_real m_delta = 20;
+
    public:
     /**
      * Constructor.
      *
-     * @param in_simLenX length of simulation in x direction.
-     * @param in_simLenY length of simulation in y direction.
+     * @param i_simLenX length of simulation in x direction.
+     * @param i_simLenY length of simulation in y direction.
      **/
-    ArtificialTsunami2d(t_real in_simLenX,
-                        t_real in_simLenY);
+    ArtificialTsunami2d(t_real i_simLenX,
+                        t_real i_simLenY);
 
     /**
      * Gets the height in x-direction.
@@ -66,12 +72,12 @@ class tsunami_lab::setups::ArtificialTsunami2d : public Setup {
     /**
      * Gets the bathymetry at a given point.
      *
-     * @param in_x x-coordinate of the queried point.
-     * @param in_y y-coordinate of the queried point.
+     * @param i_x x-coordinate of the queried point.
+     * @param i_y y-coordinate of the queried point.
      * @return bathymetry at the given point.
      **/
-    t_real getBathymetry(t_real in_x,
-                         t_real in_y) const;
+    t_real getBathymetry(t_real i_x,
+                         t_real i_y) const;
 };
 
 #endif
