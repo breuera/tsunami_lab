@@ -24,18 +24,20 @@ void tsunami_lab::io::NetCdf::initialize(const std::string &filename,
                                          t_real i_dxy,
                                          t_idx i_nx,
                                          t_idx i_ny,
+                                         int i_resolution_div,
                                          t_real i_x_offset,
                                          t_real i_y_offset,
                                          t_real const *i_b)
 {
-
   m_out_file_name = filename;
 
   handleNetCdfError(nc_create(m_out_file_name.c_str(), NC_CLOBBER, &m_ncid), "Error creat the NetCDF file: ");
 
   // Define the dimensions
-  handleNetCdfError(nc_def_dim(m_ncid, "x", i_nx, &m_x_dimid), "Error define x dimension: ");
-  handleNetCdfError(nc_def_dim(m_ncid, "y", i_ny, &m_y_dimid), "Error define y dimension: ");
+  t_idx new_nx = i_nx / i_resolution_div;
+  t_idx new_ny = i_ny / i_resolution_div;
+  handleNetCdfError(nc_def_dim(m_ncid, "x", new_nx, &m_x_dimid), "Error define x dimension: ");
+  handleNetCdfError(nc_def_dim(m_ncid, "y", new_ny, &m_y_dimid), "Error define y dimension: ");
   handleNetCdfError(nc_def_dim(m_ncid, "time", NC_UNLIMITED, &m_time_dimid), "Error define time dimension: ");
 
   // Define variables
@@ -62,32 +64,35 @@ void tsunami_lab::io::NetCdf::initialize(const std::string &filename,
   handleNetCdfError(nc_enddef(m_ncid), "Error end defining: ");
 
   // put y
-  t_real *l_y = new t_real[i_ny];
-  for (t_idx l_iy = 0; l_iy < i_ny; l_iy++)
+  t_real *l_y = new t_real[new_ny];
+  for (t_idx l_iy = 0; l_iy < new_ny; l_iy++)
   {
-    l_y[l_iy] = (l_iy + 0.5) * i_dxy - i_y_offset;
+    l_y[l_iy] = (l_iy + 0.5) * i_dxy * i_resolution_div - i_y_offset;
   }
   handleNetCdfError(nc_put_var_float(m_ncid, m_y_varid, l_y), "Error put y variables: ");
 
   // put x
-  t_real *l_x = new t_real[i_nx];
-  for (t_idx l_ix = 0; l_ix < i_nx; l_ix++)
+  t_real *l_x = new t_real[new_nx];
+  for (t_idx l_ix = 0; l_ix < new_nx; l_ix++)
   {
-    l_x[l_ix] = (l_ix + 0.5) * i_dxy - i_x_offset;
+    l_x[l_ix] = (l_ix + 0.5) * i_dxy * i_resolution_div - i_x_offset;
   }
   handleNetCdfError(nc_put_var_float(m_ncid, m_x_varid, l_x), "Error put x variables: ");
 
-  handleNetCdfError(nc_put_var_float(m_ncid, m_b_varid, i_b), "Error put bathymetry variables: ");
+  t_real *scaled_b = scaleDownArray(i_b, i_nx, i_ny, i_resolution_div);
+  handleNetCdfError(nc_put_var_float(m_ncid, m_b_varid, scaled_b), "Error put bathymetry variables: ");
 
   handleNetCdfError(nc_close(m_ncid), "Error closing in init: ");
 
   delete[] l_x;
   delete[] l_y;
+  delete[] scaled_b;
   delete[] i_b;
 }
 
 void tsunami_lab::io::NetCdf::write(t_idx i_nx,
                                     t_idx i_ny,
+                                    int i_resolution_div,
                                     t_real const *i_h,
                                     t_real const *i_hu,
                                     t_real const *i_hv,
@@ -98,15 +103,22 @@ void tsunami_lab::io::NetCdf::write(t_idx i_nx,
   handleNetCdfError(nc_open(m_out_file_name.c_str(), NC_WRITE, &m_ncid), "Error opening in write: ");
 
   size_t start[3] = {timeStep, 0, 0};
-  size_t count[3] = {1, i_ny, i_nx};
+  size_t count[3] = {1, i_ny / i_resolution_div, i_nx / i_resolution_div};
 
-  handleNetCdfError(nc_put_vara_float(m_ncid, m_h_varid, start, count, i_h), "Error put height variables: ");
-  handleNetCdfError(nc_put_vara_float(m_ncid, m_hu_varid, start, count, i_hu), "Error put momentum_x variables: ");
+  t_real *scaled_h = scaleDownArray(i_h, i_nx, i_ny, i_resolution_div);
+  t_real *scaled_hu = scaleDownArray(i_hu, i_nx, i_ny, i_resolution_div);
+  t_real *scaled_hv = scaleDownArray(i_hv, i_nx, i_ny, i_resolution_div);
+
+  handleNetCdfError(nc_put_vara_float(m_ncid, m_h_varid, start, count, scaled_h), "Error put height variables: ");
+  handleNetCdfError(nc_put_vara_float(m_ncid, m_hu_varid, start, count, scaled_hu), "Error put momentum_x variables: ");
   handleNetCdfError(nc_put_var1_float(m_ncid, m_time_varid, &timeStep, &i_time), "Error put time variables: ");
-
-  handleNetCdfError(nc_put_vara_float(m_ncid, m_hv_varid, start, count, i_hv), "Error put momentum_y variables: ");
+  handleNetCdfError(nc_put_vara_float(m_ncid, m_hv_varid, start, count, scaled_hv), "Error put momentum_y variables: ");
 
   handleNetCdfError(nc_close(m_ncid), "Error closing in write: ");
+
+  delete[] scaled_h;
+  delete[] scaled_hu;
+  delete[] scaled_hv;
 
   // freeing memory because "removeGhostCells"-function return these,
   // they are not saved in a variable so this is the only time they
@@ -114,6 +126,34 @@ void tsunami_lab::io::NetCdf::write(t_idx i_nx,
   delete[] i_h;
   delete[] i_hu;
   delete[] i_hv;
+}
+
+tsunami_lab::t_real *tsunami_lab::io::NetCdf::scaleDownArray(t_real const *i_array,
+                                                             t_idx i_nx,
+                                                             t_idx i_ny,
+                                                             int i_resolution_div)
+{
+  t_idx new_nx = i_nx / i_resolution_div;
+  t_idx new_ny = i_ny / i_resolution_div;
+  t_real *new_array = new t_real[new_nx * new_ny];
+
+  for (t_idx j = 0; j < new_ny; ++j)
+  {
+    for (t_idx i = 0; i < new_nx; ++i)
+    {
+      t_real sum = 0;
+      for (t_idx y = j * i_resolution_div; y < (j + 1) * i_resolution_div; ++y)
+      {
+        for (t_idx x = i * i_resolution_div; x < (i + 1) * i_resolution_div; ++x)
+        {
+          sum += i_array[y * i_nx + x];
+        }
+      }
+      new_array[j * new_nx + i] = sum / (i_resolution_div * i_resolution_div);
+    }
+  }
+
+  return new_array;
 }
 
 void tsunami_lab::io::NetCdf::read(t_idx *o_nx,

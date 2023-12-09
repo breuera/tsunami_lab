@@ -40,6 +40,7 @@ TEST_CASE("Test the NetCDF-writer.", "[NetCDFWrite2d]")
                        1,
                        4,
                        4,
+                       1,
                        0,
                        0,
                        writer->removeGhostCells(l_b, 4, 4, 0, 0, 4));
@@ -58,6 +59,7 @@ TEST_CASE("Test the NetCDF-writer.", "[NetCDFWrite2d]")
                                     3, 7, 11, 15};
     writer->write(4,
                   4,
+                  1,
                   writer->removeGhostCells(l_h, 4, 4, 0, 0, 4),
                   writer->removeGhostCells(l_hu, 4, 4, 0, 0, 4),
                   writer->removeGhostCells(l_hv, 4, 4, 0, 0, 4),
@@ -73,6 +75,7 @@ TEST_CASE("Test the NetCDF-writer.", "[NetCDFWrite2d]")
 
     writer->write(4,
                   4,
+                  1,
                   writer->removeGhostCells(l_h, 4, 4, 0, 0, 4),
                   writer->removeGhostCells(l_hu, 4, 4, 0, 0, 4),
                   writer->removeGhostCells(l_hv, 4, 4, 0, 0, 4),
