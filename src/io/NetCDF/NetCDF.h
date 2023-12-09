@@ -12,6 +12,7 @@
 
 #include <netcdf.h>
 
+#include <cmath>
 #include <cstring>
 #include <string>
 
@@ -25,54 +26,55 @@ namespace tsunami_lab {
 
 class tsunami_lab::io::NetCDF {
    private:
-    std::string m_fileName;
+    std::string m_outFileName;
 
-    t_real const *m_b;
+    t_real *m_time;
+    t_real *m_height, *m_momentumX, *m_momentumY;
+    t_real *m_dataX, *m_dataY, *m_dataB;
 
     t_real m_dxy;
-    t_idx m_nx, m_ny, m_stride;
+    t_idx m_nx, m_ny, m_nxy, m_stride;
+    t_idx m_frameCount, m_dataSize;
 
+    int m_varXId, m_varYId, m_varTimeId, m_varBathymetryId, m_varHeightId, m_varMomentumXId, m_varMomentumYId;
+    int m_dimXId, m_dimYId, m_dimTimeId;
     int m_ncId;
+
+    int init(t_idx i_currentFrame);
 
    public:
     /**
      * @brief constructor/deconstructor.
      *
      */
-    NetCDF();
-    ~NetCDF();
+    NetCDF(t_real i_endTime,
+           t_real i_dt,
+           t_idx i_timeStepsPerFrame,
+           t_real i_dxy,
+           t_idx i_nx,
+           t_idx i_ny,
+           t_idx i_stride,
+           t_real const *i_b,
+           std::string i_outFileName);
 
-    /**
-     * @brief initialize the netCDF writer.
-     *
-     * @param i_dxy cell width in x- and y-direction.
-     * @param i_nx number of cells in x-direction.
-     * @param i_ny number of cells in y-direction.
-     * @param stride stride of the data arrays in y-direction (including ghost cells).
-     * @param i_b bathymetry of the cells; optional: use nullptr if not required.
-     * @param i_fileName the name or path of the output file.
-     */
-    int init(t_real i_dxy,
-             t_idx i_nx,
-             t_idx i_ny,
-             t_idx stride,
-             t_real const *i_b,
-             std::string i_outFileName);
+    ~NetCDF();
 
     /**
      * @brief appends data for given timestep.
      *
-     * @param i_time amount of time passed.
-     * @param i_timeStep counter for iterations done.
+     * @param i_simTime amount of time passed.
+     * @param i_frame counter for iterations done.
      * @param i_h water height of the cells.
      * @param i_hu momentum in x-direction of the cells.
      * @param i_hv momentum in y-direction of the cells.
      */
-    int write(t_real i_time,
-              t_idx i_timeStep,
+    int store(t_real i_simTime,
+              t_idx i_frame,
               t_real const *i_h,
               t_real const *i_hu,
               t_real const *i_hv);
+
+    int write();
 
     /**
      * Reads the bathymetry and displacement data from the respective file.

@@ -159,17 +159,19 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
             }
         }
     } else {
-        tsunami_lab::t_idx l_timeStep = 0;
-        tsunami_lab::io::NetCDF *l_writer = new tsunami_lab::io::NetCDF();
-
         std::string l_path = "./out/solution.nc";
         std::cout << "  writing wave field to " << l_path << std::endl;
-        l_writer->init(l_dxy,
-                       l_nx,
-                       l_ny,
-                       l_waveProp->getStride(),
-                       l_waveProp->getBathymetry(),
-                       l_path);
+
+        tsunami_lab::t_idx l_timeStep = 0;
+        tsunami_lab::io::NetCDF *l_writer = new tsunami_lab::io::NetCDF(l_endTime,
+                                                                        l_dt,
+                                                                        t_idx(25),
+                                                                        l_dxy,
+                                                                        l_nx,
+                                                                        l_ny,
+                                                                        l_waveProp->getStride(),
+                                                                        l_waveProp->getBathymetry(),
+                                                                        l_path);
 
         // iterate over time
         while (l_simTime < l_endTime) {
@@ -177,7 +179,7 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
                 std::cout << "  simulation time / #time steps / #step: "
                           << l_simTime << " / " << l_timeStep << " / " << l_nOut << std::endl;
 
-                l_writer->write(l_simTime,
+                l_writer->store(l_simTime,
                                 l_nOut,
                                 l_waveProp->getHeight(),
                                 l_waveProp->getMomentumX(),
@@ -190,6 +192,8 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
             l_timeStep++;
             l_simTime += l_dt;
         }
+
+        l_writer->write();
 
         // free memory
         std::cout << "finished time loop" << std::endl;
