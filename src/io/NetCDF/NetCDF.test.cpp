@@ -87,7 +87,7 @@ TEST_CASE("Test the NetCDF writer.", "[NetCDFWrite]") {
     REQUIRE(nc_get_var_float(l_ncId, l_varIDbathymetry, l_resultBathymetry) == NC_NOERR);
     for (int i = 0; i < 2; i++) REQUIRE(l_dataBathymetry[i] == l_resultBathymetry[i]);
 
-    std::remove("writer_test.nc");
+     std::remove("writer_test.nc");
 
     delete l_writer;
 }
@@ -120,7 +120,7 @@ TEST_CASE("Test the NetCDF read.", "[NetCDFRead]") {
     REQUIRE(l_error == 0);
     REQUIRE(l_bathymetryDimX == 5);
     REQUIRE(l_bathymetryDimY == 5);
-    REQUIRE(l_dispDimX == 2);
+    REQUIRE(l_dispDimX == 3);
     REQUIRE(l_dispDimY == 2);
 
     float l_testBathymetryPosX[5] = {-25.0,
@@ -139,11 +139,13 @@ TEST_CASE("Test the NetCDF read.", "[NetCDFRead]") {
         REQUIRE(l_bathymetryPosY[l_i] == l_testBathymetryPosY[l_i]);
     }
 
-    float l_testDispPosX[2] = {-15, 0};
-    float l_testDispPosY[2] = {-15, 0};
+    float l_testDispPosX[3] = {-10, -5, 0};
+    float l_testDispPosY[2] = {-5, -1};
 
-    for (tsunami_lab::t_idx l_i = 0; l_i < 2; l_i++) {
+    for (tsunami_lab::t_idx l_i = 0; l_i < 3; l_i++) {
         REQUIRE(l_dispPosX[l_i] == l_testDispPosX[l_i]);
+    }
+    for (tsunami_lab::t_idx l_i = 0; l_i < 2; l_i++) {
         REQUIRE(l_dispPosY[l_i] == l_testDispPosY[l_i]);
     }
 
@@ -157,10 +159,10 @@ TEST_CASE("Test the NetCDF read.", "[NetCDFRead]") {
         REQUIRE(l_bathymetry[l_i] == l_testBathymetry[l_i]);
     }
 
-    float l_testDisplacements[4] = {0.7362, 1.2548,
-                                    8.9012, 4.3210};
+    float l_testDisplacements[6] = {8, 4, -4,
+                                    -8, -6, -3};
 
-    for (tsunami_lab::t_idx l_i = 0; l_i < 4; l_i++) {
+    for (tsunami_lab::t_idx l_i = 0; l_i < 6; l_i++) {
         REQUIRE(l_displacements[l_i] == l_testDisplacements[l_i]);
     }
 

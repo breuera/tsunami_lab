@@ -385,7 +385,7 @@ int tsunami_lab::io::NetCDF::write(t_real i_time,
     t_real *l_height = new t_real[m_nx * m_ny];
     for (t_idx l_iy = 0; l_iy < m_ny; l_iy++) {
         for (t_idx l_ix = 0; l_ix < m_nx; l_ix++) {
-            l_height[l_ix + l_iy * m_nx] = i_h[(l_iy + 1) * m_stride + (l_ix + 1)];  // + m_b[(l_iy + 1) * m_stride + (l_ix + 1)];
+            l_height[l_ix + l_iy * m_nx] = i_h[(l_iy + 1) * m_stride + (l_ix + 1)] + m_b[(l_iy + 1) * m_stride + (l_ix + 1)];
         }
     }
     l_nc_err = nc_put_vara_float(m_ncId, l_varHeightId, l_startp, l_countp, l_height);
