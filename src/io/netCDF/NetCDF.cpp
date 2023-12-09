@@ -335,10 +335,10 @@ void tsunami_lab::io::NetCdf::readCheckpoint(t_idx *o_nx,
   *o_hu = new t_real[(*o_nx) * (*o_ny)];
   *o_hv = new t_real[(*o_nx) * (*o_ny)];
 
-  handleNetCdfError(nc_get_var_float(l_ncid, l_b_varid, *o_h), "Error getting h value: ");
-  handleNetCdfError(nc_get_var_float(l_ncid, l_h_varid, *o_hu), "Error getting hu value: ");
-  handleNetCdfError(nc_get_var_float(l_ncid, l_hu_varid, *o_hv), "Error getting hv value: ");
-  handleNetCdfError(nc_get_var_float(l_ncid, l_hv_varid, *o_b), "Error getting b value: ");
+  handleNetCdfError(nc_get_var_float(l_ncid, l_b_varid, *o_b), "Error getting h value: ");
+  handleNetCdfError(nc_get_var_float(l_ncid, l_h_varid, *o_h), "Error getting hu value: ");
+  handleNetCdfError(nc_get_var_float(l_ncid, l_hu_varid, *o_hu), "Error getting hv value: ");
+  handleNetCdfError(nc_get_var_float(l_ncid, l_hv_varid, *o_hv), "Error getting b value: ");
 
   int l_x_offset_dimid,
       l_y_offset_dimid,
