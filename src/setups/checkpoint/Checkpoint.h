@@ -68,6 +68,8 @@ private:
 
   std::string m_filename;
 
+  int m_resolutionDiv;
+
 public:
   /**
    * @brief Construct a new TsunamiEvent1d object
@@ -134,6 +136,7 @@ public:
   t_real getHMax() const;
   t_idx getSimulated_frame() const;
   std::string getFilename() const;
+  int getResolutionDiv() const;
 };
 
 #endif

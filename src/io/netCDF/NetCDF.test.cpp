@@ -281,6 +281,7 @@ TEST_CASE("Test the NetCDF-checkpoint_reader.", "[NetCDFReadCheckpoint]")
                                 20,
                                 1,
                                 15,
+                                7,
                                 "test");
     tsunami_lab::t_idx l_nx;
     tsunami_lab::t_idx l_ny;
@@ -303,6 +304,7 @@ TEST_CASE("Test the NetCDF-checkpoint_reader.", "[NetCDFReadCheckpoint]")
     tsunami_lab::t_real l_hMax;
     tsunami_lab::t_idx l_simulated_frame;
     std::string l_filename;
+    int l_resolutionDiv;
 
     checkpoint->readCheckpoint(&l_nx,
                                &l_ny,
@@ -325,6 +327,7 @@ TEST_CASE("Test the NetCDF-checkpoint_reader.", "[NetCDFReadCheckpoint]")
                                &l_hMax,
                                &l_simulated_frame,
                                &l_filename,
+                               &l_resolutionDiv,
                                "checkpoints/checkpoint_1.nc");
     REQUIRE(l_nx == 4);
     REQUIRE(l_ny == 4);
@@ -343,6 +346,7 @@ TEST_CASE("Test the NetCDF-checkpoint_reader.", "[NetCDFReadCheckpoint]")
     REQUIRE(l_hMax == 1);
     REQUIRE(l_simulated_frame == 15);
     REQUIRE(l_filename == "test");
+    REQUIRE(l_resolutionDiv == 7);
 
     // Verify the values read from the checkpoint for each array
     for (tsunami_lab::t_idx i = 0; i < 16; ++i)

@@ -158,6 +158,7 @@ public:
    * @param i_time Current time-stamp of the simulation.
    * @param i_nOut Counter
    * @param i_hMax get max heigth
+   * @param i_resolution_div get resolution div
    * @param i_simulated_frame get max simulated frames
    */
   void writeCheckpoint(t_idx i_nx,
@@ -180,6 +181,7 @@ public:
                        t_idx i_nOut,
                        t_real i_hMax,
                        t_idx i_simulated_frame,
+                       int i_resolution_div,
                        std::string i_filename);
 
   /**
@@ -206,6 +208,7 @@ public:
    * @param o_nOut Pointer to Counter
    * @param o_hMax Pointer to Current hMax of the simulation.
    * @param o_simulated_frame Pointer to simulated_frame
+   * @param o_resolution_div Pointer ti resolution_div
    * @param filename Name of the file to read the checkpoint from.
    */
   void readCheckpoint(t_idx *o_nx,
@@ -229,6 +232,7 @@ public:
                       t_real *o_hMax,
                       t_idx *o_simulated_frame,
                       std::string *o_filename,
+                      int *o_resolution_div,
                       const std::string filename);
 };
 

@@ -46,6 +46,7 @@ tsunami_lab::setups::Checkpoint::Checkpoint()
                          &m_hMax,
                          &m_simulated_frame,
                          &m_filename,
+                         &m_resolutionDiv,
                          "checkpoints/checkpoint_1.nc");
 
   delete netCDF;
@@ -172,4 +173,9 @@ tsunami_lab::t_idx tsunami_lab::setups::Checkpoint::getSimulated_frame() const
 std::string tsunami_lab::setups::Checkpoint::getFilename() const
 {
   return m_filename;
+}
+
+int tsunami_lab::setups::Checkpoint::getResolutionDiv() const
+{
+  return m_resolutionDiv;
 }

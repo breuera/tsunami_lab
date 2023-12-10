@@ -345,6 +345,7 @@ int main(int i_argc,
                 simulated_frame = l_checkpoint->getSimulated_frame();
                 l_hMax = l_checkpoint->getHMax();
                 filename = l_checkpoint->getFilename();
+                resolution_div = l_checkpoint->getResolutionDiv();
 
                 l_height = l_nx * l_ny / l_width;
 
@@ -710,6 +711,7 @@ int main(int i_argc,
                                             l_nOut,
                                             l_hMax,
                                             simulated_frame,
+                                            resolution_div,
                                             filename);
             l_lastCheckpointTime = std::chrono::steady_clock::now();
         }

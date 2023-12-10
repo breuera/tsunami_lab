@@ -106,6 +106,11 @@ void tsunami_lab::io::NetCdf::write(t_idx i_nx,
   size_t start[3] = {timeStep, 0, 0};
   size_t count[3] = {1, i_ny / i_resolution_div, i_nx / i_resolution_div};
 
+  handleNetCdfError(nc_inq_varid(m_ncid, "height", &m_h_varid), "Error getting x value id: ");
+  handleNetCdfError(nc_inq_varid(m_ncid, "momentum_x", &m_hu_varid), "Error getting momentum_x value id:");
+  handleNetCdfError(nc_inq_varid(m_ncid, "momentum_y", &m_hv_varid), "Error getting momentum_y value id:");
+  handleNetCdfError(nc_inq_varid(m_ncid, "time", &m_time_varid), "Error getting time value id:");
+
   t_real *scaled_h = scaleDownArray(i_h, i_nx, i_ny, i_resolution_div);
   t_real *scaled_hu = scaleDownArray(i_hu, i_nx, i_ny, i_resolution_div);
   t_real *scaled_hv = scaleDownArray(i_hv, i_nx, i_ny, i_resolution_div);
@@ -254,6 +259,7 @@ void tsunami_lab::io::NetCdf::writeCheckpoint(t_idx i_nx,
                                               t_idx i_nOut,
                                               t_real i_hMax,
                                               t_idx i_simulated_frame,
+                                              int i_resolution_div,
                                               std::string i_filename)
 {
   if (!std::filesystem::exists("checkpoints"))
@@ -294,7 +300,8 @@ void tsunami_lab::io::NetCdf::writeCheckpoint(t_idx i_nx,
       l_nOut_dimid,
       l_hMax_dimid,
       l_simulated_frame_dimid,
-      l_fileName_varid;
+      l_fileName_varid,
+      l_resolution_div_dimid;
 
   // Defining the variables
   handleNetCdfError(nc_def_var(l_ncid, "x_offset", NC_FLOAT, 0, NULL, &l_x_offset_dimid), "Error define x_offset variable:");
@@ -312,6 +319,7 @@ void tsunami_lab::io::NetCdf::writeCheckpoint(t_idx i_nx,
   handleNetCdfError(nc_def_var(l_ncid, "hMax", NC_FLOAT, 0, NULL, &l_hMax_dimid), "Error define hMax variable:");
   handleNetCdfError(nc_def_var(l_ncid, "simulated_frame", NC_INT, 0, NULL, &l_simulated_frame_dimid), "Error define simulated_frame variable:");
   handleNetCdfError(nc_def_var(l_ncid, "filename", NC_CHAR, 1, &l_filename_dimid, &l_fileName_varid), "Error defining filename variable:");
+  handleNetCdfError(nc_def_var(l_ncid, "simulated_frame", NC_INT, 0, NULL, &l_resolution_div_dimid), "Error define resolution_div variable:");
 
   handleNetCdfError(nc_enddef(l_ncid), "Error end defining: ");
 
@@ -332,12 +340,12 @@ void tsunami_lab::io::NetCdf::writeCheckpoint(t_idx i_nx,
   handleNetCdfError(nc_put_var_int(l_ncid, l_simulated_frame_dimid, (const int *)&i_simulated_frame), "Error put nOut variable: ");
   // const char *filename_c_str = i_filename.c_str();
   handleNetCdfError(nc_put_var_text(l_ncid, l_fileName_varid, i_filename.c_str()), "Error writing filename variable: ");
+  handleNetCdfError(nc_put_var_int(l_ncid, l_resolution_div_dimid, (const int *)&i_resolution_div), "Error put nOut variable: ");
 
   handleNetCdfError(nc_put_var_float(l_ncid, l_b_varid, i_b), "Error put bathymetry variables: ");
   handleNetCdfError(nc_put_var_float(l_ncid, l_h_varid, i_h), "Error put bathymetry variables: ");
   handleNetCdfError(nc_put_var_float(l_ncid, l_hu_varid, i_hu), "Error put bathymetry variables: ");
   handleNetCdfError(nc_put_var_float(l_ncid, l_hv_varid, i_hv), "Error put bathymetry variables: ");
-
   handleNetCdfError(nc_close(l_ncid), "Error closing in write: ");
 }
 
@@ -362,6 +370,7 @@ void tsunami_lab::io::NetCdf::readCheckpoint(t_idx *o_nx,
                                              t_real *o_hMax,
                                              t_idx *o_simulated_frame,
                                              std::string *o_filename,
+                                             int *o_resolution_div,
                                              const std::string filename)
 {
 
@@ -407,7 +416,8 @@ void tsunami_lab::io::NetCdf::readCheckpoint(t_idx *o_nx,
       l_time_dimid,
       l_nOut_dimid,
       l_hMax_dimid,
-      l_simulated_frame_dimid;
+      l_simulated_frame_dimid,
+      l_resolution_div_dimid;
 
   handleNetCdfError(nc_inq_varid(l_ncid, "x_offset", &l_x_offset_dimid), "Error getting x_offset value id: ");
   handleNetCdfError(nc_inq_varid(l_ncid, "y_offset", &l_y_offset_dimid), "Error getting y_offset value id: ");
@@ -423,6 +433,7 @@ void tsunami_lab::io::NetCdf::readCheckpoint(t_idx *o_nx,
   handleNetCdfError(nc_inq_varid(l_ncid, "nOut", &l_nOut_dimid), "Error getting nOut value id: ");
   handleNetCdfError(nc_inq_varid(l_ncid, "hMax", &l_hMax_dimid), "Error getting hMax value id: ");
   handleNetCdfError(nc_inq_varid(l_ncid, "simulated_frame", &l_simulated_frame_dimid), "Error getting simulated_frame value id: ");
+  handleNetCdfError(nc_inq_varid(l_ncid, "simulated_frame", &l_resolution_div_dimid), "Error getting resolution_div_dimid value id: ");
 
   // Float variables
   handleNetCdfError(nc_get_var_float(l_ncid, l_x_offset_dimid, o_x_offset), "Error getting x_offset value: ");
@@ -438,13 +449,15 @@ void tsunami_lab::io::NetCdf::readCheckpoint(t_idx *o_nx,
   handleNetCdfError(nc_get_var_int(l_ncid, l_state_boundary_right_dimid, o_state_boundary_right), "Error getting state_boundary_right value: ");
   handleNetCdfError(nc_get_var_int(l_ncid, l_state_boundary_top_dimid, o_state_boundary_top), "Error getting state_boundary_top value: ");
   handleNetCdfError(nc_get_var_int(l_ncid, l_state_boundary_bottom_dimid, o_state_boundary_bottom), "Error getting state_boundary_bottom value: ");
-  int l_nOut, l_timeStep, l_simulated_frame;
+  int l_nOut, l_timeStep, l_simulated_frame, l_resolution_div;
   handleNetCdfError(nc_get_var_int(l_ncid, l_timeStep_dimid, &l_timeStep), "Error getting timeStep value: ");
   handleNetCdfError(nc_get_var_int(l_ncid, l_nOut_dimid, &l_nOut), "Error getting nOut value: ");
   handleNetCdfError(nc_get_var_int(l_ncid, l_simulated_frame_dimid, &l_simulated_frame), "Error getting nOut value: ");
+  handleNetCdfError(nc_get_var_int(l_ncid, l_resolution_div_dimid, &l_resolution_div), "Error getting nOut value: ");
   *o_nOut = l_nOut;
   *o_timeStep = l_timeStep;
   *o_simulated_frame = l_simulated_frame;
+  *o_resolution_div = l_resolution_div;
 
   int l_filename_dimid, l_filename_varid;
   size_t l_filename_length;
