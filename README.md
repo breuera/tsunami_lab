@@ -4,6 +4,8 @@ Tsunami Lab
 This is the initial code of the Tsunami Lab taught at Friedrich Schiller University Jena.
 Further information is available from: https://scalable.uni-jena.de/opt/tsunami/
 
+Our website is available via the Github pages: https://philliprothenbeck.github.io/tsunami_lab/
+
 ### Requirements
 - up-to-date version of the building tool `SCons`
 - C++ with standard 11
