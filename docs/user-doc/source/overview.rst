@@ -22,7 +22,7 @@ Installing the project is very simple. All you need to do is:
    #. Installing the submodule using :code:`git sumbodule init` and :code:`git sumbodule update`
    #. Installing the requirements using :code:`sudo apt-get install libnetcdf-c++4-dev` and :code:`sudo apt-get install netcdf-bin`
    #. While in the repository, enter the building command into your console: :code:`scons`
-   #. In the console, use :code:`./build/tsunami_lab [-d DIMENSION] [-s SETUP] [-v SOLVER] [-l STATE_LEFT] [-r STATE_RIGHT] [-t STATE_TOP] [-b STATE_BOTTOM] [-i STATION] <number-of-cells>` (Tip: to be sure that you are in the correct console, you can write ./b and press the "tab"-button and see, if the console completes the path automatically)
+   #. In the console, use :code:`./build/tsunami_lab [-d DIMENSION] [-s SETUP] [-v SOLVER] [-l STATE_LEFT] [-r STATE_RIGHT] [-t STATE_TOP] [-b STATE_BOTTOM] [-i STATION] [-k RESOLUTION] <number-of-cells>` (Tip: to be sure that you are in the correct console, you can write ./b and press the "tab"-button and see, if the console completes the path automatically)
    #. The output-files should be generated in either in the `csv-dump`-folder or in `netCDF_dump` (depending if you use 1d or 2d)
 
 ..  tip::
@@ -46,3 +46,4 @@ Installing the project is very simple. All you need to do is:
    #. possible inputs for :code:`STATE_TOP` are "open" or "closed"
    #. possible inputs for :code:`STATE_BOTTOM` are "open" or "closed"
    #. input for :code:`STAION` is the path, where you want the station-data to be saved to
+   #. input for :code:`RESOLUTION` is a number by which the size of all arrays will be divided by to save some space while writing

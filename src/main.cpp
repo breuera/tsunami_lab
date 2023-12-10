@@ -459,7 +459,8 @@ int main(int i_argc,
                 << "    -r STATE_RIGHT = 'open','closed', default is 'open'" << std::endl
                 << "    -t STATE_TOP = 'open','closed', default is 'open'" << std::endl
                 << "    -b STATE_BOTTOM = 'open','closed', default is 'open'" << std::endl
-                << "    -i 'path' " << std::endl;
+                << "    -i 'path' " << std::endl
+                << "    -k RESOLUTION, where the higher the input, the lower the resolution" << std::endl;
             break;
         }
         }
