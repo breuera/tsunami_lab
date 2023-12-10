@@ -41,7 +41,7 @@ class tsunami_lab::io::NetCDF {
     int m_ncId;
 
     int init(t_idx i_currentFrame,
-             long int i_checkpoint = -1);
+             std::string i_checkPointPath);
 
     bool isInBounds(int i_x, int i_y);
 
@@ -85,14 +85,14 @@ class tsunami_lab::io::NetCDF {
     int write();
 
     static int readCheckpoint(std::string i_checkPoinPath,
-                       t_real *o_height,
-                       t_real *o_momentumX,
-                       t_real *o_momentumY,
-                       t_real *o_bathymetry,
-                       t_real *o_time,
-                       t_idx *o_currentFrame,
-                       t_real *o_endSimTime,
-                       t_real *o_startSimTime);
+                              t_real *o_height,
+                              t_real *o_momentumX,
+                              t_real *o_momentumY,
+                              t_real *o_bathymetry,
+                              t_real *o_time,
+                              t_idx *o_currentFrame,
+                              t_real *o_endSimTime,
+                              t_real *o_startSimTime);
 
     /**
      * Reads the bathymetry and displacement data from the respective file.

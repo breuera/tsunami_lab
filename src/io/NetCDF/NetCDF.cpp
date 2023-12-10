@@ -182,11 +182,11 @@ int tsunami_lab::io::NetCDF::read(std::string i_nameBathymetry,
 }
 
 int tsunami_lab::io::NetCDF::init(t_idx i_currentFrame,
-                                  long int i_checkpoint) {
+                                  std::string i_checkPointPath) {
     int l_nc_err = 0;
 
     // define dimensions
-    if (i_checkpoint > -1) {
+    if (i_checkPointPath.compare("") != 0) {
         l_nc_err = nc_def_dim(m_ncId, "x", m_nx, &m_dimXId);
         l_nc_err += nc_def_dim(m_ncId, "y", m_ny, &m_dimYId);
     } else {
@@ -284,10 +284,10 @@ int tsunami_lab::io::NetCDF::write(t_idx i_currentFrame,
     }
 
     // define dims and vars
-    init(i_currentFrame, i_checkpoint);
+    init(i_currentFrame, i_checkPointPath);
 
     // write data
-    if (i_checkpoint > -1) {
+    if (i_checkPointPath.compare("") != 0) {
         l_nc_err = nc_put_var_float(m_ncId, m_varXId, m_dataX);
         l_nc_err += nc_put_var_float(m_ncId, m_varYId, m_dataY);
         l_nc_err += nc_put_var_float(m_ncId, m_varBathymetryId, m_dataB);
