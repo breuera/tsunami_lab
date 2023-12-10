@@ -40,6 +40,7 @@ Installing the project is very simple. All you need to do is:
       * :code:`'dambreak2d'` 
       * :code:`'artificial2d'` 
       * :code:`'tsunami2d'` 
+      * :code:`'checkpoint'` This setup will load the last checkpoint which was generated, depending on what 2d-simulation was started before.
    #. possible inputs for :code:`SOLVER` are "fwave" and "roe". Not using this parameter will use "fwave" by default.
    #. possible inputs for :code:`STATE_LEFT` are "open" or "closed"
    #. possible inputs for :code:`STATE_RIGHT` are "open" or "closed"
