@@ -185,11 +185,11 @@ tsunami_lab::t_idx tsunami_lab::io::ConfigLoader::loadConfig(std::string i_confi
     std::ifstream f(l_checkPointPath.c_str());
     if (f.good()) {
         std::cout << "Reading out/" + l_configName + "_checkpoint.nc" << std::endl;
-        t_real *l_height = nullptr;
-        t_real *l_momentumX = nullptr;
-        t_real *l_momentumY = nullptr;
-        t_real *l_bathymetry = nullptr;
-        t_real *l_time = nullptr;
+        t_real *l_height;
+        t_real *l_momentumX;
+        t_real *l_momentumY;
+        t_real *l_bathymetry;
+        t_real *l_time;
         t_idx l_currentFrame;
         t_real l_endSimTime;
         t_real l_startSimTime;

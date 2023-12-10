@@ -19,7 +19,7 @@ class tsunami_lab::setups::CheckPoint : public Setup {
    private:
     t_idx m_dimX;
     t_idx m_dimY;
-	 t_idx m_dataOffset;
+	 t_idx m_frameOffset;
     t_real m_cellWidthX;
     t_real m_cellWidthY;
     t_real *m_height;

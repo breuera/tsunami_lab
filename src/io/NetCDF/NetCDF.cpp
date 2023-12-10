@@ -187,7 +187,7 @@ int tsunami_lab::io::NetCDF::init(t_idx i_currentFrame) {
     // define dimensions
     l_nc_err = nc_def_dim(m_ncId, "x", m_nx, &m_dimXId);
     l_nc_err += nc_def_dim(m_ncId, "y", m_ny, &m_dimYId);
-    l_nc_err += nc_def_dim(m_ncId, "time", i_currentFrame, &m_dimTimeId);
+    l_nc_err += nc_def_dim(m_ncId, "time", i_currentFrame+1, &m_dimTimeId);
     l_nc_err += nc_def_dim(m_ncId, "simTime", 1, &m_dimSimTimeId);
     l_nc_err += nc_def_dim(m_ncId, "endTime", 1, &m_dimEndTimeId);
     l_nc_err += nc_def_dim(m_ncId, "frame", 1, &m_dimFrameId);
@@ -312,11 +312,11 @@ int tsunami_lab::io::NetCDF::write() {
 }
 
 int tsunami_lab::io::NetCDF::readCheckpoint(std::string i_checkPoinPath,
-                                            t_real *o_height,
-                                            t_real *o_momentumX,
-                                            t_real *o_momentumY,
-                                            t_real *o_bathymetry,
-                                            t_real *o_time,
+                                            t_real *&o_height,
+                                            t_real *&o_momentumX,
+                                            t_real *&o_momentumY,
+                                            t_real *&o_bathymetry,
+                                            t_real *&o_time,
 														  t_idx *o_currentFrame,
                                             t_real *o_endSimTime,
                                             t_real *o_startSimTime) {
@@ -354,15 +354,23 @@ int tsunami_lab::io::NetCDF::readCheckpoint(std::string i_checkPoinPath,
     int l_varIDtime, l_varIDheight, l_varIDmomentumX, l_varIDmomentumY, l_varIDbathymetry;
 	 int l_varIDsimTime, l_varIDendTime, l_varIDframe;
     
-    l_nc_err += nc_inq_varid(l_ncID, "time", &l_varIDtime);
-    l_nc_err += nc_inq_varid(l_ncID, "height", &l_varIDheight);
-    l_nc_err += nc_inq_varid(l_ncID, "momentumX", &l_varIDmomentumX);
-    l_nc_err += nc_inq_varid(l_ncID, "momentumY", &l_varIDmomentumY);
-    l_nc_err += nc_inq_varid(l_ncID, "bathymetry", &l_varIDbathymetry);
+    l_nc_err = nc_inq_varid(l_ncID, "time", &l_varIDtime);
+	 if (l_nc_err != NC_NOERR) std::cout << 2 << std::endl;
+    l_nc_err = nc_inq_varid(l_ncID, "height", &l_varIDheight);
+	 if (l_nc_err != NC_NOERR) std::cout << 3 << std::endl;
+    l_nc_err = nc_inq_varid(l_ncID, "momentum_x", &l_varIDmomentumX);
+	 if (l_nc_err != NC_NOERR) std::cout << 4 << std::endl;
+    l_nc_err = nc_inq_varid(l_ncID, "momentum_y", &l_varIDmomentumY);
+	 if (l_nc_err != NC_NOERR) std::cout << 5 << std::endl;
+    l_nc_err = nc_inq_varid(l_ncID, "bathymetry", &l_varIDbathymetry);
+	 if (l_nc_err != NC_NOERR) std::cout << 6 << std::endl;
 
-	 l_nc_err += nc_inq_varid(l_ncID, "simTime", &l_varIDsimTime);
-    l_nc_err += nc_inq_varid(l_ncID, "endTime", &l_varIDendTime);
-    l_nc_err += nc_inq_varid(l_ncID, "frame", &l_varIDframe);
+	 l_nc_err = nc_inq_varid(l_ncID, "simTime", &l_varIDsimTime);
+	 if (l_nc_err != NC_NOERR) std::cout << 7 << std::endl;
+    l_nc_err = nc_inq_varid(l_ncID, "endTime", &l_varIDendTime);
+	 if (l_nc_err != NC_NOERR) std::cout << 8 << std::endl;
+    l_nc_err = nc_inq_varid(l_ncID, "frame", &l_varIDframe);
+	 if (l_nc_err != NC_NOERR) std::cout << 9 << std::endl;
     if (l_nc_err != NC_NOERR) {
         std::cerr << "NCError: Load Variable IDs" << std::endl;
         return 1;

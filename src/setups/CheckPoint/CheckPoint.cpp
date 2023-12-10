@@ -8,6 +8,7 @@
 #include "CheckPoint.h"
 
 #include <cmath>
+#include <iostream>
 
 tsunami_lab::setups::CheckPoint::CheckPoint(t_real i_nx,
                                             t_real i_ny,
@@ -20,7 +21,7 @@ tsunami_lab::setups::CheckPoint::CheckPoint(t_real i_nx,
                                             t_real *i_bathymetry) {
     m_dimX = i_dimX;
     m_dimY = i_dimY;
-	 m_dataOffset = i_frame * i_nx * i_ny;
+	 m_frameOffset = i_frame * i_nx * i_ny;
     m_height = i_height;
     m_momentumX = i_momentumX;
     m_momentumY = i_momentumY;
@@ -35,7 +36,7 @@ tsunami_lab::t_real tsunami_lab::setups::CheckPoint::getHeight(t_real i_x,
     t_idx l_ix = round(i_x * m_cellWidthX);
     t_idx l_iy = round(i_y * m_cellWidthY);
 
-    return m_height[l_ix + l_iy * m_dimX + m_dataOffset];
+    return m_height[l_ix + l_iy * m_dimX + m_frameOffset];
 }
 
 tsunami_lab::t_real tsunami_lab::setups::CheckPoint::getMomentumX(t_real i_x,
@@ -43,7 +44,7 @@ tsunami_lab::t_real tsunami_lab::setups::CheckPoint::getMomentumX(t_real i_x,
     t_idx l_ix = round(i_x * m_cellWidthX);
     t_idx l_iy = round(i_y * m_cellWidthY);
 
-    return m_momentumX[l_ix + l_iy * m_dimX + m_dataOffset];
+    return m_momentumX[l_ix + l_iy * m_dimX + m_frameOffset];
 }
 
 tsunami_lab::t_real tsunami_lab::setups::CheckPoint::getMomentumY(t_real i_x,
@@ -51,7 +52,7 @@ tsunami_lab::t_real tsunami_lab::setups::CheckPoint::getMomentumY(t_real i_x,
     t_idx l_ix = round(i_x * m_cellWidthX);
     t_idx l_iy = round(i_y * m_cellWidthY);
 
-    return m_momentumY[l_ix + l_iy * m_dimX + m_dataOffset];
+    return m_momentumY[l_ix + l_iy * m_dimX + m_frameOffset];
 }
 
 tsunami_lab::t_real tsunami_lab::setups::CheckPoint::getBathymetry(t_real i_x,
@@ -59,5 +60,5 @@ tsunami_lab::t_real tsunami_lab::setups::CheckPoint::getBathymetry(t_real i_x,
     t_idx l_ix = round(i_x * m_cellWidthX);
     t_idx l_iy = round(i_y * m_cellWidthY);
 
-    return m_bathymetry[l_ix + l_iy * m_dimX + m_dataOffset];
+    return m_bathymetry[l_ix + l_iy * m_dimX + m_frameOffset];
 }
