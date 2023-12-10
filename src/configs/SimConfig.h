@@ -23,6 +23,8 @@ class tsunami_lab::configs::SimConfig {
     //! dimension of the simulation.
     tsunami_lab::t_idx m_dimension = 1;
 
+	 std::string m_configName;
+
     //! number of cells in x-direction
     tsunami_lab::t_idx m_nx = 1;
 
@@ -67,6 +69,7 @@ class tsunami_lab::configs::SimConfig {
      * @param i_isRoeSolver boolean that shows if the roe solver is to be used (false -> f-wave solver).
      */
     SimConfig(tsunami_lab::t_idx i_dimension,
+              std::string i_configName,
               tsunami_lab::t_idx i_nx,
               tsunami_lab::t_idx i_ny,
               tsunami_lab::t_real i_xLen,
@@ -87,6 +90,10 @@ class tsunami_lab::configs::SimConfig {
      */
     tsunami_lab::t_idx getDimension() {
         return m_dimension;
+    }
+
+	 std::string getConfigName() {
+        return m_configName;
     }
 
     /**

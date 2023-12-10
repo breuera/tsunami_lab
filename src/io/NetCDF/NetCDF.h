@@ -36,8 +36,8 @@ class tsunami_lab::io::NetCDF {
     t_idx m_nx, m_ny, m_nxy, m_stride;
     t_idx m_frameCount, m_dataSize;
 
-    int m_varXId, m_varYId, m_varTimeId, m_varBathymetryId, m_varHeightId, m_varMomentumXId, m_varMomentumYId, m_varSimTimeId, m_varEndTimeId;
-    int m_dimXId, m_dimYId, m_dimTimeId, m_dimSimTimeId, m_dimEndTimeId;
+    int m_varXId, m_varYId, m_varTimeId, m_varBathymetryId, m_varHeightId, m_varMomentumXId, m_varMomentumYId, m_varSimTimeId, m_varEndTimeId, m_varFrameId;
+    int m_dimXId, m_dimYId, m_dimTimeId, m_dimSimTimeId, m_dimEndTimeId, m_dimFrameId;
     int m_ncId;
 
     int init(t_idx i_currentFrame);
@@ -75,10 +75,20 @@ class tsunami_lab::io::NetCDF {
               t_real const *i_hv);
 
     int write(t_idx i_currentFrame,
-              long int i_checkpoint,
+              std::string i_checkPointPath,
               t_real i_simTime,
               t_real i_endTime);
     int write();
+
+    static int readCheckpoint(std::string i_checkPoinPath,
+                       t_real *o_height,
+                       t_real *o_momentumX,
+                       t_real *o_momentumY,
+                       t_real *o_bathymetry,
+                       t_real *o_time,
+                       t_idx *o_currentFrame,
+                       t_real *o_endSimTime,
+                       t_real *o_startSimTime);
 
     /**
      * Reads the bathymetry and displacement data from the respective file.
