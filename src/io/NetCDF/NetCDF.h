@@ -118,6 +118,22 @@ class tsunami_lab::io::NetCDF {
                     t_real *&o_dispPosX,
                     t_real *&o_dispPosY,
                     t_real *&o_displacements);
+
+    void setHeight(t_real *i_height) {
+        m_height = i_height;
+    }
+
+    void setMomentumX(t_real *i_momentumX) {
+        m_momentumX = i_momentumX;
+    }
+
+    void setMomentumY(t_real *i_momentumY) {
+        m_momentumY = i_momentumY;
+    }
+
+    void setTime(t_real *i_time) {
+        m_time = i_time;
+    }
 };
 
 #endif

@@ -211,7 +211,8 @@ tsunami_lab::t_idx tsunami_lab::io::ConfigLoader::loadConfig(std::string i_confi
                                                       l_height,
                                                       l_momentumX,
                                                       l_momentumY,
-                                                      l_bathymetry);
+                                                      l_bathymetry,
+																		l_time);
     } else if (l_setupName.compare("DamBreak") == 0) {
         if (l_dimension == 1) {
             o_setup = new tsunami_lab::setups::DamBreak1d(10, 5, 5);

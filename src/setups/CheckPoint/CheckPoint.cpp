@@ -18,7 +18,8 @@ tsunami_lab::setups::CheckPoint::CheckPoint(t_real i_nx,
                                             t_real *i_height,
                                             t_real *i_momentumX,
                                             t_real *i_momentumY,
-                                            t_real *i_bathymetry) {
+                                            t_real *i_bathymetry,
+														  t_real *i_time) {
     m_dimX = i_dimX;
     m_dimY = i_dimY;
 	 m_frameOffset = i_frame * i_nx * i_ny;
@@ -26,6 +27,7 @@ tsunami_lab::setups::CheckPoint::CheckPoint(t_real i_nx,
     m_momentumX = i_momentumX;
     m_momentumY = i_momentumY;
     m_bathymetry = i_bathymetry;
+	 m_time = i_time;
 
     m_cellWidthX = m_dimX / i_nx;
     m_cellWidthY = m_dimY / i_ny;

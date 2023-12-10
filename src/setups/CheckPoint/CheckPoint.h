@@ -19,13 +19,14 @@ class tsunami_lab::setups::CheckPoint : public Setup {
    private:
     t_idx m_dimX;
     t_idx m_dimY;
-	 t_idx m_frameOffset;
+    t_idx m_frameOffset;
     t_real m_cellWidthX;
     t_real m_cellWidthY;
     t_real *m_height;
     t_real *m_momentumX;
     t_real *m_momentumY;
     t_real *m_bathymetry;
+	 t_real *m_time;
 
    public:
     /**
@@ -41,11 +42,12 @@ class tsunami_lab::setups::CheckPoint : public Setup {
                t_real i_ny,
                t_idx i_dimX,
                t_idx i_dimY,
-					t_idx i_frame,
+               t_idx i_frame,
                t_real *i_height,
                t_real *i_momentumX,
                t_real *i_momentumY,
-               t_real *i_bathymetry);
+               t_real *i_bathymetry,
+               t_real *i_time);
 
     /**
      * Gets the water height at a given point.
@@ -82,6 +84,22 @@ class tsunami_lab::setups::CheckPoint : public Setup {
      */
     t_real getBathymetry(t_real,
                          t_real) const;
+
+    t_real *getHeightData() {
+        return m_height;
+    }
+
+    t_real *getMomentumXData() {
+        return m_momentumX;
+    }
+
+    t_real *getMomentumYData() {
+        return m_momentumY;
+    }
+
+    t_real *getTimeData() {
+        return m_time;
+    }
 };
 
 #endif
