@@ -264,7 +264,6 @@ TEST_CASE("Test the NetCDF-checkpoint_reader.", "[NetCDFReadCheckpoint]")
                                 l_b,
                                 0,
                                 0,
-                                10,
                                 1,
                                 1,
                                 1,
@@ -274,7 +273,9 @@ TEST_CASE("Test the NetCDF-checkpoint_reader.", "[NetCDFReadCheckpoint]")
                                 36000,
                                 500,
                                 16000,
-                                20);
+                                20,
+                                1,
+                                15);
     tsunami_lab::t_idx l_nx;
     tsunami_lab::t_idx l_ny;
     tsunami_lab::t_real *l_h1;
@@ -283,7 +284,6 @@ TEST_CASE("Test the NetCDF-checkpoint_reader.", "[NetCDFReadCheckpoint]")
     tsunami_lab::t_real *l_b1;
     tsunami_lab::t_real l_x_offset;
     tsunami_lab::t_real l_y_offset;
-    tsunami_lab::t_real l_stride;
     int l_solver_choice;
     int l_state_boundary_left;
     int l_state_boundary_right;
@@ -294,6 +294,8 @@ TEST_CASE("Test the NetCDF-checkpoint_reader.", "[NetCDFReadCheckpoint]")
     tsunami_lab::t_idx l_timeStep;
     tsunami_lab::t_real l_time;
     tsunami_lab::t_idx l_nOut;
+    tsunami_lab::t_real l_hMax;
+    tsunami_lab::t_idx l_simulated_frame;
 
     checkpoint->readCheckpoint(&l_nx,
                                &l_ny,
@@ -303,7 +305,6 @@ TEST_CASE("Test the NetCDF-checkpoint_reader.", "[NetCDFReadCheckpoint]")
                                &l_b1,
                                &l_x_offset,
                                &l_y_offset,
-                               &l_stride,
                                &l_solver_choice,
                                &l_state_boundary_left,
                                &l_state_boundary_right,
@@ -314,12 +315,13 @@ TEST_CASE("Test the NetCDF-checkpoint_reader.", "[NetCDFReadCheckpoint]")
                                &l_timeStep,
                                &l_time,
                                &l_nOut,
+                               &l_hMax,
+                               &l_simulated_frame,
                                "checkpoints/checkpoint_1.nc");
     REQUIRE(l_nx == 4);
     REQUIRE(l_ny == 4);
     REQUIRE(l_x_offset == 0);
     REQUIRE(l_y_offset == 0);
-    REQUIRE(l_stride == 10);
     REQUIRE(l_solver_choice == 1);
     REQUIRE(l_state_boundary_left == 1);
     REQUIRE(l_state_boundary_right == 1);
@@ -330,6 +332,8 @@ TEST_CASE("Test the NetCDF-checkpoint_reader.", "[NetCDFReadCheckpoint]")
     REQUIRE(l_timeStep == 500);
     REQUIRE(l_time == 16000);
     REQUIRE(l_nOut == 20);
+    REQUIRE(l_hMax == 1);
+    REQUIRE(l_simulated_frame == 15);
 
     // Verify the values read from the checkpoint for each array
     for (tsunami_lab::t_idx i = 0; i < 16; ++i)

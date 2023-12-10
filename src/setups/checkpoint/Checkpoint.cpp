@@ -11,20 +11,13 @@
 
 tsunami_lab::setups::Checkpoint::~Checkpoint()
 {
-  delete[] m_bathymetry_values_x;
-  delete[] m_bathymetry_values_y;
   delete[] m_bathymetry;
-  delete[] m_displacement_values_x;
-  delete[] m_displacement_values_y;
-  delete[] m_displacement;
+  delete[] m_height;
+  delete[] m_momentumX;
+  delete[] m_momentumY;
 }
 
-tsunami_lab::setups::Checkpoint::Checkpoint(std::string bat_path,
-                                            std::string dis_path,
-                                            t_real *o_width,
-                                            t_real *o_height,
-                                            t_real *o_x_offset,
-                                            t_real *o_y_offset)
+tsunami_lab::setups::Checkpoint::Checkpoint()
 {
   tsunami_lab::io::NetCdf *netCDF = nullptr;
 
@@ -32,29 +25,27 @@ tsunami_lab::setups::Checkpoint::Checkpoint(std::string bat_path,
 
   std::cout << "Entering Checkpoint" << std::endl;
 
-  netCDF->read(&m_bathymetry_length_x,
-               &m_bathymetry_length_y,
-               &m_bathymetry_values_x,
-               &m_bathymetry_values_y,
-               &m_bathymetry,
-               bat_path);
-
-  netCDF->read(&m_displacement_length_x,
-               &m_displacement_length_y,
-               &m_displacement_values_x,
-               &m_displacement_values_y,
-               &m_displacement,
-               dis_path);
-
-  // Make width/height/offsets public after calculatin,
-  // opens possibility for different input-files
-  *o_width = m_bathymetry_values_x[m_bathymetry_length_x - 1] - m_bathymetry_values_x[0];
-  *o_height = m_bathymetry_values_y[m_bathymetry_length_y - 1] - m_bathymetry_values_y[0];
-
-  m_x_offset = m_bathymetry_values_x[0];
-  m_y_offset = m_bathymetry_values_y[0];
-  *o_x_offset = -m_x_offset;
-  *o_y_offset = -m_y_offset;
+  netCDF->readCheckpoint(&m_nx,
+                         &m_ny,
+                         &m_height,
+                         &m_momentumX,
+                         &m_momentumY,
+                         &m_bathymetry,
+                         &m_x_offset,
+                         &m_y_offset,
+                         &m_solver_choice,
+                         &m_state_boundary_left,
+                         &m_state_boundary_right,
+                         &m_state_boundary_top,
+                         &m_state_boundary_bottom,
+                         &m_width,
+                         &m_endTime,
+                         &m_timeStep,
+                         &m_time,
+                         &m_nOut,
+                         &m_hMax,
+                         &m_simulated_frame,
+                         "checkpoints/checkpoint_1.nc");
 
   delete netCDF;
 }
@@ -62,83 +53,117 @@ tsunami_lab::setups::Checkpoint::Checkpoint(std::string bat_path,
 tsunami_lab::t_real tsunami_lab::setups::Checkpoint::getHeight(t_real i_x,
                                                                t_real i_y) const
 {
-  t_real l_b_in = getBathymetryFromNetCdf(i_x, i_y);
-  if (l_b_in < 0)
-  {
-    return std::max(-l_b_in, m_delta);
-  }
-  else
-  {
-    return 0;
-  }
+  t_idx x_idx = static_cast<t_idx>(i_x);
+  t_idx y_idx = static_cast<t_idx>(i_y);
+
+  return m_height[x_idx + y_idx * m_nx];
 }
 
-tsunami_lab::t_real tsunami_lab::setups::Checkpoint::getMomentumX(t_real,
-                                                                  t_real) const
+tsunami_lab::t_real tsunami_lab::setups::Checkpoint::getMomentumX(t_real i_x,
+                                                                  t_real i_y) const
 {
-  return 0;
+  t_idx x_idx = static_cast<t_idx>(i_x);
+  t_idx y_idx = static_cast<t_idx>(i_y);
+
+  return m_momentumX[x_idx + y_idx * m_nx];
 }
 
-tsunami_lab::t_real tsunami_lab::setups::Checkpoint::getMomentumY(t_real,
-                                                                  t_real) const
+tsunami_lab::t_real tsunami_lab::setups::Checkpoint::getMomentumY(t_real i_x,
+                                                                  t_real i_y) const
 {
-  return 0;
+  t_idx x_idx = static_cast<t_idx>(i_x);
+  t_idx y_idx = static_cast<t_idx>(i_y);
+
+  return m_momentumY[x_idx + y_idx * m_nx];
 }
 
 tsunami_lab::t_real tsunami_lab::setups::Checkpoint::getBathymetry(t_real i_x,
                                                                    t_real i_y) const
 {
-  t_real l_b_in = getBathymetryFromNetCdf(i_x, i_y);
+  t_idx x_idx = static_cast<t_idx>(i_x);
+  t_idx y_idx = static_cast<t_idx>(i_y);
 
-  if (l_b_in < 0)
-  {
-    return std::min(l_b_in, -m_delta) + getDisplacement(i_x, i_y);
-  }
-  else
-  {
-    return std::max(l_b_in, m_delta) + getDisplacement(i_x, i_y);
-  }
+  return m_bathymetry[x_idx + y_idx * m_nx];
 }
 
-tsunami_lab::t_real tsunami_lab::setups::Checkpoint::getDisplacement(t_real i_x,
-                                                                     t_real i_y) const
+// Für Zeigervariablen
+tsunami_lab::t_idx tsunami_lab::setups::Checkpoint::getNx() const
 {
-  if (i_x < m_displacement_values_x[0] || i_x > m_displacement_values_x[m_displacement_length_x - 1])
-  {
-    return 0;
-  }
-  if (i_y < m_displacement_values_y[0] || i_y > m_displacement_values_y[m_displacement_length_y - 1])
-  {
-    return 0;
-  }
-
-  t_real l_dxy = m_displacement_values_x[1] - m_displacement_values_x[0];
-  t_real l_offset_x = m_displacement_values_x[0];
-  t_real l_offset_y = m_displacement_values_y[0];
-
-  t_idx l_x = (i_x - l_offset_x) / l_dxy;
-  t_idx l_y = (i_y - l_offset_y) / l_dxy;
-
-  return m_displacement[l_y * m_displacement_length_x + l_x];
+  return m_nx;
 }
 
-tsunami_lab::t_real tsunami_lab::setups::Checkpoint::getBathymetryFromNetCdf(t_real i_x,
-                                                                             t_real i_y) const
+tsunami_lab::t_idx tsunami_lab::setups::Checkpoint::getNy() const
 {
+  return m_ny;
+}
 
-  if (i_x < m_bathymetry_values_x[0] || i_x > m_bathymetry_values_x[m_bathymetry_length_x - 1])
-  {
-    return 0;
-  }
-  if (i_y < m_bathymetry_values_y[0] || i_y > m_bathymetry_values_y[m_bathymetry_length_y - 1])
-  {
-    return 0;
-  }
+tsunami_lab::t_real tsunami_lab::setups::Checkpoint::getXOffset() const
+{
+  return m_x_offset;
+}
 
-  t_real l_dxy = m_bathymetry_values_x[1] - m_bathymetry_values_x[0];
+tsunami_lab::t_real tsunami_lab::setups::Checkpoint::getYOffset() const
+{
+  return m_y_offset;
+}
 
-  t_idx l_x = (i_x - m_x_offset) / l_dxy;
-  t_idx l_y = (i_y - m_y_offset) / l_dxy;
+// Für Zeigervariablen (Integer-Werte)
+int tsunami_lab::setups::Checkpoint::getSolverChoice() const
+{
+  return m_solver_choice;
+}
 
-  return m_bathymetry[l_y * m_bathymetry_length_x + l_x];
+int tsunami_lab::setups::Checkpoint::getStateBoundaryLeft() const
+{
+  return m_state_boundary_left;
+}
+
+int tsunami_lab::setups::Checkpoint::getStateBoundaryRight() const
+{
+  return m_state_boundary_right;
+}
+
+int tsunami_lab::setups::Checkpoint::getStateBoundaryTop() const
+{
+  return m_state_boundary_top;
+}
+
+int tsunami_lab::setups::Checkpoint::getStateBoundaryBottom() const
+{
+  return m_state_boundary_bottom;
+}
+
+tsunami_lab::t_real tsunami_lab::setups::Checkpoint::getWidth() const
+{
+  return m_width;
+}
+
+tsunami_lab::t_real tsunami_lab::setups::Checkpoint::getEndTime() const
+{
+  return m_endTime;
+}
+
+tsunami_lab::t_idx tsunami_lab::setups::Checkpoint::getTimeStep() const
+{
+  return m_timeStep;
+}
+
+tsunami_lab::t_real tsunami_lab::setups::Checkpoint::getTime() const
+{
+  return m_time;
+}
+
+tsunami_lab::t_idx tsunami_lab::setups::Checkpoint::getNOut() const
+{
+  return m_nOut;
+}
+
+tsunami_lab::t_real tsunami_lab::setups::Checkpoint::getHMax() const
+{
+  return m_hMax;
+}
+
+tsunami_lab::t_idx tsunami_lab::setups::Checkpoint::getSimulated_frame() const
+{
+  return m_simulated_frame;
 }

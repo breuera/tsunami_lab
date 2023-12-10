@@ -147,6 +147,8 @@ public:
    * @param i_timeStep Current time-step of the simulation.
    * @param i_time Current time-stamp of the simulation.
    * @param i_nOut Counter
+   * @param i_hMax get max heigth
+   * @param i_simulated_frame get max simulated frames
    */
   void writeCheckpoint(t_idx i_nx,
                        t_idx i_ny,
@@ -156,7 +158,6 @@ public:
                        t_real const *i_b,
                        t_real i_x_offset,
                        t_real i_y_offset,
-                       t_real i_stride,
                        int i_solver_choice,
                        int i_state_boundary_left,
                        int i_state_boundary_right,
@@ -166,7 +167,9 @@ public:
                        t_real i_endTime,
                        t_idx i_timeStep,
                        t_real i_time,
-                       t_idx i_nOut);
+                       t_idx i_nOut,
+                       t_real i_hMax,
+                       t_idx i_simulated_frame);
 
   /**
    * @brief Reads all necessary parameters for a checkpoint from a file
@@ -190,6 +193,8 @@ public:
    * @param o_timeStep Pointer to Current time-step of the simulation.
    * @param o_time Pointer to Current time-stamp of the simulation.
    * @param o_nOut Pointer to Counter
+   * @param o_hMax Pointer to Current hMax of the simulation.
+   * @param o_simulated_frame Pointer to simulated_frame
    * @param filename Name of the file to read the checkpoint from.
    */
   void readCheckpoint(t_idx *o_nx,
@@ -200,7 +205,6 @@ public:
                       t_real **o_b,
                       t_real *o_x_offset,
                       t_real *o_y_offset,
-                      t_real *o_stride,
                       int *o_solver_choice,
                       int *o_state_boundary_left,
                       int *o_state_boundary_right,
@@ -211,6 +215,8 @@ public:
                       t_idx *o_timeStep,
                       t_real *o_time,
                       t_idx *o_nOut,
+                      t_real *o_hMax,
+                      t_idx *o_simulated_frame,
                       const std::string filename);
 };
 
