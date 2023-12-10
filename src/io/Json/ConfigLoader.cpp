@@ -106,13 +106,16 @@ tsunami_lab::t_idx tsunami_lab::io::ConfigLoader::loadConfig(std::string i_path,
     }
 
     // set time of simulation
-    tsunami_lab::t_real l_simTime;
+    tsunami_lab::t_real l_endSimTime;
     if (l_configFile.contains("simTime")) {
-        l_simTime = l_configFile.at("simTime");
+        l_endSimTime = l_configFile.at("simTime");
     } else {
         std::cout << "simTime takes on default value" << std::endl;
-        l_simTime = 1.25;
+        l_endSimTime = 1.25;
     }
+
+    // set start time of simulation
+    tsunami_lab::t_real l_startSimTime = 0;
 
     // set boundary condition
     e_boundary l_boundaryCond[4] = {OUTFLOW, OUTFLOW, OUTFLOW, OUTFLOW};
@@ -342,7 +345,8 @@ tsunami_lab::t_idx tsunami_lab::io::ConfigLoader::loadConfig(std::string i_path,
                                                   l_ny,
                                                   l_xLen,
                                                   l_yLen,
-                                                  l_simTime,
+                                                  l_endSimTime,
+                                                  l_startSimTime,
                                                   l_boundaryCond,
                                                   l_useRoeSolver);
     return 1;

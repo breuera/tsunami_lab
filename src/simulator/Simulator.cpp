@@ -103,8 +103,8 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
 
     // set up time and print control
     tsunami_lab::t_idx l_frame = 0;
-    tsunami_lab::t_real l_endTime = i_simConfig.getSimTime();
-    tsunami_lab::t_real l_simTime = 0;
+    tsunami_lab::t_real l_endTime = i_simConfig.getEndSimTime();
+    tsunami_lab::t_real l_simTime = i_simConfig.getStartSimTime();
     if (i_simConfig.getDimension() == 1) {
         if (i_hStar == -1) {
             tsunami_lab::t_idx l_timeStep = 0;

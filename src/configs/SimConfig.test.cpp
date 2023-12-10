@@ -29,6 +29,7 @@ TEST_CASE("Test the SimConfig data-structure.", "[SimConfig]") {
                                                                                l_xLen,
                                                                                l_yLen,
                                                                                l_simTime,
+																										 0,
                                                                                l_boundaryCondition,
                                                                                l_isRoeSolver);
 
@@ -37,7 +38,8 @@ TEST_CASE("Test the SimConfig data-structure.", "[SimConfig]") {
     REQUIRE(l_ny == l_config.getYCells());
     REQUIRE(l_xLen == l_config.getXLength());
     REQUIRE(l_yLen == l_config.getYLength());
-    REQUIRE(l_simTime == l_config.getSimTime());
+    REQUIRE(l_simTime == l_config.getEndSimTime());
+    REQUIRE(0 == l_config.getStartSimTime());
     tsunami_lab::e_boundary *l_boundaryCondition_ptr = l_config.getBoundaryCondition();
     for (tsunami_lab::t_idx l_i = 0; l_i < 4; l_i++) {
         REQUIRE(l_boundaryCondition[l_i] == l_boundaryCondition_ptr[l_i]);
