@@ -41,6 +41,11 @@ private:
       m_b_varid = -1,
       m_time_varid = -1;
 
+  tsunami_lab::t_real *scaleDownArray(t_real const *i_array,
+                                      t_idx i_nx,
+                                      t_idx i_ny,
+                                      int i_resolution_div);
+
 public:
   ~NetCdf();
 
@@ -51,6 +56,7 @@ public:
    * @param i_dxy cell width in x- and y-direction.
    * @param i_nx number of cells in x-direction.
    * @param i_ny number of cells in y-direction.
+   * @param i_resolution_div Scalar by which the resolution will be divided.
    * @param i_x_offset offset x-direction.
    * @param i_y_offset offset y-direction.
    * @param i_b bathymetry of the cells.
@@ -59,6 +65,7 @@ public:
                   t_real i_dxy,
                   t_idx i_nx,
                   t_idx i_ny,
+                  int i_resolution_div,
                   t_real i_x_offset,
                   t_real i_y_offset,
                   t_real const *i_b);
@@ -68,6 +75,7 @@ public:
    *
    * @param i_nx number of cells in x-direction.
    * @param i_ny number of cells in y-direction.
+   * @param i_resolution_div Scalar by which the resolution will be divided.
    * @param i_h water height of the cells.
    * @param i_hu momentum in x-direction of the cells.
    * @param i_hv momentum in y-direction of the cells
@@ -76,6 +84,7 @@ public:
    */
   void write(t_idx i_nx,
              t_idx i_ny,
+             int i_resolution_div,
              t_real const *i_h,
              t_real const *i_hu,
              t_real const *i_hv,

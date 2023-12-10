@@ -47,6 +47,7 @@ int state_boundary_right = 0;
 tsunami_lab::t_real l_x_offset = 0;
 tsunami_lab::t_real l_y_offset = 0;
 int dimension;
+int resolution_div = 1;
 bool simulate_real_tsunami = false;
 // std::string bat_path = "data/artificialtsunami/artificialtsunami_bathymetry_1000.nc";
 // std::string dis_path = "data/artificialtsunami/artificialtsunami_displ_1000.nc";
@@ -99,7 +100,7 @@ int main(int i_argc,
     if ((i_argc < 4) || (i_argv[i_argc - 1][0] == '-'))
     {
         std::cerr << "invalid number of arguments OR wrong order, usage:" << std::endl;
-        std::cerr << "  ./build/tsunami_lab [-d DIMENSION] [-s SETUP] [-v SOLVER] [-l STATE_LEFT] [-r STATE_RIGHT] [-t STATE_TOP] [-b STATE_BOTTOM] [-i STATION]  N_CELLS_X" << std::endl;
+        std::cerr << "  ./build/tsunami_lab [-d DIMENSION] [-s SETUP] [-v SOLVER] [-l STATE_LEFT] [-r STATE_RIGHT] [-t STATE_TOP] [-b STATE_BOTTOM] [-i STATION] [-k RESOLUTION]  N_CELLS_X" << std::endl;
         std::cerr << "where N_CELLS_X is the number of cells in x-direction. The Grid is quadratic in 2d, so the same value will be taken for cells in y-direction" << std::endl;
         std::cerr << "The exception is 'tsunami2d', where N_CELLS_X represents the size of a cell." << std::endl;
         std::cerr << "Its is planned however to switch to a json-config based approach where everything will change." << std::endl;
@@ -114,6 +115,7 @@ int main(int i_argc,
         std::cerr << "-t STATE_TOP = 'open','closed', default is 'open'" << std::endl;
         std::cerr << "-b STATE_BOTTOM = 'open','closed', default is 'open'" << std::endl;
         std::cerr << "-i STATION = 'path'" << std::endl;
+        std::cerr << "-k RESOLUTION, where the higher the input, the lower the resolution" << std::endl;
         return EXIT_FAILURE;
     }
     else
@@ -146,7 +148,7 @@ int main(int i_argc,
     opterr = 0; // disable error messages of getopt
     int opt;
 
-    while ((opt = getopt(i_argc, i_argv, "d:s:v:l:r:t:b:i:")) != -1)
+    while ((opt = getopt(i_argc, i_argv, "d:s:v:l:r:t:b:i:k:")) != -1)
     {
         switch (opt)
         {
@@ -475,6 +477,16 @@ int main(int i_argc,
             l_stations = new tsunami_lab::io::Stations(i_filePath);
             break;
         }
+        case 'k':
+        {
+            resolution_div = atoi(optarg);
+            if (resolution_div < 1)
+            {
+                std::cout << "Error: resolution-scalar cannot be less than 1." << std::endl;
+                return EXIT_FAILURE;
+            }
+            break;
+        }
         // unknown option
         case '?':
         {
@@ -606,6 +618,7 @@ int main(int i_argc,
                                    l_dxy,
                                    l_nx,
                                    l_ny,
+                                   resolution_div,
                                    l_x_offset,
                                    l_y_offset,
                                    netcdf_manager->removeGhostCells(l_waveProp->getBathymetry(), l_nx, l_ny, 1, 1, l_waveProp->getStride()));
@@ -723,6 +736,7 @@ int main(int i_argc,
             {
                 netcdf_manager->write(l_nx,
                                       l_ny,
+                                      resolution_div,
                                       netcdf_manager->removeGhostCells(l_waveProp->getHeight(),
                                                                        l_nx,
                                                                        l_ny,
