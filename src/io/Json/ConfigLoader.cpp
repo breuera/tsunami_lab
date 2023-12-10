@@ -18,6 +18,7 @@
 
 // include setup classes
 #include "../../setups/ArtificialTsunami2d/ArtificialTsunami2d.h"
+#include "../../setups/CheckPoint/CheckPoint.h"
 #include "../../setups/CustomSetup1d/CustomSetup1d.h"
 #include "../../setups/DamBreak1d/DamBreak1d.h"
 #include "../../setups/DamBreak2d/DamBreak2d.h"
@@ -29,13 +30,15 @@
 #include "../../setups/TsunamiEvent2d/TsunamiEvent2d.h"
 using json = nlohmann::json;
 
-tsunami_lab::t_idx tsunami_lab::io::ConfigLoader::loadConfig(std::string i_path,
+tsunami_lab::t_idx tsunami_lab::io::ConfigLoader::loadConfig(std::string i_configName,
                                                              tsunami_lab::setups::Setup *&o_setup,
                                                              tsunami_lab::t_real &o_hStar,
                                                              tsunami_lab::configs::SimConfig &o_simConfig) {
-    std::ifstream l_file(i_path);
+    std::string l_path = "./res/configs/" + i_configName;
+
+    std::ifstream l_file(l_path);
     if (l_file.fail()) {
-        std::cerr << "failed to read " << i_path << std::endl;
+        std::cerr << "failed to read " << l_path << std::endl;
         return 0;
     }
 
@@ -106,13 +109,16 @@ tsunami_lab::t_idx tsunami_lab::io::ConfigLoader::loadConfig(std::string i_path,
     }
 
     // set time of simulation
-    tsunami_lab::t_real l_simTime;
+    tsunami_lab::t_real l_endSimTime;
     if (l_configFile.contains("simTime")) {
-        l_simTime = l_configFile.at("simTime");
+        l_endSimTime = l_configFile.at("simTime");
     } else {
         std::cout << "simTime takes on default value" << std::endl;
-        l_simTime = 1.25;
+        l_endSimTime = 1.25;
     }
+
+    // set start time of simulation
+    tsunami_lab::t_real l_startSimTime = 0;
 
     // set boundary condition
     e_boundary l_boundaryCond[4] = {OUTFLOW, OUTFLOW, OUTFLOW, OUTFLOW};
@@ -147,6 +153,20 @@ tsunami_lab::t_idx tsunami_lab::io::ConfigLoader::loadConfig(std::string i_path,
         l_useRoeSolver = false;
     }
 
+    // factor for coarse output
+    tsunami_lab::t_idx l_coarseFactor;
+    if (l_configFile.contains("coarseFactor")) {
+        l_coarseFactor = l_configFile.at("coarseFactor");
+
+        if (l_coarseFactor < 1) {
+            std::cout << "factor for coarse input can't be smaller than 1" << std::endl;
+            return 0;
+        }
+    } else {
+        std::cout << "coarseFactor takes on default value" << std::endl;
+        l_coarseFactor = 1;
+    }
+
     // set bathymetry and displacements file names
     std::string l_bathymetryFileName, l_displacementsFileName;
     if (l_configFile.contains("bathymetryFileName")) {
@@ -173,7 +193,40 @@ tsunami_lab::t_idx tsunami_lab::io::ConfigLoader::loadConfig(std::string i_path,
     }
     std::cout << "simulation setup was set to: " << l_setupName << std::endl;
 
-    if (l_setupName.compare("DamBreak") == 0) {
+    // check if checkpoint exists
+    std::string l_configName = i_configName.substr(0, i_configName.find_last_of("."));
+    std::string l_checkPointPath = "out/" + l_configName + "_checkpoint.nc";
+    std::ifstream f(l_checkPointPath.c_str());
+    if (f.good()) {
+        std::cout << "Reading out/" + l_configName + "_checkpoint.nc" << std::endl;
+        t_real *l_height = nullptr;
+        t_real *l_momentumX = nullptr;
+        t_real *l_momentumY = nullptr;
+        t_real *l_bathymetry = nullptr;
+        t_real *l_time = nullptr;
+        t_idx l_currentFrame;
+        t_real l_endSimTime;
+        t_real l_startSimTime;
+        tsunami_lab::io::NetCDF::readCheckpoint(l_checkPointPath,
+                                                l_height,
+                                                l_momentumX,
+                                                l_momentumY,
+                                                l_bathymetry,
+                                                l_time,
+                                                &l_currentFrame,
+                                                &l_endSimTime,
+                                                &l_startSimTime);
+
+        o_setup = new tsunami_lab::setups::CheckPoint(l_xLen,
+                                                      l_yLen,
+                                                      l_nx,
+                                                      l_ny,
+                                                      l_currentFrame,
+                                                      l_height,
+                                                      l_momentumX,
+                                                      l_momentumY,
+                                                      l_bathymetry);
+    } else if (l_setupName.compare("DamBreak") == 0) {
         if (l_dimension == 1) {
             o_setup = new tsunami_lab::setups::DamBreak1d(10, 5, 5);
         } else {
@@ -338,11 +391,14 @@ tsunami_lab::t_idx tsunami_lab::io::ConfigLoader::loadConfig(std::string i_path,
     }
 
     o_simConfig = tsunami_lab::configs::SimConfig(l_dimension,
+                                                  l_configName,
                                                   l_nx,
                                                   l_ny,
                                                   l_xLen,
                                                   l_yLen,
-                                                  l_simTime,
+                                                  l_endSimTime,
+                                                  l_startSimTime,
+                                                  l_coarseFactor,
                                                   l_boundaryCond,
                                                   l_useRoeSolver);
     return 1;

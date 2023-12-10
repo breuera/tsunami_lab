@@ -27,20 +27,20 @@ int main(int i_argc, char *i_argv[]) {
         return EXIT_FAILURE;
     }
 
-    std::string l_path = "./res/configs/" + std::string(i_argv[1]);
+    std::string l_configName = std::string(i_argv[1]);
 
     tsunami_lab::setups::Setup *l_setups = nullptr;
     tsunami_lab::t_real l_hStar = -1;
     tsunami_lab::configs::SimConfig l_simConfig = tsunami_lab::configs::SimConfig();
 
     // load parameters from runtimeConfig.json
-    tsunami_lab::t_idx err = tsunami_lab::io::ConfigLoader::loadConfig(l_path,
+    tsunami_lab::t_idx err = tsunami_lab::io::ConfigLoader::loadConfig(l_configName,
                                                                        l_setups,
                                                                        l_hStar,
                                                                        l_simConfig);
 
     if (err == 0) {
-        std::cout << "failed to read: " << l_path << std::endl;
+        std::cout << "failed to read: " << l_configName << std::endl;
         return EXIT_FAILURE;
     }
 

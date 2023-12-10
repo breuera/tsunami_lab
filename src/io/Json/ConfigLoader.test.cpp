@@ -11,7 +11,7 @@
 #undef public
 
 TEST_CASE("Test reading a config JSON file.", "[ConfigLoader]") {
-    std::string l_path = "./res/configs/demo_config.json";
+    std::string l_path = "demo_config.json";
     tsunami_lab::setups::Setup *l_setups = nullptr;
     tsunami_lab::t_real l_hStar = -1;
     tsunami_lab::configs::SimConfig l_simConfig = tsunami_lab::configs::SimConfig();
@@ -28,7 +28,9 @@ TEST_CASE("Test reading a config JSON file.", "[ConfigLoader]") {
     REQUIRE(l_simConfig.getYCells() == 500);
     REQUIRE(l_simConfig.getXLength() == 100.0);
     REQUIRE(l_simConfig.getYLength() == 500.0);
-    REQUIRE(l_simConfig.getSimTime() == 5.0);
+    REQUIRE(l_simConfig.getEndSimTime() == 5.0);
+    REQUIRE(l_simConfig.getStartSimTime() == 0);
+    REQUIRE(l_simConfig.getCoarseFactor() == 1.0);
     REQUIRE(l_simConfig.getBoundaryCondition()[0] == tsunami_lab::OUTFLOW);
     REQUIRE(l_simConfig.getBoundaryCondition()[1] == tsunami_lab::REFLECTING);
     REQUIRE(l_simConfig.isRoeSolver());
