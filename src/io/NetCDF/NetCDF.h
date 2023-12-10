@@ -36,8 +36,8 @@ class tsunami_lab::io::NetCDF {
     t_idx m_nx, m_ny, m_nxy, m_stride;
     t_idx m_frameCount, m_dataSize;
 
-    int m_varXId, m_varYId, m_varTimeId, m_varBathymetryId, m_varHeightId, m_varMomentumXId, m_varMomentumYId;
-    int m_dimXId, m_dimYId, m_dimTimeId;
+    int m_varXId, m_varYId, m_varTimeId, m_varBathymetryId, m_varHeightId, m_varMomentumXId, m_varMomentumYId, m_varSimTimeId, m_varEndTimeId;
+    int m_dimXId, m_dimYId, m_dimTimeId, m_dimSimTimeId, m_dimEndTimeId;
     int m_ncId;
 
     int init(t_idx i_currentFrame);
@@ -74,6 +74,10 @@ class tsunami_lab::io::NetCDF {
               t_real const *i_hu,
               t_real const *i_hv);
 
+    int write(t_idx i_currentFrame,
+              t_idx i_checkpoint,
+              t_real i_simTime,
+              t_real i_endTime);
     int write();
 
     /**

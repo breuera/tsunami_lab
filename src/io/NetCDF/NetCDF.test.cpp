@@ -87,7 +87,7 @@ TEST_CASE("Test the NetCDF writer.", "[NetCDFWrite]") {
     REQUIRE(nc_get_var_float(l_ncId, l_varIDbathymetry, l_resultBathymetry) == NC_NOERR);
     for (int i = 0; i < 2; i++) REQUIRE(l_dataBathymetry[i] == l_resultBathymetry[i]);
 
-    std::remove("writer_test.nc");
+   //  std::remove("writer_test.nc");
 
     delete l_writer;
 }

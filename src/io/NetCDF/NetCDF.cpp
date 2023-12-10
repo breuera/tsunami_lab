@@ -184,17 +184,12 @@ int tsunami_lab::io::NetCDF::read(std::string i_nameBathymetry,
 int tsunami_lab::io::NetCDF::init(t_idx i_currentFrame) {
     int l_nc_err = 0;
 
-    // create netCDF file
-    l_nc_err += nc_create(m_outFileName.c_str(), NC_CLOBBER, &m_ncId);
-    if (l_nc_err != NC_NOERR) {
-        std::cerr << "NCError: Create file." << std::endl;
-        return 1;
-    }
-
     // define dimensions
     l_nc_err = nc_def_dim(m_ncId, "x", m_nx, &m_dimXId);
     l_nc_err += nc_def_dim(m_ncId, "y", m_ny, &m_dimYId);
     l_nc_err += nc_def_dim(m_ncId, "time", i_currentFrame, &m_dimTimeId);
+    l_nc_err += nc_def_dim(m_ncId, "simTime", 1, &m_dimSimTimeId);
+    l_nc_err += nc_def_dim(m_ncId, "endTime", 1, &m_dimEndTimeId);
     if (l_nc_err != NC_NOERR) {
         std::cerr << "NCError: Define dimensions." << std::endl;
         return 1;
@@ -228,6 +223,9 @@ int tsunami_lab::io::NetCDF::init(t_idx i_currentFrame) {
     l_nc_err += nc_def_var(m_ncId, "momentum_y", NC_FLOAT, 3, l_dimMomentumYIds, &m_varMomentumYId);
     l_nc_err += nc_put_att_text(m_ncId, m_varMomentumYId, "units", 11, "meters*kg/s");
 
+    l_nc_err += nc_def_var(m_ncId, "simTime", NC_FLOAT, 1, &m_dimSimTimeId, &m_varSimTimeId);
+    l_nc_err += nc_def_var(m_ncId, "endTime", NC_FLOAT, 1, &m_dimEndTimeId, &m_varEndTimeId);
+
     l_nc_err += nc_enddef(m_ncId);
     if (l_nc_err != NC_NOERR) {
         std::cerr << "NCError: Define variables." << std::endl;
@@ -257,11 +255,28 @@ int tsunami_lab::io::NetCDF::store(t_real i_simTime,
     return 0;
 }
 
-int tsunami_lab::io::NetCDF::write() {
+int tsunami_lab::io::NetCDF::write(t_idx i_currentFrame,
+                                   t_idx i_checkpoint = -1,
+                                   t_real i_simTime = -1,
+                                   t_real i_endTime = -1) {
     int l_nc_err = 0;
 
+    // create netCDF file
+    std::string l_outFileName;
+    if (i_checkpoint > -1) {
+        l_outFileName = "out/checkpoint_" + std::to_string(i_checkpoint) + ".nc";
+    } else {
+        l_outFileName = m_outFileName;
+    }
+    std::cout << l_outFileName << std::endl;
+    l_nc_err += nc_create((l_outFileName).c_str(), NC_CLOBBER, &m_ncId);
+    if (l_nc_err != NC_NOERR) {
+        std::cerr << "NCError: Create file." << std::endl;
+        return 1;
+    }
+
     // define dims and vars
-    init(m_frameCount);
+    init(i_currentFrame);
 
     // write data
     l_nc_err = nc_put_var_float(m_ncId, m_varXId, m_dataX);
@@ -271,6 +286,14 @@ int tsunami_lab::io::NetCDF::write() {
     l_nc_err += nc_put_var_float(m_ncId, m_varHeightId, m_height);
     l_nc_err += nc_put_var_float(m_ncId, m_varMomentumXId, m_momentumX);
     l_nc_err += nc_put_var_float(m_ncId, m_varMomentumYId, m_momentumY);
+    if (i_simTime != -1) {
+        t_real l_simTime[1] = {i_simTime};
+        l_nc_err += nc_put_var_float(m_ncId, m_varSimTimeId, l_simTime);
+    }
+    if (i_endTime != -1) {
+        t_real l_endTime[1] = {i_endTime};
+        l_nc_err += nc_put_var_float(m_ncId, m_varEndTimeId, l_endTime);
+    }
     if (l_nc_err != NC_NOERR) {
         std::cout << "NCError: Put variables." << std::endl;
         return 1;
@@ -283,6 +306,10 @@ int tsunami_lab::io::NetCDF::write() {
     }
 
     return NC_NOERR;
+}
+
+int tsunami_lab::io::NetCDF::write() {
+    return write(m_frameCount);
 }
 
 tsunami_lab::io::NetCDF::NetCDF(t_real i_endTime,
