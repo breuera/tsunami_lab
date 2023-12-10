@@ -111,7 +111,7 @@ int main(int i_argc,
         std::cerr << "When using 1d-simulation, the choices for setup are:" << std::endl;
         std::cerr << "  -s SETUP  = 'dambreak1d h_l h_r','rarerare1d h hu','shockshock1d h hu', 'supercritical1d', 'subcritical1d', 'tsunami1d'" << std::endl;
         std::cerr << "When using 2d-simulation, the choices for setup are:" << std::endl;
-        std::cerr << "  -s SETUP  = 'dambreak2d', 'tsunami2d'" << std::endl;
+        std::cerr << "  -s SETUP  = 'dambreak2d', 'tsunami2d', 'checkpoint'" << std::endl;
         std::cerr << "-v SOLVER = 'roe','fwave', default is 'fwave'. Be aware, that the roe-solver is depricated." << std::endl;
         std::cerr << "-l STATE_LEFT = 'open','closed', default is 'open'" << std::endl;
         std::cerr << "-r STATE_RIGHT = 'open','closed', default is 'open'" << std::endl;
@@ -501,7 +501,7 @@ int main(int i_argc,
                 << "    When using 1d-simulation, the choices for setup are:" << std::endl
                 << "        -s SETUP  = 'dambreak h_l h_r','rarerare h hu','shockshock h hu', 'supercritical', 'subcritical', 'tsunami'" << std::endl
                 << "    When using 2d-simulation, the choices for setup are:" << std::endl
-                << "        -s SETUP  = 'dambreak', 'tsunami2d'" << std::endl
+                << "        -s SETUP  = 'dambreak', 'tsunami2d', 'checkpoint'" << std::endl
                 << "    -v SOLVER = 'roe','fwave', default is 'fwave'. Be aware, that the roe-solver is depricated." << std::endl
                 << "    -l STATE_LEFT = 'open','closed', default is 'open'" << std::endl
                 << "    -r STATE_RIGHT = 'open','closed', default is 'open'" << std::endl
