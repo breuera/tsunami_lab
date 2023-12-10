@@ -65,7 +65,8 @@ TEST_CASE("Test the NetCDF-writer.", "[NetCDFWrite2d]")
                   writer->removeGhostCells(l_hu, 4, 4, 0, 0, 4),
                   writer->removeGhostCells(l_hv, 4, 4, 0, 0, 4),
                   0,
-                  0.2);
+                  0.2,
+                  "netCDF_dump/netCDFdump.nc");
 
     for (int i = 0; i < 16; i++)
     {
@@ -81,7 +82,8 @@ TEST_CASE("Test the NetCDF-writer.", "[NetCDFWrite2d]")
                   writer->removeGhostCells(l_hu, 4, 4, 0, 0, 4),
                   writer->removeGhostCells(l_hv, 4, 4, 0, 0, 4),
                   1,
-                  1.8);
+                  1.8,
+                  "netCDF_dump/netCDFdump.nc");
     delete writer;
 
     REQUIRE(std::filesystem::exists("netCDF_dump/netCDFdump.nc"));
@@ -278,7 +280,8 @@ TEST_CASE("Test the NetCDF-checkpoint_reader.", "[NetCDFReadCheckpoint]")
                                 16000,
                                 20,
                                 1,
-                                15);
+                                15,
+                                "test");
     tsunami_lab::t_idx l_nx;
     tsunami_lab::t_idx l_ny;
     tsunami_lab::t_real *l_h1;
@@ -299,6 +302,7 @@ TEST_CASE("Test the NetCDF-checkpoint_reader.", "[NetCDFReadCheckpoint]")
     tsunami_lab::t_idx l_nOut;
     tsunami_lab::t_real l_hMax;
     tsunami_lab::t_idx l_simulated_frame;
+    std::string l_filename;
 
     checkpoint->readCheckpoint(&l_nx,
                                &l_ny,
@@ -320,6 +324,7 @@ TEST_CASE("Test the NetCDF-checkpoint_reader.", "[NetCDFReadCheckpoint]")
                                &l_nOut,
                                &l_hMax,
                                &l_simulated_frame,
+                               &l_filename,
                                "checkpoints/checkpoint_1.nc");
     REQUIRE(l_nx == 4);
     REQUIRE(l_ny == 4);
@@ -337,6 +342,7 @@ TEST_CASE("Test the NetCDF-checkpoint_reader.", "[NetCDFReadCheckpoint]")
     REQUIRE(l_nOut == 20);
     REQUIRE(l_hMax == 1);
     REQUIRE(l_simulated_frame == 15);
+    REQUIRE(l_filename == "test");
 
     // Verify the values read from the checkpoint for each array
     for (tsunami_lab::t_idx i = 0; i < 16; ++i)

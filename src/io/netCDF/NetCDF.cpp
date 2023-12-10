@@ -97,10 +97,11 @@ void tsunami_lab::io::NetCdf::write(t_idx i_nx,
                                     t_real const *i_hu,
                                     t_real const *i_hv,
                                     t_idx timeStep,
-                                    t_real i_time)
+                                    t_real i_time,
+                                    std::string filename)
 {
 
-  handleNetCdfError(nc_open(m_out_file_name.c_str(), NC_WRITE, &m_ncid), "Error opening in write: ");
+  handleNetCdfError(nc_open(filename.c_str(), NC_WRITE, &m_ncid), "Error opening in write: ");
 
   size_t start[3] = {timeStep, 0, 0};
   size_t count[3] = {1, i_ny / i_resolution_div, i_nx / i_resolution_div};
@@ -252,7 +253,8 @@ void tsunami_lab::io::NetCdf::writeCheckpoint(t_idx i_nx,
                                               t_real i_time,
                                               t_idx i_nOut,
                                               t_real i_hMax,
-                                              t_idx i_simulated_frame)
+                                              t_idx i_simulated_frame,
+                                              std::string i_filename)
 {
   if (!std::filesystem::exists("checkpoints"))
   {
@@ -271,10 +273,12 @@ void tsunami_lab::io::NetCdf::writeCheckpoint(t_idx i_nx,
 
   int l_b_varid, l_h_varid, l_hu_varid, l_hv_varid;
   int x_y_dim[2] = {l_y_dimid, l_x_dimid};
+  int l_filename_dimid;
   handleNetCdfError(nc_def_var(l_ncid, "bathymetry", NC_FLOAT, 2, x_y_dim, &l_b_varid), "Error define bathymetry variable:");
   handleNetCdfError(nc_def_var(l_ncid, "height", NC_FLOAT, 2, x_y_dim, &l_h_varid), "Error define height variable:");
   handleNetCdfError(nc_def_var(l_ncid, "momentum_x", NC_FLOAT, 2, x_y_dim, &l_hu_varid), "Error define momentum_x variable:");
   handleNetCdfError(nc_def_var(l_ncid, "momentum_y", NC_FLOAT, 2, x_y_dim, &l_hv_varid), "Error define momentum_y variable:");
+  handleNetCdfError(nc_def_dim(l_ncid, "filename_dim", i_filename.length(), &l_filename_dimid), "Error defining filename length dimension: ");
 
   int l_x_offset_dimid,
       l_y_offset_dimid,
@@ -289,7 +293,8 @@ void tsunami_lab::io::NetCdf::writeCheckpoint(t_idx i_nx,
       l_time_dimid,
       l_nOut_dimid,
       l_hMax_dimid,
-      l_simulated_frame_dimid;
+      l_simulated_frame_dimid,
+      l_fileName_varid;
 
   // Defining the variables
   handleNetCdfError(nc_def_var(l_ncid, "x_offset", NC_FLOAT, 0, NULL, &l_x_offset_dimid), "Error define x_offset variable:");
@@ -304,8 +309,9 @@ void tsunami_lab::io::NetCdf::writeCheckpoint(t_idx i_nx,
   handleNetCdfError(nc_def_var(l_ncid, "timeStep", NC_INT, 0, NULL, &l_timeStep_dimid), "Error define timeStep variable:");
   handleNetCdfError(nc_def_var(l_ncid, "time", NC_FLOAT, 0, NULL, &l_time_dimid), "Error define time variable:");
   handleNetCdfError(nc_def_var(l_ncid, "nOut", NC_FLOAT, 0, NULL, &l_nOut_dimid), "Error define nOut variable:");
-  handleNetCdfError(nc_def_var(l_ncid, "hMax", NC_FLOAT, 0, NULL, &l_hMax_dimid), "Error define nOut variable:");
-  handleNetCdfError(nc_def_var(l_ncid, "simulated_frame", NC_INT, 0, NULL, &l_simulated_frame_dimid), "Error define nOut variable:");
+  handleNetCdfError(nc_def_var(l_ncid, "hMax", NC_FLOAT, 0, NULL, &l_hMax_dimid), "Error define hMax variable:");
+  handleNetCdfError(nc_def_var(l_ncid, "simulated_frame", NC_INT, 0, NULL, &l_simulated_frame_dimid), "Error define simulated_frame variable:");
+  handleNetCdfError(nc_def_var(l_ncid, "filename", NC_CHAR, 1, &l_filename_dimid, &l_fileName_varid), "Error defining filename variable:");
 
   handleNetCdfError(nc_enddef(l_ncid), "Error end defining: ");
 
@@ -324,6 +330,8 @@ void tsunami_lab::io::NetCdf::writeCheckpoint(t_idx i_nx,
   handleNetCdfError(nc_put_var_int(l_ncid, l_nOut_dimid, (const int *)&i_nOut), "Error put nOut variable: ");
   handleNetCdfError(nc_put_var_float(l_ncid, l_hMax_dimid, &i_hMax), "Error put time variable: ");
   handleNetCdfError(nc_put_var_int(l_ncid, l_simulated_frame_dimid, (const int *)&i_simulated_frame), "Error put nOut variable: ");
+  // const char *filename_c_str = i_filename.c_str();
+  handleNetCdfError(nc_put_var_text(l_ncid, l_fileName_varid, i_filename.c_str()), "Error writing filename variable: ");
 
   handleNetCdfError(nc_put_var_float(l_ncid, l_b_varid, i_b), "Error put bathymetry variables: ");
   handleNetCdfError(nc_put_var_float(l_ncid, l_h_varid, i_h), "Error put bathymetry variables: ");
@@ -353,6 +361,7 @@ void tsunami_lab::io::NetCdf::readCheckpoint(t_idx *o_nx,
                                              t_idx *o_nOut,
                                              t_real *o_hMax,
                                              t_idx *o_simulated_frame,
+                                             std::string *o_filename,
                                              const std::string filename)
 {
 
@@ -436,6 +445,21 @@ void tsunami_lab::io::NetCdf::readCheckpoint(t_idx *o_nx,
   *o_nOut = l_nOut;
   *o_timeStep = l_timeStep;
   *o_simulated_frame = l_simulated_frame;
+
+  int l_filename_dimid, l_filename_varid;
+  size_t l_filename_length;
+
+  handleNetCdfError(nc_inq_dimid(l_ncid, "filename_dim", &l_filename_dimid), "Error getting filename_length dimension id: ");
+  handleNetCdfError(nc_inq_dimlen(l_ncid, l_filename_dimid, &l_filename_length), "Error getting filename length: ");
+  handleNetCdfError(nc_inq_varid(l_ncid, "filename", &l_filename_varid), "Error getting filename variable id: ");
+
+  char *filename_buffer = new char[l_filename_length];
+
+  handleNetCdfError(nc_get_var_text(l_ncid, l_filename_varid, filename_buffer), "Error reading filename: ");
+
+  *o_filename = std::string(filename_buffer, l_filename_length);
+
+  delete[] filename_buffer;
 
   handleNetCdfError(nc_close(l_ncid), "Error closing file: ");
 }

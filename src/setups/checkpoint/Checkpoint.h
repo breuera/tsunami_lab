@@ -66,6 +66,8 @@ private:
 
   t_idx m_simulated_frame;
 
+  std::string m_filename;
+
 public:
   /**
    * @brief Construct a new TsunamiEvent1d object
@@ -131,6 +133,7 @@ public:
   t_idx getNOut() const;
   t_real getHMax() const;
   t_idx getSimulated_frame() const;
+  std::string getFilename() const;
 };
 
 #endif

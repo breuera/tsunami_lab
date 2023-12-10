@@ -89,7 +89,8 @@ public:
              t_real const *i_hu,
              t_real const *i_hv,
              t_idx timeStep,
-             t_real i_time);
+             t_real i_time,
+             std::string filename);
 
   /**
    * @brief Reads one
@@ -178,7 +179,8 @@ public:
                        t_real i_time,
                        t_idx i_nOut,
                        t_real i_hMax,
-                       t_idx i_simulated_frame);
+                       t_idx i_simulated_frame,
+                       std::string i_filename);
 
   /**
    * @brief Reads all necessary parameters for a checkpoint from a file
@@ -226,6 +228,7 @@ public:
                       t_idx *o_nOut,
                       t_real *o_hMax,
                       t_idx *o_simulated_frame,
+                      std::string *o_filename,
                       const std::string filename);
 };
 

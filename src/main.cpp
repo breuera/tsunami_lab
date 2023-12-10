@@ -85,6 +85,9 @@ int main(int i_argc,
     tsunami_lab::t_idx l_nOut = 0;
     tsunami_lab::t_real l_simTime = 0;
 
+    // set up filename
+    std::string filename;
+
     // maximum observed height in the setup
     tsunami_lab::t_real l_hMax = std::numeric_limits<tsunami_lab::t_real>::lowest();
 
@@ -323,7 +326,7 @@ int main(int i_argc,
 
                 tsunami_lab::t_real l_height = -1;
 
-                tsunami_lab::setups::Setup *l_setup = new tsunami_lab::setups::Checkpoint();
+                l_setup = new tsunami_lab::setups::Checkpoint();
                 auto l_checkpoint = dynamic_cast<tsunami_lab::setups::Checkpoint *>(l_setup);
                 l_nx = l_checkpoint->getNx();
                 l_ny = l_checkpoint->getNy();
@@ -341,6 +344,7 @@ int main(int i_argc,
                 l_nOut = l_checkpoint->getNOut();
                 simulated_frame = l_checkpoint->getSimulated_frame();
                 l_hMax = l_checkpoint->getHMax();
+                filename = l_checkpoint->getFilename();
 
                 l_height = l_nx * l_ny / l_width;
 
@@ -601,8 +605,7 @@ int main(int i_argc,
                                       l_b);
         }
     }
-
-    if (dimension == 2)
+    if (dimension == 2 && !checkpointing)
     {
         /* if (std::filesystem::exists("netCDF_dump"))
         {
@@ -614,7 +617,9 @@ int main(int i_argc,
 
         std::time_t t = std::time(nullptr);
 
-        netcdf_manager->initialize("netCDF_dump/netCDFdump_" + std::to_string(l_dxy) + "_ " + std::to_string(t) + ".nc",
+        filename = "netCDF_dump/netCDFdump_" + std::to_string(l_dxy) + "_ " + std::to_string(t) + ".nc";
+
+        netcdf_manager->initialize(filename,
                                    l_dxy,
                                    l_nx,
                                    l_ny,
@@ -703,7 +708,8 @@ int main(int i_argc,
                                             l_simTime,
                                             l_nOut,
                                             l_hMax,
-                                            simulated_frame);
+                                            simulated_frame,
+                                            filename);
             l_lastCheckpointTime = std::chrono::steady_clock::now();
         }
         if (l_timeStep % simulated_frame == 0)
@@ -756,7 +762,8 @@ int main(int i_argc,
                                                                        1,
                                                                        l_waveProp->getStride()),
                                       l_nOut,
-                                      l_simTime);
+                                      l_simTime,
+                                      filename);
             }
             l_nOut++;
         }
