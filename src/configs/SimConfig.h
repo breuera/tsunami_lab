@@ -38,6 +38,9 @@ class tsunami_lab::configs::SimConfig {
     //! time of the simulation.
     tsunami_lab::t_real m_simTime = tsunami_lab::t_real(1.25);
 
+    //! coarse output - factor
+    tsunami_lab::t_real m_coarseFactor = tsunami_lab::t_real(1.0);
+
     //! list of which boundary condition to use.
     e_boundary m_boundaryCondition[4] = {OUTFLOW, OUTFLOW, OUTFLOW, OUTFLOW};
 
@@ -59,6 +62,7 @@ class tsunami_lab::configs::SimConfig {
      * @param i_xLen length of the simulation in x-direction in meters.
      * @param i_yLen length of the simulation in y-direction in meters.
      * @param i_simTime time of the simulation in seconds.
+     * @param i_coarseFactor factor of the coarse output.
      * @param i_boundaryCondition list that determines the chosen boundary conditions.
      * @param i_isRoeSolver boolean that shows if the roe solver is to be used (false -> f-wave solver).
      */
@@ -68,6 +72,7 @@ class tsunami_lab::configs::SimConfig {
               tsunami_lab::t_real i_xLen,
               tsunami_lab::t_real i_yLen,
               tsunami_lab::t_real i_simTime,
+              tsunami_lab::t_real i_coarseFactor,
               e_boundary i_boundaryCondition[4],
               bool i_isRoeSolver);
     /**
@@ -127,6 +132,15 @@ class tsunami_lab::configs::SimConfig {
      */
     tsunami_lab::t_real getSimTime() {
         return m_simTime;
+    }
+
+    /**
+     * Gets the coarse output factor.
+     *
+     * @return coarse output factor.
+     */
+    tsunami_lab::t_real getCoarseFactor() {
+        return m_coarseFactor;
     }
 
     /**

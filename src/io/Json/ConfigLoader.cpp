@@ -147,6 +147,15 @@ tsunami_lab::t_idx tsunami_lab::io::ConfigLoader::loadConfig(std::string i_path,
         l_useRoeSolver = false;
     }
 
+    // factor for coarse output
+    tsunami_lab::t_real l_coarseFactor;
+    if (l_configFile.contains("coarseFactor")) {
+        l_coarseFactor = l_configFile.at("coarseFactor");
+    } else {
+        std::cout << "coarseFactor takes on default value" << std::endl;
+        l_coarseFactor = 1.0;
+    }
+
     // set bathymetry and displacements file names
     std::string l_bathymetryFileName, l_displacementsFileName;
     if (l_configFile.contains("bathymetryFileName")) {
@@ -343,6 +352,7 @@ tsunami_lab::t_idx tsunami_lab::io::ConfigLoader::loadConfig(std::string i_path,
                                                   l_xLen,
                                                   l_yLen,
                                                   l_simTime,
+                                                  l_coarseFactor,
                                                   l_boundaryCond,
                                                   l_useRoeSolver);
     return 1;
