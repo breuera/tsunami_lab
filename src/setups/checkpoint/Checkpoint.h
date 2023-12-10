@@ -6,7 +6,7 @@
  * Two-dimensional tsunamievent problem.
  **/
 #ifndef TSUNAMI_LAB_SETUPS_CHECKPOINT_H
-#define TSUNAMI_LAB_SETUPS_CHECKPOINT_2D_H
+#define TSUNAMI_LAB_SETUPS_CHECKPOINT_H
 
 #include "./../Setup.h"
 #include <string>
@@ -25,74 +25,53 @@ namespace tsunami_lab
 class tsunami_lab::setups::Checkpoint : public Setup
 {
 private:
-  //! wall heigth
-  t_real m_delta = 20;
-
-  //! Length of bathymetry in x direction.
-  t_idx m_bathymetry_length_x;
-
-  //! Length of bathymetry in y direction.
-  t_idx m_bathymetry_length_y;
-
-  //! Array of x-values for the bathymetry.
-  t_real *m_bathymetry_values_x;
-
-  //! Array of y-values for the bathymetry.
-  t_real *m_bathymetry_values_y;
-
   //! Array for the bathymetry.
   t_real *m_bathymetry;
 
-  //! Length of displacement in x direction.
-  t_idx m_displacement_length_x;
+  t_real *m_height;
 
-  //! Length of displacement in y direction.
-  t_idx m_displacement_length_y;
+  t_real *m_momentumX;
 
-  //! Array of x-values for the displacement.
-  t_real *m_displacement_values_x;
-
-  //! Array of y-values for the displacement.
-  t_real *m_displacement_values_y;
-
-  //! Array for the displacement.
-  t_real *m_displacement;
+  t_real *m_momentumY;
 
   t_real m_x_offset;
+
   t_real m_y_offset;
 
-  /**
-   * @brief Get initial displacement
-   *
-   * @param i_x x-coordinate of the queried point.
-   * @param i_y y-coordinate of the queried point.
-   * @return displacement
-   */
-  t_real
-  getDisplacement(t_real i_x,
-                  t_real i_y) const;
+  t_idx m_nx;
 
-  /**
-   * @brief Get Bathymetry from CSV file
-   *
-   * @param i_x x-coordinate of the queried point.
-   * @param i_y y-coordinate of the queried point.
-   * @return bathymetry from csv
-   */
-  t_real getBathymetryFromNetCdf(t_real i_x,
-                                 t_real i_y) const;
+  t_idx m_ny;
+
+  int m_solver_choice;
+
+  int m_state_boundary_left;
+
+  int m_state_boundary_right;
+
+  int m_state_boundary_top;
+
+  int m_state_boundary_bottom;
+
+  t_real m_width;
+
+  t_real m_endTime;
+
+  t_idx m_timeStep;
+
+  t_real m_time;
+
+  t_idx m_nOut;
+
+  t_real m_hMax;
+
+  t_idx m_simulated_frame;
 
 public:
   /**
    * @brief Construct a new TsunamiEvent1d object
    *
    */
-  Checkpoint(std::string bat_path,
-             std::string dis_path,
-             t_real *o_width,
-             t_real *o_height,
-             t_real *o_x_offset,
-             t_real *o_y_offset);
+  Checkpoint();
 
   /**
    * @brief Destroy the Tsunami Event 2d object
@@ -103,8 +82,6 @@ public:
   /**
    * Gets the water height.
    *
-   * @param i_x x-coordinate of the queried point.
-   * @param i_y y-coordinate of the queried point.
    * @return height of water.
    **/
   t_real getHeight(t_real i_x,
@@ -115,26 +92,45 @@ public:
    *
    * @return momentum in x-direction.
    **/
-  t_real getMomentumX(t_real,
-                      t_real) const;
+  t_real getMomentumX(t_real i_x,
+                      t_real i_y) const;
 
   /**
    * Gets the momentum in y-direction.
    *
    * @return momentum in y-direction.
    **/
-  t_real getMomentumY(t_real,
-                      t_real) const;
+  t_real getMomentumY(t_real i_x,
+                      t_real i_y) const;
 
   /**
    * @brief Gets the bathymetry
    *
-   * @param i_x x-coordinate of the queried point.
-   * @param i_y y-coordinate of the queried point.
    * @return bathymetry value
    */
   t_real getBathymetry(t_real i_x,
                        t_real i_y) const;
+
+  t_idx getNx() const;
+
+  t_idx getNy() const;
+
+  t_real getXOffset() const;
+
+  t_real getYOffset() const;
+
+  int getSolverChoice() const;
+  int getStateBoundaryLeft() const;
+  int getStateBoundaryRight() const;
+  int getStateBoundaryTop() const;
+  int getStateBoundaryBottom() const;
+  t_real getWidth() const;
+  t_real getEndTime() const;
+  t_idx getTimeStep() const;
+  t_real getTime() const;
+  t_idx getNOut() const;
+  t_real getHMax() const;
+  t_idx getSimulated_frame() const;
 };
 
 #endif

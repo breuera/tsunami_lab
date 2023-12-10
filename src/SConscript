@@ -22,7 +22,8 @@ l_sources = ['solvers/roe/Roe.cpp',
              'setups/artificialTsunami2d/ArtificialTsunami2d.cpp',
              'io/csv/Csv.cpp',
              'io/stations/Stations.cpp',
-             'io/netCDF/NetCDF.cpp']
+             'io/netCDF/NetCDF.cpp',
+             'setups/checkpoint/Checkpoint.cpp',]
 
 for l_so in l_sources:
     env.sources.append(env.Object(l_so))

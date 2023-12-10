@@ -241,7 +241,6 @@ void tsunami_lab::io::NetCdf::writeCheckpoint(t_idx i_nx,
                                               t_real const *i_b,
                                               t_real i_x_offset,
                                               t_real i_y_offset,
-                                              t_real i_stride,
                                               int i_solver_choice,
                                               int i_state_boundary_left,
                                               int i_state_boundary_right,
@@ -251,7 +250,9 @@ void tsunami_lab::io::NetCdf::writeCheckpoint(t_idx i_nx,
                                               t_real i_endTime,
                                               t_idx i_timeStep,
                                               t_real i_time,
-                                              t_idx i_nOut)
+                                              t_idx i_nOut,
+                                              t_real i_hMax,
+                                              t_idx i_simulated_frame)
 {
   if (!std::filesystem::exists("checkpoints"))
   {
@@ -277,7 +278,6 @@ void tsunami_lab::io::NetCdf::writeCheckpoint(t_idx i_nx,
 
   int l_x_offset_dimid,
       l_y_offset_dimid,
-      l_stride_dimid,
       l_solver_choice_dimid,
       l_state_boundary_left_dimid,
       l_state_boundary_right_dimid,
@@ -287,12 +287,13 @@ void tsunami_lab::io::NetCdf::writeCheckpoint(t_idx i_nx,
       l_endTime_dimid,
       l_timeStep_dimid,
       l_time_dimid,
-      l_nOut_dimid;
+      l_nOut_dimid,
+      l_hMax_dimid,
+      l_simulated_frame_dimid;
 
   // Defining the variables
   handleNetCdfError(nc_def_var(l_ncid, "x_offset", NC_FLOAT, 0, NULL, &l_x_offset_dimid), "Error define x_offset variable:");
   handleNetCdfError(nc_def_var(l_ncid, "y_offset", NC_FLOAT, 0, NULL, &l_y_offset_dimid), "Error define y_offset variable:");
-  handleNetCdfError(nc_def_var(l_ncid, "stride", NC_FLOAT, 0, NULL, &l_stride_dimid), "Error define stride variable:");
   handleNetCdfError(nc_def_var(l_ncid, "solver_choice", NC_INT, 0, NULL, &l_solver_choice_dimid), "Error define solver_choice variable:");
   handleNetCdfError(nc_def_var(l_ncid, "state_boundary_left", NC_INT, 0, NULL, &l_state_boundary_left_dimid), "Error define state_boundary_left variable:");
   handleNetCdfError(nc_def_var(l_ncid, "state_boundary_right", NC_INT, 0, NULL, &l_state_boundary_right_dimid), "Error define state_boundary_right variable:");
@@ -303,13 +304,14 @@ void tsunami_lab::io::NetCdf::writeCheckpoint(t_idx i_nx,
   handleNetCdfError(nc_def_var(l_ncid, "timeStep", NC_INT, 0, NULL, &l_timeStep_dimid), "Error define timeStep variable:");
   handleNetCdfError(nc_def_var(l_ncid, "time", NC_FLOAT, 0, NULL, &l_time_dimid), "Error define time variable:");
   handleNetCdfError(nc_def_var(l_ncid, "nOut", NC_FLOAT, 0, NULL, &l_nOut_dimid), "Error define nOut variable:");
+  handleNetCdfError(nc_def_var(l_ncid, "hMax", NC_FLOAT, 0, NULL, &l_hMax_dimid), "Error define nOut variable:");
+  handleNetCdfError(nc_def_var(l_ncid, "simulated_frame", NC_INT, 0, NULL, &l_simulated_frame_dimid), "Error define nOut variable:");
 
   handleNetCdfError(nc_enddef(l_ncid), "Error end defining: ");
 
   // Writing the values to the NetCDF file
   handleNetCdfError(nc_put_var_float(l_ncid, l_x_offset_dimid, &i_x_offset), "Error put x_offset variable: ");
   handleNetCdfError(nc_put_var_float(l_ncid, l_y_offset_dimid, &i_y_offset), "Error put y_offset variable: ");
-  handleNetCdfError(nc_put_var_float(l_ncid, l_stride_dimid, &i_stride), "Error put stride variable: ");
   handleNetCdfError(nc_put_var_int(l_ncid, l_solver_choice_dimid, &i_solver_choice), "Error put solver_choice variable: ");
   handleNetCdfError(nc_put_var_int(l_ncid, l_state_boundary_left_dimid, &i_state_boundary_left), "Error put state_boundary_left variable: ");
   handleNetCdfError(nc_put_var_int(l_ncid, l_state_boundary_right_dimid, &i_state_boundary_right), "Error put state_boundary_right variable: ");
@@ -320,6 +322,8 @@ void tsunami_lab::io::NetCdf::writeCheckpoint(t_idx i_nx,
   handleNetCdfError(nc_put_var_int(l_ncid, l_timeStep_dimid, (const int *)&i_timeStep), "Error put timeStep variable: ");
   handleNetCdfError(nc_put_var_float(l_ncid, l_time_dimid, &i_time), "Error put time variable: ");
   handleNetCdfError(nc_put_var_int(l_ncid, l_nOut_dimid, (const int *)&i_nOut), "Error put nOut variable: ");
+  handleNetCdfError(nc_put_var_float(l_ncid, l_hMax_dimid, &i_hMax), "Error put time variable: ");
+  handleNetCdfError(nc_put_var_int(l_ncid, l_simulated_frame_dimid, (const int *)&i_simulated_frame), "Error put nOut variable: ");
 
   handleNetCdfError(nc_put_var_float(l_ncid, l_b_varid, i_b), "Error put bathymetry variables: ");
   handleNetCdfError(nc_put_var_float(l_ncid, l_h_varid, i_h), "Error put bathymetry variables: ");
@@ -337,7 +341,6 @@ void tsunami_lab::io::NetCdf::readCheckpoint(t_idx *o_nx,
                                              t_real **o_b,
                                              t_real *o_x_offset,
                                              t_real *o_y_offset,
-                                             t_real *o_stride,
                                              int *o_solver_choice,
                                              int *o_state_boundary_left,
                                              int *o_state_boundary_right,
@@ -348,6 +351,8 @@ void tsunami_lab::io::NetCdf::readCheckpoint(t_idx *o_nx,
                                              t_idx *o_timeStep,
                                              t_real *o_time,
                                              t_idx *o_nOut,
+                                             t_real *o_hMax,
+                                             t_idx *o_simulated_frame,
                                              const std::string filename)
 {
 
@@ -382,7 +387,6 @@ void tsunami_lab::io::NetCdf::readCheckpoint(t_idx *o_nx,
 
   int l_x_offset_dimid,
       l_y_offset_dimid,
-      l_stride_dimid,
       l_solver_choice_dimid,
       l_state_boundary_left_dimid,
       l_state_boundary_right_dimid,
@@ -392,11 +396,12 @@ void tsunami_lab::io::NetCdf::readCheckpoint(t_idx *o_nx,
       l_endTime_dimid,
       l_timeStep_dimid,
       l_time_dimid,
-      l_nOut_dimid;
+      l_nOut_dimid,
+      l_hMax_dimid,
+      l_simulated_frame_dimid;
 
   handleNetCdfError(nc_inq_varid(l_ncid, "x_offset", &l_x_offset_dimid), "Error getting x_offset value id: ");
   handleNetCdfError(nc_inq_varid(l_ncid, "y_offset", &l_y_offset_dimid), "Error getting y_offset value id: ");
-  handleNetCdfError(nc_inq_varid(l_ncid, "stride", &l_stride_dimid), "Error getting stride value id: ");
   handleNetCdfError(nc_inq_varid(l_ncid, "solver_choice", &l_solver_choice_dimid), "Error getting solver_choice value id: ");
   handleNetCdfError(nc_inq_varid(l_ncid, "state_boundary_left", &l_state_boundary_left_dimid), "Error getting state_boundary_left value id: ");
   handleNetCdfError(nc_inq_varid(l_ncid, "state_boundary_right", &l_state_boundary_right_dimid), "Error getting state_boundary_right value id: ");
@@ -407,14 +412,16 @@ void tsunami_lab::io::NetCdf::readCheckpoint(t_idx *o_nx,
   handleNetCdfError(nc_inq_varid(l_ncid, "timeStep", &l_timeStep_dimid), "Error getting timeStep value id: ");
   handleNetCdfError(nc_inq_varid(l_ncid, "time", &l_time_dimid), "Error getting time value id: ");
   handleNetCdfError(nc_inq_varid(l_ncid, "nOut", &l_nOut_dimid), "Error getting nOut value id: ");
+  handleNetCdfError(nc_inq_varid(l_ncid, "hMax", &l_hMax_dimid), "Error getting hMax value id: ");
+  handleNetCdfError(nc_inq_varid(l_ncid, "simulated_frame", &l_simulated_frame_dimid), "Error getting simulated_frame value id: ");
 
   // Float variables
   handleNetCdfError(nc_get_var_float(l_ncid, l_x_offset_dimid, o_x_offset), "Error getting x_offset value: ");
   handleNetCdfError(nc_get_var_float(l_ncid, l_y_offset_dimid, o_y_offset), "Error getting y_offset value: ");
-  handleNetCdfError(nc_get_var_float(l_ncid, l_stride_dimid, o_stride), "Error getting stride value: ");
   handleNetCdfError(nc_get_var_float(l_ncid, l_width_dimid, o_width), "Error getting width value: ");
   handleNetCdfError(nc_get_var_float(l_ncid, l_endTime_dimid, o_endTime), "Error getting endTime value: ");
   handleNetCdfError(nc_get_var_float(l_ncid, l_time_dimid, o_time), "Error getting time value: ");
+  handleNetCdfError(nc_get_var_float(l_ncid, l_hMax_dimid, o_hMax), "Error getting time value: ");
 
   // Integer variables
   handleNetCdfError(nc_get_var_int(l_ncid, l_solver_choice_dimid, o_solver_choice), "Error getting solver_choice value: ");
@@ -422,11 +429,13 @@ void tsunami_lab::io::NetCdf::readCheckpoint(t_idx *o_nx,
   handleNetCdfError(nc_get_var_int(l_ncid, l_state_boundary_right_dimid, o_state_boundary_right), "Error getting state_boundary_right value: ");
   handleNetCdfError(nc_get_var_int(l_ncid, l_state_boundary_top_dimid, o_state_boundary_top), "Error getting state_boundary_top value: ");
   handleNetCdfError(nc_get_var_int(l_ncid, l_state_boundary_bottom_dimid, o_state_boundary_bottom), "Error getting state_boundary_bottom value: ");
-  int l_nOut, l_timeStep;
+  int l_nOut, l_timeStep, l_simulated_frame;
   handleNetCdfError(nc_get_var_int(l_ncid, l_timeStep_dimid, &l_timeStep), "Error getting timeStep value: ");
   handleNetCdfError(nc_get_var_int(l_ncid, l_nOut_dimid, &l_nOut), "Error getting nOut value: ");
+  handleNetCdfError(nc_get_var_int(l_ncid, l_simulated_frame_dimid, &l_simulated_frame), "Error getting nOut value: ");
   *o_nOut = l_nOut;
   *o_timeStep = l_timeStep;
+  *o_simulated_frame = l_simulated_frame;
 
   handleNetCdfError(nc_close(l_ncid), "Error closing file: ");
 }
