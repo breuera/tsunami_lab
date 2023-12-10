@@ -31,7 +31,7 @@ TEST_CASE("Test the NetCDF writer.", "[NetCDFWrite]") {
     tsunami_lab::t_real hu2[16] = {-1, -1, -1, -1, -1, 4, 3, -1, -1, 2, 1, -1, -1, -1, -1, -1};
     tsunami_lab::t_real hv2[16] = {-1, -1, -1, -1, -1, 4, 3, -1, -1, 2, 1, -1, -1, -1, -1, -1};
 
-    tsunami_lab::io::NetCDF *l_writer = new tsunami_lab::io::NetCDF(1.0, 0.02, 25, 1, 2, 2, 4, 5, b, "writer_test.nc");
+    tsunami_lab::io::NetCDF *l_writer = new tsunami_lab::io::NetCDF(1.0, 0.02, 25, 1, 2, 2, 4, 1, b, "writer_test.nc");
 
     REQUIRE(l_writer->store(0.5, 0, h1, hu1, hv1) == NC_NOERR);
     REQUIRE(l_writer->store(1.0, 1, h2, hu2, hv2) == NC_NOERR);
