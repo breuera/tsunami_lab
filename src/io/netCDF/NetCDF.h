@@ -160,6 +160,7 @@ public:
    * @param i_hMax get max heigth
    * @param i_resolution_div get resolution div
    * @param i_simulated_frame get max simulated frames
+   * @param i_filename Name of the file to be written to
    */
   void writeCheckpoint(t_idx i_nx,
                        t_idx i_ny,
@@ -209,6 +210,7 @@ public:
    * @param o_hMax Pointer to Current hMax of the simulation.
    * @param o_simulated_frame Pointer to simulated_frame
    * @param o_resolution_div Pointer ti resolution_div
+   * @param o_filename Pointer to the original file name
    * @param filename Name of the file to read the checkpoint from.
    */
   void readCheckpoint(t_idx *o_nx,

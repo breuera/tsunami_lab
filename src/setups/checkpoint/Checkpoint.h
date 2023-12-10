@@ -72,69 +72,172 @@ private:
 
 public:
   /**
-   * @brief Construct a new TsunamiEvent1d object
+   * @brief Construct a new Checkpoint object
    *
+   * This function is used to construct a new Checkpoint object.
    */
   Checkpoint();
 
   /**
-   * @brief Destroy the Tsunami Event 2d object
+   * @brief Destroy the Checkpoint object
    *
+   * This function is used to destroy the Checkpoint object.
    */
   ~Checkpoint();
 
   /**
-   * Gets the water height.
+   * @brief Gets the water height.
    *
-   * @return height of water.
-   **/
-  t_real getHeight(t_real i_x,
-                   t_real i_y) const;
-
-  /**
-   * Gets the momentum in x-direction.
-   *
-   * @return momentum in x-direction.
-   **/
-  t_real getMomentumX(t_real i_x,
-                      t_real i_y) const;
-
-  /**
-   * Gets the momentum in y-direction.
-   *
-   * @return momentum in y-direction.
-   **/
-  t_real getMomentumY(t_real i_x,
-                      t_real i_y) const;
-
-  /**
-   * @brief Gets the bathymetry
-   *
-   * @return bathymetry value
+   * @param i_x The x-coordinate.
+   * @param i_y The y-coordinate.
+   * @return The height of water at the given coordinates.
    */
-  t_real getBathymetry(t_real i_x,
-                       t_real i_y) const;
+  t_real getHeight(t_real i_x, t_real i_y) const;
 
+  /**
+   * @brief Gets the momentum in x-direction.
+   *
+   * @param i_x The x-coordinate.
+   * @param i_y The y-coordinate.
+   * @return The momentum in x-direction at the given coordinates.
+   */
+  t_real getMomentumX(t_real i_x, t_real i_y) const;
+
+  /**
+   * @brief Gets the momentum in y-direction.
+   *
+   * @param i_x The x-coordinate.
+   * @param i_y The y-coordinate.
+   * @return The momentum in y-direction at the given coordinates.
+   */
+  t_real getMomentumY(t_real i_x, t_real i_y) const;
+
+  /**
+   * @brief Gets the bathymetry.
+   *
+   * @param i_x The x-coordinate.
+   * @param i_y The y-coordinate.
+   * @return The bathymetry value at the given coordinates.
+   */
+  t_real getBathymetry(t_real i_x, t_real i_y) const;
+
+  /**
+   * @brief Gets the number of cells in the x-direction.
+   *
+   * @return The number of cells in the x-direction.
+   */
   t_idx getNx() const;
 
+  /**
+   * @brief Gets the number of cells in the y-direction.
+   *
+   * @return The number of cells in the y-direction.
+   */
   t_idx getNy() const;
 
+  /**
+   * @brief Gets the x-offset.
+   *
+   * @return The x-offset.
+   */
   t_real getXOffset() const;
 
+  /**
+   * @brief Gets the y-offset.
+   *
+   * @return The y-offset.
+   */
   t_real getYOffset() const;
 
+  /**
+   * @brief Gets the solver choice.
+   *
+   * @return The solver choice.
+   */
   int getSolverChoice() const;
+
+  /**
+   * @brief Gets the state boundary on the left.
+   *
+   * @return The state boundary on the left.
+   */
   int getStateBoundaryLeft() const;
+
+  /**
+   * @brief Gets the state boundary on the right.
+   *
+   * @return The state boundary on the right.
+   */
   int getStateBoundaryRight() const;
+
+  /**
+   * @brief Gets the state boundary on the top.
+   *
+   * @return The state boundary on the top.
+   */
   int getStateBoundaryTop() const;
+
+  /**
+   * @brief Gets the state boundary on the bottom.
+   *
+   * @return The state boundary on the bottom.
+   */
   int getStateBoundaryBottom() const;
+
+  /**
+   * @brief Gets the width.
+   *
+   * @return The width.
+   */
   t_real getWidth() const;
+
+  /**
+   * @brief Gets the end time.
+   *
+   * @return The end time.
+   */
   t_real getEndTime() const;
+
+  /**
+   * @brief Gets the time step.
+   *
+   * @return The time step.
+   */
   t_idx getTimeStep() const;
+
+  /**
+   * @brief Gets the time.
+   *
+   * @return The time.
+   */
   t_real getTime() const;
+
+  /**
+   * @brief Gets the number of outputs.
+   *
+   * @return The number of outputs.
+   */
   t_idx getNOut() const;
+
+  /**
+   * @brief Gets the maximum height.
+   *
+   * @return The maximum height.
+   */
   t_real getHMax() const;
+
+  /**
+   * @brief Gets the simulated frame.
+   *
+   * @return The simulated frame.
+   */
   t_idx getSimulated_frame() const;
+
+  /**
+   * @brief Gets the filename.
+   *
+   * @return The filename.
+   */
   std::string getFilename() const;
   int getResolutionDiv() const;
 };

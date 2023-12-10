@@ -88,7 +88,6 @@ tsunami_lab::t_real tsunami_lab::setups::Checkpoint::getBathymetry(t_real i_x,
   return m_bathymetry[x_idx + y_idx * m_nx];
 }
 
-// Für Zeigervariablen
 tsunami_lab::t_idx tsunami_lab::setups::Checkpoint::getNx() const
 {
   return m_nx;
@@ -109,7 +108,6 @@ tsunami_lab::t_real tsunami_lab::setups::Checkpoint::getYOffset() const
   return m_y_offset;
 }
 
-// Für Zeigervariablen (Integer-Werte)
 int tsunami_lab::setups::Checkpoint::getSolverChoice() const
 {
   return m_solver_choice;
