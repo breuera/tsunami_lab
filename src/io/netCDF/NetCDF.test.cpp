@@ -12,6 +12,7 @@
 #include <sstream>
 #include <netcdf.h>
 #include <filesystem>
+#include <iostream>
 #define private public
 #undef public
 
@@ -40,6 +41,7 @@ TEST_CASE("Test the NetCDF-writer.", "[NetCDFWrite2d]")
                        1,
                        4,
                        4,
+                       1,
                        0,
                        0,
                        writer->removeGhostCells(l_b, 4, 4, 0, 0, 4));
@@ -58,11 +60,13 @@ TEST_CASE("Test the NetCDF-writer.", "[NetCDFWrite2d]")
                                     3, 7, 11, 15};
     writer->write(4,
                   4,
+                  1,
                   writer->removeGhostCells(l_h, 4, 4, 0, 0, 4),
                   writer->removeGhostCells(l_hu, 4, 4, 0, 0, 4),
                   writer->removeGhostCells(l_hv, 4, 4, 0, 0, 4),
                   0,
-                  0.2);
+                  0.2,
+                  "netCDF_dump/netCDFdump.nc");
 
     for (int i = 0; i < 16; i++)
     {
@@ -73,11 +77,13 @@ TEST_CASE("Test the NetCDF-writer.", "[NetCDFWrite2d]")
 
     writer->write(4,
                   4,
+                  1,
                   writer->removeGhostCells(l_h, 4, 4, 0, 0, 4),
                   writer->removeGhostCells(l_hu, 4, 4, 0, 0, 4),
                   writer->removeGhostCells(l_hv, 4, 4, 0, 0, 4),
                   1,
-                  1.8);
+                  1.8,
+                  "netCDF_dump/netCDFdump.nc");
     delete writer;
 
     REQUIRE(std::filesystem::exists("netCDF_dump/netCDFdump.nc"));
@@ -229,4 +235,134 @@ TEST_CASE("Test the NetCDF-reader.", "[NetCDFRead2d]")
     delete[] l_z;
     delete netCDF;
     std::filesystem::remove_all("test.nc");
+}
+
+TEST_CASE("Test the NetCDF-checkpoint_reader.", "[NetCDFReadCheckpoint]")
+{
+    tsunami_lab::io::NetCdf *checkpoint = nullptr;
+
+    checkpoint = new tsunami_lab::io::NetCdf();
+
+    tsunami_lab::t_real l_h[16] = {0, 1, 2, 3,
+                                   4, 5, 6, 7,
+                                   8, 9, 10, 11,
+                                   12, 13, 14, 15};
+    tsunami_lab::t_real l_hu[16] = {31, 30, 29, 28,
+                                    27, 26, 25, 24,
+                                    23, 22, 21, 20,
+                                    19, 18, 17, 16};
+    tsunami_lab::t_real l_hv[16] = {0, 4, 8, 12,
+                                    1, 5, 9, 13,
+                                    2, 6, 10, 14,
+                                    3, 7, 11, 15};
+
+    tsunami_lab::t_real l_b[16] = {15, 14, 13, 12,
+                                   11, 10, 9, 8,
+                                   7, 6, 5, 4,
+                                   3, 2, 1, 0};
+
+    checkpoint->writeCheckpoint(4,
+                                4,
+                                l_h,
+                                l_hu,
+                                l_hv,
+                                l_b,
+                                0,
+                                0,
+                                1,
+                                1,
+                                1,
+                                1,
+                                1,
+                                200,
+                                36000,
+                                500,
+                                16000,
+                                20,
+                                1,
+                                15,
+                                7,
+                                "test");
+    tsunami_lab::t_idx l_nx;
+    tsunami_lab::t_idx l_ny;
+    tsunami_lab::t_real *l_h1;
+    tsunami_lab::t_real *l_hu1;
+    tsunami_lab::t_real *l_hv1;
+    tsunami_lab::t_real *l_b1;
+    tsunami_lab::t_real l_x_offset;
+    tsunami_lab::t_real l_y_offset;
+    int l_solver_choice;
+    int l_state_boundary_left;
+    int l_state_boundary_right;
+    int l_state_boundary_top;
+    int l_state_boundary_bottom;
+    tsunami_lab::t_real l_width;
+    tsunami_lab::t_real l_endTime;
+    tsunami_lab::t_idx l_timeStep;
+    tsunami_lab::t_real l_time;
+    tsunami_lab::t_idx l_nOut;
+    tsunami_lab::t_real l_hMax;
+    tsunami_lab::t_idx l_simulated_frame;
+    std::string l_filename;
+    int l_resolutionDiv;
+
+    checkpoint->readCheckpoint(&l_nx,
+                               &l_ny,
+                               &l_h1,
+                               &l_hu1,
+                               &l_hv1,
+                               &l_b1,
+                               &l_x_offset,
+                               &l_y_offset,
+                               &l_solver_choice,
+                               &l_state_boundary_left,
+                               &l_state_boundary_right,
+                               &l_state_boundary_top,
+                               &l_state_boundary_bottom,
+                               &l_width,
+                               &l_endTime,
+                               &l_timeStep,
+                               &l_time,
+                               &l_nOut,
+                               &l_hMax,
+                               &l_simulated_frame,
+                               &l_filename,
+                               &l_resolutionDiv,
+                               "checkpoints/checkpoint_1.nc");
+    REQUIRE(l_nx == 4);
+    REQUIRE(l_ny == 4);
+    REQUIRE(l_x_offset == 0);
+    REQUIRE(l_y_offset == 0);
+    REQUIRE(l_solver_choice == 1);
+    REQUIRE(l_state_boundary_left == 1);
+    REQUIRE(l_state_boundary_right == 1);
+    REQUIRE(l_state_boundary_top == 1);
+    REQUIRE(l_state_boundary_bottom == 1);
+    REQUIRE(l_width == 200);
+    REQUIRE(l_endTime == 36000);
+    REQUIRE(l_timeStep == 500);
+    REQUIRE(l_time == 16000);
+    REQUIRE(l_nOut == 20);
+    REQUIRE(l_hMax == 1);
+    REQUIRE(l_simulated_frame == 15);
+    REQUIRE(l_filename == "test");
+    REQUIRE(l_resolutionDiv == 7);
+
+    // Verify the values read from the checkpoint for each array
+    for (tsunami_lab::t_idx i = 0; i < 16; ++i)
+    {
+        REQUIRE(l_h1[i] == l_h[i]);
+        REQUIRE(l_hu1[i] == l_hu[i]);
+        REQUIRE(l_hv1[i] == l_hv[i]);
+        REQUIRE(l_b1[i] == l_b[i]);
+    }
+
+    // Clean up dynamically allocated memory
+    delete[] l_h1;
+    delete[] l_hu1;
+    delete[] l_hv1;
+    delete[] l_b1;
+
+    // Clean up the checkpoint object
+    delete checkpoint;
 }

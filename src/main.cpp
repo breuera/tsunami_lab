@@ -19,6 +19,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <chrono>
 
 #include "io/csv/Csv.h"
 #include "io/netCDF/NetCDF.h"
@@ -34,6 +35,7 @@
 #include "setups/tsunamievent1d/TsunamiEvent1d.h"
 #include "setups/tsunamievent2d/TsunamiEvent2d.h"
 #include "setups/artificialTsunami2d/ArtificialTsunami2d.h"
+#include "setups/checkpoint/Checkpoint.h"
 
 // declaration of variables
 tsunami_lab::t_idx simulated_frame = 25;
@@ -45,13 +47,14 @@ int state_boundary_right = 0;
 tsunami_lab::t_real l_x_offset = 0;
 tsunami_lab::t_real l_y_offset = 0;
 int dimension;
+int resolution_div = 1;
 bool simulate_real_tsunami = false;
 // std::string bat_path = "data/artificialtsunami/artificialtsunami_bathymetry_1000.nc";
 // std::string dis_path = "data/artificialtsunami/artificialtsunami_displ_1000.nc";
-std::string bat_path = "data/real_tsunamis/chile_gebco20_usgs_250m_bath_fixed.nc";
-std::string dis_path = "data/real_tsunamis/chile_gebco20_usgs_250m_displ_fixed.nc";
-// std::string bat_path = "data/real_tsunamis/tohoku_gebco20_usgs_250m_bath.nc";
-// std::string dis_path = "data/real_tsunamis/tohoku_gebco20_usgs_250m_displ.nc";
+// std::string bat_path = "data/real_tsunamis/chile_gebco20_usgs_250m_bath_fixed.nc";
+// std::string dis_path = "data/real_tsunamis/chile_gebco20_usgs_250m_displ_fixed.nc";
+std::string bat_path = "data/real_tsunamis/tohoku_gebco20_usgs_250m_bath.nc";
+std::string dis_path = "data/real_tsunamis/tohoku_gebco20_usgs_250m_displ.nc";
 
 int main(int i_argc,
          char *i_argv[])
@@ -77,6 +80,17 @@ int main(int i_argc,
     tsunami_lab::t_idx l_nx = 0;
     tsunami_lab::t_idx l_ny = 1;
 
+    // set up time and print control
+    tsunami_lab::t_idx l_timeStep = 0;
+    tsunami_lab::t_idx l_nOut = 0;
+    tsunami_lab::t_real l_simTime = 0;
+
+    // set up filename
+    std::string filename;
+
+    // maximum observed height in the setup
+    tsunami_lab::t_real l_hMax = std::numeric_limits<tsunami_lab::t_real>::lowest();
+
     // set cell size
     tsunami_lab::t_real l_dxy = 1;
 
@@ -89,7 +103,7 @@ int main(int i_argc,
     if ((i_argc < 4) || (i_argv[i_argc - 1][0] == '-'))
     {
         std::cerr << "invalid number of arguments OR wrong order, usage:" << std::endl;
-        std::cerr << "  ./build/tsunami_lab [-d DIMENSION] [-s SETUP] [-v SOLVER] [-l STATE_LEFT] [-r STATE_RIGHT] [-t STATE_TOP] [-b STATE_BOTTOM] [-i STATION]  N_CELLS_X" << std::endl;
+        std::cerr << "  ./build/tsunami_lab [-d DIMENSION] [-s SETUP] [-v SOLVER] [-l STATE_LEFT] [-r STATE_RIGHT] [-t STATE_TOP] [-b STATE_BOTTOM] [-i STATION] [-k RESOLUTION]  N_CELLS_X" << std::endl;
         std::cerr << "where N_CELLS_X is the number of cells in x-direction. The Grid is quadratic in 2d, so the same value will be taken for cells in y-direction" << std::endl;
         std::cerr << "The exception is 'tsunami2d', where N_CELLS_X represents the size of a cell." << std::endl;
         std::cerr << "Its is planned however to switch to a json-config based approach where everything will change." << std::endl;
@@ -97,13 +111,14 @@ int main(int i_argc,
         std::cerr << "When using 1d-simulation, the choices for setup are:" << std::endl;
         std::cerr << "  -s SETUP  = 'dambreak1d h_l h_r','rarerare1d h hu','shockshock1d h hu', 'supercritical1d', 'subcritical1d', 'tsunami1d'" << std::endl;
         std::cerr << "When using 2d-simulation, the choices for setup are:" << std::endl;
-        std::cerr << "  -s SETUP  = 'dambreak2d', 'tsunami2d'" << std::endl;
+        std::cerr << "  -s SETUP  = 'dambreak2d', 'tsunami2d', 'checkpoint'" << std::endl;
         std::cerr << "-v SOLVER = 'roe','fwave', default is 'fwave'. Be aware, that the roe-solver is depricated." << std::endl;
         std::cerr << "-l STATE_LEFT = 'open','closed', default is 'open'" << std::endl;
         std::cerr << "-r STATE_RIGHT = 'open','closed', default is 'open'" << std::endl;
         std::cerr << "-t STATE_TOP = 'open','closed', default is 'open'" << std::endl;
         std::cerr << "-b STATE_BOTTOM = 'open','closed', default is 'open'" << std::endl;
         std::cerr << "-i STATION = 'path'" << std::endl;
+        std::cerr << "-k RESOLUTION, where the higher the input, the lower the resolution" << std::endl;
         return EXIT_FAILURE;
     }
     else
@@ -130,11 +145,13 @@ int main(int i_argc,
     tsunami_lab::io::Stations *l_stations = nullptr;
     l_stations = new tsunami_lab::io::Stations("data/Stations.json");
 
+    bool checkpointing = false;
+
     // get command line arguments
     opterr = 0; // disable error messages of getopt
     int opt;
 
-    while ((opt = getopt(i_argc, i_argv, "d:s:v:l:r:t:b:i:")) != -1)
+    while ((opt = getopt(i_argc, i_argv, "d:s:v:l:r:t:b:i:k:")) != -1)
     {
         switch (opt)
         {
@@ -301,6 +318,40 @@ int main(int i_argc,
 
                 simulated_frame = 500;
             }
+            else if (tokens[0] == "checkpoint" && dimension == 2)
+            {
+                std::cout << "using checkpoint() setup" << std::endl;
+                simulate_real_tsunami = true;
+                checkpointing = true;
+
+                tsunami_lab::t_real l_height = -1;
+
+                l_setup = new tsunami_lab::setups::Checkpoint();
+                auto l_checkpoint = dynamic_cast<tsunami_lab::setups::Checkpoint *>(l_setup);
+                l_nx = l_checkpoint->getNx();
+                l_ny = l_checkpoint->getNy();
+                l_x_offset = l_checkpoint->getXOffset();
+                l_y_offset = l_checkpoint->getYOffset();
+                solver_choice = l_checkpoint->getSolverChoice();
+                state_boundary_left = l_checkpoint->getStateBoundaryLeft();
+                state_boundary_right = l_checkpoint->getStateBoundaryRight();
+                state_boundary_top = l_checkpoint->getStateBoundaryTop();
+                state_boundary_bottom = l_checkpoint->getStateBoundaryBottom();
+                l_width = l_checkpoint->getWidth();
+                l_endTime = l_checkpoint->getEndTime();
+                l_timeStep = l_checkpoint->getTimeStep();
+                l_simTime = l_checkpoint->getTime();
+                l_nOut = l_checkpoint->getNOut();
+                simulated_frame = l_checkpoint->getSimulated_frame();
+                l_hMax = l_checkpoint->getHMax();
+                filename = l_checkpoint->getFilename();
+                resolution_div = l_checkpoint->getResolutionDiv();
+
+                l_height = l_nx * l_ny / l_width;
+
+                std::cout << "Width: " << l_width << std::endl;
+                std::cout << "Height: " << l_height << std::endl;
+            }
             else if (tokens[0] == "artificial2d" && dimension == 2)
             {
                 std::cout << "using ArtificialTsunami2d() setup" << std::endl;
@@ -431,6 +482,16 @@ int main(int i_argc,
             l_stations = new tsunami_lab::io::Stations(i_filePath);
             break;
         }
+        case 'k':
+        {
+            resolution_div = atoi(optarg);
+            if (resolution_div < 1)
+            {
+                std::cout << "Error: resolution-scalar cannot be less than 1." << std::endl;
+                return EXIT_FAILURE;
+            }
+            break;
+        }
         // unknown option
         case '?':
         {
@@ -441,13 +502,14 @@ int main(int i_argc,
                 << "    When using 1d-simulation, the choices for setup are:" << std::endl
                 << "        -s SETUP  = 'dambreak h_l h_r','rarerare h hu','shockshock h hu', 'supercritical', 'subcritical', 'tsunami'" << std::endl
                 << "    When using 2d-simulation, the choices for setup are:" << std::endl
-                << "        -s SETUP  = 'dambreak', 'tsunami2d'" << std::endl
+                << "        -s SETUP  = 'dambreak', 'tsunami2d', 'checkpoint'" << std::endl
                 << "    -v SOLVER = 'roe','fwave', default is 'fwave'. Be aware, that the roe-solver is depricated." << std::endl
                 << "    -l STATE_LEFT = 'open','closed', default is 'open'" << std::endl
                 << "    -r STATE_RIGHT = 'open','closed', default is 'open'" << std::endl
                 << "    -t STATE_TOP = 'open','closed', default is 'open'" << std::endl
                 << "    -b STATE_BOTTOM = 'open','closed', default is 'open'" << std::endl
-                << "    -i 'path' " << std::endl;
+                << "    -i 'path' " << std::endl
+                << "    -k RESOLUTION, where the higher the input, the lower the resolution" << std::endl;
             break;
         }
         }
@@ -490,9 +552,6 @@ int main(int i_argc,
     std::cout << "  number of cells in y-direction: " << l_ny << std::endl;
     std::cout << "  cell size:                      " << l_dxy << std::endl;
 
-    // maximum observed height in the setup
-    tsunami_lab::t_real l_hMax = std::numeric_limits<tsunami_lab::t_real>::lowest();
-
     // set up solver
     for (tsunami_lab::t_idx l_cy = 0; l_cy < l_ny; l_cy++)
     {
@@ -502,17 +561,33 @@ int main(int i_argc,
         {
             tsunami_lab::t_real l_x = l_cx * l_dxy - l_x_offset;
 
-            // get initial values of the setup
-            tsunami_lab::t_real l_h = l_setup->getHeight(l_x,
-                                                         l_y);
-            l_hMax = std::max(l_h, l_hMax);
+            tsunami_lab::t_real l_h, l_hu, l_hv, l_b;
 
-            tsunami_lab::t_real l_hu = l_setup->getMomentumX(l_x,
-                                                             l_y);
-            tsunami_lab::t_real l_hv = l_setup->getMomentumY(l_x,
-                                                             l_y);
-            tsunami_lab::t_real l_b = l_setup->getBathymetry(l_x,
-                                                             l_y);
+            // get initial values of the setup
+            if (checkpointing)
+            {
+                l_h = l_setup->getHeight(l_cx,
+                                         l_cy);
+                l_hu = l_setup->getMomentumX(l_cx,
+                                             l_cy);
+                l_hv = l_setup->getMomentumY(l_cx,
+                                             l_cy);
+                l_b = l_setup->getBathymetry(l_cx,
+                                             l_cy);
+            }
+            else
+            {
+                l_h = l_setup->getHeight(l_x,
+                                         l_y);
+                l_hMax = std::max(l_h, l_hMax);
+
+                l_hu = l_setup->getMomentumX(l_x,
+                                             l_y);
+                l_hv = l_setup->getMomentumY(l_x,
+                                             l_y);
+                l_b = l_setup->getBathymetry(l_x,
+                                             l_y);
+            }
 
             // set initial values in wave propagation solver
             l_waveProp->setHeight(l_cx,
@@ -532,8 +607,7 @@ int main(int i_argc,
                                       l_b);
         }
     }
-
-    if (dimension == 2)
+    if (dimension == 2 && !checkpointing)
     {
         /* if (std::filesystem::exists("netCDF_dump"))
         {
@@ -545,10 +619,13 @@ int main(int i_argc,
 
         std::time_t t = std::time(nullptr);
 
-        netcdf_manager->initialize("netCDF_dump/netCDFdump_" + std::to_string(l_dxy) + "_ " + std::to_string(t) + ".nc",
+        filename = "netCDF_dump/netCDFdump_" + std::to_string(l_dxy) + "_ " + std::to_string(t) + ".nc";
+
+        netcdf_manager->initialize(filename,
                                    l_dxy,
                                    l_nx,
                                    l_ny,
+                                   resolution_div,
                                    l_x_offset,
                                    l_y_offset,
                                    netcdf_manager->removeGhostCells(l_waveProp->getBathymetry(), l_nx, l_ny, 1, 1, l_waveProp->getStride()));
@@ -562,11 +639,6 @@ int main(int i_argc,
 
     // derive scaling for a time step
     tsunami_lab::t_real l_scaling = l_dt / l_dxy;
-
-    // set up time and print control
-    tsunami_lab::t_idx l_timeStep = 0;
-    tsunami_lab::t_idx l_nOut = 0;
-    tsunami_lab::t_real l_simTime = 0;
 
     std::cout << "entering time loop" << std::endl;
 
@@ -589,10 +661,60 @@ int main(int i_argc,
     std::filesystem::create_directory("station_data");
 
     int multiplier = 0;
+    auto l_lastCheckpointTime = std::chrono::steady_clock::now();
 
     // iterate over time
     while (l_simTime < l_endTime)
     {
+        auto l_currentTime = std::chrono::steady_clock::now();
+        std::chrono::duration<double> l_elapsedTime = l_currentTime - l_lastCheckpointTime;
+
+        if (l_elapsedTime.count() >= 3600.0 && dimension == 2)
+        {
+            netcdf_manager->writeCheckpoint(l_nx,
+                                            l_ny,
+                                            netcdf_manager->removeGhostCells(l_waveProp->getHeight(),
+                                                                             l_nx,
+                                                                             l_ny,
+                                                                             1,
+                                                                             1,
+                                                                             l_waveProp->getStride()),
+                                            netcdf_manager->removeGhostCells(l_waveProp->getMomentumX(),
+                                                                             l_nx,
+                                                                             l_ny,
+                                                                             1,
+                                                                             1,
+                                                                             l_waveProp->getStride()),
+                                            netcdf_manager->removeGhostCells(l_waveProp->getMomentumY(),
+                                                                             l_nx,
+                                                                             l_ny,
+                                                                             1,
+                                                                             1,
+                                                                             l_waveProp->getStride()),
+                                            netcdf_manager->removeGhostCells(l_waveProp->getBathymetry(),
+                                                                             l_nx,
+                                                                             l_ny,
+                                                                             1,
+                                                                             1,
+                                                                             l_waveProp->getStride()),
+                                            l_x_offset,
+                                            l_y_offset,
+                                            solver_choice,
+                                            state_boundary_left,
+                                            state_boundary_right,
+                                            state_boundary_top,
+                                            state_boundary_bottom,
+                                            l_width,
+                                            l_endTime,
+                                            l_timeStep,
+                                            l_simTime,
+                                            l_nOut,
+                                            l_hMax,
+                                            simulated_frame,
+                                            resolution_div,
+                                            filename);
+            l_lastCheckpointTime = std::chrono::steady_clock::now();
+        }
         if (l_timeStep % simulated_frame == 0)
         {
             std::cout << "  simulation time / #time steps: "
@@ -623,6 +745,7 @@ int main(int i_argc,
             {
                 netcdf_manager->write(l_nx,
                                       l_ny,
+                                      resolution_div,
                                       netcdf_manager->removeGhostCells(l_waveProp->getHeight(),
                                                                        l_nx,
                                                                        l_ny,
@@ -642,9 +765,9 @@ int main(int i_argc,
                                                                        1,
                                                                        l_waveProp->getStride()),
                                       l_nOut,
-                                      l_simTime);
+                                      l_simTime,
+                                      filename);
             }
-
             l_nOut++;
         }
 
