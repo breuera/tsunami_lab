@@ -668,7 +668,7 @@ int main(int i_argc,
         auto l_currentTime = std::chrono::steady_clock::now();
         std::chrono::duration<double> l_elapsedTime = l_currentTime - l_lastCheckpointTime;
 
-        if (l_elapsedTime.count() >= 30.0 && dimension == 2)
+        if (l_elapsedTime.count() >= 3600.0 && dimension == 2)
         {
             netcdf_manager->writeCheckpoint(l_nx,
                                             l_ny,
