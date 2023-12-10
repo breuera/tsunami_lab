@@ -24,6 +24,7 @@ TEST_CASE("Test the simulation running method.", "[Simulator]") {
                                                                                10,
                                                                                1,
                                                                                1.25,
+                                                                               0,
                                                                                1.0,
                                                                                l_boundary,
                                                                                false);

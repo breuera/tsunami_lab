@@ -36,7 +36,10 @@ class tsunami_lab::configs::SimConfig {
     tsunami_lab::t_real m_yLen = tsunami_lab::t_real(10.0);
 
     //! time of the simulation.
-    tsunami_lab::t_real m_simTime = tsunami_lab::t_real(1.25);
+    tsunami_lab::t_real m_endSimTime = tsunami_lab::t_real(1.25);
+
+    //! start time of the simulation.
+    tsunami_lab::t_real m_startSimTime = tsunami_lab::t_real(0);
 
     //! coarse output - factor
     tsunami_lab::t_real m_coarseFactor = tsunami_lab::t_real(1.0);
@@ -61,7 +64,8 @@ class tsunami_lab::configs::SimConfig {
      * @param i_ny number of cells in y-direction.
      * @param i_xLen length of the simulation in x-direction in meters.
      * @param i_yLen length of the simulation in y-direction in meters.
-     * @param i_simTime time of the simulation in seconds.
+     * @param i_endSimTime time of the simulation in seconds.
+     * @param i_startSimTime start time of the simulation in seconds.
      * @param i_coarseFactor factor of the coarse output.
      * @param i_boundaryCondition list that determines the chosen boundary conditions.
      * @param i_isRoeSolver boolean that shows if the roe solver is to be used (false -> f-wave solver).
@@ -71,7 +75,8 @@ class tsunami_lab::configs::SimConfig {
               tsunami_lab::t_idx i_ny,
               tsunami_lab::t_real i_xLen,
               tsunami_lab::t_real i_yLen,
-              tsunami_lab::t_real i_simTime,
+              tsunami_lab::t_real i_endSimTime,
+              tsunami_lab::t_real i_startSimTime,
               tsunami_lab::t_real i_coarseFactor,
               e_boundary i_boundaryCondition[4],
               bool i_isRoeSolver);
@@ -130,8 +135,17 @@ class tsunami_lab::configs::SimConfig {
      *
      * @return time length of the simulation in seconds.
      */
-    tsunami_lab::t_real getSimTime() {
-        return m_simTime;
+    tsunami_lab::t_real getEndSimTime() {
+        return m_endSimTime;
+    }
+
+    /**
+     * Gets the start time of the simulation in seconds.
+     *
+     * @return start time of the simulation in seconds.
+     */
+    tsunami_lab::t_real getStartSimTime() {
+        return m_startSimTime;
     }
 
     /**
