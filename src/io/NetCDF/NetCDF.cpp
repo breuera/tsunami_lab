@@ -256,7 +256,7 @@ int tsunami_lab::io::NetCDF::store(t_real i_simTime,
 }
 
 int tsunami_lab::io::NetCDF::write(t_idx i_currentFrame,
-                                   t_idx i_checkpoint = -1,
+                                   long int i_checkpoint = -1,
                                    t_real i_simTime = -1,
                                    t_real i_endTime = -1) {
     int l_nc_err = 0;

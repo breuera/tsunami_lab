@@ -163,7 +163,7 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
         std::cout << "  writing wave field to " << l_path << std::endl;
 
         tsunami_lab::t_idx l_timeStep = 0;
-        tsunami_lab::t_idx l_checkpoint = 0;
+        long int l_checkpoint = 0;
         tsunami_lab::io::NetCDF *l_writer = new tsunami_lab::io::NetCDF(l_endTime,
                                                                         l_dt,
                                                                         t_idx(25),

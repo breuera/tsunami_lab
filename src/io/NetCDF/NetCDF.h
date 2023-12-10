@@ -75,7 +75,7 @@ class tsunami_lab::io::NetCDF {
               t_real const *i_hv);
 
     int write(t_idx i_currentFrame,
-              t_idx i_checkpoint,
+              long int i_checkpoint,
               t_real i_simTime,
               t_real i_endTime);
     int write();
