@@ -1,7 +1,7 @@
 {
     "dimension": 2,
-    "nx": 600,
-    "ny": 400,
+    "nx": 60,
+    "ny": 40,
     "xLen": 60.0,
     "yLen": 40.0,
     "bathymetryFileName": "dummy_bathymetry.nc",

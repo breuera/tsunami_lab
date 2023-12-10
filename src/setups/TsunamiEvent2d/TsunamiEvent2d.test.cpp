@@ -65,21 +65,28 @@ TEST_CASE("Test the two-dimensional tsunami setup data.", "[TsunamiSetup2d]") {
                                                                                       l_displacements_ptr,
                                                                                       l_epicenterOffsetX,
                                                                                       l_epicenterOffsetY);
-    std::cout << "bathymetry values: " << std::endl;
 
     for (tsunami_lab::t_real l_ceY = 0; l_ceY < 5; l_ceY += 0.5) {
         for (tsunami_lab::t_real l_ceX = 0; l_ceX < 5; l_ceX += 0.5) {
-            // tsunami_lab::t_real l_height_val = l_setup.getHeight(l_ceX, l_ceY);
-            // tsunami_lab::t_real l_bathymetry_val = l_setup.getBathymetry(l_ceX, l_ceY);
             tsunami_lab::t_real l_momentumX_val = l_setup.getMomentumX(l_ceX, l_ceY);
             tsunami_lab::t_real l_momentumY_val = l_setup.getMomentumY(l_ceX, l_ceY);
 
             REQUIRE(l_momentumX_val == 0);
             REQUIRE(l_momentumY_val == 0);
-
-            // tsunami_lab::t_real l_offsetCeX = l_ceX + l_epicenterOffsetX;
-            // tsunami_lab::t_real l_offsetCeY = l_ceY + l_epicenterOffsetY;
         }
-        std::cout << "new line" << std::endl;
     }
+
+    REQUIRE(l_setup.getHeight(0.0, 0.0) == Approx(8000.0));
+    REQUIRE(l_setup.getHeight(0.0, 2.9) == Approx(521.7391304347826));
+    REQUIRE(l_setup.getHeight(2.9, 0.0) == Approx(7304.3478260869565));
+    REQUIRE(l_setup.getHeight(2.8, 2.8) == Approx(0));
+    REQUIRE(l_setup.getHeight(2.0, 2.0) == Approx(5913.0434782608695));
+    REQUIRE(l_setup.getHeight(1.4, 1.4) == Approx(6956.521739130435));
+
+    REQUIRE(l_setup.getBathymetry(0.0, 0.0) == Approx(-8000.0));
+    REQUIRE(l_setup.getBathymetry(0.0, 2.9) == Approx(-521.7391304347826));
+    REQUIRE(l_setup.getBathymetry(2.9, 0.0) == Approx(-7304.3478260869565));
+    REQUIRE(l_setup.getBathymetry(2.8, 2.8) == Approx(50));
+    REQUIRE(l_setup.getBathymetry(2.0, 2.0) == Approx(-5916.04346));
+    REQUIRE(l_setup.getBathymetry(1.4, 1.4) == Approx(-6956.521739130435));
 }
