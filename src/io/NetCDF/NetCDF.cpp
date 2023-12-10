@@ -196,6 +196,7 @@ int tsunami_lab::io::NetCDF::init(t_idx i_currentFrame,
     l_nc_err += nc_def_dim(m_ncId, "time", i_currentFrame, &m_dimTimeId);
     l_nc_err += nc_def_dim(m_ncId, "simTime", 1, &m_dimSimTimeId);
     l_nc_err += nc_def_dim(m_ncId, "endTime", 1, &m_dimEndTimeId);
+    l_nc_err += nc_def_dim(m_ncId, "frame", 1, &m_dimFrameId);
     if (l_nc_err != NC_NOERR) {
         std::cerr << "NCError: Define dimensions." << std::endl;
         return 1;
@@ -231,6 +232,7 @@ int tsunami_lab::io::NetCDF::init(t_idx i_currentFrame,
 
     l_nc_err += nc_def_var(m_ncId, "simTime", NC_FLOAT, 1, &m_dimSimTimeId, &m_varSimTimeId);
     l_nc_err += nc_def_var(m_ncId, "endTime", NC_FLOAT, 1, &m_dimEndTimeId, &m_varEndTimeId);
+    l_nc_err += nc_def_var(m_ncId, "frame", NC_FLOAT, 1, &m_dimFrameId, &m_varFrameId);
 
     l_nc_err += nc_enddef(m_ncId);
     if (l_nc_err != NC_NOERR) {
@@ -262,15 +264,15 @@ int tsunami_lab::io::NetCDF::store(t_real i_simTime,
 }
 
 int tsunami_lab::io::NetCDF::write(t_idx i_currentFrame,
-                                   long int i_checkpoint = -1,
+                                   std::string i_checkPointPath = "",
                                    t_real i_simTime = -1,
                                    t_real i_endTime = -1) {
     int l_nc_err = 0;
 
     // create netCDF file
     std::string l_outFileName;
-    if (i_checkpoint > -1) {
-        l_outFileName = "out/checkpoint_" + std::to_string(i_checkpoint) + ".nc";
+    if (i_checkPointPath.compare("") != 0) {
+        l_outFileName = i_checkPointPath;
     } else {
         l_outFileName = m_outFileName;
     }
@@ -375,14 +377,10 @@ int tsunami_lab::io::NetCDF::write(t_idx i_currentFrame,
 
     l_nc_err += nc_put_var_float(m_ncId, m_varTimeId, m_time);
 
-    if (i_simTime != -1) {
-        t_real l_simTime[1] = {i_simTime};
-        l_nc_err += nc_put_var_float(m_ncId, m_varSimTimeId, l_simTime);
-    }
-    if (i_endTime != -1) {
-        t_real l_endTime[1] = {i_endTime};
-        l_nc_err += nc_put_var_float(m_ncId, m_varEndTimeId, l_endTime);
-    }
+    l_nc_err += nc_put_var_float(m_ncId, m_varSimTimeId, &i_simTime);
+    l_nc_err += nc_put_var_float(m_ncId, m_varEndTimeId, &i_endTime);
+    unsigned long long l_currentFrame = i_currentFrame;
+    l_nc_err += nc_put_var_ulonglong(m_ncId, m_varFrameId, &l_currentFrame);
     if (l_nc_err != NC_NOERR) {
         std::cout << "NCError: Put variables." << std::endl;
         return 1;
@@ -409,6 +407,82 @@ bool tsunami_lab::io::NetCDF::isInBounds(int i_x, int i_y) {
         return false;
     }
     return true;
+}
+
+int tsunami_lab::io::NetCDF::readCheckpoint(std::string i_checkPoinPath,
+                                            t_real *o_height,
+                                            t_real *o_momentumX,
+                                            t_real *o_momentumY,
+                                            t_real *o_bathymetry,
+                                            t_real *o_time,
+                                            t_idx *o_currentFrame,
+                                            t_real *o_endSimTime,
+                                            t_real *o_startSimTime) {
+    int l_ncID;
+    // open checkpoint file
+    int l_nc_err = nc_open(i_checkPoinPath.c_str(), 0, &l_ncID);
+    if (l_nc_err != NC_NOERR) {
+        std::cerr << "Could not open file: " << i_checkPoinPath << std::endl;
+        return 1;
+    }
+
+    // get dimensions
+    std::size_t l_xDim, l_yDim, l_timeDim;
+    std::size_t l_simTimeDim, l_endTimeDim, l_frameDim;
+
+    l_nc_err = nc_inq_dimlen(l_ncID, 0, &l_xDim);
+    l_nc_err += nc_inq_dimlen(l_ncID, 1, &l_yDim);
+    l_nc_err += nc_inq_dimlen(l_ncID, 2, &l_timeDim);
+
+    l_nc_err += nc_inq_dimlen(l_ncID, 3, &l_simTimeDim);
+    l_nc_err += nc_inq_dimlen(l_ncID, 4, &l_endTimeDim);
+    l_nc_err += nc_inq_dimlen(l_ncID, 5, &l_frameDim);
+    if (l_nc_err != NC_NOERR) {
+        std::cerr << "NCError: Load Dimensions." << std::endl;
+        return 1;
+    }
+
+    o_time = new tsunami_lab::t_real[l_timeDim];
+    o_height = new tsunami_lab::t_real[l_xDim * l_yDim * l_timeDim];
+    o_momentumX = new tsunami_lab::t_real[l_xDim * l_yDim * l_timeDim];
+    o_momentumY = new tsunami_lab::t_real[l_xDim * l_yDim * l_timeDim];
+    o_bathymetry = new tsunami_lab::t_real[l_xDim * l_yDim];
+
+    // get variable ids
+    int l_varIDtime, l_varIDheight, l_varIDmomentumX, l_varIDmomentumY, l_varIDbathymetry;
+    int l_varIDsimTime, l_varIDendTime, l_varIDframe;
+
+    l_nc_err += nc_inq_varid(l_ncID, "time", &l_varIDtime);
+    l_nc_err += nc_inq_varid(l_ncID, "height", &l_varIDheight);
+    l_nc_err += nc_inq_varid(l_ncID, "momentumX", &l_varIDmomentumX);
+    l_nc_err += nc_inq_varid(l_ncID, "momentumY", &l_varIDmomentumY);
+    l_nc_err += nc_inq_varid(l_ncID, "bathymetry", &l_varIDbathymetry);
+
+    l_nc_err += nc_inq_varid(l_ncID, "simTime", &l_varIDsimTime);
+    l_nc_err += nc_inq_varid(l_ncID, "endTime", &l_varIDendTime);
+    l_nc_err += nc_inq_varid(l_ncID, "frame", &l_varIDframe);
+    if (l_nc_err != NC_NOERR) {
+        std::cerr << "NCError: Load Variable IDs" << std::endl;
+        return 1;
+    }
+
+    l_nc_err = nc_get_var_float(l_ncID, l_varIDtime, o_time);
+    l_nc_err += nc_get_var_float(l_ncID, l_varIDheight, o_height);
+    l_nc_err += nc_get_var_float(l_ncID, l_varIDmomentumX, o_momentumX);
+    l_nc_err += nc_get_var_float(l_ncID, l_varIDmomentumY, o_momentumY);
+    l_nc_err += nc_get_var_float(l_ncID, l_varIDbathymetry, o_bathymetry);
+
+    l_nc_err += nc_get_var_float(l_ncID, l_varIDsimTime, o_startSimTime);
+    l_nc_err += nc_get_var_float(l_ncID, l_varIDendTime, o_endSimTime);
+    unsigned long long l_currentFrame;
+    l_nc_err += nc_get_var_ulonglong(l_ncID, l_varIDframe, &l_currentFrame);
+    *o_currentFrame = (t_idx)l_currentFrame;
+    if (l_nc_err != NC_NOERR) {
+        std::cerr << "NCError: Load Data" << std::endl;
+        return 1;
+    }
+
+    return 0;
 }
 
 tsunami_lab::io::NetCDF::NetCDF(t_real i_endTime,

@@ -188,7 +188,7 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
                                 l_waveProp->getMomentumY());
 
                 if (l_frame % 4 == 0) {
-                    l_writer->write(l_frame, l_checkpoint, l_simTime, l_endTime);
+                    l_writer->write(l_frame, "./out/" + i_simConfig.getConfigName() + "_checkpoint.nc", l_simTime, l_endTime);
                     l_checkpoint++;
                 }
                 l_frame++;
