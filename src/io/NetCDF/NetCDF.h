@@ -78,13 +78,35 @@ class tsunami_lab::io::NetCDF {
               t_real const *i_hu,
               t_real const *i_hv);
 
+    /**
+     * @brief Depending on if the checkpoint path is set write a solution file or
+     * a checkpoint file.
+     *
+     * @param i_currentFrame number holding the current frame id for the writer.
+     * @param i_checkPointPath path to the written checkpoint file.
+     * @param i_simTime time passed since simulation begin.
+     * @param i_endTime maximum time to be simulated.
+     */
     int write(t_idx i_currentFrame,
               std::string i_checkPointPath,
               t_real i_simTime,
               t_real i_endTime);
     int write();
 
-    static int readCheckpoint(std::string i_checkPoinPath,
+    /**
+     * @brief Reads a checkpoint file.
+     *
+     * @param i_checkPointPath path to the checkpoint file to be read.
+     * @param o_height array of height values to be read.
+     * @param o_momentumX array of momentum values in x-direction to be read.
+     * @param o_momentumY array of momentum values in y-direction to be read.
+     * @param o_bathymetry array of bathymetry values of each cell to be read.
+     * @param o_time array of timestamps that already passed to be read.
+     * @param o_currentFrame current Frame in the writer.
+     * @param o_endSimTime maximum time to be simulated.
+     * @param o_startSimTime time passed since simulation begin.
+     */
+    static int readCheckpoint(std::string i_checkPointPath,
                               t_real *o_height,
                               t_real *o_momentumX,
                               t_real *o_momentumY,
