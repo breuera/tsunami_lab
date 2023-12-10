@@ -171,6 +171,7 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
                                                                         l_nx,
                                                                         l_ny,
                                                                         l_waveProp->getStride(),
+                                                                        i_simConfig.getCoarseFactor(),
                                                                         l_waveProp->getBathymetry(),
                                                                         l_path);
 
@@ -186,10 +187,10 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
                                 l_waveProp->getMomentumX(),
                                 l_waveProp->getMomentumY());
 
-					 if (l_frame % 4 == 0) {
-						l_writer->write(l_frame, l_checkpoint, l_simTime, l_endTime);
-						l_checkpoint++;
-					 }
+                if (l_frame % 4 == 0) {
+                    l_writer->write(l_frame, l_checkpoint, l_simTime, l_endTime);
+                    l_checkpoint++;
+                }
                 l_frame++;
             }
             l_waveProp->setGhostCells(i_simConfig.getBoundaryCondition());

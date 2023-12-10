@@ -151,12 +151,17 @@ tsunami_lab::t_idx tsunami_lab::io::ConfigLoader::loadConfig(std::string i_path,
     }
 
     // factor for coarse output
-    tsunami_lab::t_real l_coarseFactor;
+    tsunami_lab::t_idx l_coarseFactor;
     if (l_configFile.contains("coarseFactor")) {
         l_coarseFactor = l_configFile.at("coarseFactor");
+
+        if (l_coarseFactor < 1) {
+            std::cout << "factor for coarse input can't be smaller than 1" << std::endl;
+            return 0;
+        }
     } else {
         std::cout << "coarseFactor takes on default value" << std::endl;
-        l_coarseFactor = 1.0;
+        l_coarseFactor = 1;
     }
 
     // set bathymetry and displacements file names

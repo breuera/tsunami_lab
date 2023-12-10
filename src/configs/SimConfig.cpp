@@ -17,7 +17,7 @@ tsunami_lab::configs::SimConfig::SimConfig(tsunami_lab::t_idx i_dimension,
                                            tsunami_lab::t_real i_yLen,
                                            tsunami_lab::t_real i_endSimTime,
                                            tsunami_lab::t_real i_startSimTime,
-                                           tsunami_lab::t_real i_coarseFactor,
+                                           tsunami_lab::t_idx i_coarseFactor,
                                            e_boundary i_boundaryCondition[4],
                                            bool i_isRoeSolver) {
     m_dimension = i_dimension;

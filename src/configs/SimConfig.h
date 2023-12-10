@@ -77,7 +77,7 @@ class tsunami_lab::configs::SimConfig {
               tsunami_lab::t_real i_yLen,
               tsunami_lab::t_real i_endSimTime,
               tsunami_lab::t_real i_startSimTime,
-              tsunami_lab::t_real i_coarseFactor,
+              tsunami_lab::t_idx i_coarseFactor,
               e_boundary i_boundaryCondition[4],
               bool i_isRoeSolver);
     /**
@@ -153,7 +153,7 @@ class tsunami_lab::configs::SimConfig {
      *
      * @return coarse output factor.
      */
-    tsunami_lab::t_real getCoarseFactor() {
+    tsunami_lab::t_idx getCoarseFactor() {
         return m_coarseFactor;
     }
 

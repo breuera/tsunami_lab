@@ -181,12 +181,18 @@ int tsunami_lab::io::NetCDF::read(std::string i_nameBathymetry,
     return 0;
 }
 
-int tsunami_lab::io::NetCDF::init(t_idx i_currentFrame) {
+int tsunami_lab::io::NetCDF::init(t_idx i_currentFrame,
+                                  long int i_checkpoint) {
     int l_nc_err = 0;
 
     // define dimensions
-    l_nc_err = nc_def_dim(m_ncId, "x", m_nx, &m_dimXId);
-    l_nc_err += nc_def_dim(m_ncId, "y", m_ny, &m_dimYId);
+    if (i_checkpoint > -1) {
+        l_nc_err = nc_def_dim(m_ncId, "x", m_nx, &m_dimXId);
+        l_nc_err += nc_def_dim(m_ncId, "y", m_ny, &m_dimYId);
+    } else {
+        l_nc_err = nc_def_dim(m_ncId, "x", m_nxCoarse, &m_dimXId);
+        l_nc_err += nc_def_dim(m_ncId, "y", m_nyCoarse, &m_dimYId);
+    }
     l_nc_err += nc_def_dim(m_ncId, "time", i_currentFrame, &m_dimTimeId);
     l_nc_err += nc_def_dim(m_ncId, "simTime", 1, &m_dimSimTimeId);
     l_nc_err += nc_def_dim(m_ncId, "endTime", 1, &m_dimEndTimeId);
@@ -276,16 +282,99 @@ int tsunami_lab::io::NetCDF::write(t_idx i_currentFrame,
     }
 
     // define dims and vars
-    init(i_currentFrame);
+    init(i_currentFrame, i_checkpoint);
 
     // write data
-    l_nc_err = nc_put_var_float(m_ncId, m_varXId, m_dataX);
-    l_nc_err += nc_put_var_float(m_ncId, m_varYId, m_dataY);
-    l_nc_err += nc_put_var_float(m_ncId, m_varBathymetryId, m_dataB);
+    if (i_checkpoint > -1) {
+        l_nc_err = nc_put_var_float(m_ncId, m_varXId, m_dataX);
+        l_nc_err += nc_put_var_float(m_ncId, m_varYId, m_dataY);
+        l_nc_err += nc_put_var_float(m_ncId, m_varBathymetryId, m_dataB);
+        l_nc_err += nc_put_var_float(m_ncId, m_varHeightId, m_height);
+        l_nc_err += nc_put_var_float(m_ncId, m_varMomentumXId, m_momentumX);
+        l_nc_err += nc_put_var_float(m_ncId, m_varMomentumYId, m_momentumY);
+    } else {
+        // coarse output
+        t_idx l_idx = 0;
+        t_real *l_dataX = new tsunami_lab::t_real[m_nxCoarse];
+        for (t_idx l_ix = m_coarseFactor - 1; l_ix < m_nx; l_ix += m_coarseFactor) {
+            l_dataX[l_idx] = m_dataX[l_ix];
+            l_idx += 1;
+        }
+        l_nc_err = nc_put_var_float(m_ncId, m_varXId, l_dataX);
+        delete[] l_dataX;
+
+        l_idx = 0;
+        t_real *l_dataY = new tsunami_lab::t_real[m_nyCoarse];
+        for (t_idx l_iy = m_coarseFactor - 1; l_iy < m_ny; l_iy += m_coarseFactor) {
+            l_dataY[l_idx] = m_dataY[l_iy];
+            l_idx += 1;
+        }
+        l_nc_err += nc_put_var_float(m_ncId, m_varYId, l_dataY);
+        delete[] l_dataY;
+
+        l_idx = 0;
+        t_real *l_dataB = new tsunami_lab::t_real[m_nxyCoarse];
+        for (t_idx l_iy = m_coarseFactor - 1; l_iy < m_ny; l_iy += m_coarseFactor) {
+            for (t_idx l_ix = m_coarseFactor - 1; l_ix < m_nx; l_ix += m_coarseFactor) {
+                // average over neighbors
+                l_dataB[l_idx] = m_dataB[l_iy * m_nx + l_ix];
+                t_idx l_neighborCount = 1;
+                for (int l_offsetY = -(m_coarseFactor - 1); l_offsetY < (int)m_coarseFactor; l_offsetY++) {
+                    for (int l_offsetX = -(m_coarseFactor - 1); l_offsetX < (int)m_coarseFactor; l_offsetX++) {
+                        int l_idxX = l_ix + l_offsetX;
+                        int l_idxY = l_iy + l_offsetY;
+                        if (tsunami_lab::io::NetCDF::isInBounds(l_idxX, l_idxY)) {
+                            l_dataB[l_idx] += m_dataB[l_idxY * m_nx + l_idxX];
+                            l_neighborCount++;
+                        }
+                    }
+                }
+                l_dataB[l_idx] /= l_neighborCount;
+                l_idx += 1;
+            }
+        }
+        l_nc_err += nc_put_var_float(m_ncId, m_varBathymetryId, l_dataB);
+        delete[] l_dataB;
+
+        l_idx = 0;
+        t_real *l_height = new tsunami_lab::t_real[m_nxyCoarse];
+        t_real *l_momentumX = new tsunami_lab::t_real[m_nxyCoarse];
+        t_real *l_momentumY = new tsunami_lab::t_real[m_nxyCoarse];
+        for (t_idx l_iy = m_coarseFactor - 1; l_iy < m_ny; l_iy += m_coarseFactor) {
+            for (t_idx l_ix = m_coarseFactor - 1; l_ix < m_nx; l_ix += m_coarseFactor) {
+                // average over neighbors
+                l_height[l_idx] = m_height[l_iy * m_nx + l_ix];
+                l_momentumY[l_idx] = m_momentumY[l_iy * m_nx + l_ix];
+                l_momentumY[l_idx] = m_momentumY[l_iy * m_nx + l_ix];
+                t_idx l_neighborCount = 1;
+                for (int l_offsetY = -(m_coarseFactor - 1); l_offsetY < (int)m_coarseFactor; l_offsetY++) {
+                    for (int l_offsetX = -(m_coarseFactor - 1); l_offsetX < (int)m_coarseFactor; l_offsetX++) {
+                        int l_idxX = l_ix + l_offsetX;
+                        int l_idxY = l_iy + l_offsetY;
+                        if (tsunami_lab::io::NetCDF::isInBounds(l_idxX, l_idxY)) {
+                            l_height[l_idx] += m_height[l_idxY * m_nx + l_idxX];
+                            l_momentumX[l_idx] += m_momentumX[l_idxY * m_nx + l_idxX];
+                            l_momentumY[l_idx] += m_momentumY[l_idxY * m_nx + l_idxX];
+                            l_neighborCount++;
+                        }
+                    }
+                }
+                l_height[l_idx] /= l_neighborCount;
+                l_momentumX[l_idx] /= l_neighborCount;
+                l_momentumY[l_idx] /= l_neighborCount;
+                l_idx += 1;
+            }
+        }
+        l_nc_err += nc_put_var_float(m_ncId, m_varHeightId, l_height);
+        l_nc_err += nc_put_var_float(m_ncId, m_varMomentumXId, l_momentumX);
+        l_nc_err += nc_put_var_float(m_ncId, m_varMomentumYId, l_momentumY);
+        delete[] l_height;
+        delete[] l_momentumX;
+        delete[] l_momentumY;
+    }
+
     l_nc_err += nc_put_var_float(m_ncId, m_varTimeId, m_time);
-    l_nc_err += nc_put_var_float(m_ncId, m_varHeightId, m_height);
-    l_nc_err += nc_put_var_float(m_ncId, m_varMomentumXId, m_momentumX);
-    l_nc_err += nc_put_var_float(m_ncId, m_varMomentumYId, m_momentumY);
+
     if (i_simTime != -1) {
         t_real l_simTime[1] = {i_simTime};
         l_nc_err += nc_put_var_float(m_ncId, m_varSimTimeId, l_simTime);
@@ -312,6 +401,16 @@ int tsunami_lab::io::NetCDF::write() {
     return write(m_frameCount);
 }
 
+bool tsunami_lab::io::NetCDF::isInBounds(int i_x, int i_y) {
+    if (i_x < 0 || i_x >= (int)m_nx) {
+        return false;
+    }
+    if (i_y < 0 || i_y >= (int)m_ny) {
+        return false;
+    }
+    return true;
+}
+
 tsunami_lab::io::NetCDF::NetCDF(t_real i_endTime,
                                 t_real i_dt,
                                 t_idx i_timeStepsPerFrame,
@@ -319,12 +418,20 @@ tsunami_lab::io::NetCDF::NetCDF(t_real i_endTime,
                                 t_idx i_nx,
                                 t_idx i_ny,
                                 t_idx i_stride,
+                                t_idx i_coarseFactor,
                                 t_real const *i_b,
                                 std::string i_outFileName) {
     m_dxy = i_dxy;
     m_nx = i_nx;
     m_ny = i_ny;
-    m_nxy = i_nx * i_ny;
+    m_coarseFactor = i_coarseFactor;
+
+    // set coarse dimensions
+    m_nxCoarse = m_nx / m_coarseFactor;
+    m_nyCoarse = m_ny / m_coarseFactor;
+
+    m_nxy = m_nx * m_ny;
+    m_nxyCoarse = m_nxCoarse * m_nyCoarse;
     m_stride = i_stride;
     m_outFileName = i_outFileName;
 
@@ -343,7 +450,7 @@ tsunami_lab::io::NetCDF::NetCDF(t_real i_endTime,
     for (t_idx l_ix = 0; l_ix < m_nx; l_ix++) {
         m_dataX[l_ix] = (l_ix + 0.5) * m_dxy;
     }
-    for (t_idx l_iy = 0; l_iy < m_nx; l_iy++) {
+    for (t_idx l_iy = 0; l_iy < m_ny; l_iy++) {
         m_dataY[l_iy] = (l_iy + 0.5) * m_dxy;
     }
     for (t_idx l_iy = 0; l_iy < m_ny; l_iy++) {
