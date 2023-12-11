@@ -18,6 +18,13 @@ tsunami_lab::io::NetCdf::~NetCdf()
   {
     // handleNetCdfError(nc_close(m_ncid), "Error closing netCDF file: ");
   }
+
+  // clear checkpoint
+  std::cout << "delete checkpoints" << std::endl;
+  if (std::filesystem::exists("checkpoints"))
+  {
+    std::filesystem::remove_all("checkpoints");
+  }
 }
 
 void tsunami_lab::io::NetCdf::initialize(const std::string &filename,
@@ -319,7 +326,7 @@ void tsunami_lab::io::NetCdf::writeCheckpoint(t_idx i_nx,
   handleNetCdfError(nc_def_var(l_ncid, "hMax", NC_FLOAT, 0, NULL, &l_hMax_dimid), "Error define hMax variable:");
   handleNetCdfError(nc_def_var(l_ncid, "simulated_frame", NC_INT, 0, NULL, &l_simulated_frame_dimid), "Error define simulated_frame variable:");
   handleNetCdfError(nc_def_var(l_ncid, "filename", NC_CHAR, 1, &l_filename_dimid, &l_fileName_varid), "Error defining filename variable:");
-  handleNetCdfError(nc_def_var(l_ncid, "simulated_frame", NC_INT, 0, NULL, &l_resolution_div_dimid), "Error define resolution_div variable:");
+  handleNetCdfError(nc_def_var(l_ncid, "resolution_div", NC_INT, 0, NULL, &l_resolution_div_dimid), "Error define resolution_div variable:");
 
   handleNetCdfError(nc_enddef(l_ncid), "Error end defining: ");
 
@@ -433,7 +440,7 @@ void tsunami_lab::io::NetCdf::readCheckpoint(t_idx *o_nx,
   handleNetCdfError(nc_inq_varid(l_ncid, "nOut", &l_nOut_dimid), "Error getting nOut value id: ");
   handleNetCdfError(nc_inq_varid(l_ncid, "hMax", &l_hMax_dimid), "Error getting hMax value id: ");
   handleNetCdfError(nc_inq_varid(l_ncid, "simulated_frame", &l_simulated_frame_dimid), "Error getting simulated_frame value id: ");
-  handleNetCdfError(nc_inq_varid(l_ncid, "simulated_frame", &l_resolution_div_dimid), "Error getting resolution_div_dimid value id: ");
+  handleNetCdfError(nc_inq_varid(l_ncid, "resolution_div", &l_resolution_div_dimid), "Error getting resolution_div_dimid value id: ");
 
   // Float variables
   handleNetCdfError(nc_get_var_float(l_ncid, l_x_offset_dimid, o_x_offset), "Error getting x_offset value: ");

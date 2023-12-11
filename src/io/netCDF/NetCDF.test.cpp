@@ -237,7 +237,7 @@ TEST_CASE("Test the NetCDF-reader.", "[NetCDFRead2d]")
     std::filesystem::remove_all("test.nc");
 }
 
-TEST_CASE("Test the NetCDF-checkpoint_reader.", "[NetCDFReadCheckpoint]")
+TEST_CASE("Test the NetCDF-checkpoint.", "[NetCDFReadAndWriteCheckpoint]")
 {
     tsunami_lab::io::NetCdf *checkpoint = nullptr;
 
