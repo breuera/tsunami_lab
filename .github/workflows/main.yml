@@ -7,9 +7,9 @@ name: Tsunami Lab
 
 on:
   push:
-    branches: [main]
+    branches: [main, Optimization-with-out-Parallelization]
   pull_request:
-    branches: [main]
+    branches: [main, Optimization-with-out-Parallelization]
   schedule:
     - cron: 0 0 * * *
 
