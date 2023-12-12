@@ -28,7 +28,7 @@ int tsunami_lab::io::NetCDF::read(std::string i_nameBathymetry,
     i_nameDisplacements = "./res/" + i_nameDisplacements;
     int l_ncIDBathymetry, l_ncIDDisplacements;
 
-    std::cout << "start loading bathymetry file: " << i_nameBathymetry << std::endl;
+    std::cout << "loading bathymetry file: " << i_nameBathymetry << "..." << std::endl;
     int l_nc_err = nc_open(i_nameBathymetry.c_str(), 0, &l_ncIDBathymetry);
 
     // open bathymetry file
@@ -94,20 +94,16 @@ int tsunami_lab::io::NetCDF::read(std::string i_nameBathymetry,
         std::cerr << "Could not load data from variable y" << std::endl;
         return 1;
     }
-    std::cout << "finished bathymetry configuration loading" << std::endl;
 
     // read bathymetry
-    std::cout << "loading bathymetry data" << std::endl;
     l_nc_err = nc_get_var_float(l_ncIDBathymetry, l_varIDz, &o_bathymetry[0]);
     if (l_nc_err != NC_NOERR) {
         std::cerr << "Could not load data from variable z" << std::endl;
         return 1;
     }
-
-    std::cout << "finished loading bathymetry file: " << i_nameBathymetry << std::endl;
     // read displacements
 
-    std::cout << "start loading displacement file: " << i_nameDisplacements << std::endl;
+    std::cout << "loading displacement file: " << i_nameDisplacements << "..." << std::endl;
     l_nc_err = nc_open(i_nameDisplacements.c_str(), 0, &l_ncIDDisplacements);
 
     if (l_nc_err != NC_NOERR) {
@@ -170,14 +166,11 @@ int tsunami_lab::io::NetCDF::read(std::string i_nameBathymetry,
     }
 
     // read displacements
-    std::cout << "loading displacements data" << std::endl;
     l_nc_err = nc_get_var_float(l_ncIDDisplacements, l_varIDz, &o_displacements[0]);
     if (l_nc_err != NC_NOERR) {
         std::cerr << "Could not load data from variable z" << std::endl;
         return 1;
     }
-    std::cout << "finished loading displacement file: " << i_nameDisplacements << std::endl;
-
     return 0;
 }
 
@@ -278,7 +271,6 @@ int tsunami_lab::io::NetCDF::write(t_idx i_currentFrame,
     } else {
         l_outFileName = m_outFileName;
     }
-    std::cout << l_outFileName << std::endl;
     l_nc_err += nc_create((l_outFileName).c_str(), NC_CLOBBER, &m_ncId);
     if (l_nc_err != NC_NOERR) {
         std::cerr << "NCError: Create file." << std::endl;
@@ -392,13 +384,13 @@ int tsunami_lab::io::NetCDF::write(t_idx i_currentFrame,
     unsigned long long l_currentFrame = i_currentFrame;
     l_nc_err += nc_put_var_ulonglong(m_ncId, m_varFrameId, &l_currentFrame);
     if (l_nc_err != NC_NOERR) {
-        std::cout << "NCError: Put variables." << std::endl;
+        std::cerr << "NCError: Put variables." << std::endl;
         return 1;
     }
 
     l_nc_err = nc_close(m_ncId);
     if (l_nc_err != NC_NOERR) {
-        std::cout << "NCError: Close file." << std::endl;
+        std::cerr << "NCError: Close file." << std::endl;
         return 1;
     }
 

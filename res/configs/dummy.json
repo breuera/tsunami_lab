@@ -10,6 +10,5 @@
     "epicenterOffsetY": -10,
     "simTime": 1.25,
     "boundaryCond": "OO",
-    "setup": "TsunamiEvent",
-    "coarseFactor": 5
+    "setup": "TsunamiEvent"
 }

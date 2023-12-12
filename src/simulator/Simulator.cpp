@@ -41,7 +41,6 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
     tsunami_lab::t_real l_hMax = std::numeric_limits<tsunami_lab::t_real>::lowest();
 
     // set up solver
-    std::cout << l_dx << ", " << l_dy << std::endl;
     for (tsunami_lab::t_idx l_cy = 0; l_cy < l_ny; l_cy++) {
         tsunami_lab::t_real l_y = l_cy * l_dy;
 
@@ -91,11 +90,13 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
     // derive constant time step; changes at simulation time are ignored
     tsunami_lab::t_real l_dt = 0.5 * l_dxy / l_speedMax;
 
+    std::cout << std::endl;
     std::cout << "runtime configuration" << std::endl;
     std::cout << "  number of cells in x-direction: " << l_nx << std::endl;
     std::cout << "  number of cells in y-direction: " << l_ny << std::endl;
     std::cout << "  cell size:                      " << l_dxy << std::endl;
     std::cout << "  time step:                      " << l_dt << std::endl;
+    std::cout << std::endl;
 
     // derive scaling for a time step
     tsunami_lab::t_real l_scalingX = l_dt / l_dx;
