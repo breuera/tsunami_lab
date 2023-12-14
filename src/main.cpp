@@ -50,6 +50,7 @@ int dimension;
 int resolution_div = 1;
 bool simulate_real_tsunami = false;
 bool checkpointing = false;
+double checkpoint_timer = 3600.0;
 // std::string bat_path = "data/artificialtsunami/artificialtsunami_bathymetry_1000.nc";
 // std::string dis_path = "data/artificialtsunami/artificialtsunami_displ_1000.nc";
 // std::string bat_path = "data/real_tsunamis/chile_gebco20_usgs_250m_bath_fixed.nc";
@@ -101,7 +102,7 @@ int main(int i_argc,
     std::cout << "### https://scalable.uni-jena.de ###" << std::endl;
     std::cout << "####################################" << std::endl;
 
-    if (std::filesystem::exists("checkpoints"))
+    if (std::filesystem::exists("checkpoints") && !std::filesystem::is_empty("checkpoints"))
     {
         checkpointing = true;
     }
@@ -117,7 +118,7 @@ int main(int i_argc,
         std::cerr << "When using 1d-simulation, the choices for setup are:" << std::endl;
         std::cerr << "  -s SETUP  = 'dambreak1d h_l h_r','rarerare1d h hu','shockshock1d h hu', 'supercritical1d', 'subcritical1d', 'tsunami1d'" << std::endl;
         std::cerr << "When using 2d-simulation, the choices for setup are:" << std::endl;
-        std::cerr << "  -s SETUP  = 'dambreak2d', 'tsunami2d', 'checkpoint'" << std::endl;
+        std::cerr << "  -s SETUP  = 'dambreak2d', 'tsunami2d'" << std::endl;
         std::cerr << "-v SOLVER = 'roe','fwave', default is 'fwave'. Be aware, that the roe-solver is depricated." << std::endl;
         std::cerr << "-l STATE_LEFT = 'open','closed', default is 'open'" << std::endl;
         std::cerr << "-r STATE_RIGHT = 'open','closed', default is 'open'" << std::endl;
@@ -508,7 +509,7 @@ int main(int i_argc,
                     << "    When using 1d-simulation, the choices for setup are:" << std::endl
                     << "        -s SETUP  = 'dambreak h_l h_r','rarerare h hu','shockshock h hu', 'supercritical', 'subcritical', 'tsunami'" << std::endl
                     << "    When using 2d-simulation, the choices for setup are:" << std::endl
-                    << "        -s SETUP  = 'dambreak', 'tsunami2d', 'checkpoint'" << std::endl
+                    << "        -s SETUP  = 'dambreak', 'tsunami2d'" << std::endl
                     << "    -v SOLVER = 'roe','fwave', default is 'fwave'. Be aware, that the roe-solver is depricated." << std::endl
                     << "    -l STATE_LEFT = 'open','closed', default is 'open'" << std::endl
                     << "    -r STATE_RIGHT = 'open','closed', default is 'open'" << std::endl
@@ -676,7 +677,7 @@ int main(int i_argc,
         auto l_currentTime = std::chrono::steady_clock::now();
         std::chrono::duration<double> l_elapsedTime = l_currentTime - l_lastCheckpointTime;
 
-        if (l_elapsedTime.count() >= 3600.0 && dimension == 2)
+        if (l_elapsedTime.count() >= checkpoint_timer && dimension == 2)
         {
             netcdf_manager->writeCheckpoint(l_nx,
                                             l_ny,
