@@ -247,8 +247,8 @@ int tsunami_lab::io::NetCDF::store(t_real i_simTime,
     for (t_idx l_iy = 0; l_iy < m_ny; l_iy++) {
         for (t_idx l_ix = 0; l_ix < m_nx; l_ix++) {
             t_real l_h = i_h[(l_iy + 1) * m_stride + (l_ix + 1)];
-            t_real l_b = m_dataB[l_iy * m_nx + l_ix];
-            m_height[l_ix + l_iy * m_nx + m_nxy * i_frame] = l_h + l_b;
+            // t_real l_b = m_dataB[l_iy * m_nx + l_ix];
+            m_height[l_ix + l_iy * m_nx + m_nxy * i_frame] = l_h;
             m_momentumX[l_ix + l_iy * m_nx + m_nxy * i_frame] = i_hu[(l_iy + 1) * m_stride + (l_ix + 1)];
             m_momentumY[l_ix + l_iy * m_nx + m_nxy * i_frame] = i_hv[(l_iy + 1) * m_stride + (l_ix + 1)];
         }
@@ -410,6 +410,9 @@ tsunami_lab::io::NetCDF::NetCDF(t_real i_endTime,
     m_nxy = i_nx * i_ny;
     m_stride = i_stride;
     m_outFileName = i_outFileName;
+
+	 std::cout << i_dt << std::endl;
+	 std::cout << m_frameCount << std::endl;
 
     m_frameCount = ceil((i_endTime / i_dt) / i_timeStepsPerFrame);
     m_dataSize = m_nxy * m_frameCount;

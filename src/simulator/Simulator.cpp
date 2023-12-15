@@ -57,6 +57,7 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
             // get initial values of the setup
             tsunami_lab::t_real l_h = i_setup->getHeight(l_x,
                                                          l_y);
+
             l_hMax = std::max(l_h, l_hMax);
 
             tsunami_lab::t_real l_hu = i_setup->getMomentumX(l_x,
@@ -95,6 +96,7 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
     tsunami_lab::t_real l_dxy = l_dx * l_isXStepSmaller + l_dy * !l_isXStepSmaller;
 
     // derive constant time step; changes at simulation time are ignored
+    std::cout << l_hMax << std::endl;
     tsunami_lab::t_real l_dt = 0.5 * l_dxy / l_speedMax;
 
     std::cout << "runtime configuration" << std::endl;
@@ -108,7 +110,7 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
     tsunami_lab::t_real l_scalingY = l_dt / l_dy;
 
     // set up time and print control
-    tsunami_lab::t_idx l_frame;
+    tsunami_lab::t_idx l_frame = i_simConfig.getCurrentFrame();
     tsunami_lab::t_real l_endTime = i_simConfig.getEndSimTime();
     tsunami_lab::t_real l_simTime = i_simConfig.getStartSimTime();
     if (i_simConfig.getDimension() == 1) {
@@ -165,26 +167,29 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
             }
         }
     } else {
-        std::string l_path = "./out/solution.nc";
+        std::string l_path = "./out/" + i_simConfig.getConfigName() + ".nc";
         std::cout << "  writing wave field to " << l_path << std::endl;
-
-        tsunami_lab::t_idx l_timeStep = 0;
-        tsunami_lab::io::NetCDF *l_writer = new tsunami_lab::io::NetCDF(l_endTime,
-                                                                        l_dt,
-                                                                        t_idx(25),
-                                                                        l_dxy,
-                                                                        l_nx,
-                                                                        l_ny,
-                                                                        l_waveProp->getStride(),
-                                                                        l_waveProp->getBathymetry(),
-                                                                        l_path);
+        t_idx l_timestepsPerFrame = 25;
+        t_idx l_timeStep = l_timestepsPerFrame * l_frame;
+        io::NetCDF *l_writer = new tsunami_lab::io::NetCDF(l_endTime,
+                                                           l_dt,
+                                                           l_timestepsPerFrame,
+                                                           l_dxy,
+                                                           l_nx,
+                                                           l_ny,
+                                                           l_waveProp->getStride(),
+                                                           l_waveProp->getBathymetry(),
+                                                           l_path);
 
         if (instanceof <tsunami_lab::setups::CheckPoint>(i_setup)) {
             tsunami_lab::setups::CheckPoint *l_checkpoint = (tsunami_lab::setups::CheckPoint *)i_setup;
-            l_writer->setHeight(l_checkpoint->getHeightData());
-            l_writer->setMomentumX(l_checkpoint->getMomentumXData());
-            l_writer->setMomentumY(l_checkpoint->getMomentumYData());
-            l_writer->setTime(l_checkpoint->getTimeData());
+            for (t_idx l_i = 0; l_i < l_frame + 1; l_i++) {
+                l_writer->store(l_checkpoint->getSimTimeData(l_i),
+                                l_i,
+                                l_checkpoint->getHeightData(l_i),
+                                l_checkpoint->getMomentumXData(l_i),
+                                l_checkpoint->getMomentumYData(l_i));
+            }
         }
 
         // iterate over time
@@ -200,7 +205,8 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
                                 l_waveProp->getMomentumY());
 
                 if (l_frame % 4 == 0) {
-                    l_writer->write(l_frame, "./out/" + i_simConfig.getConfigName() + "_checkpoint.nc", l_simTime, l_endTime);
+						std::string l_checkpointPath = "./out/" + i_simConfig.getConfigName() + "_checkpoint.nc";
+                    l_writer->write(l_frame, l_checkpointPath , l_simTime, l_endTime);
                 }
                 l_frame++;
             }

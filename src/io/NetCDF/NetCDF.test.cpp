@@ -53,7 +53,7 @@ TEST_CASE("Test the NetCDF writer.", "[NetCDFWrite]") {
     float l_dataX[2] = {0.5, 1.5};
     float l_dataY[2] = {0.5, 1.5};
     float l_dataTime[2] = {0.5, 1};
-    float l_dataHeight[8] = {2, 4, 6, 8, 5, 5, 5, 5};
+    float l_dataHeight[8] = {1, 2, 3, 4, 5, 5, 5, 5};
     float l_dataMomentumX[8] = {1, 2, 3, 4, 4, 3, 2, 1};
     float l_dataMomentumY[8] = {1, 2, 3, 4, 4, 3, 2, 1};
     float l_dataBathymetry[4] = {1, 2, 3, 4};
@@ -87,7 +87,7 @@ TEST_CASE("Test the NetCDF writer.", "[NetCDFWrite]") {
     REQUIRE(nc_get_var_float(l_ncId, l_varIDbathymetry, l_resultBathymetry) == NC_NOERR);
     for (int i = 0; i < 2; i++) REQUIRE(l_dataBathymetry[i] == l_resultBathymetry[i]);
 
-   //  std::remove("writer_test.nc");
+    std::remove("writer_test.nc");
 
     delete l_writer;
 }

@@ -31,6 +31,7 @@ TEST_CASE("Test the SimConfig data-structure.", "[SimConfig]") {
                                                                                l_yLen,
                                                                                l_simTime,
 																										 0,
+																										 0,
                                                                                l_boundaryCondition,
                                                                                l_isRoeSolver);
 

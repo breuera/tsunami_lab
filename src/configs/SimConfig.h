@@ -43,6 +43,8 @@ class tsunami_lab::configs::SimConfig {
     //! start time of the simulation.
     tsunami_lab::t_real m_startSimTime = tsunami_lab::t_real(0);
 
+	 t_idx m_currentFrame = t_idx(0); 
+
     //! list of which boundary condition to use.
     e_boundary m_boundaryCondition[4] = {OUTFLOW, OUTFLOW, OUTFLOW, OUTFLOW};
 
@@ -76,6 +78,7 @@ class tsunami_lab::configs::SimConfig {
               tsunami_lab::t_real i_yLen,
               tsunami_lab::t_real i_endSimTime,
               tsunami_lab::t_real i_startSimTime,
+				  tsunami_lab::t_idx i_currentFrame,
               e_boundary i_boundaryCondition[4],
               bool i_isRoeSolver);
     /**
@@ -148,6 +151,10 @@ class tsunami_lab::configs::SimConfig {
      */
     tsunami_lab::t_real getStartSimTime() {
         return m_startSimTime;
+    }
+   
+    tsunami_lab::t_idx getCurrentFrame() {
+        return m_currentFrame;
     }
 
     /**

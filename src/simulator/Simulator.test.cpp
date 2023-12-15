@@ -26,6 +26,7 @@ TEST_CASE("Test the simulation running method.", "[Simulator]") {
                                                                                1,
                                                                                1.25,
                                                                                0,
+																										 0,
                                                                                l_boundary,
                                                                                false);
     tsunami_lab::setups::Setup *l_setup = new tsunami_lab::setups::DamBreak1d(10, 5, 5);

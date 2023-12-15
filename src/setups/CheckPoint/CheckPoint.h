@@ -17,16 +17,20 @@ namespace tsunami_lab {
 
 class tsunami_lab::setups::CheckPoint : public Setup {
    private:
-    t_idx m_dimX;
-    t_idx m_dimY;
+    t_idx m_nx;
+    t_idx m_ny;
     t_idx m_frameOffset;
+    t_idx m_currentFrame;
     t_real m_cellWidthX;
     t_real m_cellWidthY;
     t_real *m_height;
     t_real *m_momentumX;
     t_real *m_momentumY;
     t_real *m_bathymetry;
-	 t_real *m_time;
+    t_real *m_time;
+    t_real *m_heightData;
+    t_real *m_momentumXData;
+    t_real *m_momentumYData;
 
    public:
     /**
@@ -48,6 +52,8 @@ class tsunami_lab::setups::CheckPoint : public Setup {
                t_real *i_momentumY,
                t_real *i_bathymetry,
                t_real *i_time);
+
+    ~CheckPoint();
 
     /**
      * Gets the water height at a given point.
@@ -85,20 +91,41 @@ class tsunami_lab::setups::CheckPoint : public Setup {
     t_real getBathymetry(t_real,
                          t_real) const;
 
-    t_real *getHeightData() {
-        return m_height;
+    t_real *getHeightData(t_idx i_frame) {
+        for (t_idx l_iy = 0; l_iy < m_ny; l_iy++) {
+            for (t_idx l_ix = 0; l_ix < m_nx; l_ix++) {
+                m_heightData[(l_ix + 1) + (l_iy + 1) * (m_nx + 2)] = m_height[l_ix + l_iy * m_nx + i_frame * m_nx * m_ny];
+            }
+        }
+
+        return m_heightData;
     }
 
-    t_real *getMomentumXData() {
-        return m_momentumX;
+    t_real *getMomentumXData(t_idx i_frame) {
+        for (t_idx l_iy = 0; l_iy < m_ny; l_iy++) {
+            for (t_idx l_ix = 0; l_ix < m_nx; l_ix++) {
+                m_momentumXData[(l_ix + 1) + (l_iy + 1) * (m_nx + 2)] = m_momentumX[l_ix + l_iy * m_nx + i_frame * m_nx * m_ny];
+            }
+        }
+
+        return m_momentumXData;
     }
 
-    t_real *getMomentumYData() {
-        return m_momentumY;
+    t_real *getMomentumYData(t_idx i_frame) {
+        for (t_idx l_iy = 0; l_iy < m_ny; l_iy++) {
+            for (t_idx l_ix = 0; l_ix < m_nx; l_ix++) {
+                m_momentumYData[(l_ix + 1) + (l_iy + 1) * (m_nx + 2)] = m_momentumY[l_ix + l_iy * m_nx + i_frame * m_nx * m_ny];
+            }
+        }
+        return m_momentumYData;
     }
 
-    t_real *getTimeData() {
-        return m_time;
+    t_real getSimTimeData(t_idx i_frame) {
+        return m_time[i_frame];
+    }
+
+    t_real getCurrentFrame() {
+        return m_currentFrame;
     }
 };
 
