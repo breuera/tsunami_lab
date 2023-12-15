@@ -8,7 +8,7 @@
     "displacementsFileName": "dummy_disp.nc",
     "epicenterOffsetX": -30,
     "epicenterOffsetY": -10,
-    "simTime": 10,
+    "simTime": 1.25,
     "boundaryCond": "OO",
     "setup": "TsunamiEvent"
 }

@@ -47,7 +47,11 @@ class tsunami_lab::configs::SimConfig {
     //! start time of the simulation.
     tsunami_lab::t_real m_startSimTime = tsunami_lab::t_real(0);
 
+    //! last frame that was simulated.
     t_idx m_currentFrame = t_idx(0);
+  
+    //! coarse output - factor
+    tsunami_lab::t_real m_coarseFactor = tsunami_lab::t_real(1.0);
 
     //! list of which boundary condition to use.
     e_boundary m_boundaryCondition[4] = {OUTFLOW, OUTFLOW, OUTFLOW, OUTFLOW};
@@ -73,6 +77,8 @@ class tsunami_lab::configs::SimConfig {
      * @param i_yLen length of the simulation in y-direction in meters.
      * @param i_endSimTime time of the simulation in seconds.
      * @param i_startSimTime start time of the simulation in seconds.
+     * @param i_currentFrame last frame that was simulated.
+     * @param i_coarseFactor factor of the coarse output.
      * @param i_boundaryCondition list that determines the chosen boundary conditions.
      * @param i_isRoeSolver boolean that shows if the roe solver is to be used (false -> f-wave solver).
      */
@@ -86,6 +92,7 @@ class tsunami_lab::configs::SimConfig {
               tsunami_lab::t_real i_endSimTime,
               tsunami_lab::t_real i_startSimTime,
               tsunami_lab::t_idx i_currentFrame,
+              tsunami_lab::t_idx i_coarseFactor,
               e_boundary i_boundaryCondition[4],
               bool i_isRoeSolver);
     /**
@@ -100,6 +107,10 @@ class tsunami_lab::configs::SimConfig {
      */
     tsunami_lab::t_idx getDimension() {
         return m_dimension;
+    }
+
+	 std::string getConfigName() {
+        return m_configName;
     }
 
     /**
@@ -175,7 +186,16 @@ class tsunami_lab::configs::SimConfig {
     }
 
     /**
-     * @brief Gets list holding the boundary conditions.
+     * @brief Gets the coarse output factor.
+     *
+     * @return coarse output factor.
+     */
+    tsunami_lab::t_idx getCoarseFactor() {
+        return m_coarseFactor;
+    }
+
+    /**
+     * Gets list holding the boundary conditions.
      *
      * @return list holding the boundary conditions.
      */

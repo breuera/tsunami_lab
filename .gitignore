@@ -13,6 +13,7 @@
 /res/middle_states.csv
 config.log
 _build/*
+writer_test.nc
 
 # bathymerty and displacement files
 /res/artificialtsunami_bathymetry_1000.nc

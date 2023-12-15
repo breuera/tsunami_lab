@@ -20,19 +20,21 @@ TEST_CASE("Test the SimConfig data-structure.", "[SimConfig]") {
     tsunami_lab::t_real l_xLen = tsunami_lab::t_real(1200);
     tsunami_lab::t_real l_yLen = tsunami_lab::t_real(2400);
     tsunami_lab::t_real l_simTime = tsunami_lab::t_real(200.0);
+    tsunami_lab::t_real l_coarseFactor = tsunami_lab::t_real(42.0);
     tsunami_lab::e_boundary l_boundaryCondition[4] = {tsunami_lab::OUTFLOW, tsunami_lab::REFLECTING, tsunami_lab::OUTFLOW, tsunami_lab::OUTFLOW};
     bool l_isRoeSolver = true;
 
     tsunami_lab::configs::SimConfig l_config = tsunami_lab::configs::SimConfig(l_dimension,
-	 																									 "sim_config",
-																										 false,
+                                                                               "sim_config",
+                                                                               false,
                                                                                l_nx,
                                                                                l_ny,
                                                                                l_xLen,
                                                                                l_yLen,
                                                                                l_simTime,
-																										 0,
-																										 0,
+                                                                               0,
+                                                                               0,
+                                                                               l_coarseFactor,
                                                                                l_boundaryCondition,
                                                                                l_isRoeSolver);
 
@@ -43,6 +45,7 @@ TEST_CASE("Test the SimConfig data-structure.", "[SimConfig]") {
     REQUIRE(l_yLen == l_config.getYLength());
     REQUIRE(l_simTime == l_config.getEndSimTime());
     REQUIRE(0 == l_config.getStartSimTime());
+    REQUIRE(l_coarseFactor == l_config.getCoarseFactor());
     tsunami_lab::e_boundary *l_boundaryCondition_ptr = l_config.getBoundaryCondition();
     for (tsunami_lab::t_idx l_i = 0; l_i < 4; l_i++) {
         REQUIRE(l_boundaryCondition[l_i] == l_boundaryCondition_ptr[l_i]);
