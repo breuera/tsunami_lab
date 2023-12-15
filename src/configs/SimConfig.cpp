@@ -12,6 +12,7 @@ tsunami_lab::configs::SimConfig::SimConfig() {
 
 tsunami_lab::configs::SimConfig::SimConfig(tsunami_lab::t_idx i_dimension,
                                            std::string i_configName,
+														 bool i_useCheckpoint,
                                            tsunami_lab::t_idx i_nx,
                                            tsunami_lab::t_idx i_ny,
                                            tsunami_lab::t_real i_xLen,
@@ -23,6 +24,7 @@ tsunami_lab::configs::SimConfig::SimConfig(tsunami_lab::t_idx i_dimension,
                                            bool i_isRoeSolver) {
     m_dimension = i_dimension;
 	 m_configName = i_configName;
+	 m_useCheckpoint = i_useCheckpoint;
     m_nx = i_nx;
     m_ny = i_ny;
     m_xLen = i_xLen;

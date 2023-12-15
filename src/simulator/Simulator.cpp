@@ -110,9 +110,13 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
     tsunami_lab::t_real l_scalingY = l_dt / l_dy;
 
     // set up time and print control
-    tsunami_lab::t_idx l_frame = i_simConfig.getCurrentFrame();
+    tsunami_lab::t_idx l_frame = 0;
     tsunami_lab::t_real l_endTime = i_simConfig.getEndSimTime();
-    tsunami_lab::t_real l_simTime = i_simConfig.getStartSimTime();
+    tsunami_lab::t_real l_simTime = 0;
+    if (i_simConfig.useCheckpoint()) {
+        l_frame = i_simConfig.getCurrentFrame();
+        l_simTime = i_simConfig.getStartSimTime();
+    }
     if (i_simConfig.getDimension() == 1) {
         if (i_hStar == -1) {
             tsunami_lab::t_idx l_timeStep = 0;
@@ -181,7 +185,7 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
                                                            l_waveProp->getBathymetry(),
                                                            l_path);
 
-        if (instanceof <tsunami_lab::setups::CheckPoint>(i_setup)) {
+        if (i_simConfig.useCheckpoint() && instanceof <tsunami_lab::setups::CheckPoint>(i_setup)) {
             tsunami_lab::setups::CheckPoint *l_checkpoint = (tsunami_lab::setups::CheckPoint *)i_setup;
             for (t_idx l_i = 0; l_i < l_frame + 1; l_i++) {
                 l_writer->store(l_checkpoint->getSimTimeData(l_i),
@@ -204,9 +208,9 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
                                 l_waveProp->getMomentumX(),
                                 l_waveProp->getMomentumY());
 
-                if (l_frame % 4 == 0) {
-						std::string l_checkpointPath = "./out/" + i_simConfig.getConfigName() + "_checkpoint.nc";
-                    l_writer->write(l_frame, l_checkpointPath , l_simTime, l_endTime);
+                if (i_simConfig.useCheckpoint() && l_frame % 4 == 0) {
+                    std::string l_checkpointPath = "./out/" + i_simConfig.getConfigName() + "_checkpoint.nc";
+                    l_writer->write(l_frame, l_checkpointPath, l_simTime, l_endTime);
                 }
                 l_frame++;
             }

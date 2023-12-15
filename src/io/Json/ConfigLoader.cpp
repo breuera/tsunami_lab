@@ -31,6 +31,7 @@
 using json = nlohmann::json;
 
 tsunami_lab::t_idx tsunami_lab::io::ConfigLoader::loadConfig(std::string i_configName,
+                                                             bool i_useCheckpoint,
                                                              tsunami_lab::setups::Setup *&o_setup,
                                                              tsunami_lab::t_real &o_hStar,
                                                              tsunami_lab::configs::SimConfig &o_simConfig) {
@@ -378,6 +379,7 @@ tsunami_lab::t_idx tsunami_lab::io::ConfigLoader::loadConfig(std::string i_confi
 
     o_simConfig = tsunami_lab::configs::SimConfig(l_dimension,
                                                   l_configName,
+																  i_useCheckpoint,
                                                   l_nx,
                                                   l_ny,
                                                   l_xLen,

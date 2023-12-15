@@ -25,6 +25,7 @@ TEST_CASE("Test the SimConfig data-structure.", "[SimConfig]") {
 
     tsunami_lab::configs::SimConfig l_config = tsunami_lab::configs::SimConfig(l_dimension,
 	 																									 "sim_config",
+																										 false,
                                                                                l_nx,
                                                                                l_ny,
                                                                                l_xLen,

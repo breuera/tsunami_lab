@@ -20,10 +20,14 @@ namespace tsunami_lab {
 
 class tsunami_lab::configs::SimConfig {
    private:
-    //! dimension of the simulation.
+    //! dimension of the simulation
     tsunami_lab::t_idx m_dimension = 1;
 
-	 std::string m_configName;
+    //! config file name
+    std::string m_configName;
+
+    //! if checkpoints should be used
+    bool m_useCheckpoint;
 
     //! number of cells in x-direction
     tsunami_lab::t_idx m_nx = 1;
@@ -43,7 +47,7 @@ class tsunami_lab::configs::SimConfig {
     //! start time of the simulation.
     tsunami_lab::t_real m_startSimTime = tsunami_lab::t_real(0);
 
-	 t_idx m_currentFrame = t_idx(0); 
+    t_idx m_currentFrame = t_idx(0);
 
     //! list of which boundary condition to use.
     e_boundary m_boundaryCondition[4] = {OUTFLOW, OUTFLOW, OUTFLOW, OUTFLOW};
@@ -61,6 +65,8 @@ class tsunami_lab::configs::SimConfig {
      * Constructs a simulation configuration object.
      *
      * @param i_dimension dimension of the simulation.
+     * @param i_configName name of config file.
+     * @param i_useCheckpoint if checkpoints should be used.
      * @param i_nx number of cells in x-direction.
      * @param i_ny number of cells in y-direction.
      * @param i_xLen length of the simulation in x-direction in meters.
@@ -72,13 +78,14 @@ class tsunami_lab::configs::SimConfig {
      */
     SimConfig(tsunami_lab::t_idx i_dimension,
               std::string i_configName,
+              bool i_useCheckpoint,
               tsunami_lab::t_idx i_nx,
               tsunami_lab::t_idx i_ny,
               tsunami_lab::t_real i_xLen,
               tsunami_lab::t_real i_yLen,
               tsunami_lab::t_real i_endSimTime,
               tsunami_lab::t_real i_startSimTime,
-				  tsunami_lab::t_idx i_currentFrame,
+              tsunami_lab::t_idx i_currentFrame,
               e_boundary i_boundaryCondition[4],
               bool i_isRoeSolver);
     /**
@@ -95,12 +102,12 @@ class tsunami_lab::configs::SimConfig {
         return m_dimension;
     }
 
-	 /**
-	  * @brief Gets the name of the config.
-	  * 
-	  * @return config name.
-	  */
-	 std::string getConfigName() {
+    /**
+     * @brief Gets the name of the config.
+     *
+     * @return config name.
+     */
+    std::string getConfigName() {
         return m_configName;
     }
 
@@ -157,8 +164,8 @@ class tsunami_lab::configs::SimConfig {
     tsunami_lab::t_real getStartSimTime() {
         return m_startSimTime;
     }
-   
-	 /**
+
+    /**
      * @brief Gets the last frame written to the loaded Checkpoint, if no checkpoint was read currentFrame is 0.
      *
      * @return last Frame simulated.
@@ -183,6 +190,14 @@ class tsunami_lab::configs::SimConfig {
      */
     bool isRoeSolver() {
         return m_isRoeSolver;
+    }
+
+    /**
+     * @brief Gets boolean value, that shows if a checkpoint file should be used.
+     *
+     */
+    bool useCheckpoint() {
+        return m_useCheckpoint;
     }
 };
 
