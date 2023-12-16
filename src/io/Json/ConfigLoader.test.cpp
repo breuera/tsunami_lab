@@ -31,6 +31,7 @@ TEST_CASE("Test reading a config JSON file.", "[ConfigLoader]") {
     REQUIRE(l_simConfig.getYLength() == 500.0);
     REQUIRE(l_simConfig.getEndSimTime() == 5.0);
     REQUIRE(l_simConfig.getStartSimTime() == 0);
+    REQUIRE(l_simConfig.getCoarseFactor() == 1.0);
     REQUIRE(l_simConfig.getBoundaryCondition()[0] == tsunami_lab::OUTFLOW);
     REQUIRE(l_simConfig.getBoundaryCondition()[1] == tsunami_lab::REFLECTING);
     REQUIRE(l_simConfig.isRoeSolver());

@@ -33,14 +33,16 @@ class tsunami_lab::io::NetCDF {
     t_real *m_dataX, *m_dataY, *m_dataB;
 
     t_real m_dxy;
-    t_idx m_nx, m_ny, m_nxy, m_stride;
-    t_idx m_frameCount, m_dataSize;
+    t_idx m_nx, m_ny, m_nxCoarse, m_nyCoarse, m_nxy, m_nxyCoarse, m_stride;
+    t_idx m_frameCount, m_dataSize, m_coarseFactor;
 
     int m_varXId, m_varYId, m_varTimeId, m_varBathymetryId, m_varHeightId, m_varMomentumXId, m_varMomentumYId, m_varSimTimeId, m_varEndTimeId, m_varFrameId;
     int m_dimXId, m_dimYId, m_dimTimeId, m_dimSimTimeId, m_dimEndTimeId, m_dimFrameId;
     int m_ncId;
 
-    int init(t_idx i_currentFrame);
+    int init(t_idx i_currentFrame, bool i_isCheckPoint);
+
+    bool isInBounds(int i_x, int i_y);
 
    public:
     /**
@@ -54,6 +56,7 @@ class tsunami_lab::io::NetCDF {
            t_idx i_nx,
            t_idx i_ny,
            t_idx i_stride,
+           t_idx i_coarseFactor,
            t_real const *i_b,
            std::string i_outFileName);
 
