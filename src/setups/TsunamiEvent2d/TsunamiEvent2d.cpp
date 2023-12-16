@@ -124,35 +124,10 @@ tsunami_lab::t_real tsunami_lab::setups::TsunamiEvent2d::getBathymetry(t_real i_
 
     t_idx l_mappedGridIdx = l_gridIdxY * m_bathymetryDimX + l_gridIdxX;
 
+    t_idx l_mappedDispGridIdx = l_gridIdxY * m_displacementsDimX + l_gridIdxX;
+
     // get possible displacement
-    t_real l_dispXDomainStart = m_displacementsPosX[0];
-    t_real l_dispXDomainEnd = m_displacementsPosX[m_displacementsDimX - 1];
-    t_real l_dispYDomainStart = m_displacementsPosY[0];
-    t_real l_dispYDomainEnd = m_displacementsPosY[m_displacementsDimY - 1];
-
-    bool l_isInDomainX = i_x > l_dispXDomainStart && i_x < l_dispXDomainEnd;
-    bool l_isInDomainY = i_y > l_dispYDomainStart && i_y < l_dispYDomainEnd;
-    bool l_setDisplacement = l_isInDomainX && l_isInDomainY;
-    t_real l_displacement = 0;
-    if (l_setDisplacement) {
-        t_idx l_dispGridIdxX = 0;
-        t_idx l_dispGridIdxY = 0;
-        for (t_idx l_i = 1; l_i < m_displacementsDimX; l_i++) {
-            if (m_displacementsPosX[l_i] == l_gridX) {
-                l_dispGridIdxX = l_i;
-            }
-        }
-
-        for (t_idx l_i = 1; l_i < m_displacementsDimY; l_i++) {
-            if (m_displacementsPosY[l_i] == l_gridY) {
-                l_dispGridIdxY = l_i;
-            }
-        }
-
-        t_idx l_mappedDispGridIdx = l_dispGridIdxY * m_displacementsDimX + l_dispGridIdxX;
-
-        l_displacement = m_displacement[l_mappedDispGridIdx];
-    }
+    t_real l_displacement = m_displacement[l_mappedDispGridIdx];
 
     if (m_bathymetry[l_mappedGridIdx] < 0) {
         return std::min(m_bathymetry[l_mappedGridIdx], -m_delta) + l_displacement;
