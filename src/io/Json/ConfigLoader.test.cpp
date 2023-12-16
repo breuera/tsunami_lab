@@ -18,6 +18,7 @@ TEST_CASE("Test reading a config JSON file.", "[ConfigLoader]") {
 
     tsunami_lab::t_idx err;
     err = tsunami_lab::io::ConfigLoader::loadConfig(l_path,
+                                                    false,
                                                     l_setups,
                                                     l_hStar,
                                                     l_simConfig);

@@ -21,7 +21,7 @@ int main(int i_argc, char *i_argv[]) {
     std::cout << "### https://scalable.uni-jena.de ###" << std::endl;
     std::cout << "####################################" << std::endl;
 
-    if (i_argc != 2) {
+    if (i_argc < 2) {
         std::cerr << "invalid number of program parameter" << std::endl;
         std::cerr << "  ./build/tsunami_lab CONFIG_FILE_NAME.json" << std::endl;
         return EXIT_FAILURE;
@@ -29,12 +29,18 @@ int main(int i_argc, char *i_argv[]) {
 
     std::string l_configName = std::string(i_argv[1]);
 
+    bool l_useCheckpoint = false;
+    if (i_argc == 3 && std::string(i_argv[2]) == "-c") {
+        l_useCheckpoint = true;
+    }
+
     tsunami_lab::setups::Setup *l_setups = nullptr;
     tsunami_lab::t_real l_hStar = -1;
     tsunami_lab::configs::SimConfig l_simConfig = tsunami_lab::configs::SimConfig();
 
     // load parameters from runtimeConfig.json
     tsunami_lab::t_idx err = tsunami_lab::io::ConfigLoader::loadConfig(l_configName,
+                                                                       l_useCheckpoint,
                                                                        l_setups,
                                                                        l_hStar,
                                                                        l_simConfig);

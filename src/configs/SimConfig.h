@@ -20,10 +20,14 @@ namespace tsunami_lab {
 
 class tsunami_lab::configs::SimConfig {
    private:
-    //! dimension of the simulation.
+    //! dimension of the simulation
     tsunami_lab::t_idx m_dimension = 1;
 
-	 std::string m_configName;
+    //! config file name
+    std::string m_configName;
+
+    //! if checkpoints should be used
+    bool m_useCheckpoint;
 
     //! number of cells in x-direction
     tsunami_lab::t_idx m_nx = 1;
@@ -42,6 +46,9 @@ class tsunami_lab::configs::SimConfig {
 
     //! start time of the simulation.
     tsunami_lab::t_real m_startSimTime = tsunami_lab::t_real(0);
+
+    //! last frame simulated.
+    t_idx m_currentFrame = t_idx(0);
 
     //! coarse output - factor
     tsunami_lab::t_real m_coarseFactor = tsunami_lab::t_real(1.0);
@@ -62,34 +69,39 @@ class tsunami_lab::configs::SimConfig {
      * Constructs a simulation configuration object.
      *
      * @param i_dimension dimension of the simulation.
+     * @param i_configName name of config file.
+     * @param i_useCheckpoint if checkpoints should be used.
      * @param i_nx number of cells in x-direction.
      * @param i_ny number of cells in y-direction.
      * @param i_xLen length of the simulation in x-direction in meters.
      * @param i_yLen length of the simulation in y-direction in meters.
      * @param i_endSimTime time of the simulation in seconds.
      * @param i_startSimTime start time of the simulation in seconds.
+     * @param i_currentFrame last frame simulated.
      * @param i_coarseFactor factor of the coarse output.
      * @param i_boundaryCondition list that determines the chosen boundary conditions.
      * @param i_isRoeSolver boolean that shows if the roe solver is to be used (false -> f-wave solver).
      */
     SimConfig(tsunami_lab::t_idx i_dimension,
               std::string i_configName,
+              bool i_useCheckpoint,
               tsunami_lab::t_idx i_nx,
               tsunami_lab::t_idx i_ny,
               tsunami_lab::t_real i_xLen,
               tsunami_lab::t_real i_yLen,
               tsunami_lab::t_real i_endSimTime,
               tsunami_lab::t_real i_startSimTime,
+              tsunami_lab::t_idx i_currentFrame,
               tsunami_lab::t_idx i_coarseFactor,
               e_boundary i_boundaryCondition[4],
               bool i_isRoeSolver);
     /**
-     * Destructor which frees all allocated memory.
+     * @brief Destructor which frees all allocated memory.
      **/
     ~SimConfig();
 
     /**
-     * Gets dimension of the simulation.
+     * @brief Gets dimension of the simulation.
      *
      * @return dimension of the simulation.
      */
@@ -97,12 +109,17 @@ class tsunami_lab::configs::SimConfig {
         return m_dimension;
     }
 
-	 std::string getConfigName() {
+    /**
+     * @brief Gets the name of the config.
+     *
+     * @return config name.
+     */
+    std::string getConfigName() {
         return m_configName;
     }
 
     /**
-     * Gets number of cells in x-direction.
+     * @brief Gets number of cells in x-direction.
      *
      * @return number of cells in x-direction.
      */
@@ -111,7 +128,7 @@ class tsunami_lab::configs::SimConfig {
     }
 
     /**
-     * Gets number of cells in y-direction.
+     * @brief Gets number of cells in y-direction.
      *
      * @return number of cells in y-direction.
      */
@@ -120,7 +137,7 @@ class tsunami_lab::configs::SimConfig {
     }
 
     /**
-     * Gets length of simulation in x-direction in meters.
+     * @brief Gets length of simulation in x-direction in meters.
      *
      * @return length of simulation in x-direction in meters.
      */
@@ -129,7 +146,7 @@ class tsunami_lab::configs::SimConfig {
     }
 
     /**
-     * Gets length of simulation in y-direction in meters.
+     * @brief Gets length of simulation in y-direction in meters.
      *
      * @return length of simulation in y-direction in meters.
      */
@@ -138,7 +155,7 @@ class tsunami_lab::configs::SimConfig {
     }
 
     /**
-     * Gets the time length of the simulation in seconds.
+     * @brief Gets the time length of the simulation in seconds.
      *
      * @return time length of the simulation in seconds.
      */
@@ -147,7 +164,7 @@ class tsunami_lab::configs::SimConfig {
     }
 
     /**
-     * Gets the start time of the simulation in seconds.
+     * @brief Gets the start time of the simulation in seconds.
      *
      * @return start time of the simulation in seconds.
      */
@@ -165,7 +182,16 @@ class tsunami_lab::configs::SimConfig {
     }
 
     /**
-     * Gets list holding the boundary conditions.
+     * @brief Gets the last frame written to the loaded Checkpoint, if no checkpoint was read currentFrame is 0.
+     *
+     * @return last Frame simulated.
+     */
+    tsunami_lab::t_idx getCurrentFrame() {
+        return m_currentFrame;
+    }
+
+    /**
+     * @brief Gets list holding the boundary conditions.
      *
      * @return list holding the boundary conditions.
      */
@@ -174,12 +200,20 @@ class tsunami_lab::configs::SimConfig {
     }
 
     /**
-     * Gets boolean value, that shows if the roe solver is to be used.
+     * @brief Gets boolean value, that shows if the roe solver is to be used.
      *
      * @return number of setups to be calculated.
      */
     bool isRoeSolver() {
         return m_isRoeSolver;
+    }
+
+    /**
+     * @brief Gets boolean value, that shows if a checkpoint file should be used.
+     *
+     */
+    bool useCheckpoint() {
+        return m_useCheckpoint;
     }
 };
 

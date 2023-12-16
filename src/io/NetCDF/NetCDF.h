@@ -40,8 +40,7 @@ class tsunami_lab::io::NetCDF {
     int m_dimXId, m_dimYId, m_dimTimeId, m_dimSimTimeId, m_dimEndTimeId, m_dimFrameId;
     int m_ncId;
 
-    int init(t_idx i_currentFrame,
-             std::string i_checkPointPath);
+    int init(t_idx i_currentFrame, bool i_isCheckPoint);
 
     bool isInBounds(int i_x, int i_y);
 
@@ -91,6 +90,10 @@ class tsunami_lab::io::NetCDF {
               std::string i_checkPointPath,
               t_real i_simTime,
               t_real i_endTime);
+
+    /**
+     * @brief standard writer when the simulation is finished and output is generated.
+     */
     int write();
 
     /**
@@ -107,11 +110,11 @@ class tsunami_lab::io::NetCDF {
      * @param o_startSimTime time passed since simulation begin.
      */
     static int readCheckpoint(std::string i_checkPointPath,
-                              t_real *o_height,
-                              t_real *o_momentumX,
-                              t_real *o_momentumY,
-                              t_real *o_bathymetry,
-                              t_real *o_time,
+                              t_real *&o_height,
+                              t_real *&o_momentumX,
+                              t_real *&o_momentumY,
+                              t_real *&o_bathymetry,
+                              t_real *&o_time,
                               t_idx *o_currentFrame,
                               t_real *o_endSimTime,
                               t_real *o_startSimTime);

@@ -16,6 +16,12 @@
 #include "../io/NetCDF/NetCDF.h"
 #include "../patches/1d/WavePropagation1d.h"
 #include "../patches/2d/WavePropagation2d.h"
+#include "../setups/CheckPoint/CheckPoint.h"
+
+template <typename Base, typename T>
+inline bool instanceof (const T *ptr) {
+    return dynamic_cast<const Base *>(ptr) != nullptr;
+}
 
 void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
                                            tsunami_lab::t_real i_hStar,
@@ -50,6 +56,7 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
             // get initial values of the setup
             tsunami_lab::t_real l_h = i_setup->getHeight(l_x,
                                                          l_y);
+
             l_hMax = std::max(l_h, l_hMax);
 
             tsunami_lab::t_real l_hu = i_setup->getMomentumX(l_x,
@@ -90,6 +97,8 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
     // derive constant time step; changes at simulation time are ignored
     tsunami_lab::t_real l_dt = 0.5 * l_dxy / l_speedMax;
 
+    std::cout << l_hMax << " | " << l_speedMax << std::endl;
+
     std::cout << std::endl;
     std::cout << "runtime configuration" << std::endl;
     std::cout << "  number of cells in x-direction: " << l_nx << std::endl;
@@ -105,7 +114,11 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
     // set up time and print control
     tsunami_lab::t_idx l_frame = 0;
     tsunami_lab::t_real l_endTime = i_simConfig.getEndSimTime();
-    tsunami_lab::t_real l_simTime = i_simConfig.getStartSimTime();
+    tsunami_lab::t_real l_simTime = 0;
+    if (i_simConfig.useCheckpoint()) {
+        l_frame = i_simConfig.getCurrentFrame();
+        l_simTime = i_simConfig.getStartSimTime();
+    }
     if (i_simConfig.getDimension() == 1) {
         if (i_hStar == -1) {
             tsunami_lab::t_idx l_timeStep = 0;
@@ -160,21 +173,32 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
             }
         }
     } else {
-        std::string l_path = "./out/solution.nc";
+        std::string l_path = "./out/" + i_simConfig.getConfigName() + ".nc";
         std::cout << "  writing wave field to " << l_path << std::endl;
+        t_idx l_timestepsPerFrame = 25;
+        t_idx l_timeStep = l_timestepsPerFrame * l_frame;
+        std::cout << l_timeStep << " > " << l_frame << std::endl;
+        io::NetCDF *l_writer = new tsunami_lab::io::NetCDF(l_endTime,
+                                                           l_dt,
+                                                           l_timestepsPerFrame,
+                                                           l_dxy,
+                                                           l_nx,
+                                                           l_ny,
+                                                           l_waveProp->getStride(),
+                                                           i_simConfig.getCoarseFactor(),
+                                                           l_waveProp->getBathymetry(),
+                                                           l_path);
 
-        tsunami_lab::t_idx l_timeStep = 0;
-        long int l_checkpoint = 0;
-        tsunami_lab::io::NetCDF *l_writer = new tsunami_lab::io::NetCDF(l_endTime,
-                                                                        l_dt,
-                                                                        t_idx(25),
-                                                                        l_dxy,
-                                                                        l_nx,
-                                                                        l_ny,
-                                                                        l_waveProp->getStride(),
-                                                                        i_simConfig.getCoarseFactor(),
-                                                                        l_waveProp->getBathymetry(),
-                                                                        l_path);
+        if (i_simConfig.useCheckpoint() && instanceof <tsunami_lab::setups::CheckPoint>(i_setup)) {
+            tsunami_lab::setups::CheckPoint *l_checkpoint = (tsunami_lab::setups::CheckPoint *)i_setup;
+            for (t_idx l_i = 0; l_i < l_frame; l_i++) {
+                l_writer->store(l_checkpoint->getSimTimeData(l_i),
+                                l_i,
+                                l_checkpoint->getHeightData(l_i),
+                                l_checkpoint->getMomentumXData(l_i),
+                                l_checkpoint->getMomentumYData(l_i));
+            }
+        }
 
         // iterate over time
         while (l_simTime < l_endTime) {
@@ -188,9 +212,9 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
                                 l_waveProp->getMomentumX(),
                                 l_waveProp->getMomentumY());
 
-                if (l_frame % 4 == 0) {
-                    l_writer->write(l_frame, "./out/" + i_simConfig.getConfigName() + "_checkpoint.nc", l_simTime, l_endTime);
-                    l_checkpoint++;
+                if (i_simConfig.useCheckpoint() && l_frame % 4 == 0) {
+                    std::string l_checkpointPath = "./out/" + i_simConfig.getConfigName() + "_checkpoint.nc";
+                    l_writer->write(l_frame, l_checkpointPath, l_simTime, l_endTime);
                 }
                 l_frame++;
             }
