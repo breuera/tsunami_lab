@@ -5,6 +5,7 @@
 # Entry-point for builds.
 ##
 import SCons
+import os
 
 print( '####################################' )
 print( '### Tsunami Lab                  ###' )
@@ -12,7 +13,7 @@ print( '###                              ###' )
 print( '### https://scalable.uni-jena.de ###' )
 print( '####################################' )
 print()
-print('runnning build script')
+print('running build script')
 
 # configuration
 vars = Variables()
@@ -25,13 +26,23 @@ vars.AddVariables(
               )
 )
 
+vars.AddVariables(
+  EnumVariable( 'CXX',
+                'compiler options: g++, icpc',
+                'g++',
+                allowed_values=('g++', 'icpc')
+              )
+)
+
 # exit in the case of unknown variables
 if vars.UnknownVariables():
   print( "build configuration corrupted, don't know what to do with: " + str(vars.UnknownVariables().keys()) )
   exit(1)
 
 # create environment
-env = Environment( variables = vars )
+env = Environment( ENV=os.environ, variables = vars )
+
+print(f"use the {env['CXX']} compiler")
 
 # check for netcdf
 if not Configure(env).CheckLibWithHeader('netcdf', 'netcdf.h', 'c++'):
@@ -42,7 +53,8 @@ if not Configure(env).CheckLibWithHeader('netcdf', 'netcdf.h', 'c++'):
 Help( vars.GenerateHelpText( env ) )
 
 # add default flags
-env.Append( CXXFLAGS = [ '-std=c++11',
+env.Append( CXXFLAGS = [ '-g',
+                         '-std=c++11',
                          '-Wall',
                          '-Wextra',
                          '-Wpedantic',
@@ -50,21 +62,21 @@ env.Append( CXXFLAGS = [ '-std=c++11',
 
 # set optimization mode
 if 'debug' in env['mode']:
-  env.Append( CXXFLAGS = [ '-g',
-                           '-O0' ] )
+  env.Append( CXXFLAGS = [ '-O0' ] )
 else:
-  env.Append( CXXFLAGS = [ '-O2' ] )
+  if 'g++' in env['CXX']:
+    env.Append( CXXFLAGS = [ '-O2' ] )
+  elif 'icpc' in env['CXX']:
+    env.Append( CXXFLAGS = [ '-fast' ] )
 
 # add sanitizers
 if 'san' in  env['mode']:
-  env.Append( CXXFLAGS =  [ '-g',
-                            '-fsanitize=float-divide-by-zero',
+  env.Append( CXXFLAGS =  [ '-fsanitize=float-divide-by-zero',
                             '-fsanitize=bounds',
                             '-fsanitize=address',
                             '-fsanitize=undefined',
                             '-fno-omit-frame-pointer' ] )
-  env.Append( LINKFLAGS = [ '-g',
-                            '-fsanitize=address',
+  env.Append( LINKFLAGS = [ '-fsanitize=address',
                             '-fsanitize=undefined' ] )
 
 # add Catch2
