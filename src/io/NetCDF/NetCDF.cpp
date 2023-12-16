@@ -445,6 +445,9 @@ int tsunami_lab::io::NetCDF::readCheckpoint(std::string i_checkPoinPath,
         return 1;
     }
 
+	 std::cout << "timedim: " << l_timeDim << std::endl;
+	 std::cout << l_xDim << " | " << l_yDim << " | " << l_timeDim << std::endl;
+
     o_time = new tsunami_lab::t_real[l_timeDim];
     o_height = new tsunami_lab::t_real[l_xDim * l_yDim * l_timeDim];
     o_momentumX = new tsunami_lab::t_real[l_xDim * l_yDim * l_timeDim];
@@ -457,8 +460,8 @@ int tsunami_lab::io::NetCDF::readCheckpoint(std::string i_checkPoinPath,
 
     l_nc_err += nc_inq_varid(l_ncID, "time", &l_varIDtime);
     l_nc_err += nc_inq_varid(l_ncID, "height", &l_varIDheight);
-    l_nc_err += nc_inq_varid(l_ncID, "momentumX", &l_varIDmomentumX);
-    l_nc_err += nc_inq_varid(l_ncID, "momentumY", &l_varIDmomentumY);
+    l_nc_err += nc_inq_varid(l_ncID, "momentum_x", &l_varIDmomentumX);
+    l_nc_err += nc_inq_varid(l_ncID, "momentum_y", &l_varIDmomentumY);
     l_nc_err += nc_inq_varid(l_ncID, "bathymetry", &l_varIDbathymetry);
 
     l_nc_err += nc_inq_varid(l_ncID, "simTime", &l_varIDsimTime);
@@ -511,9 +514,6 @@ tsunami_lab::io::NetCDF::NetCDF(t_real i_endTime,
     m_nxyCoarse = m_nxCoarse * m_nyCoarse;
     m_stride = i_stride;
     m_outFileName = i_outFileName;
-
-    std::cout << i_dt << std::endl;
-    std::cout << m_frameCount << std::endl;
 
     m_frameCount = ceil((i_endTime / i_dt) / i_timeStepsPerFrame);
     m_dataSize = m_nxy * m_frameCount;

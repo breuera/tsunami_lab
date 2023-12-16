@@ -97,6 +97,8 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
     // derive constant time step; changes at simulation time are ignored
     tsunami_lab::t_real l_dt = 0.5 * l_dxy / l_speedMax;
 
+    std::cout << l_hMax << " | " << l_speedMax << std::endl;
+
     std::cout << std::endl;
     std::cout << "runtime configuration" << std::endl;
     std::cout << "  number of cells in x-direction: " << l_nx << std::endl;
@@ -175,6 +177,7 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
         std::cout << "  writing wave field to " << l_path << std::endl;
         t_idx l_timestepsPerFrame = 25;
         t_idx l_timeStep = l_timestepsPerFrame * l_frame;
+        std::cout << l_timeStep << " > " << l_frame << std::endl;
         io::NetCDF *l_writer = new tsunami_lab::io::NetCDF(l_endTime,
                                                            l_dt,
                                                            l_timestepsPerFrame,
@@ -188,7 +191,7 @@ void tsunami_lab::simulator::runSimulation(tsunami_lab::setups::Setup *i_setup,
 
         if (i_simConfig.useCheckpoint() && instanceof <tsunami_lab::setups::CheckPoint>(i_setup)) {
             tsunami_lab::setups::CheckPoint *l_checkpoint = (tsunami_lab::setups::CheckPoint *)i_setup;
-            for (t_idx l_i = 0; l_i < l_frame + 1; l_i++) {
+            for (t_idx l_i = 0; l_i < l_frame; l_i++) {
                 l_writer->store(l_checkpoint->getSimTimeData(l_i),
                                 l_i,
                                 l_checkpoint->getHeightData(l_i),

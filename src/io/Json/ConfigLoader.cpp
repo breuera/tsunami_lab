@@ -199,7 +199,7 @@ tsunami_lab::t_idx tsunami_lab::io::ConfigLoader::loadConfig(std::string i_confi
     std::string l_checkPointPath = "out/" + l_configName + "_checkpoint.nc";
     std::ifstream f(l_checkPointPath.c_str());
     t_idx l_startFrame = 0;
-    if (f.good()) {
+    if (i_useCheckpoint && f.good()) {
         std::cout << "Reading out/" + l_configName + "_checkpoint.nc" << std::endl;
         t_real *l_height;
         t_real *l_momentumX;

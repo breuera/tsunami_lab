@@ -22,7 +22,7 @@ tsunami_lab::setups::CheckPoint::CheckPoint(t_real i_dimX,
 														  t_real *i_time) {
     m_nx = i_nx;
     m_ny = i_ny;
-	 m_frameOffset = i_frame * i_nx * i_ny;
+	 m_frameOffset = (i_frame - 1) * i_nx * i_ny;
     m_height = i_height;
     m_momentumX = i_momentumX;
     m_momentumY = i_momentumY;
