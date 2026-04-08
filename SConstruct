@@ -40,8 +40,7 @@ Help( vars.GenerateHelpText( env ) )
 env.Append( CXXFLAGS = [ '-std=c++11',
                          '-Wall',
                          '-Wextra',
-                         '-Wpedantic',
-                         '-Werror' ] )
+                         '-Wpedantic' ] )
 
 # set optimization mode
 if 'debug' in env['mode']:
@@ -61,6 +60,8 @@ if 'san' in  env['mode']:
   env.Append( LINKFLAGS = [ '-g',
                             '-fsanitize=address',
                             '-fsanitize=undefined' ] )
+else:
+  env.Append( CXXFLAGS = [ '-Werror' ] )
 
 # add Catch2
 env.Append( CXXFLAGS = [ '-isystem', 'submodules/Catch2/single_include' ] )
